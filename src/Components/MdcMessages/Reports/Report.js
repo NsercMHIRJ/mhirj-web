@@ -4,9 +4,7 @@ import FlagReport from './FlagReport/FlagReport';
 import HistoryReport from './HistoryReport/HistoryReport';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-//Buttons Imports
 import Button from '@material-ui/core/Button';
-//Axios Imports 
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -96,48 +94,29 @@ const Report = (props) => {
         setLoadingHistory(true);
       }
     if (flag === false){
-      const {analysis, occurences, legs, intermittent} = report;
-      let consecutiveDays;
-      if (report.analysis === "daily") {
-        consecutiveDays = 0;
-      }
-      else {
-        consecutiveDays = report.days;
-      }
-      const operator = report.operator;          
-      const ata = report.ata;
-      const eqid = report.eqID;
-      const messages = 0; 
-      const fromDate = report.fromDate;
-      const toDate = report.toDate;
+      let consecutiveDays = report.analysis === "daily" ? 0 : report.days; 
+      const path = 'http://20.85.211.143:8080/api/GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
+      consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
 
-      if (report.analysis !== "both") {
-        //const path = 'http://localhost:8000/api/GenerateReport/' + analysis + '/' + occurences + '/' + legs + '/' + intermittent + '/' +
-        //consecutiveDays + '/' + ata + '/' + eqid + '/'+ operator + '/' + messages + '/' + fromDate + '/' + toDate;
-
-        const path = 'http://40.82.160.131/api/GenerateReport/' + analysis + '/' + occurences + '/' + legs + '/' + intermittent + '/' +
-        consecutiveDays + '/' + ata + '/' + eqid + '/'+ operator + '/' + messages + '/' + fromDate + '/' + toDate;
-
-          axios.post(path).then(function (res){
-            var data = JSON.parse(res.data);
-            if (report.analysis === "daily") {
-              setDailyReportData(data);
-              setLoadingDaily(false);
-            }
-            else if (report.analysis === "history") {
-              setHistoryReportData(data);
-              setLoadingHistory(false);
-            }           
-          }).catch(function (err){
-            console.log(err);
-            if (report.analysis === "daily"){
-              setLoadingDaily(false);
-            }
-            else if (report.analysis === "history"){
-              setLoadingHistory(false);
-            }
-          })
-      }
+      axios.post(path).then(function (res){
+        var data = JSON.parse(res.data);
+        if (report.analysis === "daily") {
+          setDailyReportData(data);
+          setLoadingDaily(false);
+        }
+        else if (report.analysis === "history") {
+          setHistoryReportData(data);
+          setLoadingHistory(false);
+        }           
+      }).catch(function (err){
+        console.log(err);
+        if (report.analysis === "daily"){
+          setLoadingDaily(false);
+        }
+        else if (report.analysis === "history"){
+          setLoadingHistory(false);
+        }
+      });
     }
     else{
       if (report.analysis === "daily"){
@@ -150,22 +129,10 @@ const Report = (props) => {
   }, [report]);
 
   const handleGenerateFlagReport = (event) => {
-    setFlagConditions(
-      {         
-        analysis: props.reportConditions.analysis,
-        occurences: props.reportConditions.occurences,
-        legs: props.reportConditions.legs,
-        HistExEqID: props.reportConditions.eqID,
-        intermittent: props.reportConditions.intermittent,
-        days: props.reportConditions.days,
-        operator: props.reportConditions.operator,
-        HistAta: props.reportConditions.ata,
-        messages: props.reportConditions.messages,
-        fromDate: props.reportConditions.fromDate,
-        toDate: props.reportConditions.toDate,
-        flagList: flagList,
-      },
-    );
+    setFlagConditions({
+      ...props.reportConditions,
+      flagList
+    });
     setFlagData([]);
     setLoadingFlag(true);
     setFlagValue(1);
@@ -181,18 +148,18 @@ const Report = (props) => {
     });
 
     if (flag === false) {        
-      const flagPath = 'http://40.82.160.131/api/GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
-      flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.HistAta + '/' + 
-      flagConditions.HistExEqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.fromDate + '/' + 
+      const flagPath = 'http://20.85.211.143:8080/api/GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
+      flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
+      flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.fromDate + '/' + 
       flagConditions.toDate + '/' + flagConditions.flagList;
 
-        axios.post(flagPath).then(function (res){
-          var data = JSON.parse(res.data);
-          setFlagData(data);
-          setLoadingFlag(false);
-        }).catch(function (err){
-          console.log(err);
-          setLoadingFlag(false);
+      axios.post(flagPath).then(function (res){
+        var data = JSON.parse(res.data);
+        setFlagData(data);
+        setLoadingFlag(false);
+      }).catch(function (err){
+        console.log(err);
+        setLoadingFlag(false);
       })
     }
   },[flagConditions]);
