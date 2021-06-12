@@ -64,7 +64,7 @@ export const ATAMainSelector = (props) => {
   const [ATAMain, setATAMain] = React.useState([]);
   const [ATAMainList,setATAMainList] = useState([]);
   useEffect(() => {
-    const path = 'http://localhost:8000/GenerateReport/ata_main/ALL'
+    const path = 'http://20.85.211.143:8080/api/GenerateReport/ata_main/ALL'
 
     try{
       axios.post(path).then(function (res) {
@@ -81,7 +81,14 @@ export const ATAMainSelector = (props) => {
 },[]);
 
   const handleATAChange = (event, values) => {
-    setATAMain(values);
+    var copy = [];
+    if(Object.values(values)[0] === "ALL" && ATAMain.length !== 0){
+      copy.push(Object.values(values)[1]);
+      setATAMain(copy);
+      }
+    else{
+      setATAMain(values);
+    }
     if(values.includes("ALL")){
       props.handleATAChange("ALL");
     }else{
@@ -116,7 +123,7 @@ export const EqIDSelector = (props) => {
   const [EqID, setEqID] = React.useState([]);
   const [EqList,setEqIDList] = useState([]);
   useEffect(() => {
-    const path = 'http://localhost:8000/GenerateReport/equation_id/ALL'
+    const path = 'http://20.85.211.143:8080/api/GenerateReport/equation_id/ALL'
 
     try{
       axios.post(path).then(function (res) {
@@ -133,9 +140,18 @@ export const EqIDSelector = (props) => {
 },[]);
 
   const handleEqIDChange = (event, values) => {
-    setEqID(values);
-    if(values.includes("ALL")){
-      props.handleEqIDChange("ALL");
+    var copy = [];
+    //Analysis inputs, as soon as one ATA under “ATA Main” is selected the “ALL” should de-select. 
+    if(Object.values(values)[0] === "NONE" && EqID.length !== 0){
+      copy.push(Object.values(values)[1]);
+      setEqID(copy);
+      }
+    else{
+      setEqID(values);
+    }
+   
+    if(values.includes("NONE")){
+      props.handleEqIDChange("NONE");
     }
     else{
       let eqIDLIST =  "('"+ values.join("','") +"')";
@@ -153,6 +169,7 @@ export const EqIDSelector = (props) => {
         value = {EqID}
         filterSelectedOptions
         onChange = {handleEqIDChange}
+        searchEnabled = {true}
         renderInput={(params) => (
           <TextField
             {...params}

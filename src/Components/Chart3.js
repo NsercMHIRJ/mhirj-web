@@ -64,7 +64,7 @@ export default function Chart3() {
     let Dates = [];
     let OccperDay = [];
 
-    const path = 'http://localhost:8000/api/chart_three/' + data_chart3.aircraft_no + '/' + data_chart3.equation_id + '/' + flightphase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
+    const path = 'http://20.85.211.143:8080/api/chart_three/' + data_chart3.aircraft_no + '/' + data_chart3.equation_id + '/' + flightphase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
     //const path = 'http://40.82.160.131/api/chart_three/' + data_chart3.aircraft_no + '/' + data_chart3.equation_id + '/' + data_chart3.flight_phase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
 
     console.log(path)
