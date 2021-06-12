@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import { Bar, HorizontalBar, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
-import { Avatar } from '@material-ui/core';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +27,13 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(185),
     height: theme.spacing(150),
   },
+  formControl: {
+    margin: theme.spacing(0),
+    minWidth: 226,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 
 }));
 
@@ -30,7 +41,7 @@ export default function Chart5() {
   const classes = useStyles();
 
   const [chartData5, setChartData5] = useState({});
-
+  const [flightphase, setflightphase] = React.useState('');
 
   const [data_chart5, setData_chart5] = useState({
     aircraft_no:"",
@@ -57,7 +68,7 @@ export default function Chart5() {
     let flight_leg = [];
     
     
-    const path='http://localhost:8000/chart_five/' +data_chart5.aircraft_no+ '/' +data_chart5.equation_id+ '/'+data_chart5.flight_phase+ '/' +data_chart5.from_date+ '/' +data_chart5.to_date;
+    const path='http://localhost:8000/api/chart_five/' +data_chart5.aircraft_no+ '/' +data_chart5.equation_id+ '/' +flightphase+ '/' +data_chart5.from_date+ '/' +data_chart5.to_date;
     axios.post(path)
       .then(res => {
         //console.log(res,"response");
@@ -82,7 +93,10 @@ export default function Chart5() {
         //console.log(err);
       });
   }
-
+  const handleflightphase = (event) => {
+    setflightphase(event.target.value)
+    
+  };
 
   function handle_chart5(e){
     const newdata={...data_chart5}
@@ -99,12 +113,18 @@ export default function Chart5() {
         <Grid item xs={12}>
 
           <form className={classes.root1} noValidate autoComplete="off">
-          <div><h1 style={{color:"#001C3E"}}>INTERMITTENCE FLIGHT LEG TREND FOR AIRCRAFT</h1></div>   
+          <div><h1 style={{color:"#001C3E", textAlign: "center"}}>INTERMITTENCE FLIGHT LEG TREND FOR AIRCRAFT</h1></div>   
             <div> <TextField onChange= {(e)=>handle_chart5(e)} id="aircraft_no" value={data_chart5.aircraft_no} label="Aircraft No" defaultValue=" " variant="outlined" /></div>
             <br></br>
             <div> <TextField onChange= {(e)=>handle_chart5(e)} id="equation_id" value={data_chart5.equation_id} label="Equation ID" defaultValue=" " variant="outlined" /></div>
             <br></br>
-            <div> <TextField onChange= {(e)=>handle_chart5(e)} id="flight_phase" value={data_chart5.flight_phase} label="Flight Phase Enabled" defaultValue=" " variant="outlined" /></div>
+            <div><FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="demo-simple-select-outlined-label">Current Messages</InputLabel>
+              <Select labelId="demo-simple-select-outlined-label"  id="flight_phase" value={flightphase} onChange={handleflightphase}  label="Current Messages">
+                <MenuItem value={0}>Include</MenuItem>
+                <MenuItem value={1}>Exclude</MenuItem>
+              </Select>
+            </FormControl></div>
             <br></br>
             <div>  <TextField onChange= {(e)=>handle_chart5(e)} id="from_date" value={data_chart5.from_date} label=" SELECT FROM DATE &nbsp; &nbsp;" type="date" defaultValue="2017-05-24" className={classes.textField} InputLabelProps={{shrink: true, }} />
               <TextField onChange= {(e)=>handle_chart5(e)} id="to_date" value={data_chart5.to_date} label=" SELECT TO DATE " type="date" defaultValue="2017-05-24" className={classes.textField} InputLabelProps={{ shrink: true,  }} /></div>
