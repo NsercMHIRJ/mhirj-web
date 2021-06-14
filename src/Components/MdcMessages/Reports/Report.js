@@ -40,92 +40,60 @@ const Report = (props) => {
   const [historyReportData, setHistoryReportData] = useState([]);
   const [flagData, setFlagData] = useState([]);
   const [flagList,setFlagList] = useState('');
-  const [flag,setFlag] = useState(false);
-  const [flagConditions,setFlagConditions] = useState('');
-  const [loadingDaily, setLoadingDaily] = useState(true);
-  const [loadingHistory, setLoadingHistory] = useState(true);
-  const [loadingFlag, setLoadingFlag] = useState(true);
+  const [flagConditions,setFlagConditions] = useState({});
+  const [loadingDaily, setLoadingDaily] = useState();
+  const [loadingHistory, setLoadingHistory] = useState();
+  const [loadingFlag, setLoadingFlag] = useState();
+  const [dailyValue,setDailyValue] = useState(0);
+  const [histValue,setHistValue] = useState(0);
+  const [flagValue,setFlagValue] = useState(0);
 
   const HandleMultipleRowSelectReport = (flagList) => {
     setFlagList(flagList);
   }
 
-  const [dailyValue,setDailyValue] = useState(0);
-  const [histValue,setHistValue] = useState(0);
-  const [flagValue,setFlagValue] = useState(0);
-
   useEffect(() => {
+    if (!Object.values(props.reportConditions).includes("")){
       setReport(props.reportConditions);
-      let flag = false;
-      for (var item in Object.entries(props.reportConditions)) {
-        if (Object.entries(props.reportConditions)[item][1] === "" | Object.entries(props.reportConditions)[item][1] === undefined || Object.entries(props.reportConditions)[item][1] === "('')") {
-          flag = true;
-          if (report.analysis === "daily"){
-            setLoadingDaily(false);
-          }
-          else if (report.analysis === "history"){
-            setLoadingHistory(false);
-          }
-        }
-      }
-      setFlag(flag);
-      
-    if (flag === false){
-      localStorage.setItem("last",JSON.stringify(props.reportConditions)); 
-      if(props.reportConditions.analysis === "daily"){
-        localStorage.setItem("daily",JSON.stringify(props.reportConditions)); 
-      }
-      else if(props.reportConditions.analysis === "history"){
-        localStorage.setItem("history",JSON.stringify(props.reportConditions));
-      } 
-    } 
-
+    }
   }, [props.reportConditions]);
 
-  useEffect( () => {
+  useEffect(() => {
+    if(!Object.values(report).includes("")){
+      let consecutiveDays = report.analysis === "daily" ? 0 : report.days; 
+      const path = 'http://20.85.211.143:8080/api/GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
+      consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
+      console.log(path,"path no empty value");
+
       if (report.analysis === "daily"){
         setDailyValue(1);
         setDailyReportData([]);
         setLoadingDaily(true);
+
+        axios.post(path).then(function (res){
+          var data = JSON.parse(res.data);
+          setDailyReportData(data);    
+          setLoadingDaily(false);
+        }).catch(function (err){
+          console.log(err);
+          setLoadingDaily(false);
+        });
       }
-      else if (report.analysis === "history"){
+      else{
         setHistValue(1);
         setHistoryReportData([]);
         setLoadingHistory(true);
-      }
-    if (flag === false){
-      let consecutiveDays = report.analysis === "daily" ? 0 : report.days; 
-      const path = 'http://20.85.211.143:8080/api/GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-      consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
 
-      axios.post(path).then(function (res){
-        var data = JSON.parse(res.data);
-        if (report.analysis === "daily") {
-          setDailyReportData(data);
-          setLoadingDaily(false);
-        }
-        else if (report.analysis === "history") {
-          setHistoryReportData(data);
+        axios.post(path).then(function (res){
+          var data = JSON.parse(res.data);
+          setHistoryReportData(data);  
+          setLoadingHistory(false);  
+        }).catch(function (err){
+          console.log(err);    
           setLoadingHistory(false);
-        }           
-      }).catch(function (err){
-        console.log(err);
-        if (report.analysis === "daily"){
-          setLoadingDaily(false);
-        }
-        else if (report.analysis === "history"){
-          setLoadingHistory(false);
-        }
-      });
-    }
-    else{
-      if (report.analysis === "daily"){
-        setLoadingDaily(false);
+        });
       }
-      else if (report.analysis === "history"){
-        setLoadingHistory(false);
-      }
-    }
+    }    
   }, [report]);
 
   const handleGenerateFlagReport = (event) => {
@@ -139,19 +107,12 @@ const Report = (props) => {
   }
 
   useEffect(() => {
-    let flag = false;
-    Object.values(flagConditions).map(item => {
-      if (item === "" || item === undefined || item === "('')"){
-        flag = true;
-        setLoadingFlag(false);
-      }
-    });
-
-    if (flag === false) {        
+    if (!(Object.keys(flagConditions).length === 0 || Object.values(flagConditions).includes(""))){
       const flagPath = 'http://20.85.211.143:8080/api/GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
       flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
       flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.fromDate + '/' + 
       flagConditions.toDate + '/' + flagConditions.flagList;
+      console.log(flagPath);
 
       axios.post(flagPath).then(function (res){
         var data = JSON.parse(res.data);
@@ -160,7 +121,7 @@ const Report = (props) => {
       }).catch(function (err){
         console.log(err);
         setLoadingFlag(false);
-      })
+      });
     }
   },[flagConditions]);
 
