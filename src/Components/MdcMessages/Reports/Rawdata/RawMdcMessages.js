@@ -5,11 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import DatePicker from '../../GenerateReport/DatePicker';
 import {AirlineOperatorSelector,ATAMainSelector,MessagesSelector,EqIDSelector} from '../../GenerateReport/Selectors';
-//Buttons Imports
 import Button from '@material-ui/core/Button';
-//Axios Imports 
 import axios from 'axios';
-
 
 const useStyles = makeStyles((theme) => ({
 root: {
