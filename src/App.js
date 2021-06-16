@@ -397,20 +397,6 @@ export default function MiniDrawer() {
                   </ListItem>
                 </Link>
               </List>
-
-
-
-              <List component="div" disablePadding>
-                <Link to="/rawdata" style={{ textDecoration: 'none' }}>
-                  <ListItem button className={classes.nested}>
-                    <ListItemIcon>
-                      <TocSharpIcon style={{ color: "#001c3e" }} />
-                    </ListItemIcon>
-                    <ListItemText primary="RAW DATA" style={{ color: "#001c3e" }} />
-                  </ListItem>
-                </Link>
-              </List>
-
             </Collapse>
 
             <ListItem >
