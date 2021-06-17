@@ -339,29 +339,6 @@ export default function MiniDrawer() {
                     </Link>
                   </List>
 
-
-                  <List component="div" disablePadding>
-                    <Link to="/Chart2" style={{ textDecoration: 'none' }}>
-                      <ListItem button className={classes.nested_1}>
-                        <ListItemIcon>
-                          <EqualizerSharpIcon style={{ color: "#001c3e" }} />
-                        </ListItemIcon>
-                        <ListItemText primary="Top Aircraft by ATA" style={{ color: "#001c3e" }} />
-                      </ListItem>
-                    </Link>
-                  </List>
-
-                  <List component="div" disablePadding>
-                    <Link to="/Chart3" style={{ textDecoration: 'none' }}>
-                      <ListItem button className={classes.nested_1}>
-                        <ListItemIcon>
-                          <ShowChartSharpIcon style={{ color: "#001c3e" }} />
-                        </ListItemIcon>
-                        <ListItemText primary="Message Trend by Aircraft" style={{ color: "#001c3e" }} />
-                      </ListItem>
-                    </Link>
-                  </List>
-
                   {/* <List component="div" disablePadding>
                       <Link to="/Chart4" style={{ textDecoration: 'none' }}>
                         <ListItem button className={classes.nested_1}>
