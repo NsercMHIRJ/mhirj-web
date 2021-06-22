@@ -52,7 +52,7 @@ export default function Chart2() {
     let ataOcc = [];
 
 
-   const path = 'http://20.85.211.143:8080/api/chart_two/' + data_chart2.top_value + '/' + data_chart2.ata + '/' + data_chart2.from_date + '/' + data_chart2.to_date;
+   const path = 'https://mhirjapi.azurewebsites.net/api/chart_two/' + data_chart2.top_value + '/' + data_chart2.ata + '/' + data_chart2.from_date + '/' + data_chart2.to_date;
     //const path = 'http://40.82.160.131/api/chart_two/' + data_chart2.top_value + '/' + data_chart2.ata + '/' + data_chart2.from_date + '/' + data_chart2.to_date;
 
 

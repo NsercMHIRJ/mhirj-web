@@ -20,7 +20,7 @@ const CorrelationSubTable = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
-    const path = 'http://20.85.211.143:8080/api/corelation/' + props.p_id;
+    const path = 'https://mhirjapi.azurewebsites.net/api/corelation/' + props.p_id;
 
     try{
       axios.post(path).then(function (res) {

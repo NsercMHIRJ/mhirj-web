@@ -52,7 +52,7 @@ export default function Stacked() {
     let msg = [];
 
 
-    const path = 'http://20.85.211.143:8080/api/Landing_Chart_B/' + data_chart1.top_value + '/' + data_chart1.from_date + '/' + data_chart1.to_date;
+    const path = 'https://mhirjapi.azurewebsites.net/api/Landing_Chart_B/' + data_chart1.top_value + '/' + data_chart1.from_date + '/' + data_chart1.to_date;
     axios.post(path)
       .then(res => {
         //console.log(res,"response");

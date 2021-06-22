@@ -32,7 +32,7 @@ export default function Chart1() {
   let aircraftno_scatter = [];
 
   useEffect(() => {
-    const path = 'http://20.85.211.143:8080/api/Landing_Chart_B'
+    const path = 'https://mhirjapi.azurewebsites.net/api/Landing_Chart_B'
    // const path = 'http://40.82.160.131/api/Landing_Chart_B'
 
 
@@ -124,7 +124,7 @@ export default function Chart1() {
     //  console.log(msg);
 
 
-    const path1 = 'http://20.85.211.143:8080/api/scatter_chart_MDC_PM'
+    const path1 = 'https://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM'
     //const path1 = 'http://40.82.160.131/api/scatter_chart_MDC_PM'
 
 

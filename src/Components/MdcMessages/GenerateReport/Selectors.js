@@ -63,7 +63,7 @@ export const ATAMainSelector = (props) => {
   const [ATAMain, setATAMain] = useState([]);
   const [ATAMainList,setATAMainList] = useState([]);
   useEffect(() => {
-    const path = 'http://20.85.211.143:8080/api/GenerateReport/ata_main/ALL'
+    const path = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/ata_main/ALL'
 
     try{
       axios.post(path).then(function (res) {
@@ -119,7 +119,7 @@ export const EqIDSelector = (props) => {
   const [EqID, setEqID] = useState([]);
   const [EqList,setEqIDList] = useState([]);
   useEffect(() => {
-    const path = 'http://20.85.211.143:8080/api/GenerateReport/equation_id/ALL'
+    const path = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/equation_id/ALL'
 
     try{
       axios.post(path).then(function (res) {
