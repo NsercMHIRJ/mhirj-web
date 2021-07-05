@@ -14,6 +14,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const getMuiTheme = () => createMuiTheme({
+  palette: {type: 'light'},
+  typography: {useNextVariants: true},
+  overrides: {
+    MUIDataTableBodyCell: {
+      root: {
+        padding: '10px 8px',
+      }
+    },
+    MUIDataTableHeadCell:{
+      root: {
+        whiteSpace:'nowrap',
+      },
+    },
+  }
+});
+
 const DailyReport = (props) => {
   const columns = [
     {
@@ -23,7 +40,8 @@ const DailyReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {paddingLeft:'20px',minWidth:'150px'}}),
+       setCellHeaderProps: () => ({style: {paddingLeft:'30px'}})
       }
     },
     {
@@ -33,17 +51,16 @@ const DailyReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
       }
     },
     {
-      name: 'EICASRelated', 
+      name: 'EICASMessages', 
       label: 'EICAS Related',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap', minWidth: "90px"}})
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -53,7 +70,6 @@ const DailyReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
       }
     },
     {
@@ -92,7 +108,6 @@ const DailyReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
       }
     },
     {
@@ -102,7 +117,6 @@ const DailyReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
       }
      },
      {
@@ -112,7 +126,15 @@ const DailyReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap',minWidth: "120px"}})
+      }
+     },
+     {
+      name: 'consecutiveDays', 
+      label: 'Consecutive Days',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
       }
      },
      {
@@ -122,7 +144,6 @@ const DailyReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
       }
      },
      {
@@ -132,7 +153,6 @@ const DailyReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
       }
      },
      {
@@ -142,7 +162,6 @@ const DailyReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
       }
      },
      {
@@ -152,47 +171,42 @@ const DailyReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap',minWidth: "100px"}})
       }
      },
      {
       name: 'topMessage', 
       label: 'MHIRJ Known Message',
       options: {
-       filter: true,
-       filterType: 'dropdown',
+       filter: false,
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'200px'}})
       }
      },
      {
       name: 'recommendation', 
       label: 'MHIRJ Recommended Action',
       options: {
-       filter: true,
-       filterType: 'dropdown',
+       filter: false,
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'400px'}})
       }
      },
      {
       name: 'comments', 
       label: 'MHIRJ Additional Comment',
       options: {
-       filter: true,
-       filterType: 'dropdown',
+       filter: false,
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'700px'}})
       }
      },
      {
       name: 'input', 
       label: 'MHIRJ Input',
       options: {
-       filter: true,
-       filterType: 'dropdown',
+       filter: false,
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'400px'}})
       }
      },
     ];
@@ -231,10 +245,19 @@ const DailyReport = (props) => {
       responsive: "standard",
       fixedHeader: true,
       fixedSelectColumn: true,
+      jumpToPage: true,
+      resizableColumns: false,
+      selectableRowsHideCheckboxes: true,
       downloadOptions: {
         filename: 'Daily Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
       },
+      //setRowProps for jam report enabled on daily report
+      // setRowProps: (row, index) => {
+      //   if (row[1] === "10291"){
+      //     return {style: {background:'#FF7F50'}}
+      //   }
+      // },
       draggableColumns: {
         enabled: false,
         transitionTime: 300,
@@ -245,23 +268,20 @@ const DailyReport = (props) => {
         },
     },
       elevation: 4,
-      rowsPerPage: 7,
-      rowsPerPageOptions: [7,20,50],
+      rowsPerPage: 10,
+      rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
-      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '500px'
+      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };
-
-    const theme = createMuiTheme({
-      palette: {type: 'light'},
-      typography: {useNextVariants: true},
-  });
   
 const classes = useStyles();
+const themes = getMuiTheme();
+
   return (
     <div className={classes.root}>
       <Grid container spacing={0}>
         <Grid item xs={12}>
-            <MuiThemeProvider theme={theme}>
+            <MuiThemeProvider theme={themes}>
               <MUIDataTable
                 title={props.title}
                 data={data}

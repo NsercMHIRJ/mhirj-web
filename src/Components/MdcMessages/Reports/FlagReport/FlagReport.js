@@ -15,6 +15,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const getMuiTheme = () => createMuiTheme({
+  palette: {type: 'light'},
+  typography: {useNextVariants: true},
+  overrides: {
+    MUIDataTableBodyCell: {
+      root: {
+        padding: '10px 8px',
+      }
+    },
+    MUIDataTableHeadCell:{
+      root: {
+        whiteSpace:'nowrap',
+      },
+    },
+  }
+});
+
 const FlagReport = (props) => {
 
   const columns = [
@@ -25,7 +42,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {paddingLeft:'20px'}}),
+       setCellHeaderProps: () => ({style: {paddingLeft:'30px'}})
       }
     },
     {
@@ -65,7 +83,7 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {maxWidth: "200px"}})
       }
     },
     {
@@ -84,7 +102,7 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {maxWidth: "200px"}})
       }
     },
     {
@@ -94,7 +112,7 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -104,7 +122,7 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
      },
      {
@@ -114,7 +132,7 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap',minWidth: "120px"}})
+       setCellProps: () => ({style: {maxWidth: "200px"}})
       }
      },
      {
@@ -124,7 +142,7 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {maxWidth: "400px"}})
       }
      },
      {
@@ -134,7 +152,7 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {maxWidth: "400px"}})
       }
      },
     ];
@@ -167,6 +185,9 @@ const FlagReport = (props) => {
       responsive: "standard",
       fixedHeader: true,
       fixedSelectColumn: true,
+      jumpToPage: true,
+      resizableColumns: false,
+      selectableRowsHideCheckboxes: true,
       downloadOptions: {
         filename: 'Flag Report from ' + props.flagReportConditions.fromDate + ' to ' + props.flagReportConditions.toDate + '.csv',
         separator: ',',
@@ -181,23 +202,20 @@ const FlagReport = (props) => {
         },
     },
       elevation: 4,
-      rowsPerPage: 7,
-      rowsPerPageOptions: [7,20,50],
+      rowsPerPage: 10,
+      rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '160px' : `${100+data.length*60}px`
     };
 
-    const theme = createMuiTheme({
-      palette: {type: 'light'},
-      typography: {useNextVariants: true},
-  });
   
 const classes = useStyles();
+const themes = getMuiTheme();
   return (
     <div className={classes.root}>
       <Grid container spacing={0}>
         <Grid item xs={12}>
-            <MuiThemeProvider theme={theme}>
+            <MuiThemeProvider theme={themes}>
               <MUIDataTable
                 title={"Flag Report"}
                 data={data}

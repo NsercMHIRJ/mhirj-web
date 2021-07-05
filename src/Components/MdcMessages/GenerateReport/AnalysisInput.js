@@ -4,9 +4,7 @@ import TextField from '@material-ui/core/TextField';
 export const OccurencesInput = (props) => {
   const [occurences, setOccurrences] = React.useState('0');
   const handleOccurencesChange = (event) => {
-    event.target.value < 0 
-  ?  setOccurrences(event.target.value = 0) 
-  :  setOccurrences(event.target.value);
+    event.target.value < 0 ?  setOccurrences(event.target.value = 0) :setOccurrences(event.target.value);
     props.handleOccurencesChange(event.target.value);
   };
 

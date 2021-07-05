@@ -59,13 +59,18 @@ formLabel:{
 }));
 
 const RawMdcMessages = () => {
+  const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [RDValue,setRDValue] = useState(0);
-  const classes = useStyles();
-
-  // ----- States and handle Functions for Date  ----- 
-  const [dateFrom, setDateFrom] = useState();
-  const [dateTo, setDateTo] = useState();
+  var todayDate = new Date().toISOString().slice(0, 10);
+  const [dateFrom, setDateFrom] = useState(todayDate);
+  const [dateTo, setDateTo] = useState(todayDate);
+  const [airline, setAilineType] = useState("");
+  const [ATAMain, setATAMain] = useState("");
+  const [messagesChoice, setIncludeMessages] = useState('');
+  const [EqID, setEqID] = useState("");
+  const [rawData, setRawData] = useState('');
+  const [flag,setFlag] = useState(false);
 
   const handleDateFrom = (date) => {
     setDateFrom(date);
@@ -74,32 +79,24 @@ const RawMdcMessages = () => {
   const handleDateTo = (date) => {
     setDateTo(date);
   };
-// ----- States and handle Functions for Selects  ----- 
-const [airline, setAilineType] = useState();
-const [ATAMain, setATAMain] = React.useState('');
-const [messagesChoice, setIncludeMessages] = React.useState('');
-const [EqID, setEqID] = React.useState('');
-const [rawData, setRawData] = React.useState('');
-const [flag,setFlag] = useState(false);
 
-const handleAirlineChange = (Airline) => {
-  setAilineType(Airline);
-};
+  const handleAirlineChange = (Airline) => {
+    setAilineType(Airline);
+  };
 
-const handleATAChange = (ATA) => {
-  setATAMain(ATA);
-};
+  const handleATAChange = (ATA) => {
+    setATAMain(ATA);
+  };
 
-const handleMessagesChange = (messages) => {
-  setIncludeMessages(messages);
-};
+  const handleMessagesChange = (messages) => {
+    setIncludeMessages(messages);
+  };
 
-const handleEqIDChange = (eqIDList) => {
-  setEqID(eqIDList);
-};
+  const handleEqIDChange = (eqIDList) => {
+    setEqID(eqIDList);
+  };
 
-// ----- States and handle Functions for Generate Report  ----- 
-const [rawDataConditions, setRawDataConditions] = React.useState(
+const [rawDataConditions, setRawDataConditions] = useState(
   {
     operator: '',
     ata: '',

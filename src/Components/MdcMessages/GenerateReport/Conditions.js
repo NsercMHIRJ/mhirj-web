@@ -71,16 +71,17 @@ const Conditions = (props) => {
   const classes = useStyles();
 
   const [analysis, setAnalysisType] = useState("daily");
-  const [EqID, setEqID] = useState('');
-  const [dateFrom, setDateFrom] = useState();
-  const [dateTo, setDateTo] = useState();
-  const [occurences, setOccurrences] = useState();
-  const [legs, setLegs] = useState();
-  const [intermittent, setIntermittent] = useState();
-  const [days, setDays] = useState('0');
-  const [airline, setAilineType] = useState();
-  const [ATAMain, setATAMain] = useState('');
-  const [messagesChoice, setIncludeMessages] = useState('');
+  const [EqID, setEqID] = useState("");
+  var todayDate = new Date().toISOString().slice(0, 10);
+  const [dateFrom, setDateFrom] = useState(todayDate);
+  const [dateTo, setDateTo] = useState(todayDate);
+  const [occurences, setOccurrences] = useState(0);
+  const [legs, setLegs] = useState(0);
+  const [intermittent, setIntermittent] = useState(0);
+  const [days, setDays] = useState(0);
+  const [airline, setAilineType] = useState("");
+  const [ATAMain, setATAMain] = useState("");
+  const [messagesChoice, setIncludeMessages] = useState("");
   const [reportConditions, setReportConditions] = useState(
   {
     analysis: '',
@@ -157,7 +158,19 @@ const Conditions = (props) => {
       toDate: dateTo,
     });
   }    
-
+const SaveFilter = (jsonData,filename) => {
+  
+    const fileData = JSON.stringify(jsonData);
+    const blob = new Blob([fileData], {type: "text/plain"});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = `${filename}.json`;
+    link.href = url;
+    link.click();
+  
+ 
+ 
+} 
   return (
     <div>
       <form className={classes.form}>
@@ -237,6 +250,12 @@ const Conditions = (props) => {
               className={classes.button}>
                 Generate Report
             </Button>  
+            <Button 
+              variant="contained" 
+              onClick = {async()=>SaveFilter(reportConditions,"Filter1")}
+              className={classes.button}>
+                Save Filter
+            </Button>
             </Grid>          
         </Grid>
       </div>
