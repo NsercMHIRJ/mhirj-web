@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
+import {ATAMainSelector} from './ATAGraphSelectors';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,11 +29,13 @@ export default function Chart1() {
     const classes = useStyles();
     const ChartJsImage = require('chartjs-to-image');
     const [chartData1, setChartData1] = useState({});
+    const [ATAMain, setATAMain] = useState('');
 
     const [data_chart1, setData_chart1] = useState({
         aircraft_no: "",
         top_value: "",
         from_date: "",
+        ATAMain: "",
         to_date: ""
     });
 
@@ -44,15 +47,19 @@ export default function Chart1() {
         })
     }
 
+    const handleATAChange = (ATA) => {
+        setATAMain(ATA);
+      };
 
     function submit(e) {
         e.preventDefault();
         let msgName = [];
         let messageOcc = [];
 
-        const path = 'https://mhirjapi.azurewebsites.net/api/chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + data_chart1.from_date + '/' + data_chart1.to_date;
-        //const path = 'http://40.82.160.131/api/chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + data_chart1.from_date + '/' + data_chart1.to_date;
-
+        //const path = 'http://mhirjapi.azurewebsites.net/api/chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + ATAMain + '/' + data_chart1.from_date + '/' + data_chart1.to_date;
+        const path = 'http://mhirjapi.azurewebsites.net/api/chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + ATAMain +'/' + data_chart1.from_date + '/' + data_chart1.to_date;
+        // console.log(path)
+        
         axios.post(path)
             .then(res => {
                 console.log(res, "response");
@@ -87,120 +94,79 @@ export default function Chart1() {
     }
 
 
+return (
+    
+    <div className={classes.root}>
+        <Grid container spacing={12}>
+          <Grid item xs={12}>
+            <form className={classes.root1}>
+              <div><h1 style={{ color: "#001C3E", textAlign: "center" }}>MESSAGE OCCURENCE FOR AIRCRAFT</h1></div>
+              <div> <TextField onChange={(e) => handle(e)} id="aircraft_no" value={data_chart1.aircraft_no} label="Aircraft MSN" defaultValue=" " variant="outlined" /></div>
+              <br></br>
+              <div> <TextField onChange={(e) => handle(e)} id="top_value" value={data_chart1.top_value} label="Top Values" defaultValue=" " variant="outlined" /></div>
+              <br></br>
+              <ATAMainSelector 
+                handleATAChange = {handleATAChange}
+              />   
 
-
-    return ( <
-        div className = { classes.root } >
-        <
-        Grid container spacing = { 12 } >
-        <
-        Grid item xs = { 12 } >
-        <
-        form className = { classes.root1 } >
-        <
-        div > < h1 style = {
-            { color: "#001C3E", textAlign: "center" } } > MESSAGE OCCURENCE FOR AIRCRAFT < /h1></div >
-        <
-        div > < TextField onChange = {
-            (e) => handle(e) }
-        id = "aircraft_no"
-        value = { data_chart1.aircraft_no }
-        label = "Aircraft MSN"
-        defaultValue = " "
-        variant = "outlined" / > < /div> <
-        br > < /br> <
-        div > < TextField onChange = {
-            (e) => handle(e) }
-        id = "top_value"
-        value = { data_chart1.top_value }
-        label = "Top Values"
-        defaultValue = " "
-        variant = "outlined" / > < /div> <
-        br > < /br> <
-        div > < TextField onChange = {
-            (e) => handle(e) }
-        id = "from_date"
-        value = { data_chart1.from_date }
-        label = " SELECT FROM DATE &nbsp; &nbsp;"
-        type = "date"
-        defaultValue = "2017-05-24"
-        className = { classes.textField }
-        InputLabelProps = {
-            { shrink: true, } }
-        /> <
-        TextField onChange = {
-            (e) => handle(e) }
-        id = "to_date"
-        value = { data_chart1.to_date }
-        label = " SELECT TO DATE "
-        type = "date"
-        defaultValue = "2017-05-24"
-        className = { classes.textField }
-        InputLabelProps = {
-            { shrink: true, } }
-        /></div >
-        <
-        br > < /br> <
-        div style = {
-            { paddingBottom: "20px" } } > < Button onClick = {
-            (e) => submit(e) }
-        variant = "contained"
-        style = {
-            { backgroundColor: "#001C3E", color: "WHITE" } } > GENERATE < /Button> <
-        Button onClick = {
-            (e) => save(e) }
-        variant = "contained"
-        style = {
-            { backgroundColor: "#001C3E", color: "WHITE", float: 'right', marginRight: "1200px" } } > SAVE < /Button></div >
-        <
-        /form> <
-        Paper className = { classes.paper } >
-        <
-        HorizontalBar id = "chart1"
-        data = { chartData1 }
-        options = {
-            {
-                title: {
+  
+              <br></br>
+              <div>  <TextField onChange={(e) => handle(e)} id="from_date" value={data_chart1.from_date} label=" SELECT FROM DATE &nbsp; &nbsp;" type="date" defaultValue="2017-05-24" className={classes.textField} InputLabelProps={{ shrink: true, }} />
+                <TextField onChange={(e) => handle(e)} id="to_date" value={data_chart1.to_date} label=" SELECT TO DATE " type="date" defaultValue="2017-05-24" className={classes.textField} InputLabelProps={{ shrink: true, }} /></div>
+              <br></br>
+              <div style={{ paddingBottom: "20px" }}><Button onClick={(e) => submit(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE" }}>GENERATE  </Button>
+                <Button onClick={(e) => save(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE", float: 'right', marginRight: "1200px" }}>SAVE</Button></div>
+            </form>
+            <Paper className={classes.paper}>
+              <HorizontalBar
+                id="chart1"
+                data={chartData1}
+                options={{
+                  title: {
                     display: true,
                     text: 'Message occurance in ' + data_chart1.aircraft_no,
                     fontSize: 20
-                },
-                scales: {
-                    yAxes: [{
+                  },
+                  scales: {
+                    yAxes: [
+                      {
                         ticks: {
-                            autoSkip: true,
-                            beginAtZero: false
+                          autoSkip: true,
+                          beginAtZero: false
                         },
-
+  
                         gridLines: {
-                            display: true
+                          display: true
                         }
-                    }],
-                    xAxes: [{
+                      }
+                    ],
+                    xAxes: [
+                      {
                         ticks: {
-                            beginAtZero: true
+                          beginAtZero: true
                         },
                         scaleLabel: {
-                            display: true,
-                            labelString: 'Total Number of Messages',
-                            fontStyle: 'bold',
-                            fontColor: '#001C3E'
+                          display: true,
+                          labelString: 'Total Number of Messages',
+                          fontStyle: 'bold',
+                          fontColor: '#001C3E'
                         },
                         gridLines: {
-                            display: false
+                          display: false
                         }
-                    }]
-                },
-                legend: {
+                      }
+                    ]
+                  },
+                  legend: {
                     display: true,
                     position: 'right'
-                }
-            }
-        }
-        /> <
-        /Paper> <
-        /Grid> <
-        /Grid> <
-        /div>
+                  }
+                }}
+              />
+            </Paper>
+          </Grid>
+        </Grid>
+      </div>
     );
-}
+  }
+  

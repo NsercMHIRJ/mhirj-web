@@ -57,7 +57,7 @@ export default function Chart5() {
     let flight_leg = [];
     
     
-    const path='http://localhost:8000/chart_five/' +data_chart5.aircraft_no+ '/' +data_chart5.equation_id+ '/'+data_chart5.flight_phase+ '/' +data_chart5.from_date+ '/' +data_chart5.to_date;
+    const path='http://mhirjapi.azurewebsites.net/api/chart_five/' +data_chart5.aircraft_no+ '/' +data_chart5.equation_id+ '/'+data_chart5.flight_phase+ '/' +data_chart5.from_date+ '/' +data_chart5.to_date;
     axios.post(path)
       .then(res => {
         //console.log(res,"response");
