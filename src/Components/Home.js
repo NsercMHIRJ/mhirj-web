@@ -32,8 +32,8 @@ export default function Chart1() {
   let aircraftno_scatter = [];
 
   useEffect(() => {
-    //const path = 'http://mhirjapi.azurewebsites.net/api/Landing_Chart_B'
-   const path = 'http://mhirjapi.azurewebsites.net/api/Landing_Chart_B'
+    //const path = 'https://mhirjapi.azurewebsites.net/api/Landing_Chart_B'
+   const path = 'https://mhirjapi.azurewebsites.net/api/Landing_Chart_B'
 
 
     axios.post(path)
@@ -125,8 +125,8 @@ export default function Chart1() {
     //  console.log(msg);
 
 
-    //const path1 = 'http://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM'
-    const path1 = 'http://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM'
+    //const path1 = 'https://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM'
+    const path1 = 'https://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM'
 
 
     axios.post(path1).then(res => {

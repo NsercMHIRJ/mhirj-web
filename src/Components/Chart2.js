@@ -52,8 +52,8 @@ export default function Chart2() {
     let ataOcc = [];
 
 
-   //const path = 'http://mhirjapi.azurewebsites.net/api/chart_two/' + data_chart2.top_value + '/' + data_chart2.ata + '/' + data_chart2.from_date + '/' + data_chart2.to_date;
-    const path = 'http://mhirjapi.azurewebsites.net/api/chart_two/' + data_chart2.top_value + '/' + data_chart2.ata + '/' + data_chart2.from_date + '/' + data_chart2.to_date;
+   //const path = 'https://mhirjapi.azurewebsites.net/api/chart_two/' + data_chart2.top_value + '/' + data_chart2.ata + '/' + data_chart2.from_date + '/' + data_chart2.to_date;
+    const path = 'https://mhirjapi.azurewebsites.net/api/chart_two/' + data_chart2.top_value + '/' + data_chart2.ata + '/' + data_chart2.from_date + '/' + data_chart2.to_date;
 
 
     axios.post(path)

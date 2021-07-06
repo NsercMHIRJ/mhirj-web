@@ -105,7 +105,7 @@ const PMTable = (props) => {
       }
     });
     if (flag === false) {      
-        const path = 'http://mhirjapi.azurewebsites.net/api/corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.ATAMain;
+        const path = 'https://mhirjapi.azurewebsites.net/api/corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.ATAMain;
           axios.post(path).then(function (res) {
             var data = JSON.parse(res.data);
             setData(data);

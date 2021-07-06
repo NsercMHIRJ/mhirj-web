@@ -51,6 +51,11 @@ import Rawdata from './Components/MdcMessages/Reports/Rawdata/RawMdcMessages';
 import TrendingUpSharpIcon from '@material-ui/icons/TrendingUpSharp';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
+import { useIsAuthenticated } from "@azure/msal-react";
+import { SignInButton } from "./Components/SignInButton";
+import { SignOutButton } from "./Components/SignOutButton";
+
 const drawerWidth = 330;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -182,6 +187,9 @@ export default function MiniDrawer() {
   const handleGraphsClick = () => {
     setOpenGraphs(!openGraphs);
   };
+
+  const isAuthenticated = useIsAuthenticated();
+
   return (
 
     <div className={classes.root}>
@@ -206,8 +214,12 @@ export default function MiniDrawer() {
             </IconButton>
             <img src={mhirjLogoColored} style={{ height: 78, width: 150 }} />
             <typography style={{ color: "#001c3e", fontSize: "24px", fontFamily: "Times New Roman" }}>MDC Trend Analysis Tool</typography>
+            { isAuthenticated ? <SignOutButton /> : <SignInButton /> }
           </Toolbar>
         </AppBar>
+
+        <AuthenticatedTemplate>
+
         <ClickAwayListener
             mouseEvent="onMouseDown"
             touchEvent="onTouchStart"
@@ -442,9 +454,29 @@ export default function MiniDrawer() {
             </Route>
           </Switch>
         </main>
+      </AuthenticatedTemplate> 
 
       </Router>
+      <UnauthenticatedTemplate>
+              <h5>..</h5>
+      </UnauthenticatedTemplate>
 
     </div>
   );
 }
+
+const MainContent = () => {  
+  return (
+    
+      <div >
+          <AuthenticatedTemplate>
+              <MiniDrawer />
+          </AuthenticatedTemplate>
+          <UnauthenticatedTemplate>
+              <h5>..</h5>
+          </UnauthenticatedTemplate>
+      </div>
+  );
+  };
+
+
