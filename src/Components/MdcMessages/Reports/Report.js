@@ -62,7 +62,7 @@ const Report = (props) => {
     console.log("before empty value check");
     if(!Object.values(report).includes("")){
       let consecutiveDays = report.analysis === "daily" ? 0 : report.days; 
-      const path = 'http://20.85.211.143:8080/api/GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
+      const path = 'https://mhirjapi.azurewebsites.net/GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
       consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
 
       if (report.analysis === "daily"){
@@ -108,7 +108,7 @@ const Report = (props) => {
 
   useEffect(() => {
     if (!(Object.keys(flagConditions).length === 0 || Object.values(flagConditions).includes(""))){
-      const flagPath = 'http://20.85.211.143:8080/api/GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
+      const flagPath = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
       flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
       flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.fromDate + '/' + 
       flagConditions.toDate + '/' + flagConditions.flagList;
