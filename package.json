@@ -1,6 +1,7 @@
 {
   "name": "dashboard",
   "version": "0.1.0",
+  "proxy": "https://mhirjapi.azurewebsites.net/api/GenerateReport/",
   "private": true,
   "dependencies": {
     "@azure/msal-browser": "^2.15.0",
