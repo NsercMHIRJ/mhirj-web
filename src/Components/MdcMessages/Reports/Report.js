@@ -62,7 +62,7 @@ const Report = (props) => {
     console.log("before empty value check");
     if(!Object.values(report).includes("")){
       let consecutiveDays = report.analysis === "daily" ? 0 : report.days; 
-      const path = 'https://mhirjapi.azurewebsites.net/GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
+      const path = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
       consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
 
       if (report.analysis === "daily"){
