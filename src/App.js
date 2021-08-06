@@ -18,6 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InfoSharpIcon from '@material-ui/icons/InfoSharp';
 import EqualizerSharpIcon from '@material-ui/icons/EqualizerSharp';
 import ShowChartSharpIcon from '@material-ui/icons/ShowChartSharp';
+import AttachFileSharpIcon from '@material-ui/icons/AttachFileSharp';
 import Button from '@material-ui/core/Button';
 import TableChartSharpIcon from '@material-ui/icons/TableChartSharp';
 import AssessmentSharpIcon from '@material-ui/icons/AssessmentSharp';
@@ -42,6 +43,7 @@ import Chart4 from './Components/Chart4';
 import Chart5 from './Components/Chart5';
 import Scatter1 from './Components/Scatter1';
 import Stacked from './Components/Stacked';
+import FileUpload from './Components/FileUpload';
 import Analysis from './Components/MdcMessages/GenerateReport/Analysis';
 import Report from './Components/MdcMessages/Reports/Report';
 import Correlation from './Components/Correlation/Correlation';
@@ -399,6 +401,17 @@ export default function MiniDrawer() {
               </Link>
             </ListItem>
 
+            <ListItem >
+              <Link to="/fileUpload" style={{ textDecoration: 'none' }}>
+                <ListItemIcon>
+                  <AttachFileSharpIcon style={{ color: "#001c3e" }} />
+                </ListItemIcon>
+                <Button variant="contained" color="#d8e4f0">
+                  <typography>File Upload</typography>
+                </Button>
+              </Link>
+            </ListItem>
+
           </List>
 
           <Divider />
@@ -451,6 +464,9 @@ export default function MiniDrawer() {
             </Route>
             <Route path="/corr">
               <Correlation />
+            </Route>
+            <Route path="/fileUpload">
+              <FileUpload />
             </Route>
           </Switch>
         </main>

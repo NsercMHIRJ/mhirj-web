@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '20px auto 30px',
   },
   button:{
-    margin:'40px auto',
+    margin:'10px auto',
     width:'70%',
     backgroundColor:"#C5D3E0",
   },
@@ -65,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(1),
   },
+  input: {
+    display: 'none',
+  },
+  
 }));
 
 const Conditions = (props) => {
@@ -82,6 +86,13 @@ const Conditions = (props) => {
   const [airline, setAilineType] = useState("");
   const [ATAMain, setATAMain] = useState("");
   const [messagesChoice, setIncludeMessages] = useState("");
+  const [importedData, setImportedData] = useState({});
+  let newDate = new Date();
+  let currDate = newDate.getDate();
+  let currMonth = newDate.getMonth()+1;
+  let currYear = newDate.getFullYear();
+  
+ 
   const [reportConditions, setReportConditions] = useState(
   {
     analysis: '',
@@ -166,11 +177,27 @@ const SaveFilter = (jsonData,filename) => {
     const link = document.createElement('a');
     link.download = `${filename}.json`;
     link.href = url;
-    link.click();
-  
- 
- 
+    link.click(); 
 } 
+
+
+function upload_filter(e) {
+  
+  let files = e.target.files;
+  let reader = new FileReader();
+  reader.readAsText(files[0]);
+  
+  reader.onload = (e) => {
+    const file_Content = e.target.result;
+    var data = JSON.parse(file_Content);
+    console.log(data)
+    setImportedData(data);
+    if(data.analysis) setAnalysisType(data.analysis); 
+     
+    alert("File uploaded!")
+  }
+}
+
   return (
     <div>
       <form className={classes.form}>
@@ -178,12 +205,17 @@ const SaveFilter = (jsonData,filename) => {
         <div className ={classes.card}>
           <h2>REPORT ANALYSIS</h2>
         </div>
-        <div className={classes.container}>
+        
+          <div className={classes.container}>
+
           <Grid className={classes.Grid} container spacing={3}> 
+          
             <Grid item xs={2}>
             <div className={classes.analysisType}>
+
               <FormControl component="fieldset" className="form" >
               <FormLabel component="legend" className={classes.formLabel}>Analysis Type</FormLabel>
+              
               <RadioGroup aria-label="analysis" name="analysis" value={analysis} >
                 <FormControlLabel value="daily" className="RadioButton" control={
                   <Radio 
@@ -206,30 +238,41 @@ const SaveFilter = (jsonData,filename) => {
                 <h3>Analysis Input</h3>   
                 <OccurencesInput 
                   handleOccurencesChange = {handleOccurencesChange}
+                  occurrences={importedData.occurences}
                 />
                 <LegsInput 
                   handleLegsChange = {handleLegsChange}
+                  legs={importedData.legs}
                 />  
                 <IntermittentInput 
                   handleIntermittentChange = {handleIntermittentChange}
+                  intermittent={importedData.intermittent}
                 />
-                <DaysInput analysis = {analysis}  handleDaysChange = {handleDaysChange}/>   
+                <DaysInput 
+                analysis = {analysis}  
+                handleDaysChange = {handleDaysChange}
+                days={importedData.days}
+                />   
               </div>           
             </Grid>  
             <Grid item xs={5}>     
             <div>
             <h3>Raw Data Conditions</h3> 
             <AirlineOperatorSelector
-                handleAirlineChange = {handleAirlineChange}  
+                handleAirlineChange = {handleAirlineChange}
+                operator = {importedData.operator}
               />         
               <MessagesSelector 
                 handleMessagesChange = {handleMessagesChange}
+                messages = {importedData.messages}
               />   
               <ATAMainSelector 
                 handleATAChange = {handleATAChange}
+                ata = {importedData.ata}
               />   
               <EqIDSelector 
                 handleEqIDChange = {handleEqIDChange}
+                eqID = {importedData.eqID}
               />  
             </div>                    
             </Grid>       
@@ -239,10 +282,12 @@ const SaveFilter = (jsonData,filename) => {
             <DatePicker 
               label = "From"
               handleDateFrom = {handleDateFrom}
+              dateFrom = {importedData.fromDate}
             />   
             <DatePicker 
               label = "To"
               handleDateTo = {handleDateTo}
+              dateTo = {importedData.toDate}
             />   
             <Button 
               variant="contained" 
@@ -252,16 +297,30 @@ const SaveFilter = (jsonData,filename) => {
             </Button>  
             <Button 
               variant="contained" 
-              onClick = {async()=>SaveFilter(reportConditions,"Filter1")}
+              onClick = {async()=>SaveFilter(reportConditions,"Filter_"+ currDate+"-"+currMonth+"-"+currYear)}
               className={classes.button}>
                 Save Filter
             </Button>
+            <br></br>
+                <input
+                  className={classes.input}
+                  id="contained-button-file"
+                  multiple
+                  type="file"
+                  onChange = {(e) => upload_filter(e)}
+                />
+                 <label htmlFor="contained-button-file" style={{ margin:'40px auto', width:'70%', backgroundColor:"#C5D3E0"}}>
+                  <Button id="upload" variant="contained" component="span"  className={classes.button}>
+                    Upload
+                  </Button>
+                </label>
             </Grid>          
         </Grid>
       </div>
         </Paper>
       </form>
         <Report reportConditions = {reportConditions}/>
+        
     </div>
   );
 };

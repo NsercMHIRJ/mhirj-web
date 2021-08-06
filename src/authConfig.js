@@ -14,7 +14,10 @@ export const msalConfig = {
     auth: {
         clientId: 'fa10d313-4549-4d93-b0ee-0adec83914b2',
         authority:'https://login.microsoftonline.com/52ec5f8e-8c27-4cfa-abad-c1b337ae74a1/',
-        redirectUri: 'https://lively-grass-011bafa10.azurestaticapps.net'
+        //redirectUri: 'https://lively-grass-011bafa10.azurestaticapps.net'
+        // redirectUri: 'http://localhost:3000'
+        redirectUri : window.location.href.indexOf('localhost') > -1 ? 'http://localhost:3000' : 'https://lively-grass-011bafa10.azurestaticapps.net'
+
     },
     cache: {
         cacheLocation: "sessionStorage", // This configures where your cache will be stored

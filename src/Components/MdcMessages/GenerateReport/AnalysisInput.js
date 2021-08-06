@@ -7,7 +7,12 @@ export const OccurencesInput = (props) => {
     event.target.value < 0 ?  setOccurrences(event.target.value = 0) :setOccurrences(event.target.value);
     props.handleOccurencesChange(event.target.value);
   };
-
+  useEffect(() => {
+    if(props.occurrences){
+      props.handleOccurencesChange(props.occurrences);
+      setOccurrences(props.occurrences);
+    } 
+  },[props.occurrences]);
   return(
     <TextField
       label="Min Occurences Logged"
@@ -29,7 +34,13 @@ export const LegsInput = (props) => {
   :  setLegs(event.target.value);
     props.handleLegsChange(event.target.value);
   };
-
+  
+  useEffect(() => {
+    if(props.legs){
+      props.handleLegsChange(props.legs);
+      setLegs(props.legs);
+    } 
+  },[props.legs]);
   return(
     <TextField
     label="Min Consecutive Legs"
@@ -51,6 +62,13 @@ export const IntermittentInput = (props) => {
     :  setIntermittent(event.target.value);
     props.handleIntermittentChange(event.target.value);
   };
+  useEffect(() => {
+    if(props.intermittent){
+      props.handleIntermittentChange(props.intermittent);
+      setIntermittent(props.intermittent);
+    } 
+  },[props.intermittent]);
+
   return(
     <TextField
       label="Min Intermittency Per Leg"
@@ -82,7 +100,14 @@ export const DaysInput = (props) => {
       setDisabled(prevState => ({  disabled: false}));
     }    
   }, [props.analysis]);
-
+  
+  useEffect(() => {
+    if(props.days){
+      props.handleDaysChange(props.days);
+      setDays(props.days);
+    } 
+  },[props.days]);
+  
   return(
     <TextField
       {...disabled}

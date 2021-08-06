@@ -1,4 +1,4 @@
-import React,{useState,Fragment} from 'react';
+import React,{useState,Fragment, useEffect} from 'react';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -17,6 +17,18 @@ const DatePicker = (props) => {
     setInputValue(value);
     props.handleDateFrom ? props.handleDateFrom(value) : props.handleDateTo(value);
   };
+
+  useEffect(() => {
+    setDate(moment(props.dateFrom));
+    setInputValue(props.dateFrom);
+    if(props.handleDateFrom) props.handleDateFrom(props.dateFrom)
+  },[props.dateFrom]);
+
+  useEffect(() => {
+    setDate(moment(props.dateTo));
+    setInputValue(props.dateTo);
+    if(props.handleDateTo) props.handleDateTo(props.dateTo)
+  },[props.dateTo]);
 
   const dateFormatter = str => {
     return str;

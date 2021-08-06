@@ -34,6 +34,13 @@ export const AirlineOperatorSelector = (props) => {
   const classes = useStyles();
   const [airline, setAirline] = useState('');
 
+  useEffect(() => {
+    if(props.operator){
+      props.handleAirlineChange(props.operator);
+      setAirline(props.operator);
+    } 
+  },[props.operator]);
+
   const handleAirlineChange = (event) => {
     if ( event.target.value === "none"){
       setAirline("");
@@ -69,7 +76,7 @@ export const ATAMainSelector = (props) => {
   const [ATAMain, setATAMain] = useState([]);
   const [ATAMainList,setATAMainList] = useState([]);
   useEffect(() => {
-    const path = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/ata_main/ALL'
+    const path = 'http://20.85.211.143:8080/api/GenerateReport/ata_main/ALL'
 
     try{
       axios.post(path).then(function (res) {
@@ -85,6 +92,7 @@ export const ATAMainSelector = (props) => {
     }
 },[]);
 
+ 
   const handleATAChange = (event, values) => {
     const ATAValues = [];
     if(values.includes("ALL")){
@@ -98,6 +106,22 @@ export const ATAMainSelector = (props) => {
       props.handleATAChange(ataList);
     }
   };
+
+  useEffect(() => {
+    if(props.ata){
+      if(props.ata == 'ALL') {
+          setATAMain(['ALL']);
+          props.handleATAChange("ALL");
+      }
+      else {
+          var pattern = /(\d+)/g;
+          let vals = props.ata.match(pattern);
+          setATAMain(vals);
+          props.handleATAChange(props.ata);
+          //console.log("vals =",vals);
+      } 
+    }
+  },[props.ata])
 
   return(
     <Autocomplete
@@ -125,7 +149,7 @@ export const EqIDSelector = (props) => {
   const [EqID, setEqID] = useState([]);
   const [EqList,setEqIDList] = useState([]);
   useEffect(() => {
-    const path = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/equation_id/ALL'
+    const path = 'http://20.85.211.143:8080/api/GenerateReport/equation_id/ALL'
 
     try{
       axios.post(path).then(function (res) {
@@ -154,6 +178,26 @@ export const EqIDSelector = (props) => {
       props.handleEqIDChange(eqIDLIST);
     }
   };
+
+  useEffect(() => {
+    if(props.eqID){
+      if(props.eqID == 'NONE') {
+          setEqID(['NONE']);
+          props.handleEqIDChange("NONE");
+      }
+      else {
+          props.handleEqIDChange(props.eqID);
+          // console.log(props.eqID)
+          let var1 = props.eqID.substring(1);
+      
+
+          var1 = var1.substring(0, var1.length - 1).replace(/'/g,'').split(',');
+          console.log("vals = ", var1)
+          setEqID(var1);
+          
+      } 
+    }
+  },[props.eqID])
 
   return(
 
@@ -196,6 +240,24 @@ export const MessagesSelector = (props) => {
     setIncludeMessages(event.target.value);
     props.handleMessagesChange(value);
   };
+
+  useEffect(() => {
+    
+    if (props.messages === 0 || props.messages === 1 ) {
+    
+      if (props.messages == 0 || props.messages == "0") 
+      {
+          setIncludeMessages('Exclude');
+          props.handleMessagesChange("0");
+          
+      }
+      else if (props.messages === 1 || props.messages === "1"){
+          setIncludeMessages('Include');
+          props.handleMessagesChange("1");
+          console.log("include =", props.messages)
+      }
+    }
+  },[props.messages]);
 
   return(
     <FormControl variant="outlined" className={classes.formControl}>
