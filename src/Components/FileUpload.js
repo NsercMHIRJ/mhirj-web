@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
         data.append('file',file)
 
        axios({
-           url: 'http://mhirjapi.azurewebsites.net/uploadfile/',
+           url: 'https://mhirjapi.azurewebsites.net/uploadfile/',
            method: "POST",
            headers:{
                "Content-type": "multipart/form-data",
@@ -133,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
            
           alert(" PM File uploaded!");
 
-          
+
         }
       }
     
