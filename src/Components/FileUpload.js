@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
         data.append('file',file)
 
        axios({
-           url: 'https://mhirjapi.azurewebsites.net/uploadfile/',
+           url: 'https://mhirjapi.azurewebsites.net/api/uploadfile_airline_mdc_raw_data/',
            method: "POST",
            headers:{
                "Content-type": "multipart/form-data",
