@@ -131,7 +131,9 @@ const useStyles = makeStyles((theme) => ({
         
         reader.onload = (e) => {
            
-          alert(" PM File uploaded!")
+          alert(" PM File uploaded!");
+
+          
         }
       }
     
