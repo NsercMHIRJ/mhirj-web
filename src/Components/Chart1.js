@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
 import {ATAMainSelector} from './ATAGraphSelectors';
+import Constants from './utils/const'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,10 +56,10 @@ export default function Chart1() {
         e.preventDefault();
         let msgName = [];
         let messageOcc = [];
-
-        //const path = 'https://mhirjapi.azurewebsites.net/api/chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + ATAMain + '/' + data_chart1.from_date + '/' + data_chart1.to_date;
-        const path = 'https://mhirjapi.azurewebsites.net/api/chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + ATAMain +'/' + data_chart1.from_date + '/' + data_chart1.to_date;
-        // console.log(path)
+        
+        //const path = 'http://mhirjapi.azurewebsites.net/api/chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + ATAMain + '/' + data_chart1.from_date + '/' + data_chart1.to_date;
+         const path = Constants.APIURL+'/chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + ATAMain +'/' + data_chart1.from_date + '/' + data_chart1.to_date;
+        console.log("path is : "+path)
         
         axios.post(path)
             .then(res => {
@@ -169,4 +170,3 @@ return (
       </div>
     );
   }
-  

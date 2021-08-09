@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import Constants from '../../utils/const';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,11 +60,12 @@ const Report = (props) => {
   }, [props.reportConditions]);
 
   useEffect(() => {
-    console.log("before empty value check");
     if(!Object.values(report).includes("")){
       let consecutiveDays = report.analysis === "daily" ? 0 : report.days; 
-      const path = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
+      const path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
       consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
+
+      console.log(path, "path");
 
       if (report.analysis === "daily"){
         setDailyValue(1);
@@ -86,6 +88,7 @@ const Report = (props) => {
 
         axios.post(path).then(function (res){
           var data = JSON.parse(res.data);
+          console.log(data, "data");
           setHistoryReportData(data);  
           setLoadingHistory(false);  
         }).catch(function (err){
@@ -108,11 +111,10 @@ const Report = (props) => {
 
   useEffect(() => {
     if (!(Object.keys(flagConditions).length === 0 || Object.values(flagConditions).includes(""))){
-      const flagPath = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
+      const flagPath = Constants.APIURL + 'GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
       flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
       flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.fromDate + '/' + 
       flagConditions.toDate + '/' + flagConditions.flagList;
-      console.log(flagPath);
 
       axios.post(flagPath).then(function (res){
         var data = JSON.parse(res.data);

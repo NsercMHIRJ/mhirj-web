@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 //Date Imports
 import {DateConverter,DateConverterCorrelation} from '../Helper/Helper';
+import Constants from '../utils/const';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +21,7 @@ const CorrelationSubTable = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
-    const path = 'https://mhirjapi.azurewebsites.net/api/corelation/' + props.p_id;
+    const path = Constants.APIURL + 'corelation/' + props.p_id;
 
     try{
       axios.post(path).then(function (res) {
@@ -283,4 +284,3 @@ const options = {
 }
 
 export default CorrelationSubTable;
-

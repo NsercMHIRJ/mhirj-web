@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { Scatter, HorizontalBar, Bar } from 'react-chartjs-2';
 import axios from 'axios';
+import Constants from './utils/const'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,8 +33,8 @@ export default function Chart1() {
   let aircraftno_scatter = [];
 
   useEffect(() => {
-    //const path = 'https://mhirjapi.azurewebsites.net/api/Landing_Chart_B'
-   const path = 'https://mhirjapi.azurewebsites.net/api/Landing_Chart_B'
+    //const path = 'http://mhirjapi.azurewebsites.net/api/Landing_Chart_B'
+   const path = Constants.APIURL+'Landing_Chart_B'
 
 
     axios.post(path)
@@ -125,8 +126,8 @@ export default function Chart1() {
     //  console.log(msg);
 
 
-    //const path1 = 'https://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM'
-    const path1 = 'https://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM'
+    //const path1 = 'http://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM'
+    const path1 = Constants.APIURL+'scatter_chart_MDC_PM'
 
 
     axios.post(path1).then(res => {

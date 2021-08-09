@@ -30,7 +30,7 @@ const RawDataTable = (props) => {
     },
     {
       name: 'tail', 
-      label: 'Tail#',
+      label: 'Tail #',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -214,7 +214,7 @@ const RawDataTable = (props) => {
       data.push(
           {
             aircraft: item["Aircraft"], 
-            tail: item["Tail"], 
+            tail: item["Tail#"], 
             fightLeg: item["Flight Leg No"], 
             ATAMain: item["ATA Main"],  
             ATASub: item["ATA Sub"],  
@@ -288,4 +288,3 @@ const classes = useStyles();
   );
 }
 export default RawDataTable;
-

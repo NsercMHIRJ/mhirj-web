@@ -7,6 +7,7 @@ import DatePicker from '../../GenerateReport/DatePicker';
 import {AirlineOperatorSelector,ATAMainSelector,MessagesSelector,EqIDSelector} from '../../GenerateReport/Selectors';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import Constants from '../../../utils/const';
 
 const useStyles = makeStyles((theme) => ({
 root: {
@@ -133,7 +134,7 @@ useEffect(() => {
  });
 
  if (flag === false) {  
-    const path = 'https://mhirjapi.azurewebsites.net/api/MDCRawData/' + rawDataConditions.ata + '/' + rawDataConditions.eqID + '/' + rawDataConditions.operator + 
+    const path = Constants.APIURL + 'MDCRawData/' + rawDataConditions.ata + '/' + rawDataConditions.eqID + '/' + rawDataConditions.operator + 
     '/' + rawDataConditions.messages + '/' + rawDataConditions.fromDate + '/' + rawDataConditions.toDate;
 
       axios.post(path).then(function (res) {

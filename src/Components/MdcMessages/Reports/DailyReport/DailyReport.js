@@ -54,6 +54,15 @@ const DailyReport = (props) => {
       }
     },
     {
+      name: 'tail', 
+      label: 'Tail #',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+      }
+    },
+    {
       name: 'EICASMessages', 
       label: 'EICAS Related',
       options: {
@@ -86,7 +95,8 @@ const DailyReport = (props) => {
       name: 'ATA', 
       label: 'ATA',
       options: {
-       filter: false,
+       filter: true,
+       filterType: 'dropdown',
        sort: true,
        setCellProps: () => ({style: {whiteSpace:'nowrap'}})
       }
@@ -114,7 +124,7 @@ const DailyReport = (props) => {
       name: 'equationDescription', 
       label: 'Equation Description',
       options: {
-       filter: true,
+       filter: false,
        filterType: 'dropdown',
        sort: true,
       }
@@ -123,7 +133,7 @@ const DailyReport = (props) => {
       name: 'totalOccurences', 
       label: 'Total Occurences',
       options: {
-       filter: true,
+       filter: false,
        filterType: 'dropdown',
        sort: true,
       }
@@ -132,7 +142,7 @@ const DailyReport = (props) => {
       name: 'consecutiveDays', 
       label: 'Consecutive Days',
       options: {
-       filter: true,
+       filter: false,
        filterType: 'dropdown',
        sort: true,
       }
@@ -141,7 +151,7 @@ const DailyReport = (props) => {
       name: 'ConsecutiveFlights', 
       label: 'Consecutive Flights',
       options: {
-       filter: true,
+       filter: false,
        filterType: 'dropdown',
        sort: true,
       }
@@ -150,7 +160,7 @@ const DailyReport = (props) => {
       name: 'intermittent', 
       label: 'Intermittent',
       options: {
-       filter: true,
+       filter: false,
        filterType: 'dropdown',
        sort: true,
       }
@@ -159,7 +169,7 @@ const DailyReport = (props) => {
       name: 'reasons', 
       label: 'Reasons For Flag',
       options: {
-       filter: true,
+       filter: false,
        filterType: 'dropdown',
        sort: true,
       }
@@ -209,6 +219,16 @@ const DailyReport = (props) => {
        setCellProps: () => ({style: {minWidth:'400px'}})
       }
      },
+     {
+      name: 'isJam', 
+      label: 'Jam',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: false,
+       display: false,
+      }
+     },
     ];
 
     let data = [];
@@ -217,6 +237,7 @@ const DailyReport = (props) => {
           {
             date: DateConverter(item["Date"]), 
             ACSN: item["AC SN"], 
+            tail: item["Tail#"],
             EICASRelated: item["EICAS Message"], 
             mdcMessages: item["MDC Message"],  
             LRU: item["LRU"],  
@@ -233,6 +254,7 @@ const DailyReport = (props) => {
             recommendation: item["MHIRJ ISE Recommendation"], 
             comments: item["Additional Comments"],  
             input: item["MHIRJ ISE Input"],  
+            isJam: item["is_jam"],
           }
         );
         return data;
@@ -252,12 +274,11 @@ const DailyReport = (props) => {
         filename: 'Daily Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
       },
-      //setRowProps for jam report enabled on daily report
-      // setRowProps: (row, index) => {
-      //   if (row[1] === "10291"){
-      //     return {style: {background:'#FF7F50'}}
-      //   }
-      // },
+      setRowProps: (row, index) => {
+        if (row[20] === true){
+          return {style: {background:'#FF7F50'}}
+        }
+      },
       draggableColumns: {
         enabled: false,
         transitionTime: 300,
@@ -295,4 +316,3 @@ const themes = getMuiTheme();
   );
 }
 export default DailyReport;
-

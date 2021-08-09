@@ -13,6 +13,7 @@ import TableRow from '@material-ui/core/TableRow';
 import CorrelationSubTable from './CorrelationSubTable';
 //Date Imports
 import {DateConverter} from '../Helper/Helper';
+import Constants from '../utils/const';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,7 +106,7 @@ const PMTable = (props) => {
       }
     });
     if (flag === false) {      
-        const path = 'https://mhirjapi.azurewebsites.net/api/corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.ATAMain;
+        const path = Constants.APIURL + 'corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.ATAMain;
           axios.post(path).then(function (res) {
             var data = JSON.parse(res.data);
             setData(data);
@@ -478,4 +479,3 @@ const theme = createMuiTheme({
   }
 
 export default PMTable;
-

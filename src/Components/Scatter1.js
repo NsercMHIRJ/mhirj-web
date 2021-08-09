@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
+import Constants from './utils/const';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,8 +51,8 @@ export default function Scatter1() {
   function submit(e) {
     e.preventDefault();
 
-    const path = 'https://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM/' + data_chart1.from_date + '/' + data_chart1.to_date;
-    //const path = 'https://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM/' + data_chart1.select_date;
+    const path = Constants.APIURL+ '/scatter_chart_MDC_PM/' + data_chart1.from_date + '/' + data_chart1.to_date;
+    //const path = 'http://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM/' + data_chart1.select_date;
 
 
     //console.log(path);

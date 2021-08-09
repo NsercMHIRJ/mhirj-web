@@ -8,6 +8,7 @@ import Select from '@material-ui/core/Select';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import Constants from './utils/const';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -34,7 +35,7 @@ export const ATAMainSelector = (props) => {
     const [ATAMain, setATAMain] = useState([]);
     const [ATAMainList, setATAMainList] = useState([]);
     useEffect(() => {
-        const path = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/ata_main/ALL'
+        const path = Constants.APIURL+ '/GenerateReport/ata_main/ALL'
 
         try {
             axios.post(path).then(function(res) {
@@ -88,7 +89,7 @@ export const EqIDSelector = (props) => {
   const [EqID, setEqID] = React.useState([]);
   const [EqList,setEqIDList] = useState([]);
   useEffect(() => {
-    const path = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/equation_id/ALL'
+    const path = Constants.APIURL+ '/GenerateReport/equation_id/ALL'
 
     try{
       axios.post(path).then(function (res) {

@@ -229,4 +229,3 @@ const themes = getMuiTheme();
   );
 }
 export default FlagReport;
-
