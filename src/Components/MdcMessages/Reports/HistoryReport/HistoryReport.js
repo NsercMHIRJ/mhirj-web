@@ -1,39 +1,7 @@
 import React, {useState} from 'react';
 import MUIDataTable from "mui-datatables";
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    alignItems:"center",
-    maxWidth: '92vw',
-    margin:  '20px',
-  },
-  button:{
-    margin:'0px 30px 15px 0px',
-    backgroundColor:"#C5D3E0",
-    width: '100%',
-  },
-}));
-
-const getMuiTheme = () => createMuiTheme({
-  palette: {type: 'light'},
-  typography: {useNextVariants: true},
-  overrides: {
-    MUIDataTableBodyCell: {
-      root: {
-        padding: '10px 8px',
-      }
-    },
-    MUIDataTableHeadCell:{
-      root: {
-        whiteSpace:'nowrap',
-      },
-    },
-  }
-})
+import "../../../../scss/_main.scss";
 
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
@@ -42,11 +10,14 @@ const HistoryReport = (props) => {
   const HandleMultipleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
     setRowsSelected(rowsSelected);
     let FlagArray = [];
+    let ACSNArray = [];
     Object(rowsSelected).map((item => {
+      ACSNArray.push(data[item].ACSN);
       FlagArray.push("('"+ data[item].ACSN +"','"+ data[item].B1Equation +"')");
       return FlagArray;
     }));
     let flagList =  FlagArray.join(", ");
+    props.setJamACSNHistoryValue(ACSNArray[ACSNArray.length-1]);
     setFlagList(flagList);
     props.HandleMultipleRowSelectReport(flagList);
   };
@@ -227,6 +198,19 @@ const HistoryReport = (props) => {
        setCellProps: () => ({style: {minWidth:'400px'}})
       }
      },
+     {
+      name: 'isJam', 
+      label: 'Jam',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       customFilterListOptions: {
+        render: item => item == false ? "False Jams" : "True Jams"
+      },
+       sort: false,
+       display: false,
+      }
+     },
     ];
 
     let data = [];
@@ -252,6 +236,7 @@ const HistoryReport = (props) => {
             recommendation: item["MHIRJ ISE Recommendation"], 
             comments: item["Additional Comments"],  
             input: item["MHIRJ ISE Input"],  
+            isJam: item["is_jam"],
           }
         );
         return data;
@@ -274,12 +259,11 @@ const HistoryReport = (props) => {
         filename: 'History Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
       },
-      //setRowProps for jam report on history report
-      // setRowProps: (row, index) => {
-      //   if (row[0] === "10291"){
-      //     return {style: {background:'#FF7F50'}}
-      //   }
-      // },
+      setRowProps: (row, index) => {
+        if (row[19] === true){
+          return {style: {background:'#FF7F50'}}
+        }
+      },
       draggableColumns: {
         enabled: false,
         transitionTime: 300,
@@ -296,24 +280,21 @@ const HistoryReport = (props) => {
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };
   
-const classes = useStyles();
-const themes = getMuiTheme();
 
   return (
-    <div className={classes.root}>
+    <div class="reports-root">
       <Grid container spacing={0}>
         <Grid item xs={12}>
-            <MuiThemeProvider theme={themes}>
-              <MUIDataTable
-                title= {props.title}
-                data={data}
-                columns={columns}
-                options={options}
-              />
-            </MuiThemeProvider> 
+          <MUIDataTable
+            title= {props.title}
+            data={data}
+            columns={columns}
+            options={options}
+          />
         </Grid> 
       </Grid> 
     </div>
   );
 }
 export default HistoryReport;
+

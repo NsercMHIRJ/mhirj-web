@@ -7,31 +7,13 @@ import Select from '@material-ui/core/Select';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    width:'90%',
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(1),
-  },
-  container:{
-    margin: '0px 50px 0px 0px',
-  },
-  autocomplete:{
-    margin: theme.spacing(0),
-    width:'90%',
-    minWidth: 120,
-  }
-}));
+import '../../../scss/core/_selectors.scss';
 
 const AirlineList = ['SKW'];
 const MessagesList = ['Include', 'Exclude'];
+const ReportSupportList = ['Flag Report', 'Jam Report'];
 
 export const AirlineOperatorSelector = (props) => {
-  const classes = useStyles();
   const [airline, setAirline] = useState('');
 
   useEffect(() => {
@@ -53,7 +35,7 @@ export const AirlineOperatorSelector = (props) => {
   };
 
   return(
-    <FormControl variant="outlined" className={classes.formControl}>
+    <FormControl variant="outlined" className="form-control">
       <InputLabel id="demo-simple-select-outlined-label">Airline Operator</InputLabel>
       <Select
         labelId="demo-simple-select-outlined-label"
@@ -72,11 +54,10 @@ export const AirlineOperatorSelector = (props) => {
 }
 
 export const ATAMainSelector = (props) => {
-  const classes = useStyles();
   const [ATAMain, setATAMain] = useState([]);
   const [ATAMainList,setATAMainList] = useState([]);
   useEffect(() => {
-    const path = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/ata_main/ALL'
+    const path = 'http://20.85.211.143:8080/api/GenerateReport/ata_main/ALL'
 
     try{
       axios.post(path).then(function (res) {
@@ -125,7 +106,7 @@ export const ATAMainSelector = (props) => {
 
   return(
     <Autocomplete
-    className={classes.autocomplete}
+    className="autocomplete"
     multiple
     options={ATAMainList}
     getOptionLabel={(item => item)}
@@ -145,12 +126,10 @@ export const ATAMainSelector = (props) => {
 }
 
 export const EqIDSelector = (props) => {
-  const classes = useStyles();
   const [EqID, setEqID] = useState([]);
   const [EqList,setEqIDList] = useState([]);
   useEffect(() => {
-    // const path = 'http://20.85.211.143:8080/api/GenerateReport/equation_id/ALL'
-    const path = 'https://mhirjapi.azurewebsites.net/api/GenerateReport/equation_id/ALL'
+    const path = 'http://20.85.211.143:8080/api/GenerateReport/equation_id/ALL'
 
     try{
       axios.post(path).then(function (res) {
@@ -203,7 +182,7 @@ export const EqIDSelector = (props) => {
   return(
 
     <Autocomplete
-        className={classes.autocomplete}
+        className="autocomplete"
         multiple
         options={EqList}
         getOptionLabel={(item => item)}
@@ -224,7 +203,6 @@ export const EqIDSelector = (props) => {
 };
 
 export const MessagesSelector = (props) => {
-  const classes = useStyles();
   const [messages, setIncludeMessages] = useState('');
 
   const handleMessagesChange = (event) => {
@@ -261,7 +239,7 @@ export const MessagesSelector = (props) => {
   },[props.messages]);
 
   return(
-    <FormControl variant="outlined" className={classes.formControl}>
+    <FormControl variant="outlined" className="form-control">
     <InputLabel id="demo-simple-select-outlined-label">Current Messages</InputLabel>
       <Select
         labelId="demo-simple-select-outlined-label"
@@ -278,6 +256,34 @@ export const MessagesSelector = (props) => {
     </FormControl>
   );
 }
+
+export const HistorySupportingSelector = (props) => {
+  const [supportingReport, setSupportingReport] = useState('');
+
+  const handleReportChange = (event) => {
+    console.log(event.target.value);
+    setSupportingReport(event.target.value);
+    props.handleReportChange(event.target.value);
+  };
+
+  return(
+    <FormControl variant="outlined" className="form-control">
+      <InputLabel id="demo-simple-select-outlined-label">Report Type</InputLabel>
+      <Select
+        labelId="demo-simple-select-outlined-label"
+        id="demo-simple-select-outlined"
+        value={supportingReport}
+        onChange={handleReportChange}
+        label="Report Type"
+      >
+      {ReportSupportList.map( item => 
+        <MenuItem value={item} key={item}> {item} </MenuItem>
+      )};
+      </Select>
+    </FormControl>
+  );
+}
+
 
 const Selectors = (props) => {
 

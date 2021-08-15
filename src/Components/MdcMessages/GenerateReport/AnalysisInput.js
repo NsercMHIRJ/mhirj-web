@@ -34,7 +34,7 @@ export const LegsInput = (props) => {
   :  setLegs(event.target.value);
     props.handleLegsChange(event.target.value);
   };
-  
+
   useEffect(() => {
     if(props.legs){
       props.handleLegsChange(props.legs);
@@ -100,7 +100,7 @@ export const DaysInput = (props) => {
       setDisabled(prevState => ({  disabled: false}));
     }    
   }, [props.analysis]);
-  
+
   useEffect(() => {
     if(props.days){
       props.handleDaysChange(props.days);

@@ -1,0 +1,18 @@
+.form-control {
+  width: 90%;
+  min-width: 120px;
+
+  &.MuiFormControl-root {
+    margin-top: 7px;
+    margin-bottom: 9px;
+  }
+}
+
+.autocomplete {
+  width: 90%;
+  margin: 0;
+  min-width: 120px;
+  .MuiTextField-root {
+    margin-left: 0 !important; 
+  }
+}

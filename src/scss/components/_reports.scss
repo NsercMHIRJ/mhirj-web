@@ -1,0 +1,55 @@
+.reports-root {
+  margin: 20px;
+  flex-grow: 1;
+  max-width: 92vw;
+  align-items: center;
+}
+
+.report-parameters-h2 {
+  margin: 30px 25px 40px;
+}
+
+.history-report, .daily-report {
+  form {
+    .MuiGrid-container{
+      margin-left: 25px;
+    }
+  }
+}
+
+.history-report-jam-parameters, .daily-report-jam-parameters {
+  .reports-button {
+    height: 52px;
+    margin-left: 44px;
+  }
+  .parameter-label {
+    font-size: 17px;
+    margin-right: 20px;
+    line-height: 47px;
+  }    
+}
+
+.daily-report {
+  .reports-button {
+    height: 52px;
+  }
+}
+
+.history-report{
+  .history-report-jam-parameters {
+    .reports-button {
+      height: 52px;
+      margin-left: 44px;
+    }
+    &.support-selector {
+      .MuiFormControl-root.form-control {
+        line-height: 47px;
+      }
+    }
+    &.flag {
+      .MuiFormControl-root {
+        width: 68%;
+      }
+    }
+  }
+}

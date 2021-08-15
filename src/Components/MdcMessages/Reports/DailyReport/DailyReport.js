@@ -1,37 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import MUIDataTable from "mui-datatables";
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import {DateConverter} from '../../../Helper/Helper';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    alignItems:"center",
-    maxWidth: '92vw',
-    margin:  '20px',
-  },
-}));
-
-const getMuiTheme = () => createMuiTheme({
-  palette: {type: 'light'},
-  typography: {useNextVariants: true},
-  overrides: {
-    MUIDataTableBodyCell: {
-      root: {
-        padding: '10px 8px',
-      }
-    },
-    MUIDataTableHeadCell:{
-      root: {
-        whiteSpace:'nowrap',
-      },
-    },
-  }
-});
+import "../../../../scss/_main.scss";
 
 const DailyReport = (props) => {
+  const [rowsSelectedState, setRowsSelected] = useState([]);
+
+  const HandleSingleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
+    if (rowsSelected.length !== 0 && data[rowsSelected].isJam === true) {
+      setRowsSelected(rowsSelected);
+      props.HandleSingleRowSelect(data[rowsSelected].ACSN);
+    }
+    else {
+      setRowsSelected(rowsSelected);
+    }
+  };
+
   const columns = [
     {
       name: "date",
@@ -225,6 +210,9 @@ const DailyReport = (props) => {
       options: {
        filter: true,
        filterType: 'dropdown',
+       customFilterListOptions: {
+        render: item => item == false ? "False Jams" : "True Jams"
+      },
        sort: false,
        display: false,
       }
@@ -269,7 +257,11 @@ const DailyReport = (props) => {
       fixedSelectColumn: true,
       jumpToPage: true,
       resizableColumns: false,
-      selectableRowsHideCheckboxes: true,
+      selectableRowsHideCheckboxes: false,
+      selectableRows: 'single',
+      selectableRowsOnClick: true,
+      rowsSelected: rowsSelectedState,
+      onRowSelectionChange: HandleSingleRowSelect,
       downloadOptions: {
         filename: 'Daily Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
@@ -292,27 +284,23 @@ const DailyReport = (props) => {
       rowsPerPage: 10,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
-      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
+      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '500px'
     };
   
-const classes = useStyles();
-const themes = getMuiTheme();
-
   return (
-    <div className={classes.root}>
+    <div className="reports-root">
       <Grid container spacing={0}>
         <Grid item xs={12}>
-            <MuiThemeProvider theme={themes}>
-              <MUIDataTable
-                title={props.title}
-                data={data}
-                columns={columns}
-                options={options}
-              />
-            </MuiThemeProvider> 
+          <MUIDataTable
+            title={props.title}
+            data={data}
+            columns={columns}
+            options={options}
+          />
         </Grid> 
       </Grid> 
     </div>
   );
 }
 export default DailyReport;
+
