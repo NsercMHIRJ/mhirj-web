@@ -3,44 +3,15 @@ import DailyReport from './DailyReport/DailyReport';
 import FlagReport from './FlagReport/FlagReport';
 import HistoryReport from './HistoryReport/HistoryReport';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import Constants from '../../utils/const';
 import TextField from '@material-ui/core/TextField';
-import { FormControlLabel } from '@material-ui/core';
 import "../../../scss/_main.scss";
 import JamsReport from './JamReport/JamsReport';
 import {HistorySupportingSelector} from '../GenerateReport/Selectors';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    margin:'50px auto',
-    width:'95vw',
-  },
-  flagFilters: {
-    margin: '20px',
-    maxWidth: '100%',
-    display: 'flex',
-  },  
-  flagH3: {
-    marginLeft: '24px',
-  },
-  button:{
-    margin:'9px 30px',
-    backgroundColor:"#C5D3E0",
-    width: '600px',
-    height: '51px',
-  },
-  buttonFlag:{
-    margin:'0px 50px 15px 0px',
-    backgroundColor:"#C5D3E0",
-    width: '89%',
-  },
-}));
-
 const Report = (props) => {
-  const classes = useStyles();
   const [report, setReport] = useState(props.reportConditions);
   
   const [dailyReportData, setDailyReportData] = useState([]);
@@ -59,8 +30,10 @@ const Report = (props) => {
   
   const [jamACSNDailyValue, setJamACSNDailyValue] = useState('');
   const [jamACSNHistoryValue, setJamACSNHistoryValue] = useState('');
-  const [jamData, setJamData] = useState([]);
+  const [jamDailyData, setJamDailyData] = useState([]);
+  const [jamHistoryData, setJamHistoryData] = useState([]);
   const [loadingJam, setLoadingJam] = useState();
+  const [loadingHistoryJam, setLoadingHistoryJam] = useState();
   const [jamValue, setJamValue] = useState(0);
   const [jamConditions, setJamConditions] = useState({});
   
@@ -155,7 +128,7 @@ const Report = (props) => {
         ...props.reportConditions,
         jamACSNDailyValue
       });
-      setJamData([]);
+      setJamDailyData([]);
       setLoadingJam(true);
       setJamValue(1);
 
@@ -168,8 +141,8 @@ const Report = (props) => {
         ...props.reportConditions,
         jamACSNHistoryValue
       });
-      setJamData([]);
-      setLoadingJam(true);
+      setJamHistoryData([]);
+      setLoadingHistoryJam(true);
       setJamValue(1);
 
       if ( Object.entries( localStorage.getItem( 'history-report' ) ).length !== 0 ) {
@@ -189,14 +162,19 @@ const Report = (props) => {
       axios.post(jamsPath).then(function (res){
         var data = JSON.parse(res.data);
         console.log(data);
-        setJamData(data);
-        setLoadingJam(false);
+        if ( jamParameters.analysis === 'daily' ) {
+          setJamDailyData(data);
+        } else {
+          setJamHistoryData(data);
+        }
+        setLoadingHistoryJam(false);
       }).catch(function (err){
         console.log(err);
-        setLoadingJam(false);
+        setLoadingHistoryJam(false);
       });
     } else {
       setLoadingJam(false);
+      setLoadingHistoryJam(false);
     }
   }
 
@@ -205,7 +183,7 @@ const Report = (props) => {
       const flagPath = Constants.APIURL + 'GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
       flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
       flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.fromDate + '/' + 
-      flagConditions.toDate + '/' + flagConditions.flagList;
+      flagConditions.toDate + '/1/' + flagConditions.flagList;
 
       console.log(flagPath);
 
@@ -250,7 +228,7 @@ const Report = (props) => {
                     <Button 
                       variant = "contained" 
                       class="reports-button MuiButtonBase-root MuiButton-root MuiButton-contained" 
-                      id = "reports-button "
+                      id = "daily-jam-button"
                       onClick = {handleGenerateJamsReport} >
                       Generate Jams Report
                     </Button>
@@ -258,9 +236,9 @@ const Report = (props) => {
                 </Grid>      
               </Grid>
             </form>
-            {jamACSNDailyValue !== "" && jamData !== "" && jamData !== "undefined" && jamValue === 1 &&
+            {jamACSNDailyValue !== "" && jamDailyData !== "" && jamDailyData !== "undefined" && jamValue === 1 &&
             <>
-              <JamsReport data = {jamData} reportConditions = {props.reportConditions} title = "Daily Jam Report" loading = {loadingJam}/>
+              <JamsReport data = {jamDailyData} reportConditions = {props.reportConditions} title = "Daily" loading = {loadingJam}/>
             </>
             }
             <Grid item lg={12}>
@@ -339,10 +317,10 @@ const Report = (props) => {
             </Grid>
 
             <Grid container>
-              {jamACSNHistoryValue !== "" && jamData !== "" && jamData !== "undefined" && jamValue === 1 &&
+              {jamACSNHistoryValue !== "" && jamHistoryData !== "" && jamHistoryData !== "undefined" && jamValue === 1 &&
               <>
                 <Grid item md={12}>
-                  <JamsReport data = {jamData} reportConditions = {props.reportConditions} title = "History Jam Report" loading = {loadingJam}/>
+                  <JamsReport data = {jamHistoryData} reportConditions = {props.reportConditions} title = "History" loading = {loadingHistoryJam}/>
                 </Grid>
               </>
               }

@@ -199,7 +199,7 @@ const JamsReport = (props) => {
       resizableColumns: false,
       selectableRowsHideCheckboxes: true,
       downloadOptions: {
-        filename: 'Jam Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
+        filename: props.title + 'Jam Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
       },
       draggableColumns: {
@@ -223,7 +223,7 @@ const JamsReport = (props) => {
       <Grid container spacing={0}>
         <Grid item xs={12}>
           <MUIDataTable
-            title={props.title}
+            title={props.title + " Jam Report"} 
             data={data}
             columns={columns}
             options={options}

@@ -142,7 +142,7 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {maxWidth: "400px"}})
+       setCellProps: () => ({style: {minWidth: "300px"}})
       }
      },
      {
@@ -152,7 +152,7 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {maxWidth: "400px"}})
+       setCellProps: () => ({style: {minWidth: "300px"}})
       }
      },
     ];
