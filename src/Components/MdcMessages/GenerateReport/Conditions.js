@@ -13,54 +13,15 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
+import "../../../scss/_main.scss";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-    form:{
-      '& .MuiTextField-root': {
-        margin: theme.spacing(1),
-    },
-  },
-  paper: {
-    margin: '20px auto 23px 20px',
-    width: '92vw',
-  },
-  container: {
-    padding: '20px 40px',
-  },
-  h3:{
-    margin: 'auto',
-    textAlign: 'center',
-  },
-  Grid:{
-    paddingLeft:'30px',
-    margin: 'auto',
-  },
-  card:{
-    backgroundColor: "#C5D3E0",
-    textAlign: 'center',
-    justify: 'center',
-    padding: '5px',
-  },
-  formLabel:{
-    fontWeight: 'bold',
-    color: 'black',
-    marginBottom: '20px',
-  },
-  analysisType:{
-    margin: '20px auto 30px',
-  },
-  button:{
-    margin:'10px auto',
-    width:'70%',
-    backgroundColor:"#C5D3E0",
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    width:'90%',
-    minWidth: 120,
+  button: {
+    width: '100%',
+    maxWidth: '220px',
+    backgroundColor: '#C5D3E0',
+    margin: '10px auto',
+    display: 'block',
   },
   selectEmpty: {
     marginTop: theme.spacing(1),
@@ -68,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
   },
-  
 }));
 
 const Conditions = (props) => {
@@ -79,6 +39,9 @@ const Conditions = (props) => {
   var todayDate = new Date().toISOString().slice(0, 10);
   const [dateFrom, setDateFrom] = useState(todayDate);
   const [dateTo, setDateTo] = useState(todayDate);
+  const [deltaFrom, setDeltaFrom] = useState(todayDate);
+  const [deltaTo, setDeltaTo] = useState(todayDate);
+  const [deltaDisable, setDeltaDisable]  = useState(true);
   const [occurences, setOccurrences] = useState(0);
   const [legs, setLegs] = useState(0);
   const [intermittent, setIntermittent] = useState(0);
@@ -111,6 +74,11 @@ const Conditions = (props) => {
 
   const handleAnalysisChange = (analysis) => {
     setAnalysisType(analysis);
+    if (analysis === "delta") {
+      setDeltaDisable(false);
+    } else {
+      setDeltaDisable(true);
+    }
   };
 
   const handleDateFrom = (date) => {
@@ -119,6 +87,14 @@ const Conditions = (props) => {
 
   const handleDateTo = (date) => {
     setDateTo(date);
+  };
+
+  const handleDeltaFrom = (date) => {
+    setDeltaFrom(date);
+  };
+
+  const handleDeltaTo = (date) => {
+    setDeltaTo(date);
   };
 
   const handleOccurencesChange = (occurences) =>{
@@ -199,22 +175,22 @@ function upload_filter(e) {
 }
 
   return (
-    <div>
-      <form className={classes.form}>
+    <div class="analysis-root">
+      <form class="analysis-form">
         <Paper className={classes.paper}>
-        <div className ={classes.card}>
+        <div class="analysis-card">
           <h2>REPORT ANALYSIS</h2>
         </div>
         
-          <div className={classes.container}>
+          <div>
 
           <Grid className={classes.Grid} container spacing={3}> 
           
             <Grid item xs={2}>
-            <div className={classes.analysisType}>
+            <div class="analysis-type-container">
 
               <FormControl component="fieldset" className="form" >
-              <FormLabel component="legend" className={classes.formLabel}>Analysis Type</FormLabel>
+              <FormLabel component="legend" class="analysis-type-label" focused="false">Analysis Type</FormLabel>
               
               <RadioGroup aria-label="analysis" name="analysis" value={analysis} >
                 <FormControlLabel value="daily" className="RadioButton" control={
@@ -229,6 +205,12 @@ function upload_filter(e) {
                   color = 'default'
                   onChange={()=>handleAnalysisChange("history")} 
                   />} label="History" />
+                <FormControlLabel value="delta" control={
+                  <Radio 
+                  size="medium"
+                  color = 'default'
+                  onChange={()=>handleAnalysisChange("delta")} 
+                  />} label="Delta" />
               </RadioGroup>
               </FormControl> 
             </div>           
@@ -255,7 +237,7 @@ function upload_filter(e) {
                 />   
               </div>           
             </Grid>  
-            <Grid item xs={5}>     
+            <Grid item xs={3}>     
             <div>
             <h3>Raw Data Conditions</h3> 
             <AirlineOperatorSelector
@@ -277,31 +259,44 @@ function upload_filter(e) {
             </div>                    
             </Grid>       
             <Grid item xs={3}>     
-            <h3>Report Date</h3> 
-        
-            <DatePicker 
-              label = "From"
-              handleDateFrom = {handleDateFrom}
-              dateFrom = {importedData.fromDate}
-            />   
-            <DatePicker 
-              label = "To"
-              handleDateTo = {handleDateTo}
-              dateTo = {importedData.toDate}
-            />   
-            <Button 
-              variant="contained" 
-              onClick = {async()=>handleGenerateReport()}
-              className={classes.button}>
-                Generate Report
-            </Button>  
-            <Button 
-              variant="contained" 
-              onClick = {async()=>SaveFilter(reportConditions,"Filter_"+ currDate+"-"+currMonth+"-"+currYear)}
-              className={classes.button}>
-                Save Filter
-            </Button>
-            <br></br>
+              <h3>Report Date</h3> 
+              <DatePicker 
+                label = "From"
+                handleDateFrom = {handleDateFrom}
+                dateFrom = {importedData.fromDate}
+              />   
+              <DatePicker 
+                label = "To"
+                handleDateTo = {handleDateTo}
+                dateTo = {importedData.toDate}
+              />   
+               <DatePicker 
+                label = "Delta From"
+                handleDateFrom = {handleDeltaFrom}
+                disabled = {deltaDisable}
+                //dateFrom = {importedData.fromDate}
+              />   
+              <DatePicker 
+                label = "Delta To"
+                handleDateTo = {handleDeltaTo}
+                disabled = {deltaDisable}
+                //dateTo = {importedData.toDate}
+              />   
+            </Grid>    
+            <Grid item xs={2}> 
+              <div class="buttons-container">
+                <Button 
+                  variant="contained" 
+                  onClick = {async()=>handleGenerateReport()}>
+                    Generate Report
+                </Button>  
+                <Button 
+                  variant="contained" 
+                  onClick = {async()=>SaveFilter(reportConditions,"Filter_"+ currDate+"-"+currMonth+"-"+currYear)}
+                  >
+                    Save Filter
+                </Button>
+                {/* <br></br> */}
                 <input
                   className={classes.input}
                   id="contained-button-file"
@@ -309,12 +304,13 @@ function upload_filter(e) {
                   type="file"
                   onChange = {(e) => upload_filter(e)}
                 />
-                 <label htmlFor="contained-button-file" style={{ margin:'40px auto', width:'70%', backgroundColor:"#C5D3E0"}}>
+                <label htmlFor="contained-button-file" style={{ margin:'40px auto', width:'70%', backgroundColor:"#C5D3E0", textAlign:"center"}}>
                   <Button id="upload" variant="contained" component="span"  className={classes.button}>
                     Upload
                   </Button>
                 </label>
-            </Grid>          
+              </div>                  
+            </Grid>         
         </Grid>
       </div>
         </Paper>

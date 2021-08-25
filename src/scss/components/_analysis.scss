@@ -1,0 +1,56 @@
+
+.analysis-root {
+  margin: 20px;
+  flex-grow: 1;
+  max-width: 92vw;
+  align-items: center;
+  .MuiGrid-root {
+    padding: 15px;
+    width: 92vw;
+    text-align: center;
+  }
+  .analysis-type-container {
+    margin-top: 20px;
+    .analysis-type-label {
+      font-size: 16px;
+      font-weight: bold;
+      color: black;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+  }
+  .analysis-form {
+    .analysis-card {
+      background-color: #C5D3E0;
+      text-align: center;
+      padding: 5px;
+    }
+    .MuiTextField-root {
+      margin: 8px;
+    }
+    h3 {
+      margin: auto;
+      text-align: center;
+      margin-bottom: 20px;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    .makeStyles-analysisType-282 {
+      margin: 0;
+      text-align: center;
+      fieldset {
+        margin-top: 20px;
+      }
+    }   
+  }
+  .buttons-container {
+    padding-top: 80px;
+    button {
+      width: 100%;
+      max-width: 220px;
+      background-color: #C5D3E0;
+      margin: 10px auto;
+      display: block;
+    }
+  }
+}

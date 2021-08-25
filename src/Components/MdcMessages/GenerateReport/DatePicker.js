@@ -37,17 +37,36 @@ const DatePicker = (props) => {
   return (
     <Fragment>
       <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils}>
-        <KeyboardDatePicker 
-          style={{margin: "12px 10px 10px"}}
-          autoOk={true}
-            value={selectedDate}
-            format="YYYY-MM-DD"
-            inputValue={inputValue}
-            onChange={handleDateChange}
-            rifmFormatter={dateFormatter}
-            label={props.label}
-            variant="inline"
-        /> 
+        {(() => {
+          switch (props.disabled) {
+            case true: return (
+              <KeyboardDatePicker 
+              style={{margin: "12px 10px 10px"}}
+              autoOk={true}
+              value={selectedDate}
+              format="YYYY-MM-DD"
+              inputValue={inputValue}
+              onChange={handleDateChange}
+              rifmFormatter={dateFormatter}
+              label={props.label}
+              variant="inline"
+              disabled 
+            /> 
+            );
+            default: return (
+              <KeyboardDatePicker 
+                style={{margin: "12px 10px 10px"}}
+                autoOk={true}
+                value={selectedDate}
+                format="YYYY-MM-DD"
+                inputValue={inputValue}
+                onChange={handleDateChange}
+                rifmFormatter={dateFormatter}
+                label={props.label}
+                variant="inline"
+              /> );
+          }
+        })()}
     </MuiPickersUtilsProvider>
     </Fragment>
   );
