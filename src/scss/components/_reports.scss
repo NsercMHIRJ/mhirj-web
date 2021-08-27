@@ -1,20 +1,12 @@
 .reports-root {
-  margin: 20px;
+  margin-top: 30px;
   flex-grow: 1;
   max-width: 92vw;
   align-items: center;
 }
 
 .report-parameters-h2 {
-  margin: 30px 25px 40px;
-}
-
-.history-report, .daily-report {
-  form {
-    .MuiGrid-container{
-      margin-left: 25px;
-    }
-  }
+  margin: 40px 0 40px;
 }
 
 .history-report-jam-parameters, .daily-report-jam-parameters {
@@ -37,19 +29,26 @@
 
 .history-report{
   .history-report-jam-parameters {
-    .reports-button {
-      height: 52px;
-      margin-left: 44px;
+    text-align: center;
+    margin-left: 10px;
+  }
+  .select {
+    text-align: left;
+    margin-left: 0;
+  }
+  .reports-button {
+    height: 52px;
+    margin-left: 22px;
+  }
+    .support-selector {
+    .MuiFormControl-root.form-control {
+      line-height: 47px;
     }
-    &.support-selector {
-      .MuiFormControl-root.form-control {
-        line-height: 47px;
-      }
-    }
-    &.flag {
-      .MuiFormControl-root {
-        width: 68%;
-      }
+  }
+  .flag {
+    .MuiFormControl-root {
+      width: 68%;
     }
   }
 }
+

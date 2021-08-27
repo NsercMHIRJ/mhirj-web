@@ -35,12 +35,12 @@ const Report = (props) => {
   const [loadingJam, setLoadingJam] = useState();
   const [loadingHistoryJam, setLoadingHistoryJam] = useState();
   const [jamValue, setJamValue] = useState(0);
+  const [jamHistValue, setJamHistValue] = useState(0);
   const [jamConditions, setJamConditions] = useState({});
   
   const[reportType, setReportType] = useState('');
 
   const HandleMultipleRowSelectReport = (flagList) => {
-    //setJamACSNHistoryValue (flagList[flagList.length-5]);
     setFlagList(flagList);
   }
 
@@ -136,6 +136,7 @@ const Report = (props) => {
         jamParameters = JSON.parse( localStorage.getItem( 'daily-report' ) );
         jamACSNValue = jamACSNDailyValue;
       }
+
     } else if ( event.currentTarget.id === 'history-supporting-button' ) {
       setJamConditions({
         ...props.reportConditions,
@@ -143,7 +144,7 @@ const Report = (props) => {
       });
       setJamHistoryData([]);
       setLoadingHistoryJam(true);
-      setJamValue(1);
+      setJamHistValue(1);
 
       if ( Object.entries( localStorage.getItem( 'history-report' ) ).length !== 0 ) {
         jamParameters = JSON.parse( localStorage.getItem( 'history-report' ) );
@@ -157,24 +158,30 @@ const Report = (props) => {
       jamParameters.eqID + '/'+ jamParameters.operator + '/' + jamParameters.messages + '/' + jamParameters.fromDate + '/' + 
       jamParameters.toDate + '/' + jamACSNValue;
       
-      console.log(jamsPath);
-
       axios.post(jamsPath).then(function (res){
         var data = JSON.parse(res.data);
         console.log(data);
         if ( jamParameters.analysis === 'daily' ) {
           setJamDailyData(data);
+          setLoadingJam(false);
         } else {
           setJamHistoryData(data);
+          setLoadingHistoryJam(false);
         }
-        setLoadingHistoryJam(false);
       }).catch(function (err){
         console.log(err);
-        setLoadingHistoryJam(false);
+        if ( jamParameters.analysis === 'daily' ) {  
+          setLoadingJam(false);
+        } else {
+          setLoadingHistoryJam(false);
+        }
       });
     } else {
-      setLoadingJam(false);
-      setLoadingHistoryJam(false);
+      if ( jamParameters.analysis === 'daily' ) {  
+        setLoadingJam(false);
+      } else {
+        setLoadingHistoryJam(false);
+      }
     }
   }
 
@@ -236,11 +243,6 @@ const Report = (props) => {
                 </Grid>      
               </Grid>
             </form>
-            {jamACSNDailyValue !== "" && jamDailyData !== "" && jamDailyData !== "undefined" && jamValue === 1 &&
-            <>
-              <JamsReport data = {jamDailyData} reportConditions = {props.reportConditions} title = "Daily" loading = {loadingJam}/>
-            </>
-            }
             <Grid item lg={12}>
               <DailyReport 
                 data = {dailyReportData} 
@@ -252,6 +254,11 @@ const Report = (props) => {
             </Grid>
           </div>
         </>
+      }
+      {jamACSNDailyValue !== "" && jamDailyData !== "" && jamDailyData !== "undefined" && jamValue === 1 &&
+      <>
+        <JamsReport data = {jamDailyData} reportConditions = {props.reportConditions} title = "Daily" loading = {loadingJam}/>
+      </>
       }
       {historyReportData !== "" && historyReportData !== "undefined" && histValue === 1 &&
         <>
@@ -265,7 +272,7 @@ const Report = (props) => {
                 alignItems="center"
                 >
                   <Grid item xs={3} md={6} lg={2}>
-                    <div class="history-report-jam-parameters">
+                    <div class="history-report-jam-parameters select">
                       <HistorySupportingSelector 
                         handleReportChange = {handleReportChange}
                       />
@@ -317,7 +324,7 @@ const Report = (props) => {
             </Grid>
 
             <Grid container>
-              {jamACSNHistoryValue !== "" && jamHistoryData !== "" && jamHistoryData !== "undefined" && jamValue === 1 &&
+              {jamACSNHistoryValue !== "" && jamHistoryData !== "" && jamHistoryData !== "undefined" && jamHistValue === 1 &&
               <>
                 <Grid item md={12}>
                   <JamsReport data = {jamHistoryData} reportConditions = {props.reportConditions} title = "History" loading = {loadingHistoryJam}/>
