@@ -53,7 +53,6 @@ const Report = (props) => {
   }
 
   const handleGenerateHistorySupportingReport = (event) => {
-    console.log(reportType);
     if ( reportType === 'Flag Report') {
       handleGenerateFlagReport(event);
     }
@@ -63,50 +62,74 @@ const Report = (props) => {
   }
 
   useEffect(() => {
-    if (!Object.values(props.reportConditions).includes("")){
-      setReport(props.reportConditions);
-    }
+    setReport(props.reportConditions);
   }, [props.reportConditions]);
 
   useEffect(() => {
-    if(!Object.values(report).includes("")){
-      let consecutiveDays = report.analysis === "daily" ? 0 : report.days; 
-      const path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-      consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
+    let path = "";
+    if (report.analysis !== "" && report.occurences !== "" && report.legs !== "" && report.eqID !== "" && report.intermittent !== "" && 
+      report.days !== "" && report.operator !== "" && report.ata !== "" && report.messages !== "" && report.fromDate !== undefined && report.toDate !== undefined ) {
+        if (report.analysis === "delta") {
+          if (report.deltaFrom !== undefined && report.deltaTo !== undefined ) {
+            path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
+            report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate + 
+            '/' + report.deltaFrom + '/' + report.deltaTo;
+          }
 
-      console.log(path, "path");
+          // localStorage.setItem('delta-report', JSON.stringify( report ) );
+          // setDeltaValue(1);
+          // setDeltaReportData([]);
+          // setLoadingDelta(true);
+  
+          // axios.post(path).then(function (res){
+          //   var data = JSON.parse(res.data);
+          //   setDeltaReportData(data);    
+          //   setLoadingDelta(false);
+          // }).catch(function (err){
+          //   console.log(err);
+          //   setLoadingDelta(false);
+          // });
 
-      if (report.analysis === "daily"){
-        localStorage.setItem('daily-report', JSON.stringify( report ) );
-        setDailyValue(1);
-        setDailyReportData([]);
-        setLoadingDaily(true);
+        }
+        else if (report.analysis === "daily") {
+          let consecutiveDays = 0;
+          path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
+          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
 
-        axios.post(path).then(function (res){
-          var data = JSON.parse(res.data);
-          setDailyReportData(data);    
-          setLoadingDaily(false);
-        }).catch(function (err){
-          console.log(err);
-          setLoadingDaily(false);
-        });
-      }
-      else{
-        localStorage.setItem('history-report', JSON.stringify( report ) );
-        setHistValue(1);
-        setHistoryReportData([]);
-        setLoadingHistory(true);
+          localStorage.setItem('daily-report', JSON.stringify( report ) );
+          setDailyValue(1);
+          setDailyReportData([]);
+          setLoadingDaily(true);
+  
+          axios.post(path).then(function (res){
+            var data = JSON.parse(res.data);
+            setDailyReportData(data);    
+            setLoadingDaily(false);
+          }).catch(function (err){
+            console.log(err);
+            setLoadingDaily(false);
+          });
+        }
+        else if (report.analysis === "history") {
+          path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
+          report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
 
-        axios.post(path).then(function (res){
-          var data = JSON.parse(res.data);
-          setHistoryReportData(data);  
-          setLoadingHistory(false);  
-        }).catch(function (err){
-          console.log(err);    
-          setLoadingHistory(false);
-        });
-      }
-    }    
+          localStorage.setItem('history-report', JSON.stringify( report ) );
+          setHistValue(1);
+          setHistoryReportData([]);
+          setLoadingHistory(true);
+  
+          axios.post(path).then(function (res){
+            var data = JSON.parse(res.data);
+            console.log(data, "data");
+            setHistoryReportData(data);  
+            setLoadingHistory(false);  
+          }).catch(function (err){
+            console.log(err);    
+            setLoadingHistory(false);
+          });
+        }
+     }
   }, [report]);
 
   const handleGenerateFlagReport = (event) => {
@@ -192,10 +215,9 @@ const Report = (props) => {
       flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.fromDate + '/' + 
       flagConditions.toDate + '/1/' + flagConditions.flagList;
 
-      console.log(flagPath);
-
       axios.post(flagPath).then(function (res){
         var data = JSON.parse(res.data);
+        console.log(data,"flag data");
         setFlagData(data);
         setLoadingFlag(false);
       }).catch(function (err){

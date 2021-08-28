@@ -24,8 +24,8 @@ const HistoryReport = (props) => {
 
   const columns = [
     {
-      name: 'ACSN', 
-      label: 'ACSN',
+      name: 'tail', 
+      label: 'Tail #',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -33,8 +33,8 @@ const HistoryReport = (props) => {
       }
     },
     {
-      name: 'tail', 
-      label: 'Tail #',
+      name: 'ACSN', 
+      label: 'ACSN',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -145,6 +145,24 @@ const HistoryReport = (props) => {
       }
      },
      {
+      name: 'dateFrom', 
+      label: 'Date From',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+      }
+     },
+     {
+      name: 'dateTo', 
+      label: 'Date To',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+      }
+     },
+     {
       name: 'reasons', 
       label: 'Reasons For Flag',
       options: {
@@ -172,6 +190,24 @@ const HistoryReport = (props) => {
       }
      },
      {
+      name: 'honey', 
+      label: 'HONEY or No-Dispatch',
+      options: {
+       filter: false,
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'200px'}})
+      }
+     },
+     {
+      name: 'input', 
+      label: 'MHIRJ Input',
+      options: {
+       filter: false,
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'400px'}})
+      }
+     },
+     {
       name: 'recommendation', 
       label: 'MHIRJ Recommended Action',
       options: {
@@ -187,15 +223,6 @@ const HistoryReport = (props) => {
        filter: false,
        sort: true,
        setCellProps: () => ({style: {minWidth:'700px'}})
-      }
-     },
-     {
-      name: 'input', 
-      label: 'MHIRJ Input',
-      options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'400px'}})
       }
      },
      {
@@ -237,6 +264,9 @@ const HistoryReport = (props) => {
             comments: item["Additional Comments"],  
             input: item["MHIRJ ISE Input"],  
             isJam: item["is_jam"],
+            honey: "Not Available",
+            dateFrom: "Not Available",
+            dateTo: "Not Available",
           }
         );
         return data;

@@ -19,6 +19,15 @@ const DailyReport = (props) => {
 
   const columns = [
     {
+      name: 'tail', 
+      label: 'Tail #',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+      }
+    },
+    {
       name: "date",
       label: "Date",
       options: {
@@ -32,15 +41,6 @@ const DailyReport = (props) => {
     {
       name: 'ACSN', 
       label: 'ACSN',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-      }
-    },
-    {
-      name: 'tail', 
-      label: 'Tail #',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -124,15 +124,6 @@ const DailyReport = (props) => {
       }
      },
      {
-      name: 'consecutiveDays', 
-      label: 'Consecutive Days',
-      options: {
-       filter: false,
-       filterType: 'dropdown',
-       sort: true,
-      }
-     },
-     {
       name: 'ConsecutiveFlights', 
       label: 'Consecutive Flights',
       options: {
@@ -178,6 +169,24 @@ const DailyReport = (props) => {
       }
      },
      {
+      name: 'honey', 
+      label: 'HONEY or No-Dispatch',
+      options: {
+       filter: false,
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'200px'}})
+      }
+     },
+     {
+      name: 'input', 
+      label: 'MHIRJ Input',
+      options: {
+       filter: false,
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'400px'}})
+      }
+     },
+     {
       name: 'recommendation', 
       label: 'MHIRJ Recommended Action',
       options: {
@@ -193,15 +202,6 @@ const DailyReport = (props) => {
        filter: false,
        sort: true,
        setCellProps: () => ({style: {minWidth:'700px'}})
-      }
-     },
-     {
-      name: 'input', 
-      label: 'MHIRJ Input',
-      options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'400px'}})
       }
      },
      {
@@ -240,9 +240,10 @@ const DailyReport = (props) => {
             priority: item["Priority"],   
             topMessage: item["Known Top Message - Recommended Documents"],  
             recommendation: item["MHIRJ ISE Recommendation"], 
-            comments: item["Additional Comments"],  
+            comments: item["Additional Comments"], 
             input: item["MHIRJ ISE Input"],  
             isJam: item["is_jam"],
+            honey: "Not Available",
           }
         );
         return data;

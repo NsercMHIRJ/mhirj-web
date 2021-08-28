@@ -5,32 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 //Date Imports
 import {DateConverter} from '../../../Helper/Helper';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    alignItems:"center",
-    maxWidth: '92vw',
-    margin:  '20px',
-  },
-}));
-
-const getMuiTheme = () => createMuiTheme({
-  palette: {type: 'light'},
-  typography: {useNextVariants: true},
-  overrides: {
-    MUIDataTableBodyCell: {
-      root: {
-        padding: '10px 8px',
-      }
-    },
-    MUIDataTableHeadCell:{
-      root: {
-        whiteSpace:'nowrap',
-      },
-    },
-  }
-});
+import '../../../../scss/_main.scss';
 
 const FlagReport = (props) => {
 
@@ -209,23 +184,19 @@ const FlagReport = (props) => {
     };
 
   
-const classes = useStyles();
-const themes = getMuiTheme();
   return (
-    <div className={classes.root}>
-      <Grid container spacing={0}>
-        <Grid item xs={12}>
-            <MuiThemeProvider theme={themes}>
-              <MUIDataTable
-                title={"Flag Report"}
-                data={data}
-                columns={columns}
-                options={options}
-              />
-            </MuiThemeProvider> 
-        </Grid> 
+    <div className="reports-root">
+    <Grid container spacing={0}>
+      <Grid item xs={12}>
+        <MUIDataTable
+          title={"Flag Report"} 
+          data={data}
+          columns={columns}
+          options={options}
+        />
       </Grid> 
-    </div>
+    </Grid> 
+  </div>
   );
 }
 export default FlagReport;

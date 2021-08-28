@@ -69,6 +69,8 @@ const Conditions = (props) => {
     messages: '',
     fromDate: '',
     toDate: '',
+    deltaFrom: '',
+    deltaTo: '',
   }
   );
 
@@ -143,6 +145,8 @@ const Conditions = (props) => {
       messages: messagesChoice,
       fromDate: dateFrom,
       toDate: dateTo,
+      deltaFrom: deltaFrom,
+      deltaTo: deltaTo,
     });
   }    
 const SaveFilter = (jsonData,filename) => {
