@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react';
 import DailyReport from './DailyReport/DailyReport';
 import FlagReport from './FlagReport/FlagReport';
 import HistoryReport from './HistoryReport/HistoryReport';
+import DeltaReport from './DeltaReport/DeltaReport';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
@@ -22,6 +23,10 @@ const Report = (props) => {
   const [loadingHistory, setLoadingHistory] = useState();
   const [histValue,setHistValue] = useState(0);
 
+  const [deltaData, setDeltaData] = useState([]);
+  const [deltaValue, setDeltaValue] = useState(0);
+  const [loadingDelta, setLoadingDelta] = useState();
+
   const [flagData, setFlagData] = useState([]);
   const [flagList,setFlagList] = useState('');
   const [flagConditions,setFlagConditions] = useState({});
@@ -37,7 +42,7 @@ const Report = (props) => {
   const [jamValue, setJamValue] = useState(0);
   const [jamHistValue, setJamHistValue] = useState(0);
   const [jamConditions, setJamConditions] = useState({});
-  
+
   const[reportType, setReportType] = useState('');
 
   const HandleMultipleRowSelectReport = (flagList) => {
@@ -76,19 +81,19 @@ const Report = (props) => {
             '/' + report.deltaFrom + '/' + report.deltaTo;
           }
 
-          // localStorage.setItem('delta-report', JSON.stringify( report ) );
-          // setDeltaValue(1);
-          // setDeltaReportData([]);
-          // setLoadingDelta(true);
+          localStorage.setItem('delta-report', JSON.stringify( report ) );
+          setDeltaValue(1);
+          setDeltaData([]);
+          setLoadingDelta(true);
   
-          // axios.post(path).then(function (res){
-          //   var data = JSON.parse(res.data);
-          //   setDeltaReportData(data);    
-          //   setLoadingDelta(false);
-          // }).catch(function (err){
-          //   console.log(err);
-          //   setLoadingDelta(false);
-          // });
+          axios.post(path).then(function (res){
+            var data = JSON.parse(res.data);
+            setDeltaData(data);    
+            setLoadingDelta(false);
+          }).catch(function (err){
+            console.log(err);
+            setLoadingDelta(false);
+          });
 
         }
         else if (report.analysis === "daily") {
@@ -342,7 +347,8 @@ const Report = (props) => {
                 reportConditions = {report} 
                 HandleMultipleRowSelectReport = {HandleMultipleRowSelectReport} 
                 setJamACSNHistoryValue = {setJamACSNHistoryValue}
-                loading = {loadingHistory} />
+                loading = {loadingHistory} 
+              />
             </Grid>
 
             <Grid container>
@@ -356,7 +362,7 @@ const Report = (props) => {
           </Grid> 
 
           <Grid container>
-          {flagData !== "" && flagData !== "undefined" && flagValue === 1 &&
+            {flagData !== "" && flagData !== "undefined" && flagValue === 1 &&
               <>
                 <Grid item md={12}>
                 <FlagReport data = {flagData} reportConditions = {props.reportConditions} title = "History Flag Report" loading = {loadingFlag} flagReportConditions={flagConditions}/>
@@ -364,10 +370,27 @@ const Report = (props) => {
               </>
               }
           </Grid>    
-             
+        
         </div>
         </>
       }
+
+      {deltaData !== "" && deltaData !== "undefined" && deltaValue === 1 &&
+        <>
+          <div class="delta-report">
+            <h2 class="report-parameters-h2">Delta Report Parameters - To be Defined</h2>
+            <Grid item md={12}>
+              <DeltaReport 
+                data = {deltaData}
+                title = "Delta Report" 
+                reportConditions = {report}  
+                loading = {loadingDelta} 
+              />
+            </Grid>
+          </div>
+        </>
+      }
+
     </div>
   );    
 };
