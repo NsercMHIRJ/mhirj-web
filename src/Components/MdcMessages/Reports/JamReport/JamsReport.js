@@ -36,6 +36,22 @@ const JamsReport = (props) => {
       }
     },
     {
+      name: 'ATASub', 
+      label: 'ATASub',
+      options: {
+       filter: false,
+       sort: true,
+      }
+    },
+    {
+      name: 'ATA', 
+      label: 'ATA',
+      options: {
+       filter: true,
+       sort: true,
+      }
+    },
+    {
       name: 'ATADescription', 
       label: 'ATA Description',
       options: {
@@ -170,9 +186,12 @@ const JamsReport = (props) => {
             flightLegNumber: item["Flight"], 
             tail: item["Tail#"], 
             ATAMain: item["ATA Main"],
+            ATASub: item["ATA Sub"],
+            ATA: item["ATA"],
             ATADescription: item["ATA Description"], 
             LRU: item["LRU"],  
             DateAndTime: DateConverter(item["DateAndTime"]),  
+            MDCMessage: item["MDC Message"],
             status: item["Status"],  
             flightPhase: item["Flight Phase"],  
             type: item["Type"],   

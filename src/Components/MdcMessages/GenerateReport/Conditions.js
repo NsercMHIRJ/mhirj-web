@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {OccurencesInput,LegsInput,IntermittentInput,DaysInput} from './AnalysisInput';
@@ -14,6 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import "../../../scss/_main.scss";
+import {GenerateReportValidation, NotFirstRender} from '../../Helper/Helper';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -55,10 +56,11 @@ const Conditions = (props) => {
   let currMonth = newDate.getMonth()+1;
   let currYear = newDate.getFullYear();
   
+  const [validationResponse, setValidationResponse] = useState('');
  
   const [reportConditions, setReportConditions] = useState(
   {
-    analysis: '',
+    analysis: 'daily',
     occurences: '',
     legs: '',
     intermittent: '',
@@ -67,12 +69,13 @@ const Conditions = (props) => {
     ata: '',
     eqID: '',
     messages: '',
-    fromDate: '',
-    toDate: '',
-    deltaFrom: '',
-    deltaTo: '',
+    fromDate: todayDate,
+    toDate: todayDate,
+    deltaFrom: todayDate,
+    deltaTo: todayDate,
   }
   );
+
 
   const handleAnalysisChange = (analysis) => {
     setAnalysisType(analysis);
@@ -149,6 +152,16 @@ const Conditions = (props) => {
       deltaTo: deltaTo,
     });
   }    
+
+const notFirstRender = NotFirstRender();
+
+useEffect(() => {
+  if (notFirstRender) {
+    let validationResponse = GenerateReportValidation(reportConditions);
+    setValidationResponse(validationResponse);
+  }
+}, [reportConditions]);
+
 const SaveFilter = (jsonData,filename) => {
   
     const fileData = JSON.stringify(jsonData);
@@ -195,7 +208,7 @@ function upload_filter(e) {
 
               <FormControl component="fieldset" className="form" >
               <FormLabel component="legend" class="analysis-type-label" focused="false">Analysis Type</FormLabel>
-              
+              <p class="validation-message">{validationResponse.analysisMessage}</p>
               <RadioGroup aria-label="analysis" name="analysis" value={analysis} >
                 <FormControlLabel value="daily" className="RadioButton" control={
                   <Radio 
@@ -222,18 +235,22 @@ function upload_filter(e) {
             <Grid item xs={2}>     
               <div>
                 <h3>Analysis Input</h3>   
+                <p class="validation-message">{validationResponse.occurencesMessage}</p>
                 <OccurencesInput 
                   handleOccurencesChange = {handleOccurencesChange}
                   occurrences={importedData.occurences}
                 />
+                <p class="validation-message">{validationResponse.legsMessage}</p>
                 <LegsInput 
                   handleLegsChange = {handleLegsChange}
                   legs={importedData.legs}
                 />  
+                <p class="validation-message">{validationResponse.intermittentMessage}</p>
                 <IntermittentInput 
                   handleIntermittentChange = {handleIntermittentChange}
                   intermittent={importedData.intermittent}
                 />
+                <p class="validation-message">{validationResponse.daysMessage}</p>
                 <DaysInput 
                 analysis = {analysis}  
                 handleDaysChange = {handleDaysChange}
@@ -244,18 +261,22 @@ function upload_filter(e) {
             <Grid item xs={3}>     
             <div>
             <h3>Raw Data Conditions</h3> 
+            <p class="validation-message">{validationResponse.operatorMessage}</p>
             <AirlineOperatorSelector
                 handleAirlineChange = {handleAirlineChange}
                 operator = {importedData.operator}
               />         
+              <p class="validation-message">{validationResponse.currentMessage}</p>
               <MessagesSelector 
                 handleMessagesChange = {handleMessagesChange}
                 messages = {importedData.messages}
               />   
+              <p class="validation-message">{validationResponse.ataMessage}</p>
               <ATAMainSelector 
                 handleATAChange = {handleATAChange}
                 ata = {importedData.ata}
               />   
+              <p class="validation-message">{validationResponse.eqIDMessage}</p>
               <EqIDSelector 
                 handleEqIDChange = {handleEqIDChange}
                 eqID = {importedData.eqID}
@@ -264,22 +285,26 @@ function upload_filter(e) {
             </Grid>       
             <Grid item xs={3}>     
               <h3>Report Date</h3> 
+              <p class="validation-message">{validationResponse.fromDateMessage}</p>
               <DatePicker 
                 label = "From"
                 handleDateFrom = {handleDateFrom}
                 dateFrom = {importedData.fromDate}
               />   
+              <p class="validation-message">{validationResponse.toDateMessage}</p>
               <DatePicker 
                 label = "To"
                 handleDateTo = {handleDateTo}
                 dateTo = {importedData.toDate}
               />   
+              <p class="validation-message">{validationResponse.fromDeltaMessage}</p>
                <DatePicker 
                 label = "Delta From"
                 handleDateFrom = {handleDeltaFrom}
                 disabled = {deltaDisable}
                 //dateFrom = {importedData.fromDate}
               />   
+              <p class="validation-message">{validationResponse.toDeltaMessage}</p>
               <DatePicker 
                 label = "Delta To"
                 handleDateTo = {handleDeltaTo}

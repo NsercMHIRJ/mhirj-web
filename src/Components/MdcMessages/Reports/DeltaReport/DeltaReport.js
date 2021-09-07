@@ -226,6 +226,46 @@ const DeltaReport = (props) => {
        display: false,
       }
      },
+     {
+      name: 'isDarkOrange', 
+      label: 'isDarkOrange',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       customFilterListOptions: {
+        render: item => item == false ? "False Jams" : "True Jams"
+      },
+       sort: false,
+       display: false,
+      }
+     },
+     {
+      name: 'isDarkRed', 
+      label: 'isDarkRed',
+      options: {
+       filter: false,
+       sort: false,
+       display: false,
+      }
+     },
+     {
+      name: 'isLightOrange', 
+      label: 'isLightOrange',
+      options: {
+       filter: false,
+       sort: false,
+       display: false,
+      }
+     },
+     {
+      name: 'isLightRed', 
+      label: 'isLightRed',
+      options: {
+       filter: false,
+       sort: false,
+       display: false,
+      }
+     },
     ];
 
     let data = [];
@@ -235,7 +275,7 @@ const DeltaReport = (props) => {
             ACSN: item["AC SN"], 
             tail: item["Tail#"],
             EICASMessages: item["EICAS Message"], 
-            mdcMessages: item["MDC Message"],  
+            mdcMessages: item["MDC Messagee"],  
             LRU: item["LRU"],  
             ATA: item["ATA"],  
             B1Equation: item["B1-Equation"],  
@@ -252,6 +292,10 @@ const DeltaReport = (props) => {
             comments: item["Additional Comments"],  
             input: item["MHIRJ ISE Input"],  
             isJam: item["is_jam"],
+            isDarkOrange: item["is_dark_orange"],
+            isDarkRed: item["is_dark_red"],
+            isLightOrange: item["is_light_orange"],
+            isLightRed: item["is_light_red"],
             honey: "Not Available",
             dateFrom: "Not Available",
             dateTo: "Not Available",
@@ -276,6 +320,19 @@ const DeltaReport = (props) => {
       downloadOptions: {
         filename: 'Delta Report.csv',
         separator: ',',
+      },
+      setRowProps: (row, index) => {
+        if (row[20] === true) {
+          return {style: {background: '#ff4c00'}} // dark orange
+        } else if (row[21] === true) {
+          return {style: {background: '#ff0000'}} // dark red
+        } else if (row[22] === true) {
+          return {style: {background: '#ff7f50'}} //is jam
+        } else if (row[23] === true) {
+          return {style: {background: '#ffb89a'}} // light orange
+        } else if (row[24] === true) {
+          return {style: {background: '#ff9a9a'}} // light red
+        }
       },
       draggableColumns: {
         enabled: false,

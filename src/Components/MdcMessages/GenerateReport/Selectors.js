@@ -8,6 +8,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import '../../../scss/core/_selectors.scss';
+import Constants from '../../utils/const';
 
 const AirlineList = ['SKW'];
 const MessagesList = ['Include', 'Exclude'];
@@ -57,7 +58,7 @@ export const ATAMainSelector = (props) => {
   const [ATAMain, setATAMain] = useState([]);
   const [ATAMainList,setATAMainList] = useState([]);
   useEffect(() => {
-    const path = 'http://20.85.211.143:8080/api/GenerateReport/ata_main/ALL'
+    const path = Constants.APIURL + '/GenerateReport/ata_main/ALL'
 
     try{
       axios.post(path).then(function (res) {
@@ -108,6 +109,7 @@ export const ATAMainSelector = (props) => {
     <Autocomplete
     className="autocomplete"
     multiple
+    limitTags={2}
     options={ATAMainList}
     getOptionLabel={(item => item)}
     value = {ATAMain}
@@ -129,7 +131,7 @@ export const EqIDSelector = (props) => {
   const [EqID, setEqID] = useState([]);
   const [EqList,setEqIDList] = useState([]);
   useEffect(() => {
-    const path = 'http://20.85.211.143:8080/api/GenerateReport/equation_id/ALL'
+    const path = Constants.APIURL + '/GenerateReport/equation_id/ALL'
 
     try{
       axios.post(path).then(function (res) {
@@ -184,6 +186,7 @@ export const EqIDSelector = (props) => {
     <Autocomplete
         className="autocomplete"
         multiple
+        limitTags={2}
         options={EqList}
         getOptionLabel={(item => item)}
         value = {EqID}
