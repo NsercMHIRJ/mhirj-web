@@ -131,7 +131,6 @@ const Report = (props) => {
   
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
-            console.log(data, "data");
             setHistoryReportData(data);  
             setLoadingHistory(false);  
           }).catch(function (err){

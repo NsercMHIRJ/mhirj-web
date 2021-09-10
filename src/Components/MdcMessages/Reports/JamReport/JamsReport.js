@@ -234,7 +234,7 @@ const JamsReport = (props) => {
       rowsPerPage: 10,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
-      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : `${100+data.length*60}px`
+      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : `${200+data.length*60}px`
     };
 
   return (

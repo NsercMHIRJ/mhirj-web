@@ -290,7 +290,7 @@ const HistoryReport = (props) => {
         separator: ',',
       },
       setRowProps: (row, index) => {
-        if (row[19] === true){
+        if (row[22] === true){
           return {style: {background:'#FF7F50'}}
         }
       },
