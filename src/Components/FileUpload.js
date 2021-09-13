@@ -5,6 +5,7 @@ import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 // import Constants from './utils/const'
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -76,8 +77,9 @@ const useStyles = makeStyles((theme) => ({
        
     }
 
+    const [fileUploadInProgress , setfileUploadInProgress] = useState();
     function upload_MDC_data(e) {
-
+        setfileUploadInProgress(true);
         let file = mdc_raw_file.selectedFile
         let data = new FormData()
         data.append('file',file)
@@ -90,9 +92,12 @@ const useStyles = makeStyles((theme) => ({
            },
            data: data
        }).then((res)=>{
+           setfileUploadInProgress(false);
            alert("File Uploaded Successfully!", +res.data)
        })
        .catch(err =>{
+           setfileUploadInProgress(false);
+          //  alert("Something went wrong :-(")
            console.log(err);
        })
 
@@ -161,6 +166,7 @@ const useStyles = makeStyles((theme) => ({
                      onChange={(e) => handleChange(e)}
 
              />
+             {fileUploadInProgress ? <CircularProgress /> : ""}
             <Button type="button" className={classes.button} onClick={(e) => upload_MDC_data(e)}>
               Upload MDC RAW Data
             </Button>
