@@ -152,7 +152,7 @@ export default function FileUpload() {
     },
     data: data
   }).then((res) => {
-    alert("PM File Upload Started - Please Refer following Progress Bar ", +res.data)
+    alert("PM File Upload Started - Please Refer Following Progress Bar ", +res.data)
   })
     .catch(err => {
       console.log(err);
@@ -201,7 +201,7 @@ export default function FileUpload() {
     <div>
       <Box position="relative" display="inline-flex">
         <CircularProgress style={{ width: '80px', height: '80px', color: '#ffef62' }} variant="determinate" value={30} />
-        <Box top={0} left={0} bottom={0} right={0} position="absolute" display="flex" >
+        <Box top={0} left={0} bottom={0} right={0} position="absolute" display="flex" alignItems="center" justifyContent="center" >
           <Typography variant="caption" component="div" style={{ fontWeight: 'bold', fontSize: '18px' }} color="textPrimary">30%</Typography>
         </Box>
       </Box>
