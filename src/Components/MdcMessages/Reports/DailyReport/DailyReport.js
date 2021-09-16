@@ -204,19 +204,6 @@ const DailyReport = (props) => {
        setCellProps: () => ({style: {minWidth:'700px'}})
       }
      },
-     {
-      name: 'isJam', 
-      label: 'Jam',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       customFilterListOptions: {
-        render: item => item == false ? "False Jams" : "True Jams"
-      },
-       sort: false,
-       display: false,
-      }
-     },
     ];
 
     let data = [];
@@ -242,7 +229,6 @@ const DailyReport = (props) => {
             recommendation: item["MHIRJ ISE Recommendation"], 
             comments: item["Additional Comments"], 
             input: item["MHIRJ ISE Input"],  
-            isJam: item["is_jam"],
             honey: "Not Available",
           }
         );
@@ -258,19 +244,14 @@ const DailyReport = (props) => {
       fixedSelectColumn: true,
       jumpToPage: true,
       resizableColumns: false,
-      selectableRowsHideCheckboxes: false,
+      selectableRowsHideCheckboxes: true,
       selectableRows: 'single',
-      selectableRowsOnClick: true,
+      selectableRowsOnClick: false,
       rowsSelected: rowsSelectedState,
       onRowSelectionChange: HandleSingleRowSelect,
       downloadOptions: {
         filename: 'Daily Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
-      },
-      setRowProps: (row, index) => {
-        if (row[20] === true){
-          return {style: {background:'#FF7F50'}}
-        }
       },
       draggableColumns: {
         enabled: false,

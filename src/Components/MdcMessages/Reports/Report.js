@@ -35,22 +35,16 @@ const Report = (props) => {
   
   const [jamACSNDailyValue, setJamACSNDailyValue] = useState('');
   const [jamACSNHistoryValue, setJamACSNHistoryValue] = useState('');
-  const [jamDailyData, setJamDailyData] = useState([]);
   const [jamHistoryData, setJamHistoryData] = useState([]);
-  const [loadingJam, setLoadingJam] = useState();
   const [loadingHistoryJam, setLoadingHistoryJam] = useState();
-  const [jamValue, setJamValue] = useState(0);
   const [jamHistValue, setJamHistValue] = useState(0);
+  const [jamHistTitle, setJamHistTitle] = useState('');
   const [jamConditions, setJamConditions] = useState({});
 
   const [reportType, setReportType] = useState('');
 
   const HandleMultipleRowSelectReport = (flagList) => {
     setFlagList(flagList);
-  }
-
-  const HandleSingleRowSelect = (jamACSNDailyValue) => {
-    setJamACSNDailyValue(jamACSNDailyValue); 
   }
 
   const handleReportChange = (reportType) => {
@@ -155,21 +149,7 @@ const Report = (props) => {
     let jamParameters = [];
     let jamACSNValue;
 
-    if ( event.currentTarget.id === 'daily-jam-button' ) {
-      setJamConditions({
-        ...props.reportConditions,
-        jamACSNDailyValue
-      });
-      setJamDailyData([]);
-      setLoadingJam(true);
-      setJamValue(1);
-
-      if ( Object.entries( localStorage.getItem( 'daily-report' ) ).length !== 0 ) {
-        jamParameters = JSON.parse( localStorage.getItem( 'daily-report' ) );
-        jamACSNValue = jamACSNDailyValue;
-      }
-
-    } else if ( event.currentTarget.id === 'history-supporting-button' ) {
+    if ( event.currentTarget.id === 'history-supporting-button' ) {
       setJamConditions({
         ...props.reportConditions,
         jamACSNHistoryValue
@@ -181,6 +161,7 @@ const Report = (props) => {
       if ( Object.entries( localStorage.getItem( 'history-report' ) ).length !== 0 ) {
         jamParameters = JSON.parse( localStorage.getItem( 'history-report' ) );
         jamACSNValue = jamACSNHistoryValue;
+        setJamHistTitle("MDC raw data for the same flight leg where the jam was reported for aircraft " + jamACSNValue);
       }
     }
 
@@ -192,28 +173,14 @@ const Report = (props) => {
       
       axios.post(jamsPath).then(function (res){
         var data = JSON.parse(res.data);
-        console.log(data);
-        if ( jamParameters.analysis === 'daily' ) {
-          setJamDailyData(data);
-          setLoadingJam(false);
-        } else {
-          setJamHistoryData(data);
-          setLoadingHistoryJam(false);
-        }
+        setJamHistoryData(data);
+        setLoadingHistoryJam(false);
       }).catch(function (err){
         console.log(err);
-        if ( jamParameters.analysis === 'daily' ) {  
-          setLoadingJam(false);
-        } else {
-          setLoadingHistoryJam(false);
-        }
+        setLoadingHistoryJam(false);
       });
     } else {
-      if ( jamParameters.analysis === 'daily' ) {  
-        setLoadingJam(false);
-      } else {
         setLoadingHistoryJam(false);
-      }
     }
   }
 
@@ -241,55 +208,16 @@ const Report = (props) => {
       {dailyReportData !== "" && dailyReportData !== "undefined" && dailyValue === 1 &&
         <>
           <div class="daily-report">
-            <h2 class="report-parameters-h2">Daily Jam Report Parameters</h2>
-            <form>
-              <Grid 
-                container
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-                >
-                <Grid item xs={3} md={6} lg={3}>
-                  <div class="daily-report-jam-parameters">
-                    <label class="parameter-label">ACSN:</label>
-                    <TextField 
-                      required 
-                      id="outlined-name"
-                      variant = "outlined"   
-                      value = {jamACSNDailyValue}
-                      InputProps={{ readOnly: true, }}    
-                    />
-                  </div>
-                </Grid>
-                <Grid xs={3} md={6} lg={3}>
-                  <div class="daily-report-jam-parameters">
-                    <Button 
-                      variant = "contained" 
-                      class="reports-button MuiButtonBase-root MuiButton-root MuiButton-contained" 
-                      id = "daily-jam-button"
-                      onClick = {handleGenerateJamsReport} >
-                      Generate Jams Report
-                    </Button>
-                  </div>        
-                </Grid>      
-              </Grid>
-            </form>
             <Grid item lg={12}>
               <DailyReport 
                 data = {dailyReportData} 
                 title = "Daily Report" 
                 reportConditions = {report} 
                 loading = {loadingDaily}
-                HandleSingleRowSelect = {HandleSingleRowSelect}
                 />
             </Grid>
           </div>
         </>
-      }
-      {jamACSNDailyValue !== "" && jamDailyData !== "" && jamDailyData !== "undefined" && jamValue === 1 &&
-      <>
-        <JamsReport data = {jamDailyData} reportConditions = {props.reportConditions} title = "Daily" loading = {loadingJam}/>
-      </>
       }
       {historyReportData !== "" && historyReportData !== "undefined" && histValue === 1 &&
         <>
@@ -359,7 +287,10 @@ const Report = (props) => {
               {jamACSNHistoryValue !== "" && jamHistoryData !== "" && jamHistoryData !== "undefined" && jamHistValue === 1 &&
               <>
                 <Grid item md={12}>
-                  <JamsReport data = {jamHistoryData} reportConditions = {props.reportConditions} title = "History" loading = {loadingHistoryJam}/>
+                  <JamsReport data = {jamHistoryData} 
+                  reportConditions = {props.reportConditions} 
+                  title = {jamHistTitle} 
+                  loading = {loadingHistoryJam}/>
                 </Grid>
               </>
               }

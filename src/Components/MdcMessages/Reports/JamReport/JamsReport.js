@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import {DateConverter} from '../../../Helper/Helper';
@@ -179,6 +179,9 @@ const JamsReport = (props) => {
      },
     ];
 
+    const flightNumber = props.data ? console.log(props.data) :  '';
+    const [flightLegNumber,setFlightLegNumber] = useState(flightNumber);
+
     let data = [];
       props.data?.map((item => {
         data.push(
@@ -218,7 +221,7 @@ const JamsReport = (props) => {
       resizableColumns: false,
       selectableRowsHideCheckboxes: true,
       downloadOptions: {
-        filename: props.title + 'Jam Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
+        filename: props.title + ' from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
       },
       draggableColumns: {
@@ -242,7 +245,7 @@ const JamsReport = (props) => {
       <Grid container spacing={0}>
         <Grid item xs={12}>
           <MUIDataTable
-            title={props.title + " Jam Report"} 
+            title= {props.title}
             data={data}
             columns={columns}
             options={options}
