@@ -11,62 +11,41 @@ import Paper from '@material-ui/core/Paper';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import CorrelationSubTable from './CorrelationSubTable';
-//Date Imports
 import {DateConverter} from '../Helper/Helper';
 import Constants from '../utils/const';
+import {GenerateCorrelationValidation, NotFirstRender} from '../Helper/Helper';
+import "../../scss/_main.scss";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
+  button: {
+    width: '100%',
+    height: '56px',
+    backgroundColor: '#C5D3E0',
+    margin: '10px auto',
+    display: 'block',
   },
-    form:{
-      '& .MuiTextField-root': {
-        margin: theme.spacing(1),
-    },
-  },
-  paper: {
-    margin: '20px auto 23px 20px',
-    width: '92vw',
-  },
-  container: {
-    padding: '20px 40px',
-  },
-  button:{
-    height: '50px',
-    width:'100%',
-    backgroundColor:"#C5D3E0",
-  },
-  Grid:{
-    paddingLeft:'30px',
-    margin: 'auto',
-  },
-  card:{
-    backgroundColor: "#C5D3E0",
-    textAlign: 'center',
-    justify: 'center',
-    padding: '5px',
-  },
-  formLabel:{
-    fontWeight: 'bold',
-    color: 'black',
-    marginBottom: '20px',
-  },
-  TableGrid:{
-    paddingLeft:'11px',
-    margin: '0px',
-    width:'94vw',
-  }
 }));
 
 const PMTable = (props) => {
   const classes = useStyles();
-  const [dateFrom, setDateFrom] = useState();
-  const [dateTo, setDateTo] = useState();
-  const [ATAMain, setATAMain] = useState();
-  const [EqID, setEqID] = useState('');
+
+  var todayDate = new Date().toISOString().slice(0, 10);
+  const [dateFrom, setDateFrom] = useState(todayDate);
+  const [dateTo, setDateTo] = useState(todayDate);
+  const [ATAMain, setATAMain] = useState("");
+  const [EqID, setEqID] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [PMValue,setPMValue] = useState(0);
+  const [validationResponse, setValidationResponse] = useState('');
+  const [PMConditions,setPMConditions] = useState(
+    {         
+      dateFrom: todayDate,
+      dateTo: todayDate,
+      EqID: '',
+      ATAMain: '',
+    },
+  );
 
   const handleDateFrom = (date) => {
     setDateFrom(date);
@@ -75,14 +54,15 @@ const PMTable = (props) => {
   const handleDateTo = (date) => {
     setDateTo(date);
   };
+
   const handleATAChange = (ATA) => {
     setATAMain(ATA);
   };
+
   const handleEqIDChange = (eqIDList) => {
     setEqID(eqIDList);
   };
 
-  const [PMConditions,setPMConditions] = useState('');
   const handleGeneratePMTable = ()=> {
     setPMConditions(
     {         
@@ -90,32 +70,43 @@ const PMTable = (props) => {
       dateTo: dateTo,
       EqID: EqID,
       ATAMain: ATAMain,
-    },
-    )
-  setData([]);
-  setPMValue(1);
-  setLoading(true);
-}
+    });
+    setData([]);
+    setPMValue(1);
+    setLoading(true);
+  }
+
+  const notFirstRender = NotFirstRender();
 
   useEffect(() => {
-     let flag = false;
-    Object.values(PMConditions).map(item => {
-      if (item === "" || item === "('')"){
-        flag = true;
+    if (notFirstRender) {
+      let validationResponse = GenerateCorrelationValidation(PMConditions);
+      setValidationResponse(validationResponse);
+      console.log(validationResponse);
+    }
+    if ( PMValue !== 0) {
+      if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined) {
+        let path = Constants.APIURL + 'corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo;
+        if ( PMConditions.EqID !== '' ) {
+          path += '/' + PMConditions.EqID;
+        }
+        if ( PMConditions.ATAMain !== '' ) {
+          path += '/' + PMConditions.ATAMain;
+        }
+        console.log(path);
+        axios.post(path).then(function (res) {
+          var data = JSON.parse(res.data);
+          console.log(data);
+          setData(data);
+          setLoading(false);
+        }).catch(function (err){
+          console.log(err);
+          setLoading(false);
+        })
+      } else {
         setLoading(false);
       }
-    });
-    if (flag === false) {      
-        const path = Constants.APIURL + 'corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.ATAMain;
-          axios.post(path).then(function (res) {
-            var data = JSON.parse(res.data);
-            setData(data);
-            setLoading(false);
-          }).catch(function (err){
-            console.log(err);
-            setLoading(false);
-          })
-      }
+    }
   },[PMConditions]);
 
 const columns = [
@@ -412,71 +403,71 @@ const options = {
   selectToolbarPlacement:"none",
 };
 
-const theme = createMuiTheme({
-  palette: {type: 'light'},
-  typography: {useNextVariants: true},
-});
-
   return (
-    <div className={classes.root}>
-    <Paper className={classes.paper}>
-        <div className ={classes.card}>
-          <h2>Correlation Filters</h2>
-        </div>
-        <div className={classes.container}>
-        <Grid className={classes.Grid} container spacing={3}> 
-          <Grid item xs={3}>     
-            <ATAMainSelector 
-              handleATAChange = {handleATAChange}
-            />              
-          </Grid>     
-          <Grid item xs={3}>     
-            <EqIDSelector 
-              handleEqIDChange = {handleEqIDChange}
-            />                   
-          </Grid>    
-          <Grid item xs={2}>      
-            <DatePicker 
-              label = "From"
-              handleDateFrom = {handleDateFrom}
-            />   
-          </Grid>
-          <Grid item xs={2}>         
-            <DatePicker 
-              label = "To"
-              handleDateTo = {handleDateTo}
-            />   
-          </Grid>
-          <Grid item xs={2}>  
-            <Button 
-              variant="contained" 
-              onClick = {async()=>handleGeneratePMTable()}
-              className={classes.button}>
-                Generate Correlation Table
-            </Button>  
-          </Grid>     
-          </Grid>      
-          </div>
-      </Paper>
-    {data !== "" && data !== "undefined" && PMValue === 1 &&
+    <div>
+      <div class="analysis-root">
+        <form class="analysis-form">
+          <Paper className={classes.paper}>
+            <div class="analysis-card">
+              <h2>CORRELATION</h2>
+            </div>
+            <div>
+              <Grid className={classes.Grid} container spacing={3}> 
+                <Grid item xs={3}>  
+                  <ATAMainSelector 
+                    handleATAChange = {handleATAChange}
+                  />              
+                </Grid>     
+                <Grid item xs={3}>     
+                  <EqIDSelector 
+                    handleEqIDChange = {handleEqIDChange}
+                  />                   
+                </Grid>    
+                <Grid item xs={2}>    
+                  <DatePicker 
+                    label = "From"
+                    handleDateFrom = {handleDateFrom}
+                  />   
+                  <p class="validation-message">{validationResponse.fromDateMessage}</p>  
+                </Grid>
+                <Grid item xs={2}>         
+                  <DatePicker 
+                    label = "To"
+                    handleDateTo = {handleDateTo}
+                  />   
+                  <p class="validation-message">{validationResponse.toDateMessage}</p>
+                </Grid>
+                <Grid item xs={2}>  
+                  <Button 
+                    variant="contained" 
+                    onClick = {async()=>handleGeneratePMTable()}
+                    className={classes.button}>
+                      Generate Correlation Table
+                  </Button>  
+                </Grid>     
+              </Grid>      
+            </div>
+        </Paper>
+      </form>
+    {data !== "" && data !== "undefined" && PMValue === 1 && validationResponse.status === true &&
       <>
-      <Grid className={classes.TableGrid} container spacing={3}> 
+      <div className="reports-root">
+        <Grid container spacing={0}>
           <Grid item xs={12}>
-            <MuiThemeProvider theme={theme}>
-              <MUIDataTable
-                title="PM Report"
-                data={responseData}
-                columns={columns}
-                options={options}
-              />
-            </MuiThemeProvider> 
+            <MUIDataTable
+              title="PM Report"
+              data={responseData}
+              columns={columns}
+              options={options}
+            />
           </Grid> 
         </Grid> 
+      </div>
       </>
     }
+    </div>
   </div>
-  );
-  }
+);}
 
 export default PMTable;
 

@@ -93,6 +93,23 @@ export const GenerateReportValidation = (report) => {
   return validationResponse;
 }
 
+export const GenerateCorrelationValidation = (report) => {
+  let validationResponse = {};
+  validationResponse.status = true;
+  
+  if ( report.dateFrom === undefined ) {
+    validationResponse.fromDateMessage = "From date is a required field."
+    validationResponse.status = false;
+  }
+
+  if ( report.dateTo === undefined ) {
+    validationResponse.toDateMessage = "To date is a required field."
+    validationResponse.status = false;
+  }
+
+  return validationResponse;
+}
+
 export const NotFirstRender = () => {
   const firstRender = useRef(false);
 

@@ -33,7 +33,6 @@ const Report = (props) => {
   const [flagValue,setFlagValue] = useState(0);
   const [loadingFlag, setLoadingFlag] = useState();
   
-  const [jamACSNDailyValue, setJamACSNDailyValue] = useState('');
   const [jamACSNHistoryValue, setJamACSNHistoryValue] = useState('');
   const [jamHistoryData, setJamHistoryData] = useState([]);
   const [loadingHistoryJam, setLoadingHistoryJam] = useState();
