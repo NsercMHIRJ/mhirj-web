@@ -183,7 +183,6 @@ function upload_filter(e) {
   reader.onload = (e) => {
     const file_Content = e.target.result;
     var data = JSON.parse(file_Content);
-    console.log(data)
     setImportedData(data);
     if(data.analysis) setAnalysisType(data.analysis); 
      

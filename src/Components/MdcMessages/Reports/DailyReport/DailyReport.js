@@ -6,6 +6,7 @@ import "../../../../scss/_main.scss";
 
 const DailyReport = (props) => {
   const [rowsSelectedState, setRowsSelected] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = useState('10');
 
   const HandleSingleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
     if (rowsSelected.length !== 0 && data[rowsSelected].isJam === true) {
@@ -15,6 +16,10 @@ const DailyReport = (props) => {
     else {
       setRowsSelected(rowsSelected);
     }
+  };
+
+  const onChangeRowsPerPage = (rowsPerPage) => {
+    setRowsPerPage(rowsPerPage);
   };
 
   const columns = [
@@ -170,7 +175,7 @@ const DailyReport = (props) => {
      },
      {
       name: 'honey', 
-      label: 'HONEY or No-Dispatch',
+      label: 'Mel or No-Dispatch',
       options: {
        filter: false,
        sort: true,
@@ -208,6 +213,11 @@ const DailyReport = (props) => {
 
     let data = [];
       props.data?.map((item => {
+        let input = item["MHIRJ ISE Input"] === '0' ? '' : item["MHIRJ ISE Input"];
+        let recommendation = item["MHIRJ ISE Recommendation"] === '0' ? '' : item["MHIRJ ISE Recommendation"];
+        let comments = item["Additional Comments"] === '0' ? '' : item["Additional Comments"];
+        let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
+
         data.push(
           {
             date: DateConverter(item["Date"]), 
@@ -225,11 +235,11 @@ const DailyReport = (props) => {
             intermittent: item["Intermittent"],  
             reasons: item["Reason(s) for flag"],   
             priority: item["Priority"],   
-            topMessage: item["Known Top Message - Recommended Documents"],  
-            recommendation: item["MHIRJ ISE Recommendation"], 
-            comments: item["Additional Comments"], 
-            input: item["MHIRJ ISE Input"],  
-            honey: "Not Available",
+            topMessage: topMessage,  
+            recommendation: recommendation, 
+            comments: comments, 
+            input: input,  
+            honey: "",
           }
         );
         return data;
@@ -263,7 +273,8 @@ const DailyReport = (props) => {
         },
     },
       elevation: 4,
-      rowsPerPage: 10,
+      rowsPerPage:  rowsPerPage,
+      onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '500px'

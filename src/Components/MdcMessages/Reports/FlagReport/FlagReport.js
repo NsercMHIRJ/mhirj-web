@@ -134,6 +134,10 @@ const FlagReport = (props) => {
 
     let data = [];
       props.data?.map((item => {
+        let input = item["ISE Input"] === '0' ? '' : item["ISE Input"];
+        let iseRecAct = item["ISE Rec Act"] === '0' ? '' : item["ISE Rec Act"];
+        let action = item["SKW WIP"] === '0' ? '' : item["SKW WIP"];
+
         data.push(
           {
             MSN: item["AC SN"], 
@@ -145,9 +149,9 @@ const FlagReport = (props) => {
             FDE: item["Potential FDE"],  
             dateFrom: DateConverter(item["Date From"]),   
             dateTo: DateConverter(item["Date To"]),   
-            action: item["SKW WIP"],  
-            input: item["ISE Input"],  
-            iseRecAct: item["ISE Rec Act"],  
+            action: action,  
+            input: input,  
+            iseRecAct: iseRecAct,  
           }
         );
         return data;

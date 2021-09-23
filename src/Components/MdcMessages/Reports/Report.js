@@ -74,7 +74,6 @@ const Report = (props) => {
             report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + 0 + '/' + report.fromDate + '/' + report.toDate + 
             '/' + report.deltaFrom + '/' + report.deltaTo;
           }
-          console.log(path);
 
           localStorage.setItem('delta-report', JSON.stringify( report ) );
           setDeltaValue(1);
@@ -83,7 +82,6 @@ const Report = (props) => {
   
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
-            console.log(data);
             setDeltaData(data);    
             setLoadingDelta(false);
           }).catch(function (err){
@@ -114,8 +112,6 @@ const Report = (props) => {
         else if (report.analysis === "history") {
           path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
           report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
-
-          console.log(path);
 
           localStorage.setItem('history-report', JSON.stringify( report ) );
           setHistValue(1);
@@ -192,7 +188,6 @@ const Report = (props) => {
 
       axios.post(flagPath).then(function (res){
         var data = JSON.parse(res.data);
-        console.log(data,"flag data");
         setFlagData(data);
         setLoadingFlag(false);
       }).catch(function (err){

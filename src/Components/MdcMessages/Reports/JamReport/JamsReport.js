@@ -179,11 +179,12 @@ const JamsReport = (props) => {
      },
     ];
 
-    const flightNumber = props.data ? console.log(props.data) :  '';
+    const flightNumber = props.data ? props.data :  '';
     const [flightLegNumber,setFlightLegNumber] = useState(flightNumber);
 
     let data = [];
       props.data?.map((item => {
+        
         data.push(
           {
             flightLegNumber: item["Flight"], 

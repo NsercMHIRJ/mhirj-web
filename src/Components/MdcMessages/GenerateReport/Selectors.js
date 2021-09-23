@@ -264,7 +264,6 @@ export const HistorySupportingSelector = (props) => {
   const [supportingReport, setSupportingReport] = useState('');
 
   const handleReportChange = (event) => {
-    console.log(event.target.value);
     setSupportingReport(event.target.value);
     props.handleReportChange(event.target.value);
   };
