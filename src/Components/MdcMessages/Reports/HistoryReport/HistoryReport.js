@@ -6,6 +6,7 @@ import "../../../../scss/_main.scss";
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
   const [rowsSelectedState, setRowsSelected] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = useState('10');
 
   const HandleMultipleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
     setRowsSelected(rowsSelected);
@@ -20,6 +21,10 @@ const HistoryReport = (props) => {
     props.setJamACSNHistoryValue(ACSNArray[ACSNArray.length-1]);
     setFlagList(flagList);
     props.HandleMultipleRowSelectReport(flagList);
+  };
+
+  const onChangeRowsPerPage = (rowsPerPage) => {
+    setRowsPerPage(rowsPerPage);
   };
 
   const columns = [
@@ -191,7 +196,7 @@ const HistoryReport = (props) => {
      },
      {
       name: 'honey', 
-      label: 'HONEY or No-Dispatch',
+      label: 'Mel or No-Dispatch',
       options: {
        filter: false,
        sort: true,
@@ -242,6 +247,11 @@ const HistoryReport = (props) => {
 
     let data = [];
       props.data?.map((item => {
+        let input = item["MHIRJ ISE Input"] === '0' ? '' : item["MHIRJ ISE Input"];
+        let recommendation = item["MHIRJ ISE Recommendation"] === '0' ? '' : item["MHIRJ ISE Recommendation"];
+        let comments = item["Additional Comments"] === '0' ? '' : item["Additional Comments"];
+        let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
+
         data.push(
           {
             ACSN: item["AC SN"], 
@@ -259,14 +269,14 @@ const HistoryReport = (props) => {
             intermittent: item["Intermittent"],  
             reasons: item["Reason(s) for flag"],   
             priority: item["Priority"],   
-            topMessage: item["Known Top Message - Recommended Documents"],  
-            recommendation: item["MHIRJ ISE Recommendation"], 
-            comments: item["Additional Comments"],  
-            input: item["MHIRJ ISE Input"],  
+            topMessage: topMessage,  
+            recommendation: recommendation, 
+            comments: comments, 
+            input: input,  
             isJam: item["is_jam"],
-            honey: "Not Available",
-            dateFrom: "Not Available",
-            dateTo: "Not Available",
+            honey: "",
+            dateFrom: "",
+            dateTo: "",
           }
         );
         return data;
@@ -304,7 +314,8 @@ const HistoryReport = (props) => {
         },
     },
       elevation: 4,
-      rowsPerPage: 10,
+      rowsPerPage:  rowsPerPage,
+      onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'

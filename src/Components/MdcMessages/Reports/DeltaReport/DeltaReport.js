@@ -296,9 +296,9 @@ const DeltaReport = (props) => {
             isDarkRed: item["is_dark_red"],
             isLightOrange: item["is_light_orange"],
             isLightRed: item["is_light_red"],
-            honey: "Not Available",
-            dateFrom: "Not Available",
-            dateTo: "Not Available",
+            honey: "",
+            dateFrom: "",
+            dateTo: "",
           }
         );
         return data;

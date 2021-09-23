@@ -82,7 +82,6 @@ const PMTable = (props) => {
     if (notFirstRender) {
       let validationResponse = GenerateCorrelationValidation(PMConditions);
       setValidationResponse(validationResponse);
-      console.log(validationResponse);
     }
     if ( PMValue !== 0) {
       if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined) {
@@ -93,10 +92,8 @@ const PMTable = (props) => {
         if ( PMConditions.ATAMain !== '' ) {
           path += '/' + PMConditions.ATAMain;
         }
-        console.log(path);
         axios.post(path).then(function (res) {
           var data = JSON.parse(res.data);
-          console.log(data);
           setData(data);
           setLoading(false);
         }).catch(function (err){

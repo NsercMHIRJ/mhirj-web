@@ -17,8 +17,6 @@ export const GenerateReportValidation = (report) => {
   let validationResponse = {};
   validationResponse.status = true;
 
-  console.log(report.analysis);
-
   if ( report.analysis === "" ) {
     validationResponse.analysisMessage = "Analysis type is a required field.";
     validationResponse.status = false;
