@@ -58,7 +58,7 @@ export default function Chart1() {
         let messageOcc = [];
         
         //const path = 'http://mhirjapi.azurewebsites.net/api/chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + ATAMain + '/' + data_chart1.from_date + '/' + data_chart1.to_date;
-         const path = Constants.APIURL+'/chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + ATAMain +'/' + data_chart1.from_date + '/' + data_chart1.to_date;
+         const path = Constants.APIURL+'chart_one/' + data_chart1.top_value + '/' + data_chart1.aircraft_no + '/' + ATAMain +'/' + data_chart1.from_date + '/' + data_chart1.to_date;
         console.log("path is : "+path)
         
         axios.post(path)

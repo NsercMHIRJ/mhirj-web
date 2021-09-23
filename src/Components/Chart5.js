@@ -65,7 +65,7 @@ export default function Chart5() {
     let flight_leg = [];
     
     
-    const path=Constants.APIURL+ '/chart_five/' +data_chart5.aircraft_no+ '/' +data_chart5.equation_id+ '/' +flightphase+ '/' +data_chart5.from_date+ '/' +data_chart5.to_date;
+    const path=Constants.APIURL+ 'chart_five/' +data_chart5.aircraft_no+ '/' +data_chart5.equation_id+ '/' +flightphase+ '/' +data_chart5.from_date+ '/' +data_chart5.to_date;
     axios.post(path)
       .then(res => {
         //console.log(res,"response");

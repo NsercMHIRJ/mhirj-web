@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Constants from './utils/const';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,7 +66,7 @@ export default function Chart3() {
     let OccperDay = [];
 
     //const path = 'http://mhirjapi.azurewebsites.net/api/chart_three/' + data_chart3.aircraft_no + '/' + data_chart3.equation_id + '/' + flightphase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
-    const path = 'https://mhirjapi.azurewebsites.net/api/chart_three/' + data_chart3.aircraft_no + '/' + data_chart3.equation_id + '/' + data_chart3.flight_phase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
+    const path = Constants.APIURL+ '/chart_three/' +data_chart3.aircraft_no + '/' +data_chart3.equation_id+ '/' +flightphase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
 
     console.log(path)
     axios.post(path)
@@ -75,6 +76,7 @@ export default function Chart3() {
           Dates.push(DateConverter(dataObj.Dates));
           OccperDay.push(parseInt(dataObj.OccurencesPerDay));
         }
+        //console.log(OccperDay)
         setChartData3({
           labels: Dates,
           datasets: [
@@ -123,8 +125,8 @@ export default function Chart3() {
             <div><FormControl variant="outlined" className={classes.formControl}>
               <InputLabel id="demo-simple-select-outlined-label">Current Messages</InputLabel>
               <Select labelId="demo-simple-select-outlined-label"  id="flight_phase" value={flightphase} onChange={handleflightphase}  label="Current Messages">
-                <MenuItem value={0}>Include</MenuItem>
-                <MenuItem value={1}>Exclude</MenuItem>
+                <MenuItem value={0}>Exclude</MenuItem>
+                <MenuItem value={1}>Include</MenuItem>
               </Select>
             </FormControl></div>
             <br></br>
