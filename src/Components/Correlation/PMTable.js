@@ -92,6 +92,7 @@ const PMTable = (props) => {
         if ( PMConditions.ATAMain !== '' ) {
           path += '/' + PMConditions.ATAMain;
         }
+        console.log(path);
         axios.post(path).then(function (res) {
           var data = JSON.parse(res.data);
           setData(data);
@@ -118,8 +119,8 @@ const columns = [
     }
   },
   {
-    name: 'operator', 
-    label: 'Operator',
+    name: "tail",
+    label: "Tail#",
     options: {
       filter: true,
       filterType: 'dropdown',
@@ -128,18 +129,8 @@ const columns = [
     }
   },
   {
-    name: 'model', 
-    label: 'Model',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap', minWidth: "90px"}})
-    }
-  },
-  {
-    name: 'type', 
-    label: 'Type',
+    name: "aircraftNo",
+    label: "Aircraft Number",
     options: {
       filter: true,
       filterType: 'dropdown',
@@ -148,20 +139,91 @@ const columns = [
     }
   },
   {
-    name: 'serialNo', 
-    label: 'Serial_No',
+    name: "equationID",
+    label: "Equation ID",
     options: {
       filter: true,
       filterType: 'dropdown',
       sort: true,
       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+    }
+  },
+  {
+    name: "equationDescription",
+    label: "Equation Description",
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {minWidth:'400px'}})
+    }
+  },
+  {
+    name: "LRU",
+    label: "LRU",
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+    }
+  },
+  {
+    name: "CAS",
+    label: "CAS",
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+    }
+  },
+  {
+    name: "mdcMessage",
+    label: "MDC Message",
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+    }
+  },
+  {
+    name: 'ATA', 
+    label: 'ATA',
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+    }
+  },
+  {
+    name: 'discrepancy', 
+    label: 'Discrepancy',
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {minWidth:'400px'}})
+    }
+  },
+  {
+    name: 'action', 
+    label: 'Corrective Action',
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {minWidth:'400px'}})
     }
   },
   {
     name: 'date', 
-    label: 'Date',
+    label: 'Date and Time',
     options: {
-      filter: false,
+      filter: true,
+      filterType: 'dropdown',
       sort: true,
       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
     }
@@ -177,106 +239,6 @@ const columns = [
     }
   },
   {
-    name: 'maintTrans', 
-    label: 'MaintTrans',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
-    name: 'maintCanc', 
-    label: 'Maintenance Cancellations',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'maintDel', 
-    label: 'Maintenance Delays',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap',minWidth: "120px"}})
-    }
-    },
-    {
-    name: 'inspection', 
-    label: 'Inspection',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'campType', 
-    label: 'Camp Type',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'MRB', 
-    label: 'MRB',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap',minWidth: "100px"}})
-    }
-    },
-    {
-    name: 'discrepancy', 
-    label: 'Discrepancy',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'corActions', 
-    label: 'Corrective Action',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'totalHours', 
-    label: 'AC Total Hours',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'totalCycles', 
-    label: 'AC Total Cycles',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
     name: 'squawkSource', 
     label: 'Squawk Source',
     options: {
@@ -285,74 +247,38 @@ const columns = [
       sort: true,
       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
     }
-    },
-    {
-    name: 'ATA', 
-    label: 'ATA',
+  },
+  {
+    name: 'maint', 
+    label: 'Maint',
     options: {
       filter: true,
       filterType: 'dropdown',
       sort: true,
       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
     }
-    },
-    {
-    name: 'station', 
-    label: 'Station',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'ATA_SUB', 
-    label: 'ATA SUB',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'ATA_Main', 
-    label: 'ATA Main',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
+  },
 ];
+
   let responseData = [];
   data.map((item => {
     responseData.push(
       {
-        p_id: item["p_id"], 
-        operator: item["Operator"], 
-        model: item["Model"], 
-        type: item["Type"],  
-        serialNo: item["Serial_No"],  
-        date: DateConverter(item["date"]),  
-        failureFlag: item["Failure Flag"],  
-        maintTrans: item["Maint Trans"],   
-        maintCanc: item["Maintenance Cancellations"],   
-        maintDel: item["Maintenance Delays"],  
-        inspection: item["Inspection"],  
-        campType: item["CampType"],   
-        MRB: item["MRB"],   
-        discrepancy: item["Discrepancy"],  
-        corActions: item["Corrective Action"], 
-        totalHours: item["AC Total Hours"],  
-        totalCycles: item["AC Total Cycles"],  
-        squawkSource:  item["Squawk Source"],
+        p_id: item["p_ID"], 
+        tail: item["Aircraft_tail_No"],
+        aircraftNo: item["aircraftno"],
+        equationID: item["EQ_ID"],
+        equationDescription: item["EQ_DESCRIPTION"],
+        LRU: item["LRU"],
+        CAS: item["CAS"],
+        mdcMessage: item["MDC_MESSAGE"],
         ATA: item["ATA"],
-        station: item["Station"],
-        ATA_SUB: item["ATA_SUB"],
-        ATA_Main: item["ATA_Main"],
+        discrepancy: item["Discrepancy"],
+        action: item["CorrectiveAction"],
+        date: DateConverter(item["DateAndTime"]),
+        failureFlag: item["Failure_Flag"],
+        squawkSource: item["SquawkSource"],
+        maint: item["Maint"],
       }
     );
      return responseData
@@ -386,6 +312,8 @@ const options = {
     },
 },
   fixedSelectColumn: true,
+  selectableRowsHideCheckboxes: true,
+  selectableRowsOnClick: false,
   downloadOptions: {
     filename: 'PM Report from ' + dateFrom + ' to ' + dateTo + '.csv',
     separator: ',',

@@ -255,7 +255,6 @@ const DailyReport = (props) => {
       jumpToPage: true,
       resizableColumns: false,
       selectableRowsHideCheckboxes: true,
-      selectableRows: 'single',
       selectableRowsOnClick: false,
       rowsSelected: rowsSelectedState,
       onRowSelectionChange: HandleSingleRowSelect,

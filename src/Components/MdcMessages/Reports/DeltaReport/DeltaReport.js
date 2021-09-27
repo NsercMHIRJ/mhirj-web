@@ -179,7 +179,7 @@ const DeltaReport = (props) => {
      },
      {
       name: 'honey', 
-      label: 'HONEY or No-Dispatch',
+      label: 'Mel or No-Dispatch',
       options: {
        filter: false,
        sort: true,

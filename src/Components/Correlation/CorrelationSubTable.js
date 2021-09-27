@@ -22,16 +22,16 @@ const CorrelationSubTable = (props) => {
 
   useEffect(()=>{
     const path = Constants.APIURL + 'corelation/' + props.p_id;
+    console.log(path, "subpath");
 
-    try{
-      axios.post(path).then(function (res) {
-        var data = JSON.parse(res.data);
-        setData(data);
-      });
-    } catch (err) {
-      console.error(err);
+    axios.post(path).then(function (res){
+      var data = JSON.parse(res.data);
+      setData(data);    
       setLoading(false);
-    } 
+    }).catch(function (err){
+      console.log(err);
+      setLoading(false);
+    });
   },[props.p_id])
 
   const columns = [
