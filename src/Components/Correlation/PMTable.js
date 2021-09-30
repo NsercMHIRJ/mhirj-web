@@ -86,11 +86,15 @@ const PMTable = (props) => {
     if ( PMValue !== 0) {
       if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined) {
         let path = Constants.APIURL + 'corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo;
-        if ( PMConditions.EqID !== '' ) {
-          path += '/' + PMConditions.EqID;
-        }
-        if ( PMConditions.ATAMain !== '' ) {
-          path += '/' + PMConditions.ATAMain;
+        if ( PMConditions.EqID !== '' && PMConditions.ATAMain !== '') {
+          path += '?equation_id=' + PMConditions.EqID + '&ata=' + PMConditions.ATAMain;
+        }else {
+          if ( PMConditions.EqID !== '' ) {
+            path += '?equation_id=' + PMConditions.EqID;
+          }
+          if ( PMConditions.ATAMain !== '' ) {
+            path += '?ata=' + PMConditions.ATAMain;
+          }
         }
         console.log(path);
         axios.post(path).then(function (res) {
