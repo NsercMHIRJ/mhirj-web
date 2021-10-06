@@ -51,7 +51,7 @@ export default function Scatter1() {
   function submit(e) {
     e.preventDefault();
 
-    const path = Constants.APIURL+ '/scatter_chart_MDC_PM/' + data_chart1.from_date + '/' + data_chart1.to_date;
+    const path = Constants.APIURL+ 'scatter_chart_MDC_PM/' + data_chart1.from_date + '/' + data_chart1.to_date;
     //const path = 'http://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM/' + data_chart1.select_date;
 
 
