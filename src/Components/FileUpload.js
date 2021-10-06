@@ -338,7 +338,7 @@ export default function FileUpload() {
     let Additional_Comments = [];
     let MEL_or_No_Dispatch = [];
 
-    const path = Constants.APIURL + 'update_input_message_data/' + data_update.Equation_ID + '/' + data_update.EICAS + '/' + data_update.Priority_ + '/' + data_update.MHIRJ_ISE_inputs + '/' + data_update.MHIRJ_ISE_Recommended_Action + '/' + data_update.Additional_Comments + '/' + data_update.MEL_or_No_Dispatch;
+    const path = Constants.APIURL + 'uploadfile_airline_mdc_raw_data/' + data_update.Equation_ID + '/' + data_update.EICAS + '/' + data_update.Priority_ + '/' + data_update.MHIRJ_ISE_inputs + '/' + data_update.MHIRJ_ISE_Recommended_Action + '/' + data_update.Additional_Comments + '/' + data_update.MEL_or_No_Dispatch;
     console.log(path)
     axios.post(path)
       .then(res => {
