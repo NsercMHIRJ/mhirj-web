@@ -66,7 +66,7 @@ export default function Chart3() {
     let OccperDay = [];
 
     //const path = 'http://mhirjapi.azurewebsites.net/api/chart_three/' + data_chart3.aircraft_no + '/' + data_chart3.equation_id + '/' + flightphase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
-    const path = Constants.APIURL+ '/chart_three/' +data_chart3.aircraft_no + '/' +data_chart3.equation_id+ '/' +flightphase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
+    const path = Constants.APIURL+ 'chart_three/' +data_chart3.aircraft_no + '/' +data_chart3.equation_id+ '/' +flightphase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
 
     console.log(path)
     axios.post(path)
