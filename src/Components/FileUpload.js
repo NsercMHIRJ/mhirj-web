@@ -560,33 +560,6 @@ export default function FileUpload() {
 		}
 
 	}
-	const checkme = () => {
-
-		let statusmessage;
-		let process;
-
-
-
-		try {
-			setInterval(async () => {
-				return await axios.post('https://mhirjapi.azurewebsites.net/api/corelation_process_status').then(response => response.data).then(data => {
-					const tempstatus = "" + data;
-					setstatus(tempstatus);
-
-					statusmessage = (tempstatus.slice(tempstatus.indexOf('Status_Message":"'), tempstatus.indexOf('","Date'))); //Extract pm upload status msg
-					process = (tempstatus.slice(tempstatus.indexOf('Process":"'), tempstatus.indexOf('","Status')));//Extract pm upload process 
-
-				})
-			}, 1000);
-		}
-		catch (e) {
-			console.log("error:" + e);
-		}
-
-		return { statusmessage };
-
-	}
-
 
 
 	const pmuploadDate = (timestamp) => {
