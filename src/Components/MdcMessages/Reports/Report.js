@@ -82,6 +82,7 @@ const Report = (props) => {
   
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
+            console.log(data);
             setDeltaData(data);    
             setLoadingDelta(false);
           }).catch(function (err){
@@ -307,7 +308,7 @@ const Report = (props) => {
       {deltaData !== "" && deltaData !== "undefined" && deltaValue === 1 &&
         <>
           <div class="delta-report">
-            <h2 class="report-parameters-h2">Delta Report Parameters - To be Defined</h2>
+            {/* <h2 class="report-parameters-h2">Delta Report Parameters - To be Defined</h2> */}
             <Grid item md={12}>
               <DeltaReport 
                 data = {deltaData}

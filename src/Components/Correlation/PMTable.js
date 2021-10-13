@@ -113,78 +113,8 @@ const PMTable = (props) => {
 
 const columns = [
   {
-    name: "p_id",
-    label: "p_id",
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
-    name: "tail",
-    label: "Tail#",
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
-    name: "aircraftNo",
-    label: "Aircraft Number",
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
-    name: "equationID",
-    label: "Equation ID",
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
-    name: "equationDescription",
-    label: "Equation Description",
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {minWidth:'400px'}})
-    }
-  },
-  {
-    name: "LRU",
-    label: "LRU",
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
-    name: "CAS",
-    label: "CAS",
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
-    name: "mdcMessage",
-    label: "MDC Message",
+    name: 'p_id', 
+    label: 'ID',
     options: {
       filter: true,
       filterType: 'dropdown',
@@ -239,7 +169,7 @@ const columns = [
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({style: {minWidth:'300px'}})
     }
   },
   {
@@ -249,12 +179,12 @@ const columns = [
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({style: {minWidth:'200px'}})
     }
   },
   {
-    name: 'maint', 
-    label: 'Maint',
+    name: 'MRB', 
+    label: 'MRB',
     options: {
       filter: true,
       filterType: 'dropdown',
@@ -268,21 +198,14 @@ const columns = [
   data.map((item => {
     responseData.push(
       {
-        p_id: item["p_ID"], 
-        tail: item["Aircraft_tail_No"],
-        aircraftNo: item["aircraftno"],
-        equationID: item["EQ_ID"],
-        equationDescription: item["EQ_DESCRIPTION"],
-        LRU: item["LRU"],
-        CAS: item["CAS"],
-        mdcMessage: item["MDC_MESSAGE"],
+        p_id: item["MaintTransID"],
         ATA: item["ATA"],
         discrepancy: item["Discrepancy"],
         action: item["CorrectiveAction"],
         date: DateConverter(item["DateAndTime"]),
         failureFlag: item["Failure_Flag"],
         squawkSource: item["SquawkSource"],
-        maint: item["Maint"],
+        MRB: item["MRB"],
       }
     );
      return responseData
@@ -319,7 +242,7 @@ const options = {
   selectableRowsHideCheckboxes: true,
   selectableRowsOnClick: false,
   downloadOptions: {
-    filename: 'PM Report from ' + dateFrom + ' to ' + dateTo + '.csv',
+    filename: 'Correlation Report from ' + dateFrom + ' to ' + dateTo + '.csv',
     separator: ',',
   },
   draggableColumns: {
@@ -384,7 +307,7 @@ const options = {
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <MUIDataTable
-              title="PM Report"
+              title="Correlation Report "
               data={responseData}
               columns={columns}
               options={options}

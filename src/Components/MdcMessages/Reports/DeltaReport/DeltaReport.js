@@ -18,6 +18,7 @@ const DeltaReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'100px'}}),
       }
     },
     {
@@ -46,6 +47,7 @@ const DeltaReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'300px'}}),
       }
     },
     {
@@ -55,7 +57,7 @@ const DeltaReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -75,7 +77,7 @@ const DeltaReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -85,6 +87,7 @@ const DeltaReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -94,6 +97,7 @@ const DeltaReport = (props) => {
        filter: false,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'250px'}}),
       }
      },
      {
@@ -139,6 +143,7 @@ const DeltaReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
      },
      {
@@ -148,6 +153,7 @@ const DeltaReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
      },
      {
@@ -157,6 +163,7 @@ const DeltaReport = (props) => {
        filter: false,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'250px'}}),
       }
      },
      {
@@ -174,7 +181,7 @@ const DeltaReport = (props) => {
       options: {
        filter: false,
        sort: true,
-       setCellProps: () => ({style: {minWidth:'200px'}})
+       setCellProps: () => ({style: {minWidth:'300px'}})
       }
      },
      {
@@ -210,7 +217,25 @@ const DeltaReport = (props) => {
       options: {
        filter: false,
        sort: true,
-       setCellProps: () => ({style: {minWidth:'700px'}})
+       setCellProps: () => ({style: {minWidth:'400px'}})
+      }
+     },
+     {
+      name: 'isDarkOrange', 
+      label: 'isDarkOrange',
+      options: {
+       filter: false,
+       sort: true,
+       display: false,
+      }
+     },
+     {
+      name: 'isDarkRed', 
+      label: 'isDarkRed',
+      options: {
+       filter: false,
+       sort: false,
+       display: false,
       }
      },
      {
@@ -222,28 +247,6 @@ const DeltaReport = (props) => {
        customFilterListOptions: {
         render: item => item == false ? "False Jams" : "True Jams"
       },
-       sort: false,
-       display: false,
-      }
-     },
-     {
-      name: 'isDarkOrange', 
-      label: 'isDarkOrange',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       customFilterListOptions: {
-        render: item => item == false ? "False Jams" : "True Jams"
-      },
-       sort: false,
-       display: false,
-      }
-     },
-     {
-      name: 'isDarkRed', 
-      label: 'isDarkRed',
-      options: {
-       filter: false,
        sort: false,
        display: false,
       }
@@ -275,7 +278,7 @@ const DeltaReport = (props) => {
             ACSN: item["AC SN"], 
             tail: item["Tail#"],
             EICASMessages: item["EICAS Message"], 
-            mdcMessages: item["MDC Messagee"],  
+            mdcMessages: item["MDC Message"],  
             LRU: item["LRU"],  
             ATA: item["ATA"],  
             B1Equation: item["B1-Equation"],  
@@ -322,16 +325,16 @@ const DeltaReport = (props) => {
         separator: ',',
       },
       setRowProps: (row, index) => {
-        if (row[20] === true) {
-          return {style: {background: '#ff4c00'}} // dark orange
-        } else if (row[21] === true) {
-          return {style: {background: '#ff0000'}} // dark red
-        } else if (row[22] === true) {
-          return {style: {background: '#ff7f50'}} //is jam
+        if (row[22] === true) {
+          return {style: {background: '#ff4c00'}} // dark orange - row 22 from columns
         } else if (row[23] === true) {
-          return {style: {background: '#ffb89a'}} // light orange
+          return {style: {background: '#ff0000'}} // dark red - row 23 from columns
         } else if (row[24] === true) {
-          return {style: {background: '#ff9a9a'}} // light red
+          return {style: {background: '#ff7f50'}} //is jam - row 24 from columns
+        } else if (row[25] === true) {
+           return {style: {background: '#ffb89a'}} // light orange - row 25 from columns
+        } else if (row[26] === true) {
+          return {style: {background: '#ff9a9a'}} // light red - row 26 from columns
         }
       },
       draggableColumns: {

@@ -2,8 +2,6 @@ import React, {useState,useEffect} from 'react';
 import MUIDataTable from "mui-datatables";
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-//Date Imports
-import {DateConverter,DateConverterCorrelation} from '../Helper/Helper';
 import Constants from '../utils/const';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +20,6 @@ const CorrelationSubTable = (props) => {
 
   useEffect(()=>{
     const path = Constants.APIURL + 'corelation/' + props.p_id;
-    console.log(path, "subpath");
 
     axios.post(path).then(function (res){
       var data = JSON.parse(res.data);
@@ -36,26 +33,6 @@ const CorrelationSubTable = (props) => {
 
   const columns = [
   {
-    name: "mdc_ID",
-    label: "MDC ID",
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
-    name: 'EQ_ID', 
-    label: 'Equation ID',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
     name: 'aircraftno', 
     label: 'Aircraft Number',
     options: {
@@ -66,37 +43,68 @@ const CorrelationSubTable = (props) => {
     }
   },
   {
-    name: 'ATA_Description', 
+    name: 'tail', 
+    label: 'Tail #',
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {minWidth:'100px'}})
+    }
+  },
+  {
+    name: 'mdc_ata_main', 
+    label: 'ATA Main',
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+    }
+  },
+  {
+    name: 'mdc_ata_sub', 
+    label: 'ATA SUB',
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+    }
+  },
+  {
+    name: 'ata_description', 
     label: 'ATA Description',
     options: {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({style: {minWidth:'300px'}})
+    }
+  },
+  {
+    name: 'EQ_ID', 
+    label: 'Equation ID',
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {minWidth:'150px'}})
+    }
+  },
+  {
+    name: 'EQ_DESCRIPTION', 
+    label: 'Equation Description',
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: {minWidth:'400px'}})
     }
   },
   {
     name: 'LRU', 
     label: 'LRU',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
-    name: 'DateAndTime', 
-    label: 'Date and Time',
-    options: {
-      filter: false,
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-  },
-  {
-    name: 'MDC_Date', 
-    label: 'MDC Date',
     options: {
       filter: true,
       filterType: 'dropdown',
@@ -111,109 +119,19 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({style: {minWidth:'300px'}})
     }
   },
   {
-    name: 'EQ_DESCRIPTION', 
-    label: 'Equation Description',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
     name: 'CAS', 
     label: 'CAS',
     options: {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap',minWidth: "120px"}})
+      setCellProps: () => ({style: {minWidth:'200px'}})
     }
-    },
-    {
-    name: 'LRU_CODE', 
-    label: 'LRU Code',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'LRU_NAME', 
-    label: 'LRU Name',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'FAULT_LOGGED', 
-    label: 'Fault Logged',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap',minWidth: "100px"}})
-    }
-    },
-    {
-    name: 'MDC_ATA', 
-    label: 'MDC ATA',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'mdc_ata_main', 
-    label: 'MDC ATA MAIN',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'mdc_ata_sub', 
-    label: 'MDC ATA SUB',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'Status', 
-    label: 'Status',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
-    {
-    name: 'mdc_type', 
-    label: 'MDC Type',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-    }
-    },
+  },
 ];
 
 const responseData = [];
@@ -222,24 +140,16 @@ if (data){
   data.map((item => {
     responseData.push(
       {
-        mdc_ID: item["mdc_ID"],
-        EQ_ID: item["EQ_ID"],
         aircraftno: item["aircraftno"],
-        ATA_Description: item["ATA_Description"],
-        LRU: item["LRU"],
-        DateAndTime: DateConverter(item["DateAndTime"]),
-        MDC_Date: DateConverterCorrelation(item["MDC_Date"]),
-        MDC_MESSAGE: item["MDC_MESSAGE"], 
-        EQ_DESCRIPTION: item["EQ_DESCRIPTION"],   
+        tail: item["Aircraft_tail_No"],
+        mdc_ata_main: item["ATA_Main"],
+        mdc_ata_sub: item["ATA_Sub"],
+        ata_description: item["ATA_Description"], 
         CAS: item["CAS"],
-        LRU_CODE: item["LRU_CODE"],
-        LRU_NAME: item["LRU_NAME"],  
-        FAULT_LOGGED: item["FAULT_LOGGED"],  
-        MDC_ATA: item["MDC_ATA"], 
-        mdc_ata_main: item["mdc_ata_main"],
-        mdc_ata_sub: item["mdc_ata_sub"],
-        Status: item["Status"],
-        mdc_type: item["mdc_type"],
+        EQ_ID: item["EQ_ID"],
+        EQ_DESCRIPTION: item["EQ_DESCRIPTION"],   
+        LRU: item["LRU"],  
+        MDC_MESSAGE: item["MDC_MESSAGE"], 
       }
     );
     return responseData
@@ -274,7 +184,7 @@ const options = {
   return (
     <div className={classes.root}>
       <MUIDataTable
-        title={"Correlation Report for PM "+props.p_id+" from " + props.dateFrom + ' to ' + props.dateTo}
+        title={"Correlation Report for P_ID "+props.p_id+" from " + props.dateFrom + ' to ' + props.dateTo}
         data={responseData}
         columns={columns}
         options={options}
