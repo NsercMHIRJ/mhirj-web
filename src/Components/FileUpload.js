@@ -415,7 +415,7 @@ export default function FileUpload() {
 		let data = new FormData()
 		data.append('file', file)
 		axios({
-			url: Constants.APIURL + '/uploadfile/',
+			url: Constants.APIURL + 'uploadfile_airline_mdc_raw_data/',
 			method: "POST",
 			headers: {
 				"Content-type": "multipart/form-data",
@@ -436,7 +436,7 @@ export default function FileUpload() {
 		let data = new FormData()
 		data.append('file', file)
 		axios({
-			url: Constants.APIURL + '/uploadfile_input_message_data/',
+			url: Constants.APIURL + 'uploadfile_input_message_data/',
 			method: "POST",
 			headers: {
 				"Content-type": "multipart/form-data",
