@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
+import {ATAMainSelector} from './ATAGraphSelectors';
 import Constants from './utils/const';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,7 @@ export default function Stacked() {
   const classes = useStyles();
   const ChartJsImage = require('chartjs-to-image');
   const [chartData1, setChartData1] = useState({});
+  const [ATAMain, setATAMain] = useState('');
 
   function save(e) {
     //save to png
@@ -43,8 +45,13 @@ export default function Stacked() {
   const [data_chart1, setData_chart1] = useState({
     from_date: "",
     to_date: "",
-    top_value: ""
+    top_value: "",
+    ATAMain: ""
   });
+
+  const handleATAChange = (ATA) => {
+    setATAMain(ATA);
+  };
 
   function submit(e) {
     e.preventDefault();
@@ -53,7 +60,8 @@ export default function Stacked() {
     let msg = [];
 
 
-    const path = Constants.APIURL+ 'Landing_Chart_B/' + data_chart1.top_value + '/' + data_chart1.from_date + '/' + data_chart1.to_date;
+    const path = Constants.APIURL+ 'Landing_Chart_B/' + ATAMain + '/' + data_chart1.top_value + '/' + data_chart1.from_date + '/' + data_chart1.to_date;
+    console.log(path)
     axios.post(path)
       .then(res => {
         //console.log(res,"response");
@@ -144,7 +152,8 @@ export default function Stacked() {
     newdata[e.target.id] = e.target.value
     setData_chart1(newdata)
     //console.log(newdata)
-
+    
+  
   }
   return (
 
@@ -154,7 +163,12 @@ export default function Stacked() {
           <form className={classes.root1} noValidate autoComplete="off">
             <div><h1 style={{ color: "#001C3E", textAlign: "center" }}>Stacked Chart for Magnitude of Messages in data</h1></div>
             <div> <TextField onChange={(e) => handle(e)} id="top_value" value={data_chart1.top_value} label="Top Values" defaultValue=" " variant="outlined" /></div>
+            {data_chart1.top_value > 50 ? alert("Value less than 50") : " "}
             <br></br>
+            <ATAMainSelector 
+                handleATAChange = {handleATAChange}
+              />     
+              <br></br>
             <div>  <TextField onChange={(e) => handle(e)} id="from_date" value={data_chart1.from_date} label=" SELECT FROM DATE &nbsp; &nbsp;" type="date" defaultValue="2017-05-24" className={classes.textField} InputLabelProps={{ shrink: true, }} />
               <TextField onChange={(e) => handle(e)} id="to_date" value={data_chart1.to_date} label=" SELECT TO DATE " type="date" defaultValue="2017-05-24" className={classes.textField} InputLabelProps={{ shrink: true, }} /></div>
             <br></br>

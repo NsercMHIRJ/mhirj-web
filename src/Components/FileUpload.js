@@ -16,51 +16,51 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		flexGrow: 1,
-	},
-	form: {
-		'& .MuiTextField-root': {
-			margin: theme.spacing(1),
-		},
-	},
-	paper: {
-		margin: '20px auto 23px 20px',
-		width: '92vw',
-		color: "#001c3e"
-	},
-	container: {
-		padding: '20px 40px',
-	},
-	h3: {
-		margin: 'auto',
-		textAlign: 'center',
-		color: "#001c3e",
-	},
-	Grid: {
-		paddingLeft: '200px',
-		margin: 'auto',
-	},
-	card: {
-		backgroundColor: "#C5D3E0",
-		textAlign: 'center',
-		justify: 'center',
-		padding: '5px',
-	},
-	button: {
-		margin: '30px auto',
-		width: '60%',
-		backgroundColor: "#001c3e",
-		color: "White",
-	},
-	formControl: {
-		margin: theme.spacing(1),
-		width: '90%',
-		minWidth: 120,
-	},
-	selectEmpty: {
-		marginTop: theme.spacing(1),
-	},
+  root: {
+    flexGrow: 1,
+  },
+  form: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+    },
+  },
+  paper: {
+    margin: '20px auto 23px 20px',
+    width: '92vw',
+    color: "#001c3e"
+  },
+  container: {
+    padding: '20px 40px',
+  },
+  h3: {
+    margin: 'auto',
+    textAlign: 'center',
+    color: "#001c3e",
+  },
+  Grid: {
+    paddingLeft: '200px',
+    margin: 'auto',
+  },
+  card: {
+    backgroundColor: "#C5D3E0",
+    textAlign: 'center',
+    justify: 'center',
+    padding: '5px',
+  },
+  button: {
+    margin: '30px auto',
+    width: '60%',
+    backgroundColor: "#001c3e",
+    color: "White",
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    width: '70%',
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(1),
+  },
 	ProgressBar: {
 		width: '320px'
 	}
@@ -75,401 +75,444 @@ export default function FileUpload() {
 		selectedFile: null
 	});
 
-	const getMuiTheme = () => createMuiTheme({
-		palette: { type: 'light' },
-		typography: { useNextVariants: true },
-		overrides: {
-			MUIDataTableBodyCell: {
-				root: {
-					padding: '10px 8px',
-				}
-			},
-			MUIDataTableHeadCell: {
-				root: {
-					whiteSpace: 'nowrap',
-				},
-			},
-		}
-	});
-	const [data_update, setData_update] = useState({
-		Equation_ID: "",
-		EICAS: "",
-		Priority_: "",
-		MHIRJ_ISE_inputs: "",
-		MHIRJ_ISE_Recommended_Action: "",
-		Additional_Comments: "",
-		MEL_or_No_Dispatch: ""
-	});
+  const getMuiTheme = () => createMuiTheme({
+    palette: {type: 'light'},
+    typography: {useNextVariants: true},
+    overrides: {
+      MUIDataTableBodyCell: {
+        root: {
+          padding: '10px 8px',
+        }
+      },
+      MUIDataTableHeadCell:{
+        root: {
+          whiteSpace:'nowrap',
+        },
+      },
+    }
+  });
+  const [data_update, setData_update] = useState({
+    Equation_ID: "",
+    EICAS: "",
+    Priority_: "",
+    MHIRJ_ISE_inputs: "",
+    MHIRJ_ISE_Recommended_Action: "",
+    Additional_Comments: "",
+    MEL_or_No_Dispatch: ""
+  });
+ 
 
-	const [mdc_raw_file, setMDC_Raw_File] = useState({
-		selectedFile: null
-	});
+  const [mdc_raw_file, setMDC_Raw_File] = useState({
+    selectedFile: null
+  });
 
-	const [topMessage_file, setTopMessage_File] = useState({
-		selectedTopMessageFile: null
-	});
+  const [topMessage_file, setTopMessage_File] = useState({
+    selectedTopMessageFile: null
+  });
 
-	const [input_Message_file, setInput_Message_File] = useState({
-		selectedInputFile: null
-	});
+  const [input_Message_file, setInput_Message_File] = useState({
+    selectedInputFile: null
+  });
 
-	const columns = [
+  const columns = [
 
-		{
-			name: 'LRU',
-			label: 'LRU',
-			options: {
-				filter: true,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'ATA',
-			label: 'ATA',
-			options: {
-				filter: true,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'Message_NO',
-			label: 'Message_NO',
-			options: {
-				filter: true,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'Comp_ID',
-			label: 'Comp_ID',
-			options: {
-				filter: true,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'Message',
-			label: 'Message',
-			options: {
-				filter: true,
-				filterType: 'dropdown',
-				sort: true,
+    {
+      name: 'LRU',
+      label: 'LRU',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'ATA',
+      label: 'ATA',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'Message_NO',
+      label: 'Message_NO',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'Comp_ID',
+      label: 'Comp_ID',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'Message',
+      label: 'Message',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
 
-			}
-		},
-		{
-			name: 'Fault_Logged',
-			label: 'Fault_Logged',
-			options: {
-				filter: true,
-				filterType: 'dropdown',
-				sort: true,
-				setCellProps: () => ({ style: { whiteSpace: 'nowrap' } })
-			}
-		},
-		{
-			name: 'Status',
-			label: 'Status',
-			options: {
-				filter: true,
-				filterType: 'dropdown',
-				sort: true,
-				setCellProps: () => ({ style: { whiteSpace: 'nowrap' } })
-			}
-		},
-		{
-			name: 'Message_Type',
-			label: 'Message_Type',
-			options: {
-				filter: true,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'EICAS',
-			label: 'EICAS',
-			options: {
-				filter: false,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'Timer',
-			label: 'Timer',
-			options: {
-				filter: false,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'Logic',
-			label: 'Logic',
-			options: {
-				filter: false,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'Equation_Description',
-			label: ' Equation_Description',
-			options: {
-				filter: false,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'Equation_ID',
-			label: 'Equation_ID',
-			options: {
-				filter: false,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'Occurrence_Flag',
-			label: 'Occurrence_Flag',
-			options: {
-				filter: false,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'Days_Count',
-			label: 'Days_Count',
-			options: {
-				filter: true,
-				filterType: 'dropdown',
-				sort: true,
-			}
-		},
-		{
-			name: 'Priority_',
-			label: ' Priority_',
-			options: {
-				filter: false,
-				sort: true,
-				setCellProps: () => ({ style: { minWidth: '200px' } })
-			}
-		},
-		{
-			name: 'MHIRJ_ISE_Recommended_Action',
-			label: 'MHIRJ Recommended Action',
-			options: {
-				filter: false,
-				sort: true,
-				setCellProps: () => ({ style: { minWidth: '400px' } })
-			}
-		},
-		{
-			name: 'Additional_Comments',
-			label: 'MHIRJ Additional Comment',
-			options: {
-				filter: false,
-				sort: true,
-				setCellProps: () => ({ style: { minWidth: '700px' } })
-			}
-		},
-		{
-			name: 'MHIRJ_ISE_inputs',
-			label: 'MHIRJ Input',
-			options: {
-				filter: false,
-				sort: true,
-				setCellProps: () => ({ style: { minWidth: '400px' } })
-			}
-		},
-		{
-			name: 'MEL_or_No_Dispatch',
-			label: 'MEL_or_No_Dispatch',
-			options: {
-				filter: true,
-				filterType: 'dropdown',
-				sort: false,
+      }
+    },
+    {
+      name: 'Fault_Logged',
+      label: 'Fault_Logged',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({ style: { whiteSpace: 'nowrap' } })
+      }
+    },
+    {
+      name: 'Status',
+      label: 'Status',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({ style: { whiteSpace: 'nowrap' } })
+      }
+    },
+    {
+      name: 'Message_Type',
+      label: 'Message_Type',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'EICAS',
+      label: 'EICAS',
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'Timer',
+      label: 'Timer',
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'Logic',
+      label: 'Logic',
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'Equation_Description',
+      label: ' Equation_Description',
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'Equation_ID',
+      label: 'Equation_ID',
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'Occurrence_Flag',
+      label: 'Occurrence_Flag',
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'Days_Count',
+      label: 'Days_Count',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+      }
+    },
+    {
+      name: 'Priority_',
+      label: ' Priority_',
+      options: {
+        filter: false,
+        sort: true,
+        setCellProps: () => ({ style: { minWidth: '200px' } })
+      }
+    },
+    {
+      name: 'MHIRJ_ISE_Recommended_Action',
+      label: 'MHIRJ Recommended Action',
+      options: {
+        filter: false,
+        sort: true,
+        setCellProps: () => ({ style: { minWidth: '400px' } })
+      }
+    },
+    {
+      name: 'Additional_Comments',
+      label: 'MHIRJ Additional Comment',
+      options: {
+        filter: false,
+        sort: true,
+        setCellProps: () => ({ style: { minWidth: '700px' } })
+      }
+    },
+    {
+      name: 'MHIRJ_ISE_inputs',
+      label: 'MHIRJ Input',
+      options: {
+        filter: false,
+        sort: true,
+        setCellProps: () => ({ style: { minWidth: '400px' } })
+      }
+    },
+    {
+      name: 'MEL_or_No_Dispatch',
+      label: 'MEL_or_No_Dispatch',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: false,
 
-			}
-		},
-	];
+      }
+    },
+  ];
 
-	const options = {
-		filter: true,
-		filterType: 'multiselect',
-		responsive: "standard",
-		fixedHeader: true,
-		fixedSelectColumn: true,
-		jumpToPage: true,
-		resizableColumns: false,
-		selectableRowsHideCheckboxes: true,
+  const options = {
+    filter: true,
+    filterType: 'multiselect',
+    responsive: "standard",
+    fixedHeader: true,
+    fixedSelectColumn: true,
+    jumpToPage: true,
+    resizableColumns: false,
+    selectableRowsHideCheckboxes: true,
+    
+    setRowProps: (row, index) => {
+      if (row[20] === true){
+        return {style: {background:'#FF7F50'}}
+      }
+    },
+    draggableColumns: {
+      enabled: false,
+      transitionTime: 300,
+    },
+   
+    elevation: 4,
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10,20,50],
+    selectToolbarPlacement:"none",
+    
+  };
 
-		setRowProps: (row, index) => {
-			if (row[20] === true) {
-				return { style: { background: '#FF7F50' } }
-			}
-		},
-		draggableColumns: {
-			enabled: false,
-			transitionTime: 300,
-		},
+ 
 
-		elevation: 4,
-		rowsPerPage: 10,
-		rowsPerPageOptions: [10, 20, 50],
-		selectToolbarPlacement: "none",
+  function update_data(e) {
+    e.preventDefault();
+    let Equation_ID = [];
+    let EICAS = [];
+    let Priority_ = [];
+    let MHIRJ_ISE_inputs = [];
+    let MHIRJ_ISE_Recommended_Action = [];
+    let Additional_Comments = [];
+    let MEL_or_No_Dispatch = [];
 
-	};
+    const path = Constants.APIURL + 'update_input_message_data/' + data_update.Equation_ID + '/' + data_update.EICAS + '/' + data_update.Priority_ + '/' + data_update.MHIRJ_ISE_inputs + '/' + data_update.MHIRJ_ISE_Recommended_Action + '/' + data_update.Additional_Comments + '/' + data_update.MEL_or_No_Dispatch;
+    console.log(path)
+    axios.post(path)
+      .then(res => {
+        //console.log(res,"response");
+        for (const dataObj of JSON.parse(res.data)) {
+          Equation_ID.push(dataObj.Equation_ID);
+          EICAS.push(dataObj.EICAS);
+          Priority_.push(dataObj.Priority_);
+          MHIRJ_ISE_inputs.push(dataObj.MHIRJ_ISE_inputs);
+          MHIRJ_ISE_Recommended_Action.push(dataObj.MHIRJ_ISE_Recommended_Action);
+          Additional_Comments.push(dataObj.Additional_Comments);
+          MEL_or_No_Dispatch.push(dataObj.MEL_or_No_Dispatch);
+        }
+        
+      })
+      .catch(err => {
+        //console.log(err);
+      });
+    
+  }
+  
+  function show_inputMessage_data(e){
+  
+    
+    const path1 = Constants.APIURL + 'list_mdc_messages_input/' +data_update.Equation_ID;
+    console.log(path1)
+    axios.post(path1)
+      .then(res => {
+         const data = JSON.parse (res.data);
+         setupdateData(data) 
+        }
+        
+      )
+  }
+  function handle_update(e) {
+    const newdata = { ...data_update }
+    newdata[e.target.id] = e.target.value
+    setData_update(newdata)
+    //console.log(newdata)
+  }
 
+  function handleChange(e) {
+    console.log(e.target.files)
+    console.log(e.target.files[0]);
+    let file = e.target.files[0]
+    setMDC_Raw_File({
+      selectedFile: file
+    })
+  }
 
+  function handleInputFileChange(e) {
+    console.log(e.target.files)
+    console.log(e.target.files[0]);
+    let input_message_file = e.target.files[0]
+    setInput_Message_File({
+      selectedInputFile: input_message_file
+    })
+  }
 
-	function update_data(e) {
-		e.preventDefault();
-		let Equation_ID = [];
-		let EICAS = [];
-		let Priority_ = [];
-		let MHIRJ_ISE_inputs = [];
-		let MHIRJ_ISE_Recommended_Action = [];
-		let Additional_Comments = [];
-		let MEL_or_No_Dispatch = [];
+  function handleTopMessageChange(e) {
+    console.log(e.target.files)
+    console.log(e.target.files[0]);
+    let top_message_file = e.target.files[0]
+    setTopMessage_File({
+      selectedTopMessageFile: top_message_file
+    })
+  }
 
-		const path = Constants.APIURL + '/update_input_message_data/' + data_update.Equation_ID + '/' + data_update.EICAS + '/' + data_update.Priority_ + '/' + data_update.MHIRJ_ISE_inputs + '/' + data_update.MHIRJ_ISE_Recommended_Action + '/' + data_update.Additional_Comments + '/' + data_update.MEL_or_No_Dispatch;
-		console.log(path)
-		axios.post(path)
-			.then(res => {
-				//console.log(res,"response");
-				for (const dataObj of JSON.parse(res.data)) {
-					Equation_ID.push(dataObj.Equation_ID);
-					EICAS.push(dataObj.EICAS);
-					Priority_.push(dataObj.Priority_);
-					MHIRJ_ISE_inputs.push(dataObj.MHIRJ_ISE_inputs);
-					MHIRJ_ISE_Recommended_Action.push(dataObj.MHIRJ_ISE_Recommended_Action);
-					Additional_Comments.push(dataObj.Additional_Comments);
-					MEL_or_No_Dispatch.push(dataObj.MEL_or_No_Dispatch);
-				}
+  const [fileUploadInProgress , setfileUploadInProgress] = useState(false);
+  const [progress, setProgress] = React.useState({
+    status:"",
+  });
+  const onClickMDC = (e) => {
+    mdcStatus(e);
+    upload_MDC_data(e);
+    
+  }
+  
+  let abortController = new AbortController();
+  const {signal} = abortController;
+  
+  function mdcStatus(e) {
+    try {
+      
+      setfileUploadInProgress(true)
+      setInterval(async () => {
+        return await axios.get('https://mhirjapi.azurewebsites.net/api/getMDCFileUploadStatus',{
+          signal: abortController.signal,
+        })
+        .then(response => {
+          // setfileUploadInProgress(false);
+          console.log(response.data.percentage)
+          setProgress(response.data.percentage); 
+        })
+      }, 1000);
+    }
+    catch (e) {
+      if (!signal?.aborted) {
+        console.error(e);
+        setfileUploadInProgress(false);
+        
+      }
+     
+    } 
+    return () => abortController?.abort();
+  }
+ 
 
-			})
-			.catch(err => {
-				//console.log(err);
-			});
+  function upload_MDC_data(e) {
+   
+    let file = mdc_raw_file.selectedFile
+    let data = new FormData()
+    data.append('file', file)
+    axios({
+      url:  Constants.APIURL + 'uploadfile_airline_mdc_raw_data/',
+      method: "POST",
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+      data: data
+    }).then((res) => {
+      alert("File Uploaded Successfully!", +res.data)
+      setfileUploadInProgress(false);
+      abortController.abort();
+      
+    })
+      .catch(err => {
+		// setfileUploadInProgress(false); 
+        console.log(err);
+      })
+  }
 
-	}
+  function upload_InputMessage_data(e) {
+    let file = input_Message_file.selectedInputFile
+    let data = new FormData()
+    data.append('file', file)
+    axios({
+      url:  Constants.APIURL + 'uploadfile_input_message_data/',
+      method: "POST",
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+      data: data
+    }).then((res) => {
+      alert("File Uploaded Successfully!")
+    })
+      .catch(err => {
+        console.log(err);
+      })
+  }
 
-	function show_inputMessage_data(e) {
+  function upload_TopMessage_data(e) {
+    let file = topMessage_file.selectedTopMessageFile
+    let data = new FormData()
+    data.append('file', file)
+    axios({
+      url:  Constants.APIURL + 'uploadfile_top_message_data/',
+      method: "POST",
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+      data: data
+    }).then((res) => {
+      alert("File Uploaded Successfully!")
+    })
+      .catch(err => {
+        console.log(err);
+      })
+  }
 
-		const path1 = Constants.APIURL + 'MDC_message_data';
-
-		axios.post(path1)
-			.then(res => {
-				const data = JSON.parse(res.data);
-				setupdateData(data)
-			}
-
-			)
-	}
-	function handle_update(e) {
-		const newdata = { ...data_update }
-		newdata[e.target.id] = e.target.value
-		setData_update(newdata)
-		//console.log(newdata)
-	}
-
-	function handleChange(e) {
-		console.log(e.target.files)
-		console.log(e.target.files[0]);
-		let file = e.target.files[0]
-		setMDC_Raw_File({
-			selectedFile: file
-		})
-	}
-
-	function handleInputFileChange(e) {
-		console.log(e.target.files)
-		console.log(e.target.files[0]);
-		let input_message_file = e.target.files[0]
-		setInput_Message_File({
-			selectedInputFile: input_message_file
-		})
-	}
-
-	function handleTopMessageChange(e) {
-		console.log(e.target.files)
-		console.log(e.target.files[0]);
-		let top_message_file = e.target.files[0]
-		setTopMessage_File({
-			selectedTopMessageFile: top_message_file
-		})
-	}
-
-	const [fileUploadInProgress, setfileUploadInProgress] = useState();
-	function upload_MDC_data(e) {
-		setfileUploadInProgress(true);
-		let file = mdc_raw_file.selectedFile
-		let data = new FormData()
-		data.append('file', file)
-		axios({
-			url: Constants.APIURL + 'uploadfile_airline_mdc_raw_data/',
-			method: "POST",
-			headers: {
-				"Content-type": "multipart/form-data",
-			},
-			data: data
-		}).then((res) => {
-			setfileUploadInProgress(false);
-			alert("File Uploaded Successfully!", +res.data)
-		})
-			.catch(err => {
-				setfileUploadInProgress(false);
-				console.log(err);
-			})
-	}
-
-	function upload_InputMessage_data(e) {
-		let file = input_Message_file.selectedInputFile
-		let data = new FormData()
-		data.append('file', file)
-		axios({
-			url: Constants.APIURL + 'uploadfile_input_message_data/',
-			method: "POST",
-			headers: {
-				"Content-type": "multipart/form-data",
-			},
-			data: data
-		}).then((res) => {
-			alert("File Uploaded Successfully!")
-		})
-			.catch(err => {
-				console.log(err);
-			})
-	}
-
-	function upload_TopMessage_data(e) {
-		let file = topMessage_file.selectedTopMessageFile
-		let data = new FormData()
-		data.append('file', file)
-		axios({
-			url: Constants.APIURL + 'uploadfile_top_message_data/',
-			method: "POST",
-			headers: {
-				"Content-type": "multipart/form-data",
-			},
-			data: data
-		}).then((res) => {
-			alert("File Uploaded Successfully!")
-		})
-			.catch(err => {
-				console.log(err);
-			})
-	}
-
-	function handleChange_pmfile(e) {
+  function handleChange_pmfile(e) {
 
 		console.log(e.target.files)
 		console.log(e.target.files[0]);
@@ -700,6 +743,21 @@ export default function FileUpload() {
 
 	//{pmuploadDate(pmdate)}
 
+  const NoStatus = () => (
+    <div> </div> )
+
+  const ProgressMDC = () => (
+    <div>
+    <Box position="relative" display="inline-flex">
+      <CircularProgress style={{marginLeft:"350px", width: '80px', height: '80px', color: '#00e676' }} variant="determinate" value={progress} />
+      <Box top={0} left={0} bottom={0} right={0} position="absolute" display="flex" alignItems="center" justifyContent="center">
+        <Typography variant="caption" component="div" style={{marginLeft:"350px", fontWeight: 'bold', fontSize: '18px' }} color="textPrimary">{progress+"%"}</Typography>
+      </Box>
+    </Box>
+  </div>
+
+  )
+
 	const themes = getMuiTheme();
 	return (
 		<div>
@@ -710,18 +768,29 @@ export default function FileUpload() {
 					</div>
 					<div className={classes.container}>
 						<Grid className={classes.Grid} container spacing={3}>
-							<Grid item xs={5} style={{ marginLeft: '10px' }}>
-								<div>
-
-									<input className={classes.input} name="file" type="file" onChange={(e) => handleChange(e)} />
-									{fileUploadInProgress ? <CircularProgress /> : ""}
-									<Button type="button" style={{ width: '200px', padding: "4px", backgroundColor: "#001c3e", color: "White" }} onClick={(e) => upload_MDC_data(e)}> Upload MDC RAW Data</Button>
-
-									<input className={classes.input} id="contained-button-file" multiple type="file" onChange={(e) => handleTopMessageChange(e)} />
-									<Button onClick={(e) => upload_TopMessage_data(e)} id="upload" variant="contained" component="span" style={{ marginTop: '40px', textAlign: 'center', width: '200px', padding: "4px", backgroundColor: "#001c3e", color: "White" }}>  Upload Top Message Data </Button>
-
-								</div>
-							</Grid>
+            <Grid item xs={4} container spacing={2}>
+                <div>
+                  <div>
+                  <input className={classes.input} name="file" type="file" onChange={(e) => handleChange(e)} />
+                  <Button type="button" style={{marginLeft : "350px",marginTop : " -45px", width:"200px",backgroundColor: "#001c3e",color: "White"}} onClick={onClickMDC}> Upload MDC RAW Data</Button>
+                  </div>
+                  <br></br>
+                  <br></br>
+                  <div>
+                  {fileUploadInProgress ? <ProgressMDC /> : <NoStatus />}
+                  </div>
+                  {/* <Button type="button" style={{marginLeft : "520px",marginTop : "-56px", width:"200px",backgroundColor: "#001c3e",color: "White"}} onClick={(e) => mdcStatus(e)}> Show Status</Button> */}
+                  
+                 
+                  
+                  <br></br>
+                  <br></br>
+                  <div>
+                  <input className={classes.input} id="contained-button-file" multiple type="file" onChange={(e) => handleTopMessageChange(e)} />
+                  <Button onClick={(e) => upload_TopMessage_data(e)} id="upload" variant="contained" component="span" style={{marginLeft: '350px',marginTop: '-35px',textAlign :'center', width:'300px', padding: "4px", backgroundColor: "#001c3e",color: "White"}}>  Upload Top Message Data </Button>
+                  </div>
+                </div>
+              </Grid>
 
 						</Grid>
 					</div>
@@ -772,7 +841,7 @@ export default function FileUpload() {
 						<Grid className={classes.Grid} container spacing={3}>
 							<div>
 								<input className={classes.input} id="contained-button-file" multiple type="file" onChange={(e) => handleInputFileChange(e)} />
-								<Button type="button" style={{ marginLeft: "370px", padding: "5px", backgroundColor: "#001c3e", color: "White" }} onClick={(e) => upload_InputMessage_data(e)}>Upload Input Message Data</Button>
+								<Button type="button" style={{marginLeft: "370px", padding: "5px", backgroundColor: "#001c3e",color: "White"}} onClick={(e) => upload_InputMessage_data(e)}>Upload Input Message Data</Button>
 							</div>
 
 						</Grid>
