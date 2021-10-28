@@ -3,8 +3,13 @@ import moment from 'moment'
 
 export const DateConverter = (date) => {
   var t = moment(date);
-  var formatted = t.format('LLL');
+  var formatted = t.format('DD-MMM-YYYY HH:mm');
   return formatted;
+}
+
+export const ConvertToTimestamp = (date) => {
+  var timestamp = moment(date).format("X");
+  return timestamp;
 }
 
 export const DateConverterCorrelation = (date) => {

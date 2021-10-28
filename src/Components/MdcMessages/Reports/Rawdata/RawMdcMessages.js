@@ -8,6 +8,8 @@ import {AirlineOperatorSelector,ATAMainSelector,MessagesSelector,EqIDSelector} f
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import Constants from '../../../utils/const';
+import "../../../../scss/_main.scss";
+
 
 const useStyles = makeStyles((theme) => ({
 root: {
@@ -19,7 +21,6 @@ root: {
   },
 },
 paper: {
-  margin: '50px auto 23px 20px',
   width: '92vw',
 },
 container: {
@@ -149,13 +150,13 @@ useEffect(() => {
   },[rawDataConditions]);
 
   return (
-    <div className={classes.root}>   
-     <form className={classes.form}>
+    <div class="analysis-root">
+    <form class="analysis-form">
       <Paper className={classes.paper}>
-        <div className ={classes.card}>
-          <h2>RAW DATA FILTERS</h2>
-        </div>
-         <Grid className={classes.Grid} container spacing={0}> 
+      <div class="analysis-card">
+        <h2>RAW DATA</h2>
+      </div>
+        <Grid className={classes.Grid} container spacing={3}> 
             <Grid item xs={2}>
             <AirlineOperatorSelector
                 handleAirlineChange = {handleAirlineChange}                

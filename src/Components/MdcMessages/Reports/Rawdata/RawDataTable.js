@@ -1,19 +1,8 @@
 import React,{useState} from 'react';
 import MUIDataTable from "mui-datatables";
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-//Date Imports
-import {DateConverter} from '../../../Helper/Helper';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    alignItems:"center",
-    maxWidth: '92vw',
-    margin:  '20px',
-  },
-}));
+import { DateConverter } from '../../../Helper/Helper';
+import "../../../../scss/_main.scss";
 
 const RawDataTable = (props) => {
 
@@ -25,17 +14,17 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
       name: 'tail', 
-      label: 'Tail #',
+      label: 'Tail#',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
@@ -45,27 +34,27 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap', minWidth: "90px"}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
       name: 'ATAMain', 
-      label: 'ATAMain',
+      label: 'ATA Main',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
       name: 'ATASub', 
-      label: 'ATASub',
+      label: 'ATA Sub',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
@@ -74,7 +63,7 @@ const RawDataTable = (props) => {
       options: {
        filter: false,
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
@@ -84,7 +73,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'200px'}}),
       }
     },
     {
@@ -94,7 +83,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
@@ -104,7 +93,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'200px'}}),
+       
       }
      },
      {
@@ -114,7 +104,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap',minWidth: "120px"}})
+       setCellProps: () => ({style: {minWidth:'200px'}}),
       }
      },
      {
@@ -124,7 +114,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
      },
      {
@@ -134,7 +124,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
      },
      {
@@ -144,7 +134,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
      },
      {
@@ -154,7 +144,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
      },
      {
@@ -164,7 +154,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap',minWidth: "100px"}})
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
      },
      {
@@ -174,17 +164,17 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'400px'}})
       }
      },
      {
       name: 'data', 
       label: 'Data Used to Determine Msg',
       options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: {minWidth:'300px'}})
       }
      },
      {
@@ -194,7 +184,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
      },
      {
@@ -264,24 +254,16 @@ const RawDataTable = (props) => {
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '500px'
     };
 
-    const theme = createMuiTheme({
-      palette: {type: 'light'},
-      typography: {useNextVariants: true},
-  });
-  
-const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <div class="reports-root">
       <Grid container spacing={0}>
         <Grid item xs={12}>
-            <MuiThemeProvider theme={theme}>
-              <MUIDataTable
-                title={"MDC Raw Data"}
-                data={data}
-                columns={columns}
-                options={options}
-              />
-            </MuiThemeProvider> 
+          <MUIDataTable
+           title="MDC Raw Data"
+            data={data}
+            columns={columns}
+            options={options}
+          />
         </Grid> 
       </Grid> 
     </div>

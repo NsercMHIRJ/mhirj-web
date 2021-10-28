@@ -11,9 +11,8 @@ import Paper from '@material-ui/core/Paper';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import CorrelationSubTable from './CorrelationSubTable';
-import {DateConverter} from '../Helper/Helper';
+import {DateConverter,GenerateCorrelationValidation, NotFirstRender} from '../Helper/Helper';
 import Constants from '../utils/const';
-import {GenerateCorrelationValidation, NotFirstRender} from '../Helper/Helper';
 import "../../scss/_main.scss";
 
 const useStyles = makeStyles((theme) => ({
