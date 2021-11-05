@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import "../../../../scss/_main.scss";
+import { DateConverter } from '../../../Helper/Helper';
 
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
@@ -35,6 +36,7 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -44,6 +46,7 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -63,6 +66,7 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'200px'}}),
       }
     },
     {
@@ -72,7 +76,7 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -82,7 +86,7 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -92,7 +96,7 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -102,6 +106,7 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -111,6 +116,7 @@ const HistoryReport = (props) => {
        filter: false,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
      },
      {
@@ -120,6 +126,7 @@ const HistoryReport = (props) => {
        filter: false,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
      },
      {
@@ -129,6 +136,7 @@ const HistoryReport = (props) => {
        filter: false,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
      },
      {
@@ -138,6 +146,7 @@ const HistoryReport = (props) => {
        filter: false,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
      },
      {
@@ -147,6 +156,7 @@ const HistoryReport = (props) => {
        filter: false,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
      },
      {
@@ -156,6 +166,7 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'200px'}}),
       }
      },
      {
@@ -165,6 +176,7 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'200px'}}),
       }
      },
      {
@@ -174,6 +186,7 @@ const HistoryReport = (props) => {
        filter: false,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'200px'}}),
       }
      },
      {
@@ -183,6 +196,7 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
      },
      {
@@ -198,7 +212,8 @@ const HistoryReport = (props) => {
       name: 'honey', 
       label: 'Mel or No-Dispatch',
       options: {
-       filter: false,
+       filter: true,
+       filterType: 'dropdown',
        sort: true,
        setCellProps: () => ({style: {minWidth:'200px'}})
       }
@@ -227,7 +242,7 @@ const HistoryReport = (props) => {
       options: {
        filter: false,
        sort: true,
-       setCellProps: () => ({style: {minWidth:'700px'}})
+       setCellProps: () => ({style: {minWidth:'400px'}})
       }
      },
      {
@@ -247,8 +262,8 @@ const HistoryReport = (props) => {
 
     let data = [];
       props.data?.map((item => {
-        let input = item["MHIRJ ISE Input"] === '0' ? '' : item["MHIRJ ISE Input"];
-        let recommendation = item["MHIRJ ISE Recommendation"] === '0' ? '' : item["MHIRJ ISE Recommendation"];
+        let input = item["MHIRJ Input"] === '0' ? '' : item["MHIRJ Input"];
+        let recommendation = item["MHIRJ Recommendation"] === '0' ? '' : item["MHIRJ Recommendation"];
         let comments = item["Additional Comments"] === '0' ? '' : item["Additional Comments"];
         let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
 
@@ -263,8 +278,8 @@ const HistoryReport = (props) => {
             B1Equation: item["B1-Equation"],  
             type: item["Type"],   
             equationDescription: item["Equation Description"],   
-            totalOccurences: item["Total Occurences"],  
-            consecutiveDays: item["Consective Days"],
+            totalOccurences: item["Total Occurrences"],  
+            consecutiveDays: item["Consecutive Days"],
             ConsecutiveFlights: item["Consecutive FL"],  
             intermittent: item["Intermittent"],  
             reasons: item["Reason(s) for flag"],   
@@ -274,9 +289,9 @@ const HistoryReport = (props) => {
             comments: comments, 
             input: input,  
             isJam: item["is_jam"],
-            honey: "",
-            dateFrom: "",
-            dateTo: "",
+            honey: item["MEL or No-Dispatch"],
+            dateFrom: DateConverter(item["Date from"]),
+            dateTo: DateConverter(item["Date to"]),
           }
         );
         return data;
