@@ -3,6 +3,9 @@ import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import "../../../../scss/_main.scss";
 import { DateConverter } from '../../../Helper/Helper';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import CorrelationSubTable from '../../../Correlation/CorrelationSubTable';
 
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
@@ -116,7 +119,7 @@ const HistoryReport = (props) => {
        filter: false,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+       setCellProps: () => ({style: {minWidth:'300px'}}),
       }
      },
      {
@@ -303,6 +306,22 @@ const HistoryReport = (props) => {
       selectableRowsOnClick: true,
       rowsSelected: rowsSelectedState,
       onRowSelectionChange: HandleMultipleRowSelect,
+      expandableRows: true,
+      renderExpandableRow: (rowData, rowMeta) => {
+        return (    
+        <TableRow>
+            <TableCell colSpan={rowData.length+1}>
+            {/* <CorrelationSubTable
+              p_id = {rowData[0]}
+              dateFrom = {props.reportConditions.fromDate}
+              dateTo = {props.reportConditions.toDate}
+              EqID = {props.reportConditions.eqID}
+              ATAMain = {props.reportConditions.ata}
+            /> */}
+            </TableCell>
+        </TableRow>
+        );
+      },
       filter: true,
       filterType: 'multiselect',
       responsive: "standard",

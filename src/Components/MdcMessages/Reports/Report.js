@@ -79,10 +79,9 @@ const Report = (props) => {
           setDeltaValue(1);
           setDeltaData([]);
           setLoadingDelta(true);
-  
+
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
-            console.log(data);
             setDeltaData(data);    
             setLoadingDelta(false);
           }).catch(function (err){
@@ -118,6 +117,8 @@ const Report = (props) => {
           setHistValue(1);
           setHistoryReportData([]);
           setLoadingHistory(true);
+
+          console.log(path);
   
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
