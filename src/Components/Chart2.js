@@ -59,11 +59,20 @@ export default function Chart2() {
 
     axios.post(path)
       .then(res => {
-        //console.log(res,"response");
-        for (const dataObj of JSON.parse(res.data)) {
-          aircraft_no.push(dataObj.aircraft);
-          ataOcc.push(parseInt(dataObj.ataOcc));
+        console.log(res,"response");
+        var info = JSON.parse(res.data)
+        var aircraft_data = Object.keys(info)
+        
+        var ata_data = Object.values(info)
+       console.log(ata_data)
+        for (const dataObj of aircraft_data) {
+          aircraft_no.push(dataObj);
         }
+        console.log(aircraft_no)
+        for(const dataObj of ata_data){
+          ataOcc.push(parseInt(dataObj));
+        }
+        console.log(ataOcc)
         setChartData2({
           labels: aircraft_no,
           datasets: [
