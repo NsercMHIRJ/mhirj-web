@@ -14,7 +14,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Constants from './utils/const';
-
+import {EqIDSelector} from './ATAGraphSelectors';
+import moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +50,7 @@ export default function Chart3() {
     from_date: "",
     to_date: ""
   });
-  
+  const [EqID, setEqID] = useState('');
 
 
   function save(e) {
@@ -60,22 +61,33 @@ export default function Chart3() {
     })
   }
 
+  const handleEqIDChange = (eqIDList) => {
+    setEqID(eqIDList);
+  };
   function submit_chart3(e) {
     e.preventDefault();
     let Dates = [];
     let OccperDay = [];
 
     //const path = 'http://mhirjapi.azurewebsites.net/api/chart_three/' + data_chart3.aircraft_no + '/' + data_chart3.equation_id + '/' + flightphase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
-    const path = Constants.APIURL+ 'chart_three/' +data_chart3.aircraft_no + '/' +data_chart3.equation_id+ '/' +flightphase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
+    const path = Constants.APIURL+ 'chart_three/' +data_chart3.aircraft_no + '/' +EqID+ '/' +flightphase + '/' + data_chart3.from_date + '/' + data_chart3.to_date;
 
     console.log(path)
     axios.post(path)
       .then(res => {
-        //console.log(res,"response");
-        for (const dataObj of JSON.parse(res.data)) {
-          Dates.push(DateConverter(dataObj.Dates));
-          OccperDay.push(parseInt(dataObj.OccurencesPerDay));
+        console.log(res,"response");
+        var info = JSON.parse(res.data)
+        var date_data = Object.keys(info)
+        var occur_data = Object.values(info)
+        
+        for (let dataObj in date_data) {
+          Dates.push(Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(date_data[dataObj]))  
         }
+        for (let dataObj in occur_data) {
+          OccperDay.push(parseInt(occur_data[dataObj]));
+        
+        }
+        //console.log(Dates)
         //console.log(OccperDay)
         setChartData3({
           labels: Dates,
@@ -119,7 +131,9 @@ export default function Chart3() {
             <div><h1 style={{ color: "#001C3E", textAlign: "center" }}>MESSAGE TREND BY AIRCRAFT</h1></div>
             <div> <TextField onChange={(e) => handle_chart3(e)} id="aircraft_no" value={data_chart3.aircraft_no} label="Aircraft MSN" defaultValue=" " variant="outlined" /></div>
             <br></br>
-            <div> <TextField onChange={(e) => handle_chart3(e)} id="equation_id" value={data_chart3.equation_id} label="Equation ID" defaultValue=" " variant="outlined" /></div>
+            <EqIDSelector 
+                handleEqIDChange = {handleEqIDChange}
+              />  
             <br></br>
   
             <div><FormControl variant="outlined" className={classes.formControl}>
