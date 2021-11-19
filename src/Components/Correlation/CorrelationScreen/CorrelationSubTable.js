@@ -2,7 +2,7 @@ import React, {useState,useEffect} from 'react';
 import MUIDataTable from "mui-datatables";
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import Constants from '../utils/const';
+import Constants from '../../utils/const';
 
 const useStyles = makeStyles((theme) => ({
   root: {

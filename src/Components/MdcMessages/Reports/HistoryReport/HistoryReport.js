@@ -5,7 +5,7 @@ import "../../../../scss/_main.scss";
 import { DateConverter } from '../../../Helper/Helper';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import CorrelationSubTable from '../../../Correlation/CorrelationSubTable';
+import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
@@ -310,14 +310,13 @@ const HistoryReport = (props) => {
       renderExpandableRow: (rowData, rowMeta) => {
         return (    
         <TableRow>
-            <TableCell colSpan={rowData.length+1}>
-            {/* <CorrelationSubTable
-              p_id = {rowData[0]}
-              dateFrom = {props.reportConditions.fromDate}
-              dateTo = {props.reportConditions.toDate}
-              EqID = {props.reportConditions.eqID}
-              ATAMain = {props.reportConditions.ata}
-            /> */}
+          <TableCell colSpan={rowData.length+1}>
+            <CorrelationAnalysisTable
+              dateFrom = {rowData[13]}
+              dateTo = {rowData[14]}
+              tail = {rowData[0]}
+              EqID = {rowData[6]}
+            />
             </TableCell>
         </TableRow>
         );

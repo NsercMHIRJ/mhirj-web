@@ -2,18 +2,18 @@ import React, {useState,useEffect} from 'react';
 import MUIDataTable from "mui-datatables";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
-import DatePicker from '../MdcMessages/GenerateReport/DatePicker';
-import {ATAMainSelector,EqIDSelector} from '../MdcMessages/GenerateReport/Selectors';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+import DatePicker from '../../MdcMessages/GenerateReport/DatePicker';
+import {ATAMainSelector,EqIDSelector} from '../../MdcMessages/GenerateReport/Selectors';
 import CorrelationSubTable from './CorrelationSubTable';
-import {DateConverter,GenerateCorrelationValidation, NotFirstRender} from '../Helper/Helper';
-import Constants from '../utils/const';
-import "../../scss/_main.scss";
+import {DateConverter,GenerateCorrelationValidation, NotFirstRender} from '../../Helper/Helper';
+import Constants from '../../utils/const';
+import "../../../scss/_main.scss";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -218,7 +218,7 @@ const options = {
   fixedHeader: true,
   expandableRows: true,
   renderExpandableRow: (rowData, rowMeta) => {
-    return (    
+    return ( 
     <TableRow>
         <TableCell colSpan={rowData.length+1}>
         <CorrelationSubTable
