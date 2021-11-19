@@ -140,7 +140,7 @@ export const EqIDSelector = (props) => {
           <TextField
             {...params}
             variant="outlined"
-            label="Exclude Equation ID"
+            label="Equation ID"
             placeholder="EqID"
             />
         )}
