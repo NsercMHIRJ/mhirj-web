@@ -20,12 +20,17 @@ const CorrelationAnalysisTable = (props) => {
 
   useEffect(() => {
     if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined && PMConditions.EqID !== '' && PMConditions.tail !== '') {
-      let path = Constants.APIURL + 'corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail;
+      let path = Constants.APIURL + 'corelation_new/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail;
+
+      console.log("https://mhirjapi.azurewebsites.net/api/corelation_new/2021-05-03/2021-05-25/B1-005804/773SK", "working path");
+      // let path = Constants.APIURL + 'corelation_new/' + '2021-05-03' + '/' + '2021-05-25' + '/' + "B1-005804" + '/' + "773SK";
+
+      console.log(path, "used path");
       
-      console.log(path);
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
         setData(data);
+        console.log(data);
         setLoading(false);
       }).catch(function (err){
         console.log(err);
