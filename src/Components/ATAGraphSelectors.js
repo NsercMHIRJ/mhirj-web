@@ -29,6 +29,39 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const AirlineList = ['SKW'];
+export const AirlineOperatorSelector = (props) => {
+  const [airline, setAirline] = useState('');
+
+  const handleAirlineChange = (event) => {
+    if ( event.target.value === "none"){
+      setAirline("");
+      props.handleAirlineChange("");
+    }
+    else{
+      setAirline(event.target.value);
+      props.handleAirlineChange(event.target.value);
+    }  
+  };
+
+  return(
+    <FormControl variant="outlined" className="form-control">
+      <InputLabel id="demo-simple-select-outlined-label">Airline Operator</InputLabel>
+      <Select
+        labelId="demo-simple-select-outlined-label"
+        id="demo-simple-select-outlined"
+        value={airline}
+        onChange={handleAirlineChange}
+        label="Airline Operator"
+      >
+      <MenuItem value="none"> </MenuItem>
+      {AirlineList.map( item => 
+        <MenuItem value={item} key={item}> {item} </MenuItem>
+      )};
+      </Select>
+    </FormControl>
+  );
+}
 
 export const ATAMainSelector = (props) => {
     const classes = useStyles();
