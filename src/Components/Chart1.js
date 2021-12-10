@@ -9,7 +9,7 @@ import { saveAs } from 'file-saver';
 import axios from 'axios';
 import {ATAMainSelector} from './ATAGraphSelectors';
 import Constants from './utils/const'
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -51,8 +51,9 @@ export default function Chart1() {
     const handleATAChange = (ATA) => {
         setATAMain(ATA);
       };
-
+    const [loadProgress , setLoadProgress] = useState();
     function submit(e) {
+      setLoadProgress(true);
         e.preventDefault();
         let msgName = [];
         let messageOcc = [];
@@ -79,6 +80,7 @@ export default function Chart1() {
                         borderColor: "black"
                     }]
                 });
+                setLoadProgress(false);
             })
             .catch(err => {
                 //console.log(err);
@@ -118,6 +120,7 @@ return (
               <div style={{ paddingBottom: "20px" }}><Button onClick={(e) => submit(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE" }}>GENERATE  </Button>
                 <Button onClick={(e) => save(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE", float: 'right', marginRight: "1200px" }}>SAVE</Button></div>
             </form>
+            {loadProgress ? <CircularProgress /> : ""}
             <Paper className={classes.paper}>
               <HorizontalBar
                 id="chart1"
