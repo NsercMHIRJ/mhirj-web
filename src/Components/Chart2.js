@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
 import Constants from './utils/const'
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,8 +46,9 @@ export default function Chart2() {
   }
 
 
-
+  const [loadProgress , setLoadProgress] = useState();
   function submit_chart2(e) {
+    setLoadProgress(true);
     e.preventDefault();
     let aircraft_no = [];
     let ataOcc = [];
@@ -85,6 +86,7 @@ export default function Chart2() {
             }
           ]
         });
+        setLoadProgress(false);
       })
       .catch(err => {
         //console.log(err);
@@ -118,7 +120,7 @@ export default function Chart2() {
             <div style={{ paddingBottom: "20px" }}><Button onClick={(e) => submit_chart2(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE" }}>GENERATE  </Button>
               <Button onClick={(e) => save(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE", float: 'right', marginRight: "1200px" }}>SAVE</Button></div>
           </form>
-
+          {loadProgress ? <CircularProgress /> : ""}
           <Paper className={classes.paper}>
             <HorizontalBar
               id="chart2"
