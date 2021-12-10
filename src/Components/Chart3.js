@@ -16,7 +16,7 @@ import Select from '@material-ui/core/Select';
 import Constants from './utils/const';
 import {EqIDSelector} from './ATAGraphSelectors';
 import moment from 'moment'
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -64,7 +64,10 @@ export default function Chart3() {
   const handleEqIDChange = (eqIDList) => {
     setEqID(eqIDList);
   };
+  
+  const [loadProgress , setLoadProgress] = useState();
   function submit_chart3(e) {
+    setLoadProgress(true);
     e.preventDefault();
     let Dates = [];
     let OccperDay = [];
@@ -101,6 +104,7 @@ export default function Chart3() {
             }
           ]
         });
+        setLoadProgress(false);
       })
       .catch(err => {
         //console.log(err);
@@ -150,7 +154,7 @@ export default function Chart3() {
             <div style={{ paddingBottom: "20px" }}><Button onClick={(e) => submit_chart3(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE" }}>GENERATE  </Button>
               <Button onClick={(e) => save(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE", float: 'right', marginRight: "1200px" }}>SAVE</Button></div>
           </form>
-
+          {loadProgress ? <CircularProgress /> : ""}
           <Paper className={classes.paper}>
             <Line
               id="chart3"
