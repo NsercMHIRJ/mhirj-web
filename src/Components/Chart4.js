@@ -119,7 +119,7 @@ const [loadProgress , setLoadProgress] = useState();
               //label: data_chart5.aircraft_no,
               data: total_count,
               backgroundColor: "#d8e4f0",
-              borderWidth: 1,
+              borderWidth: 2,
               borderColor: "black"
             }
           ]
@@ -188,10 +188,10 @@ const [loadProgress , setLoadProgress] = useState();
             <div  style={{ paddingBottom: "20px" }}><Button onClick={(e) => submit_chart4(e)} variant="contained" style={{backgroundColor:"#001C3E", color:"WHITE"}}>GENERATE  </Button>
             <Button onClick={(e) => save(e)}  variant="contained"style={{backgroundColor:"#001C3E", color:"WHITE",float:'right', marginRight:"1200px"}}>SAVE</Button></div>
           </form>
-
+          {loadProgress ? <CircularProgress /> : ""}
           <Paper className={classes.paper}>
-            <Line
-            id="chart5"
+          <HorizontalBar
+            id="chart4"
             data={chartData4}
             options={{
               // indexAxis: "y",
@@ -218,6 +218,12 @@ const [loadProgress , setLoadProgress] = useState();
                   {
                     ticks: {
                       beginAtZero: true
+                    },
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Total Number of Messages',
+                      fontStyle: 'bold',
+                      fontColor: '#001C3E'
                     },
                     gridLines: {
                       display: true
