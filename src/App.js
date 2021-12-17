@@ -190,7 +190,6 @@ export default function MiniDrawer() {
     setOpenGraphs(!openGraphs);
   };
 
-  const isAuthenticated = useIsAuthenticated();
 
   return (
 
@@ -216,11 +215,9 @@ export default function MiniDrawer() {
             </IconButton>
             <img src={mhirjLogoColored} style={{ height: 78, width: 150 }} />
             <typography style={{ color: "#001c3e", fontSize: "24px", fontFamily: "Times New Roman" }}>MDC Trend Analysis Tool</typography>
-            { isAuthenticated ? <SignOutButton /> : <SignInButton /> }
           </Toolbar>
         </AppBar>
 
-        <AuthenticatedTemplate>
 
         <ClickAwayListener
             mouseEvent="onMouseDown"
@@ -470,29 +467,14 @@ export default function MiniDrawer() {
             </Route>
           </Switch>
         </main>
-      </AuthenticatedTemplate> 
 
       </Router>
-      <UnauthenticatedTemplate>
-              <h5>..</h5>
-      </UnauthenticatedTemplate>
+      
 
     </div>
   );
 }
 
-const MainContent = () => {  
-  return (
-    
-      <div >
-          <AuthenticatedTemplate>
-              <MiniDrawer />
-          </AuthenticatedTemplate>
-          <UnauthenticatedTemplate>
-              <h5>..</h5>
-          </UnauthenticatedTemplate>
-      </div>
-  );
-  };
+
 
 
