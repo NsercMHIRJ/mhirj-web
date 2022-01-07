@@ -58,14 +58,16 @@ export const ATAMainSelector = (props) => {
   const [ATAMain, setATAMain] = useState([]);
   const [ATAMainList,setATAMainList] = useState([]);
   useEffect(() => {
-    const path = Constants.APIURL + '/GenerateReport/ata_main/ALL'
+    const path = Constants.APIURL + 'GenerateReport/ata_main/ALL'
 
     try{
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
         let ATAArray = ['ALL'];
         Object.values(data).map((item=>{
-          ATAArray.push(item.ATA_Main.toString());
+          if (item.ATA_Main !== null){
+            ATAArray.push(item.ATA_Main.toString());
+          }
         }))
         setATAMainList(ATAArray);
       });
@@ -131,14 +133,14 @@ export const EqIDSelector = (props) => {
   const [EqID, setEqID] = useState([]);
   const [EqList,setEqIDList] = useState([]);
   useEffect(() => {
-    const path = Constants.APIURL + '/GenerateReport/equation_id/ALL'
+    const path = Constants.APIURL + 'GenerateReport/equation_id/ALL'
 
     try{
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
         let EQArray = ['NONE'];
         Object.values(data).map((item=>{
-          EQArray.push(item.Equation_ID.toString());
+          EQArray.push(item.EQ_ID.toString());
         }))
         setEqIDList(EQArray);
       });

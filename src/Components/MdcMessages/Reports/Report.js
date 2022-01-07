@@ -81,9 +81,9 @@ const Report = (props) => {
           setLoadingDelta(true);
   
           axios.post(path).then(function (res){
-            var data = JSON.parse(res.data);
-            console.log(data);
-            setDeltaData(data);    
+            // var data = JSON.parse(res.data);
+            console.log(res.data);
+            setDeltaData(res.data);    
             setLoadingDelta(false);
           }).catch(function (err){
             console.log(err);
