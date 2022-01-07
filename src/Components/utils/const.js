@@ -1,5 +1,5 @@
 const Constants = {
-    APIURL: "http://127.0.0.1:8002/api/"
-    //APIURL: "http://20.85.211.143:8080/api/"
+    LOCALURL: "http://127.0.0.1:8000/api/",
+    APIURL: "http://10.40.4.16:8000/api/"
 }
 export default Constants
