@@ -13,6 +13,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Constants from './utils/const';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,21 +59,36 @@ export default function Chart5() {
   }
 
 
-
+  const [loadProgress , setLoadProgress] = useState();
   function submit_chart5(e) {
+    setLoadProgress(true); 
     e.preventDefault();
     let intermittence = [];
     let flight_leg = [];
     
     
-    const path=Constants.APIURL+ 'chart_five/' +data_chart5.aircraft_no+ '/' +data_chart5.equation_id+ '/' +flightphase+ '/' +data_chart5.from_date+ '/' +data_chart5.to_date;
+    const path=Constants.APIURL+ 'chart_five/' +data_chart5.aircraft_no+ "/('" +data_chart5.equation_id+ "')/" +flightphase+ '/' +data_chart5.from_date+ '/' +data_chart5.to_date;
+    console.log(path);
     axios.post(path)
       .then(res => {
-        //console.log(res,"response");
-        for (const dataObj of JSON.parse(res.data)) {
-          intermittence.push(dataObj.OccurencesOfIntermittent);
-          flight_leg.push(parseInt(dataObj.Flight_Leg_No));
+       // console.log(res,"response");
+        let info = JSON.parse(res.data)
+        console.log(info)
+        let intermittance_data = {};
+        for(let key in info)
+        {
+          intermittance_data=info[key]
         }
+        console.log(intermittance_data)
+        flight_leg = Object.keys(intermittance_data)
+         intermittence = Object.values(intermittance_data)
+        console.log(flight_leg)
+        console.log(intermittence)
+        // for (const dataObj of intermittance_data) {
+        //   console.log(Object.keys[intermittance_data]);
+        // console.log(Object.values[intermittance_data]);
+        // }
+        
         setChartData5({
           labels: flight_leg,
           datasets: [
@@ -84,6 +100,7 @@ export default function Chart5() {
             }
           ]
         });
+        setLoadProgress(false);
       })
       .catch(err => {
         //console.log(err);
@@ -132,7 +149,7 @@ export default function Chart5() {
             <div style={{ paddingBottom: "20px" }}><Button onClick={(e) => submit_chart5(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE" }}>GENERATE  </Button>
               <Button onClick={(e) => save(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE", float: 'right', marginRight: "1200px" }}>SAVE</Button></div>
           </form>
-
+          {loadProgress ? <CircularProgress /> : ""}
           <Paper className={classes.paper}>
             <Line
               id="chart5"

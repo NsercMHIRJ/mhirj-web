@@ -3,6 +3,9 @@ import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import {DateConverter} from '../../../Helper/Helper';
 import '../../../../scss/_main.scss';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 
 const JamsReport = (props) => {
   const columns = [
@@ -224,6 +227,21 @@ const JamsReport = (props) => {
       downloadOptions: {
         filename: props.title + ' from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
+      },
+      expandableRows: true,
+      renderExpandableRow: (rowData, rowMeta) => {
+        return (    
+        <TableRow>
+          <TableCell colSpan={rowData.length+1}>
+            <CorrelationAnalysisTable
+              dateFrom = {rowData[7]} 
+              dateTo = {rowData[7]} 
+              tail = {rowData[1]}
+              EqID = {rowData[13]}
+            />
+            </TableCell>
+        </TableRow>
+        );
       },
       draggableColumns: {
         enabled: false,

@@ -190,7 +190,6 @@ export default function MiniDrawer() {
     setOpenGraphs(!openGraphs);
   };
 
-  const isAuthenticated = useIsAuthenticated();
 
   return (
 
@@ -216,11 +215,9 @@ export default function MiniDrawer() {
             </IconButton>
             <img src={mhirjLogoColored} style={{ height: 78, width: 150 }} />
             <typography style={{ color: "#001c3e", fontSize: "24px", fontFamily: "Times New Roman" }}>MDC Trend Analysis Tool</typography>
-            { isAuthenticated ? <SignOutButton /> : <SignInButton /> }
           </Toolbar>
         </AppBar>
 
-        <AuthenticatedTemplate>
 
         <ClickAwayListener
             mouseEvent="onMouseDown"
@@ -353,7 +350,7 @@ export default function MiniDrawer() {
                     </Link>
                   </List>
 
-                  {/* <List component="div" disablePadding>
+                  {<List component="div" disablePadding>
                       <Link to="/Chart4" style={{ textDecoration: 'none' }}>
                         <ListItem button className={classes.nested_1}>
                           <ListItemIcon>
@@ -362,7 +359,7 @@ export default function MiniDrawer() {
                           <ListItemText primary="Top ATA in Reports" style={{ color: "#001c3e" }} />
                         </ListItem>
                       </Link>
-                    </List> */}
+                    </List>}
 
                   <List component="div" disablePadding>
                     <Link to="/Chart5" style={{ textDecoration: 'none' }}>
@@ -447,9 +444,9 @@ export default function MiniDrawer() {
             <Route path="/Chart3">
               <Chart3 />
             </Route>
-            {/* <Route path="/Chart4">
+            {<Route path="/Chart4">
             <Chart4 />
-          </Route> */}
+          </Route>}
             <Route path="/Chart5">
               <Chart5 />
             </Route>
@@ -470,29 +467,14 @@ export default function MiniDrawer() {
             </Route>
           </Switch>
         </main>
-      </AuthenticatedTemplate> 
 
       </Router>
-      <UnauthenticatedTemplate>
-              <h5>..</h5>
-      </UnauthenticatedTemplate>
+      
 
     </div>
   );
 }
 
-const MainContent = () => {  
-  return (
-    
-      <div >
-          <AuthenticatedTemplate>
-              <MiniDrawer />
-          </AuthenticatedTemplate>
-          <UnauthenticatedTemplate>
-              <h5>..</h5>
-          </UnauthenticatedTemplate>
-      </div>
-  );
-  };
+
 
 

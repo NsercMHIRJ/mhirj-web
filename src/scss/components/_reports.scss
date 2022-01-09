@@ -52,3 +52,58 @@
   }
 }
 
+.reports-root {
+  .MuiButtonBase-root {
+    margin-left: 0px !important;
+  }
+}
+.reports-root {
+  .MuiTableBody-root tr.MuiTableRow-root.MuiTableRow-hover td.MuiTableCell-root {
+    border-right: 1px solid lightgray;
+    &:last-of-type {
+      border-right: none;
+    }
+    cursor: default;
+    div {
+      cursor: default;
+    }
+  }
+  .MuiTableBody-root tr.MuiTableRow-root.MuiTableRow-hover:not(.correlation-analysis-subtable) td.MuiTableCell-root {
+    div {
+      display: block;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .analysis-correlation .MuiTableBody-root td.MuiTableCell-root.MuiTableCell-body {
+    div {
+      white-space: normal !important;
+    }
+  }
+
+  .MuiTableBody-root {
+    border-collapse: unset;
+  }
+
+  .MuiTableCell-root[class*="MUIDataTableSelectCell-"]{
+    background-color: white;
+  }
+
+  .MuiTableBody-root {
+    .MuiTableRow-root {
+      .MuiTableCell-root {
+        div {
+          .MuiButtonBase-root {
+            padding: 3px 7px 3px 3px;
+          }
+        }
+      }
+    }
+  }
+  .isClicked {
+    white-space: normal !important;
+  }
+}

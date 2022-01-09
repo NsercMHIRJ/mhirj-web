@@ -6,8 +6,34 @@ import { makeStyles } from '@material-ui/core/styles';
 //Date Imports
 import {DateConverter} from '../../../Helper/Helper';
 import '../../../../scss/_main.scss';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
+import $ from 'jquery';
 
 const FlagReport = (props) => {
+  const [ isDefault, setIsDefault ] = useState(true);
+  
+  const AddCellClass = (index) => {
+    let row = index + 1;
+    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+  }
+
+  const headingStyle = {
+    maxWidth:'200px',
+    minWidth:'50px',
+    padding:'5px',
+    textAlign:"center",
+    margin: '0px',
+    whiteSpace: 'normal',
+  }
+
+  const columnStyle = {
+    maxWidth:'150px',
+    padding:'13px',
+    textAlign:"left",
+    margin: '0px',
+  }
 
   const columns = [
     {
@@ -17,8 +43,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {paddingLeft:'20px'}}),
-       setCellHeaderProps: () => ({style: {paddingLeft:'30px'}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -28,7 +54,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -38,7 +65,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap', minWidth: "90px"}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -48,7 +76,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -58,7 +87,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {maxWidth: "200px"}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -67,7 +97,8 @@ const FlagReport = (props) => {
       options: {
        filter: false,
        sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -77,7 +108,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {maxWidth: "200px"}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -87,7 +119,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -97,7 +130,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -107,7 +141,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {maxWidth: "200px"}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -117,7 +152,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth: "300px"}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -127,7 +163,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth: "300px"}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
     ];
@@ -167,6 +204,24 @@ const FlagReport = (props) => {
       jumpToPage: true,
       resizableColumns: false,
       selectableRowsHideCheckboxes: true,
+      onCellClick: (colData, cellMeta) => {
+        setIsDefault(!isDefault);
+        AddCellClass(cellMeta.rowIndex);
+      },
+      renderExpandableRow: (rowData, rowMeta) => {
+        return (    
+          <TableRow className="correlation-analysis-subtable">
+            <TableCell colSpan={rowData.length+1}>
+              <CorrelationAnalysisTable
+                dateFrom = {rowData[7]} // Is on flag report
+                dateTo = {rowData[8]} // Is on flag report
+                tail = {rowData[0]}  
+                EqID = {rowData[2]} // Is on flag report
+              />
+              </TableCell>
+          </TableRow>
+        );
+      },
       downloadOptions: {
         filename: 'Flag Report from ' + props.flagReportConditions.fromDate + ' to ' + props.flagReportConditions.toDate + '.csv',
         separator: ',',
@@ -177,7 +232,9 @@ const FlagReport = (props) => {
       },
       textLabels: {
         body: {
-            noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display"
+            noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display",
+            toolTip: "Sort",
+            columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
         },
     },
       elevation: 4,

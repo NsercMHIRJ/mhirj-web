@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
 import Constants from './utils/const'
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,8 +46,9 @@ export default function Chart2() {
   }
 
 
-
+  const [loadProgress , setLoadProgress] = useState();
   function submit_chart2(e) {
+    setLoadProgress(true);
     e.preventDefault();
     let aircraft_no = [];
     let ataOcc = [];
@@ -59,11 +60,20 @@ export default function Chart2() {
 
     axios.post(path)
       .then(res => {
-        //console.log(res,"response");
-        for (const dataObj of JSON.parse(res.data)) {
-          aircraft_no.push(dataObj.aircraft);
-          ataOcc.push(parseInt(dataObj.ataOcc));
+        console.log(res,"response");
+        var info = JSON.parse(res.data)
+        var aircraft_data = Object.keys(info)
+        
+        var ata_data = Object.values(info)
+       console.log(ata_data)
+        for (const dataObj of aircraft_data) {
+          aircraft_no.push(dataObj);
         }
+        console.log(aircraft_no)
+        for(const dataObj of ata_data){
+          ataOcc.push(parseInt(dataObj));
+        }
+        console.log(ataOcc)
         setChartData2({
           labels: aircraft_no,
           datasets: [
@@ -76,6 +86,7 @@ export default function Chart2() {
             }
           ]
         });
+        setLoadProgress(false);
       })
       .catch(err => {
         //console.log(err);
@@ -109,7 +120,7 @@ export default function Chart2() {
             <div style={{ paddingBottom: "20px" }}><Button onClick={(e) => submit_chart2(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE" }}>GENERATE  </Button>
               <Button onClick={(e) => save(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE", float: 'right', marginRight: "1200px" }}>SAVE</Button></div>
           </form>
-
+          {loadProgress ? <CircularProgress /> : ""}
           <Paper className={classes.paper}>
             <HorizontalBar
               id="chart2"

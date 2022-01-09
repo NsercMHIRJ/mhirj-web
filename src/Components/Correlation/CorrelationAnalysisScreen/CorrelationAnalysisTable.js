@@ -22,15 +22,14 @@ const CorrelationAnalysisTable = (props) => {
     if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined && PMConditions.EqID !== '' && PMConditions.tail !== '') {
       let path = Constants.APIURL + 'corelation_new/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail;
 
-      console.log("https://mhirjapi.azurewebsites.net/api/corelation_new/2021-05-03/2021-05-25/B1-005804/773SK", "working path");
+      //console.log("https://mhirjapi.azurewebsites.net/api/corelation_new/2021-05-03/2021-05-25/B1-005804/773SK", "working path");
       // let path = Constants.APIURL + 'corelation_new/' + '2021-05-03' + '/' + '2021-05-25' + '/' + "B1-005804" + '/' + "773SK";
 
       console.log(path, "used path");
-      
+
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
         setData(data);
-        console.log(data);
         setLoading(false);
       }).catch(function (err){
         console.log(err);
@@ -49,19 +48,19 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {minWidth:'150px'}})
+        setCellProps: () => ({style: {width:'120px'}})
       }
     },
-    {
-      name: 'ATA', 
-      label: 'ATA',
-      options: {
-        filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: {minWidth:'150px'}})
-      }
-    },
+    // {
+    //   name: 'ATA', 
+    //   label: 'ATA',
+    //   options: {
+    //     filter: true,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({style: {minWidth:'150px'}})
+    //   }
+    // },
     {
       name: 'discrepancy', 
       label: 'Discrepancy',
@@ -69,7 +68,7 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {minWidth:'400px'}})
+        setCellProps: () => ({style: {width:'250px'}})
       }
     },
     {
@@ -79,7 +78,7 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {minWidth:'400px'}})
+        setCellProps: () => ({style: {width:'500px'}})
       }
     },
     {
@@ -89,7 +88,7 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {minWidth:'150px'}})
+        setCellProps: () => ({style: {width:'150px'}})
       }
     },
     {
@@ -99,7 +98,7 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {minWidth:'300px'}})
+        setCellProps: () => ({style: {width:'300px'}})
       }
     },
     {
@@ -109,7 +108,7 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {minWidth:'200px'}})
+        setCellProps: () => ({style: {width:'180px'}})
       }
     },
     {
@@ -119,7 +118,7 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {minWidth:'300px'}})
+        setCellProps: () => ({style: {width:'250px'}})
       }
     },
   ];
@@ -130,7 +129,7 @@ const CorrelationAnalysisTable = (props) => {
       responseData.push(
         {
           p_id: item["MaintTransID"],
-          ATA: item["ATA"],
+          //ATA: item["ATA"],
           discrepancy: item["Discrepancy"],
           action: item["CorrectiveAction"],
           date: DateConverter(item["DateAndTime"]),
@@ -147,6 +146,8 @@ const CorrelationAnalysisTable = (props) => {
 const options = {
   filter: true,
   filterType: 'multiselect',
+  selectableRowsHideCheckboxes: true,
+  selectableRowsOnClick: false,
   responsive: "standard",
   fixedHeader: true,
   fixedSelectColumn: true,
@@ -165,7 +166,7 @@ const options = {
         noMatch: loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display"
     },
   },
-  elevation: 0,
+  elevation: 1,
   rowsPerPage: 10,
   rowsPerPageOptions: [10,20,50],
   selectToolbarPlacement:"none",

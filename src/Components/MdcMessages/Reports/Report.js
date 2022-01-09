@@ -79,10 +79,11 @@ const Report = (props) => {
           setDeltaValue(1);
           setDeltaData([]);
           setLoadingDelta(true);
-
+          
           axios.post(path).then(function (res){
-            var data = JSON.parse(res.data);
-            setDeltaData(data);    
+            // var data = JSON.parse(res.data);
+            console.log(res.data);
+            setDeltaData(res.data);    
             setLoadingDelta(false);
           }).catch(function (err){
             console.log(err);
@@ -99,7 +100,7 @@ const Report = (props) => {
           setDailyValue(1);
           setDailyReportData([]);
           setLoadingDaily(true);
-  
+
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
             setDailyReportData(data);    
@@ -117,9 +118,7 @@ const Report = (props) => {
           setHistValue(1);
           setHistoryReportData([]);
           setLoadingHistory(true);
-
-          console.log(path);
-  
+          
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
             setHistoryReportData(data);  
@@ -167,7 +166,7 @@ const Report = (props) => {
       jamParameters.legs + '/' + jamParameters.intermittent + '/' + jamParameters.days + '/' + jamParameters.ata + '/' + 
       jamParameters.eqID + '/'+ jamParameters.operator + '/' + jamParameters.messages + '/' + jamParameters.fromDate + '/' + 
       jamParameters.toDate + '/' + jamACSNValue;
-      
+
       axios.post(jamsPath).then(function (res){
         var data = JSON.parse(res.data);
         setJamHistoryData(data);
