@@ -3,11 +3,21 @@ import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import "../../../../scss/_main.scss";
 import { DateConverter } from '../../../Helper/Helper';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
+import $ from 'jquery';
 
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
   const [rowsSelectedState, setRowsSelected] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [ isDefault, setIsDefault ] = useState(true);
+
+  const AddCellClass = (index) => {
+    let row = index + 1;
+    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+  }
 
   const HandleMultipleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
     setRowsSelected(rowsSelected);
@@ -28,15 +38,30 @@ const HistoryReport = (props) => {
     setRowsPerPage(rowsPerPage);
   };
 
+  const headingStyle = {
+    maxWidth:'200px',
+    minWidth:'50px',
+    padding:'5px',
+    textAlign:"center",
+    margin: '0px',
+    whiteSpace: 'normal',
+  }
+
+  const columnStyle = {
+    maxWidth:'150px',
+    padding:'13px',
+    textAlign:"left",
+    margin: '0px',
+  }
+
   const columns = [
     {
       name: 'tail', 
-      label: 'Tail #',
+      label: 'Tail#',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
       }
     },
     {
@@ -44,9 +69,10 @@ const HistoryReport = (props) => {
       label: 'ACSN',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -54,9 +80,10 @@ const HistoryReport = (props) => {
       label: 'EICAS Related',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -64,9 +91,10 @@ const HistoryReport = (props) => {
       label: 'MDC Messages',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'200px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -74,9 +102,10 @@ const HistoryReport = (props) => {
       label: 'LRU',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -84,9 +113,10 @@ const HistoryReport = (props) => {
       label: 'ATA',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -94,9 +124,10 @@ const HistoryReport = (props) => {
       label: 'B1 Equation',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -104,9 +135,10 @@ const HistoryReport = (props) => {
       label: 'Type',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -114,49 +146,58 @@ const HistoryReport = (props) => {
       label: 'Equation Description',
       options: {
        filter: false,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'totalOccurences', 
-      label: 'Total Occurences',
+      label: 'Occ',
       options: {
-       filter: false,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Total Occurences',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'consecutiveDays', 
-      label: 'Consecutive Days',
+      label: 'Cons. Days',
       options: {
-       filter: false,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Consecutive Days',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'ConsecutiveFlights', 
-      label: 'Consecutive Flights',
+      label: 'Cons. Legs', 
       options: {
-       filter: false,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Consecutive Flight Legs',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'intermittent', 
-      label: 'Intermittent',
+      label: 'Int.', 
       options: {
-       filter: false,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Intermittency',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -166,7 +207,8 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'200px'}}),
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -176,7 +218,8 @@ const HistoryReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'200px'}}),
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -184,9 +227,10 @@ const HistoryReport = (props) => {
       label: 'Reasons For Flag',
       options: {
        filter: false,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'200px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -194,55 +238,80 @@ const HistoryReport = (props) => {
       label: 'Priority',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'topMessage', 
       label: 'MHIRJ Known Message',
       options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'200px'}})
+        filter: false,
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'honey', 
       label: 'Mel or No-Dispatch',
       options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'200px'}})
+        filter: false,
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'input', 
       label: 'MHIRJ Input',
       options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'400px'}})
+        filter: false,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'300px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'recommendation', 
       label: 'MHIRJ Recommended Action',
       options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'400px'}})
+        filter: false,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'400px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'comments', 
       label: 'MHIRJ Additional Comment',
       options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'400px'}})
+        filter: false,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'300px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -300,16 +369,35 @@ const HistoryReport = (props) => {
 
     const options = {
       selectableRows: 'multiple',
-      selectableRowsOnClick: true,
       rowsSelected: rowsSelectedState,
       onRowSelectionChange: HandleMultipleRowSelect,
+      selectableRowsOnClick: false,
+      resizableColumns: false,
+      expandableRows: true,
+      onCellClick: (colData, cellMeta) => {
+        setIsDefault(!isDefault);
+        AddCellClass(cellMeta.rowIndex);
+      },
+      renderExpandableRow: (rowData, rowMeta) => {
+        return (    
+        <TableRow>
+          <TableCell colSpan={rowData.length+1}>
+            <CorrelationAnalysisTable
+              dateFrom = {rowData[13]}
+              dateTo = {rowData[14]}
+              tail = {rowData[0]}
+              EqID = {rowData[6]}
+            />
+            </TableCell>
+        </TableRow>
+        );
+      },
       filter: true,
       filterType: 'multiselect',
       responsive: "standard",
       fixedHeader: true,
       fixedSelectColumn: true,
       jumpToPage: true,
-      resizableColumns: false,
       downloadOptions: {
         filename: 'History Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
@@ -325,7 +413,9 @@ const HistoryReport = (props) => {
       },
       textLabels: {
         body: {
-            noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display"
+            noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display",
+            toolTip: "Sort",
+            columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
         },
     },
       elevation: 4,

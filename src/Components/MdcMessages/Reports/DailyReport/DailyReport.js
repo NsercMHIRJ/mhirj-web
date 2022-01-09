@@ -3,10 +3,20 @@ import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import {DateConverter} from '../../../Helper/Helper';
 import "../../../../scss/_main.scss";
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
+import $ from 'jquery';
 
 const DailyReport = (props) => {
   const [rowsSelectedState, setRowsSelected] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [ isDefault, setIsDefault ] = useState(true);
+  
+  const AddCellClass = (index) => {
+    let row = index + 1;
+    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+  }
 
   const HandleSingleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
     if (rowsSelected.length !== 0 && data[rowsSelected].isJam === true) {
@@ -22,10 +32,26 @@ const DailyReport = (props) => {
     setRowsPerPage(rowsPerPage);
   };
 
+  const headingStyle = {
+    maxWidth:'200px',
+    minWidth:'50px',
+    padding:'5px',
+    textAlign:"center",
+    margin: '0px',
+    whiteSpace: 'normal',
+  }
+
+  const columnStyle = {
+    maxWidth:'150px',
+    padding:'13px',
+    textAlign:"left",
+    margin: '0px',
+  }
+
   const columns = [
     {
       name: 'tail', 
-      label: 'Tail #',
+      label: 'Tail#',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -37,10 +63,10 @@ const DailyReport = (props) => {
       label: "Date",
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {paddingLeft:'20px',minWidth:'150px'}}),
-       setCellHeaderProps: () => ({style: {paddingLeft:'30px'}})
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -48,18 +74,21 @@ const DailyReport = (props) => {
       label: 'ACSN',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
-      name: 'EICASMessages', 
+      name: 'EICASRelated', 
       label: 'EICAS Related',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}}),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -67,8 +96,10 @@ const DailyReport = (props) => {
       label: 'MDC Messages',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -76,9 +107,10 @@ const DailyReport = (props) => {
       label: 'LRU',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -86,9 +118,10 @@ const DailyReport = (props) => {
       label: 'ATA',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -96,9 +129,10 @@ const DailyReport = (props) => {
       label: 'B1 Equation',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -106,8 +140,10 @@ const DailyReport = (props) => {
       label: 'Type',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -115,35 +151,46 @@ const DailyReport = (props) => {
       label: 'Equation Description',
       options: {
        filter: false,
-       filterType: 'dropdown',
-       sort: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'totalOccurences', 
-      label: 'Total Occurences',
+      label: 'Occ',
       options: {
-       filter: false,
-       filterType: 'dropdown',
-       sort: true,
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Total Occurences',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'ConsecutiveFlights', 
-      label: 'Consecutive Flights',
+      label: 'Cons. Legs', 
       options: {
-       filter: false,
-       filterType: 'dropdown',
-       sort: true,
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Consecutive Flight Legs',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'intermittent', 
-      label: 'Intermittent',
+      label: 'Int.', 
       options: {
-       filter: false,
-       filterType: 'dropdown',
-       sort: true,
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Intermittency',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -151,8 +198,10 @@ const DailyReport = (props) => {
       label: 'Reasons For Flag',
       options: {
        filter: false,
-       filterType: 'dropdown',
-       sort: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -160,53 +209,80 @@ const DailyReport = (props) => {
       label: 'Priority',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'topMessage', 
       label: 'MHIRJ Known Message',
       options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'200px'}})
+        filter: false,
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'honey', 
       label: 'Mel or No-Dispatch',
       options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'200px'}})
+        filter: false,
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'input', 
       label: 'MHIRJ Input',
       options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'400px'}})
+        filter: false,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'300px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'recommendation', 
       label: 'MHIRJ Recommended Action',
       options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'400px'}})
+        filter: false,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'400px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'comments', 
       label: 'MHIRJ Additional Comment',
       options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: {minWidth:'700px'}})
+        filter: false,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'300px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
     ];
@@ -256,6 +332,25 @@ const DailyReport = (props) => {
       resizableColumns: false,
       selectableRowsHideCheckboxes: true,
       selectableRowsOnClick: false,
+      expandableRows: true,
+      onCellClick: (colData, cellMeta) => {
+        setIsDefault(!isDefault);
+        AddCellClass(cellMeta.rowIndex);
+      },
+      renderExpandableRow: (rowData, rowMeta) => {
+        return (    
+          <TableRow className="correlation-analysis-subtable">
+            <TableCell colSpan={rowData.length+1}>
+              <CorrelationAnalysisTable
+                dateFrom = {rowData[1]} 
+                dateTo = {rowData[1]}
+                tail = {rowData[0]}
+                EqID = {rowData[7]}
+              />
+              </TableCell>
+          </TableRow>
+        );
+      },
       rowsSelected: rowsSelectedState,
       onRowSelectionChange: HandleSingleRowSelect,
       downloadOptions: {
@@ -268,7 +363,9 @@ const DailyReport = (props) => {
       },
       textLabels: {
         body: {
-            noMatch: props.loading ? ' Please wait, loading data ...' : "Sorry, there is no matching data to display"
+            noMatch: props.loading ? ' Please wait, loading data ...' : "Sorry, there is no matching data to display",
+            toolTip: "Sort",
+            columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
         },
     },
       elevation: 4,
@@ -276,7 +373,7 @@ const DailyReport = (props) => {
       onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
-      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '500px'
+      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };
   
   return (

@@ -2,7 +2,7 @@ import React, {useRef,useEffect} from 'react';
 import moment from 'moment'
 
 export const DateConverter = (date) => {
-  var t = moment(date);
+  var t = moment.utc(date);
   var formatted = t.format('DD-MMM-YYYY HH:mm');
   return formatted;
 }
@@ -13,7 +13,7 @@ export const ConvertToTimestamp = (date) => {
 }
 
 export const DateConverterCorrelation = (date) => {
-  var t = moment(date);
+  var t = moment.utc(date);
   var formatted = t.format('LL');
   return formatted;
 }
