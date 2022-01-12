@@ -3,6 +3,9 @@ import MUIDataTable from "mui-datatables";
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import Constants from '../../utils/const';
+import Grid from '@material-ui/core/Grid';
+import $ from 'jquery';
+import '../../../scss/_main.scss';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +20,17 @@ const CorrelationSubTable = (props) => {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [ isDefault, setIsDefault ] = useState(true);
+  const [rowsPerPage, setRowsPerPage] = useState('10');
+
+  const AddCellClass = (index) => {
+    let row = index + 1;
+    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+  }
+
+  const onChangeRowsPerPage = (rowsPerPage) => {
+    setRowsPerPage(rowsPerPage);
+  };
 
   useEffect(()=>{
     const path = Constants.APIURL + 'corelation/' + props.p_id;
@@ -31,6 +45,22 @@ const CorrelationSubTable = (props) => {
     });
   },[props.p_id])
 
+  const headingStyle = {
+    maxWidth:'200px',
+    minWidth:'50px',
+    padding:'5px',
+    textAlign:"center",
+    margin: '0px',
+    whiteSpace: 'normal',
+  }
+
+  const columnStyle = {
+    maxWidth:'150px',
+    padding:'13px',
+    textAlign:"left",
+    margin: '0px',
+  }
+
   const columns = [
   {
     name: 'aircraftno', 
@@ -39,7 +69,8 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap', minWidth: "90px"}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -49,7 +80,8 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {minWidth:'100px'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -59,7 +91,8 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -69,7 +102,8 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -79,7 +113,8 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {minWidth:'300px'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -89,7 +124,8 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {minWidth:'150px'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -99,7 +135,8 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {minWidth:'400px'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -109,7 +146,8 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -119,7 +157,8 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {minWidth:'300px'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -129,7 +168,8 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {minWidth:'200px'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
 ];
@@ -162,6 +202,15 @@ const options = {
   responsive: "standard",
   fixedHeader: true,
   fixedSelectColumn: true,
+  jumpToPage: true,
+  resizableColumns: false,
+  selectableRowsHideCheckboxes: true,
+  selectableRowsOnClick: false,
+  expandableRows: true,
+  onCellClick: (colData, cellMeta) => {
+    setIsDefault(!isDefault);
+    AddCellClass(cellMeta.rowIndex);
+  },
   downloadOptions: {
     filename: 'Correlation Report from ' + props.dateFrom + ' to ' + props.dateTo + ' from '+ props.p_id +'.csv',
     separator: ',',
@@ -172,23 +221,30 @@ const options = {
   },
   textLabels: {
     body: {
-        noMatch: loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display"
+      noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display",
+      toolTip: "Sort",
+      columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
     },
   },
   elevation: 3,
-  rowsPerPage: 20,
-  rowsPerPageOptions: [20, 50],
+  rowsPerPage: rowsPerPage,
+  onChangeRowsPerPage: onChangeRowsPerPage,
+  rowsPerPageOptions: [10,20,50],
   selectToolbarPlacement:"none",
 };
 
   return (
-    <div className={classes.root}>
-      <MUIDataTable
-        title={"Correlation Report for P_ID "+props.p_id+" from " + props.dateFrom + ' to ' + props.dateTo}
-        data={responseData}
-        columns={columns}
-        options={options}
-      />
+    <div className="reports-root">
+      <Grid container spacing={0}>
+        <Grid item xs={12}>
+          <MUIDataTable
+            title={"Correlation Report for P_ID "+props.p_id+" from " + props.dateFrom + ' to ' + props.dateTo}
+            data={responseData}
+            columns={columns}
+            options={options}
+          />
+       </Grid> 
+    </Grid> 
   </div>
   );
 }
