@@ -28,7 +28,7 @@ const HistoryReport = (props) => {
       FlagArray.push("('"+ data[item].ACSN +"','"+ data[item].B1Equation +"')");
       return FlagArray;
     }));
-    let flagList =  FlagArray.join(", ");
+    let flagList =  FlagArray.join(",");
     props.setJamACSNHistoryValue(ACSNArray[ACSNArray.length-1]);
     setFlagList(flagList);
     props.HandleMultipleRowSelectReport(flagList);

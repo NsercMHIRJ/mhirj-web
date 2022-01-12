@@ -13,11 +13,16 @@ import $ from 'jquery';
 
 const FlagReport = (props) => {
   const [ isDefault, setIsDefault ] = useState(true);
-  
+  const [rowsPerPage, setRowsPerPage] = useState('10');
+
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
+
+  const onChangeRowsPerPage = (rowsPerPage) => {
+    setRowsPerPage(rowsPerPage);
+  };
 
   const headingStyle = {
     maxWidth:'200px',
@@ -48,6 +53,17 @@ const FlagReport = (props) => {
       }
     },
     {
+      name: "tail",
+      label: "Tail#",
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
       name: 'ATA', 
       label: 'ATA',
       options: {
@@ -60,7 +76,7 @@ const FlagReport = (props) => {
     },
     {
       name: 'code', 
-      label: 'B1-Equation',
+      label: 'B1-code',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -141,29 +157,86 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
+       setCellProps: () => ({
+        style: {
+          maxWidth:'400px',
+          padding:'13px',
+          textAlign:"left",
+          margin: '0px',
+        }}
+      ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'mel', 
+      label: 'MEL or No-Dispatch',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({
+        style: {
+          maxWidth:'400px',
+          padding:'13px',
+          textAlign:"left",
+          margin: '0px',
+        }}
+      ),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'input', 
-      label: 'Input',
+      label: 'MHIRJ Input',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
+       setCellProps: () => ({
+        style: {
+          maxWidth:'400px',
+          padding:'13px',
+          textAlign:"left",
+          margin: '0px',
+        }}
+      ),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
-      name: 'iseRecAct', 
-      label: 'Rec Act',
+      name: 'recommendation', 
+      label: 'MHIRJ Recommendation',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
+       setCellProps: () => ({
+        style: {
+          maxWidth:'400px',
+          padding:'13px',
+          textAlign:"left",
+          margin: '0px',
+        }}
+      ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'comments', 
+      label: 'Additional Comments',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({
+        style: {
+          maxWidth:'400px',
+          padding:'13px',
+          textAlign:"left",
+          margin: '0px',
+        }}
+      ),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
@@ -171,15 +244,16 @@ const FlagReport = (props) => {
 
     let data = [];
       props.data?.map((item => {
-        let input = item["ISE Input"] === '0' ? '' : item["ISE Input"];
-        let iseRecAct = item["ISE Rec Act"] === '0' ? '' : item["ISE Rec Act"];
-        let action = item["SKW WIP"] === '0' ? '' : item["SKW WIP"];
+        let input = item["MHIRJ Input"] === '0' ? '' : item["MHIRJ Input"];
+        let recommendation = item["MHIRJ Recommendation"] === '0' ? '' : item["MHIRJ Recommendation"];
+        let action = item["SKW action WIP"] === '0' ? '' : item["SKW action WIP"];
 
         data.push(
           {
-            MSN: item["AC SN"], 
+            MSN: item["MSN"], 
+            tail: item["AC_TN"],
             ATA: item["ATA"], 
-            code: item["B1-Equation"], 
+            code: item["B1-code"], 
             LRU: item["LRU"],  
             message: item["Message"],  
             type: item["Type"],  
@@ -187,8 +261,10 @@ const FlagReport = (props) => {
             dateFrom: DateConverter(item["Date From"]),   
             dateTo: DateConverter(item["Date To"]),   
             action: action,  
+            mel: item["MEL or No-Dispatch"],
             input: input,  
-            iseRecAct: iseRecAct,  
+            recommendation: recommendation,  
+            comments: item["Additional Comments"]
           }
         );
         return data;
@@ -204,6 +280,8 @@ const FlagReport = (props) => {
       jumpToPage: true,
       resizableColumns: false,
       selectableRowsHideCheckboxes: true,
+      selectableRowsOnClick: false,
+      expandableRows: true,
       onCellClick: (colData, cellMeta) => {
         setIsDefault(!isDefault);
         AddCellClass(cellMeta.rowIndex);
@@ -213,10 +291,10 @@ const FlagReport = (props) => {
           <TableRow className="correlation-analysis-subtable">
             <TableCell colSpan={rowData.length+1}>
               <CorrelationAnalysisTable
-                dateFrom = {rowData[7]} // Is on flag report
-                dateTo = {rowData[8]} // Is on flag report
-                tail = {rowData[0]}  
-                EqID = {rowData[2]} // Is on flag report
+                dateFrom = {rowData[8]} 
+                dateTo = {rowData[9]} 
+                tail = {rowData[1]}  
+                EqID = {rowData[3]} 
               />
               </TableCell>
           </TableRow>
@@ -238,7 +316,8 @@ const FlagReport = (props) => {
         },
     },
       elevation: 4,
-      rowsPerPage: 10,
+      rowsPerPage: rowsPerPage,
+      onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '160px' : `${200+data.length*60}px`
@@ -247,15 +326,15 @@ const FlagReport = (props) => {
   
   return (
     <div className="reports-root">
-    <Grid container spacing={0}>
-      <Grid item xs={12}>
-        <MUIDataTable
-          title={"Flag Report"} 
-          data={data}
-          columns={columns}
-          options={options}
-        />
-      </Grid> 
+      <Grid container spacing={0}>
+        <Grid item xs={12}>
+          <MUIDataTable
+            title={"Flag Report"} 
+            data={data}
+            columns={columns}
+            options={options}
+          />
+      </Grid>
     </Grid> 
   </div>
   );

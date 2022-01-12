@@ -92,17 +92,6 @@ const DailyReport = (props) => {
       }
     },
     {
-      name: 'mdcMessages', 
-      label: 'MDC Messages',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
       name: 'LRU', 
       label: 'LRU',
       options: {
@@ -225,16 +214,16 @@ const DailyReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
-     {
-      name: 'honey', 
-      label: 'Mel or No-Dispatch',
-      options: {
-        filter: false,
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
+    //  {
+    //   name: 'honey', 
+    //   label: 'Mel or No-Dispatch',
+    //   options: {
+    //     filter: false,
+    //     sort: true,
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
      {
       name: 'input', 
       label: 'MHIRJ Input',
@@ -298,24 +287,23 @@ const DailyReport = (props) => {
           {
             date: DateConverter(item["Date"]), 
             ACSN: item["AC SN"], 
-            tail: item["Tail#"],
+            tail: item["AC_TN"],
             EICASRelated: item["EICAS Message"], 
-            mdcMessages: item["MDC Message"],  
             LRU: item["LRU"],  
             ATA: item["ATA"],  
             B1Equation: item["B1-Equation"],  
             type: item["Type"],   
             equationDescription: item["Equation Description"],   
             totalOccurences: item["Total Occurences"],  
-            ConsecutiveFlights: item["Consecutive FL"],  
-            intermittent: item["Intermittent"],  
+            ConsecutiveFlights: item["Consecutive FL"], 
+            intermittent: item["INTERMITNT"],  
             reasons: item["Reason(s) for flag"],   
             priority: item["Priority"],   
             topMessage: topMessage,  
             recommendation: recommendation, 
             comments: comments, 
             input: input,  
-            honey: "",
+            // honey: item["MEL or No-Dispatch"],
           }
         );
         return data;

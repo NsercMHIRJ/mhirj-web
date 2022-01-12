@@ -6,8 +6,37 @@ import '../../../../scss/_main.scss';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
+import $ from 'jquery';
 
 const JamsReport = (props) => {
+  const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [ isDefault, setIsDefault ] = useState(true);
+
+  const AddCellClass = (index) => {
+    let row = index + 1;
+    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+  }
+
+  const onChangeRowsPerPage = (rowsPerPage) => {
+    setRowsPerPage(rowsPerPage);
+  };
+
+  const headingStyle = {
+    maxWidth:'200px',
+    minWidth:'50px',
+    padding:'5px',
+    textAlign:"center",
+    margin: '0px',
+    whiteSpace: 'normal',
+  }
+
+  const columnStyle = {
+    maxWidth:'150px',
+    padding:'13px',
+    textAlign:"left",
+    margin: '0px',
+  }
+
   const columns = [
     {
       name: "flight",
@@ -16,17 +45,19 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {paddingLeft:'20px'}}),
-       setCellHeaderProps: () => ({style: {paddingLeft:'30px'}})
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
       name: 'tail', 
-      label: 'Taill #',
+      label: 'Tail#',
       options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -36,6 +67,8 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -44,6 +77,8 @@ const JamsReport = (props) => {
       options: {
        filter: false,
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -52,6 +87,8 @@ const JamsReport = (props) => {
       options: {
        filter: true,
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -60,6 +97,8 @@ const JamsReport = (props) => {
       options: {
        filter: false,
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -68,7 +107,8 @@ const JamsReport = (props) => {
       options: {
        filter: false,
        sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}})
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -78,6 +118,8 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -86,7 +128,8 @@ const JamsReport = (props) => {
       options: {
        filter: false,
        sort: true,
-       setCellProps: () => ({style: {minWidth:'150px'}})
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -96,6 +139,8 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -105,6 +150,8 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -114,15 +161,20 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'intermittent', 
-      label: 'Intermittent',
+      label: 'Int.', 
       options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Intermittency',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -132,6 +184,8 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -141,6 +195,8 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -150,7 +206,8 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'400px'}})
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -160,6 +217,8 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -169,6 +228,8 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -178,6 +239,8 @@ const JamsReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
     ];
@@ -224,11 +287,12 @@ const JamsReport = (props) => {
       jumpToPage: true,
       resizableColumns: false,
       selectableRowsHideCheckboxes: true,
-      downloadOptions: {
-        filename: props.title + ' from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
-        separator: ',',
-      },
+      selectableRowsOnClick: false,
       expandableRows: true,
+      onCellClick: (colData, cellMeta) => {
+        setIsDefault(!isDefault);
+        AddCellClass(cellMeta.rowIndex);
+      },
       renderExpandableRow: (rowData, rowMeta) => {
         return (    
         <TableRow>
@@ -243,17 +307,25 @@ const JamsReport = (props) => {
         </TableRow>
         );
       },
+      downloadOptions: {
+        filename: props.title + ' from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
+        separator: ',',
+      },
+      expandableRows: true,
       draggableColumns: {
         enabled: false,
         transitionTime: 300,
       },
       textLabels: {
         body: {
-            noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display"
-        },
+          noMatch: props.loading ? ' Please wait, loading data ...' : "Sorry, there is no matching data to display",
+          toolTip: "Sort",
+          columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
+      },
     },
       elevation: 4,
-      rowsPerPage: 10,
+      rowsPerPage: rowsPerPage,
+      onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : `${200+data.length*60}px`

@@ -46,7 +46,7 @@ import Stacked from './Components/Stacked';
 import FileUpload from './Components/FileUpload';
 import Analysis from './Components/MdcMessages/GenerateReport/Analysis';
 import Report from './Components/MdcMessages/Reports/Report';
-import Correlation from './Components/Correlation/Correlation';
+import Correlation from './Components/Correlation/CorrelationScreen/Correlation';
 import FlagReport from './Components/MdcMessages/Reports/FlagReport/FlagReport';
 import TimelineSharpIcon from '@material-ui/icons/TimelineSharp';
 import Rawdata from './Components/MdcMessages/Reports/Rawdata/RawMdcMessages';
