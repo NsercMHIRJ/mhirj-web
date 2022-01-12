@@ -3,38 +3,20 @@ import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import { DateConverter } from '../../../Helper/Helper';
 import "../../../../scss/_main.scss";
-import $ from 'jquery';
 
 const RawDataTable = (props) => {
-  const [ isDefault, setIsDefault ] = useState(true);
-  const [rowsPerPage, setRowsPerPage] = useState('10');
-  
-  const AddCellClass = (index) => {
-    let row = index + 1;
-    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
-  }
-
-  const onChangeRowsPerPage = (rowsPerPage) => {
-    setRowsPerPage(rowsPerPage);
-  };
-
-  const headingStyle = {
-    maxWidth:'200px',
-    minWidth:'50px',
-    padding:'5px',
-    textAlign:"center",
-    margin: '0px',
-    whiteSpace: 'normal',
-  }
-
-  const columnStyle = {
-    maxWidth:'150px',
-    padding:'13px',
-    textAlign:"left",
-    margin: '0px',
-  }
 
   const columns = [
+    {
+      name: "aircraftModel",
+      label: "Aircraft Model",
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+    },
     {
       name: "aircraft",
       label: "Aircraft",
@@ -42,8 +24,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
@@ -53,8 +34,67 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+    },
+    {
+      name: 'operator', 
+      label: 'Operator',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+    },
+    {
+      name: 'type', 
+      label: 'Type',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+     },
+     {
+      name: 'software', 
+      label: 'Software',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+     },
+     {
+      name: 'version', 
+      label: 'Version',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+    },
+    {
+      name: 'date', 
+      label: 'Date',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+    },
+    {
+      name: 'flightNumber', 
+      label: 'Flight Number',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
@@ -64,51 +104,37 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
-      name: 'ATAMain', 
-      label: 'ATA Main',
+      name: 'phase', 
+      label: 'Flight Phase',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
-      name: 'ATASub', 
-      label: 'ATA Sub',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
       name: 'ATA', 
       label: 'ATA',
       options: {
-       filter: false,
+       filter: true,
+       filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
-      name: 'ATADesc', 
-      label: 'ATA Description',
+      name: 'ATAName', 
+      label: 'ATA Name',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
@@ -118,31 +144,134 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
     },
     {
-      name: 'date', 
-      label: 'Date and Time',
+      name: 'compId', 
+      label: 'COMP ID',
+      options: {
+       filter: false,
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+    },
+    {
+      name: 'msgText', 
+      label: 'Message Text',
+      options: {
+       filter: false,
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+    },
+    {
+      name: 'equationID', 
+      label: 'Equation ID',
+      options: {
+       filter: false,
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+    },
+    {
+      name: 'intermittent', 
+      label: 'Intermittent',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-       
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
      },
      {
-      name: 'MDCMessages', 
-      label: 'MDC Messages',
+      name: 'eventNote', 
+      label: 'Event Note',
       options: {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+     },
+     {
+      name: 'eqTsNote', 
+      label: 'Equation TS Note',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+     },
+     {
+      name: 'source', 
+      label: 'Source',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+     },
+     {
+      name: 'isDup', 
+      label: 'IS Duplicated',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+     },
+     {
+      name: 'msgId', 
+      label: 'Message ID',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+     },
+     {
+      name: 'isInserted', 
+      label: 'IS Inserted',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+     },
+     {
+      name: 'isUpdated', 
+      label: 'IS Updated',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+     },
+     {
+      name: 'reviewReq', 
+      label: 'Review Request',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
+      }
+     },
+     {
+      name: 'falseMsg', 
+      label: 'False Message',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
      },
      {
@@ -152,97 +281,7 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'phase', 
-      label: 'Phase',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'type', 
-      label: 'Type',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'intermittent', 
-      label: 'Int.', 
-      options: {
-        filter: false,
-        filterType: 'dropdown',
-        sort: true,
-        secondaryLabel: 'Intermittency',
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'equationID', 
-      label: 'Equation ID',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'diagnostic', 
-      label: 'Diagnostic',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'data', 
-      label: 'Data Used to Determine Msg',
-      options: {
-        filter: true,
-        filterType: 'dropdown',
-        sort: true,
-          setCellProps: () => ({style: columnStyle}),
-          setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'id', 
-      label: 'ID',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'flightNumber', 
-      label: 'Flight Number',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
+       setCellProps: () => ({style: {minWidth:'120px'}}),
       }
      },
     ];
@@ -251,26 +290,34 @@ const RawDataTable = (props) => {
     props.data?.map((item => {
       data.push(
           {
-            aircraft: item["Aircraft"], 
-            tail: item["Tail#"], 
-            fightLeg: item["Flight Leg No"], 
-            ATAMain: item["ATA Main"],  
-            ATASub: item["ATA Sub"],  
+            aircraftModel: item["AC_MODEL"],
+            aircraft: item["AC_SN"], 
+            tail: item["AC_TN"],
+            operator: item["OPERATOR"],
+            type: item["MSG_TYPE"],
+            software: item["MDC_Software"], 
+            version: item["Version"],
+            date: DateConverter(item["DateAndTime"]), 
+            flightNumber: item["Flight_NUM"], 
+            fightLeg: item["Flight_LEG"], 
+            phase: item["Flight_Phase"],
             ATA: item["ATA"],  
-            ATADesc: item["ATA Description"],  
-            LRU: item["LRU"],   
-            date: DateConverter(item["DateAndTime"]),   
-            MDCMessages: item["MDC Message"],  
-            status: item["Status"],  
-            phase: item["Flight Phase"],  
-            type: item["Type"],   
-            intermittent: item["Intermittent"],   
-            equationID: item["Equation ID"],  
+            ATAName: item["ATA_Name"],
+            LRU: item["LRU"],  
+            compId: item["COMP_ID"],
+            msgText: item["MSG_TXT"],
+            equationID: item["EQ_ID"],
+            intermittent: item["INTERMITNT"], 
+            eventNote: item["Event_Note"],
+            eqTsNote: item["EQ_TS_Note"],
             source: item["Source"], 
-            diagnostic: item["Diagnostic Data"],  
-            data: item["Data Used to Determine Msg"],  
-            id:item["ID"],
-            flightNumber: item["Flight"],
+            isDup: item["IS_DUP"],
+            msgId: item["message_id"],
+            isInserted: item["IS_INSERTED"],
+            isUpdated: item["IS_UPDATED"],
+            reviewReq: item["REVIEW_REQ"],
+            falseMsg: item["FALSE_MSG"],
+            status: item["msg_status"],            
           }
         );
         return data;
@@ -282,17 +329,9 @@ const RawDataTable = (props) => {
       responsive: "standard",
       fixedHeader: true,
       fixedSelectColumn: true,
-      jumpToPage: true,
-      resizableColumns: false,
-      selectableRowsHideCheckboxes: true,
-      selectableRowsOnClick: false,
       downloadOptions: {
         filename: 'MDC Raw Data from ' + props.rawDataConditions.fromDate + ' to ' + props.rawDataConditions.toDate + '.csv',
         separator: ',',
-      },
-      onCellClick: (colData, cellMeta) => {
-        setIsDefault(!isDefault);
-        AddCellClass(cellMeta.rowIndex);
       },
       draggableColumns: {
         enabled: false,
@@ -300,15 +339,12 @@ const RawDataTable = (props) => {
       },
       textLabels: {
         body: {
-            noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display",
-            toolTip: "Sort",
-            columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
+            noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display"
         },
       },
       elevation: 4,
-      rowsPerPage:  rowsPerPage,
-      onChangeRowsPerPage: onChangeRowsPerPage,
-      rowsPerPageOptions: [10,20,50],
+      rowsPerPage: 7,
+      rowsPerPageOptions: [7,20,50],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '500px'
     };

@@ -100,7 +100,6 @@ const RawMdcMessages = () => {
 
 const [rawDataConditions, setRawDataConditions] = useState(
   {
-    operator: '',
     ata: '',
     eqID: '',
     messages: '',
@@ -112,7 +111,7 @@ const [rawDataConditions, setRawDataConditions] = useState(
 const handleGenerateReport = (event) => {
   setRawDataConditions(
     {
-      operator: airline,
+      // operator: airline,
       ata: ATAMain,
       eqID: EqID,
       messages: messagesChoice,
@@ -128,17 +127,16 @@ const handleGenerateReport = (event) => {
 useEffect(() => {
   let flag = false;
  Object.values(rawDataConditions).map(item => {
-   if (item === "" || item === "('')"){
+   if (item['fromDate'] === null || item['toDate' ]=== null){
      flag = true;
      setLoading(false);
    }
  });
 
- if (flag === false) {  
-    const path = Constants.APIURL + 'MDCRawData/' + rawDataConditions.ata + '/' + rawDataConditions.eqID + '/' + rawDataConditions.operator + 
-    '/' + rawDataConditions.messages + '/' + rawDataConditions.fromDate + '/' + rawDataConditions.toDate;
+  if (flag === false) {  
+    const path = `${Constants.APIURL}RawData/${rawDataConditions.fromDate}/${rawDataConditions.toDate}/?ata=${rawDataConditions.ata}&eqID=${rawDataConditions.eqID}&msg=${rawDataConditions.messages}`;
 
-      axios.post(path).then(function (res) {
+      axios.get(path).then(function (res) {
         var data = JSON.parse(res.data);
           setRawData(data);
           setLoading(false);
@@ -158,9 +156,9 @@ useEffect(() => {
       </div>
         <Grid className={classes.Grid} container spacing={3}> 
             <Grid item xs={2}>
-            <AirlineOperatorSelector
+            {/* <AirlineOperatorSelector
                 handleAirlineChange = {handleAirlineChange}                
-              />     
+              />      */}
               <MessagesSelector 
                 handleMessagesChange = {handleMessagesChange}
               />
