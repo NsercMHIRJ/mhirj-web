@@ -163,8 +163,24 @@ useEffect(() => {
 }, [reportConditions]);
 
 const SaveFilter = (jsonData,filename) => {
+    const filterObj = {
+    analysis,
+    occurences,
+    legs,
+    eqID: EqID,
+    intermittent,
+    days,
+    operator: airline,
+    ata: ATAMain,
+    messages: messagesChoice,
+    fromDate: dateFrom,
+    toDate: dateTo,
+    deltaFrom,
+    deltaTo
+
+  }
   
-    const fileData = JSON.stringify(jsonData);
+    const fileData = JSON.stringify(filterObj);
     const blob = new Blob([fileData], {type: "text/plain"});
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -320,7 +336,7 @@ function upload_filter(e) {
                 </Button>  
                 <Button 
                   variant="contained" 
-                  onClick = {async()=>SaveFilter(reportConditions,"Filter_"+ currDate+"-"+currMonth+"-"+currYear)}
+                  onClick = {()=>SaveFilter("Filter_"+ currDate+"-"+currMonth+"-"+currYear)}
                   >
                     Save Filter
                 </Button>
