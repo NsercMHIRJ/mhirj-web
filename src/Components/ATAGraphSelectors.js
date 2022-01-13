@@ -8,6 +8,7 @@ import Select from '@material-ui/core/Select';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+//import '../../../scss/core/_selectors.scss';
 import Constants from './utils/const';
 
 const useStyles = makeStyles((theme) => ({
@@ -68,14 +69,16 @@ export const ATAMainSelector = (props) => {
     const [ATAMain, setATAMain] = useState([]);
     const [ATAMainList, setATAMainList] = useState([]);
     useEffect(() => {
-        const path = Constants.APIURL+ '/GenerateReport/ata_main/ALL'
+        const path = Constants.APIURL+ 'GenerateReport/ata_main/ALL'
 
         try {
             axios.post(path).then(function(res) {
                 var data = JSON.parse(res.data);
                 let ATAArray = ['ALL'];
                 Object.values(data).map((item => {
+                  if (item.ATA_Main !== null){
                     ATAArray.push(item.ATA_Main.toString());
+                  }
                 }))
                 setATAMainList(ATAArray);
             });
@@ -97,16 +100,16 @@ export const ATAMainSelector = (props) => {
         }
     };
 
-    return ( <
-        Autocomplete className = { classes.autocomplete }
+    return ( 
+      <Autocomplete className = { classes.autocomplete }
         multiple options = { ATAMainList }
         getOptionLabel = {
             (item => item) }
         value = { ATAMain }
         filterSelectedOptions onChange = { handleATAChange }
         renderInput = {
-            (params) => ( <
-                TextField {...params }
+            (params) => ( 
+            <TextField {...params }
                 variant = "outlined"
                 label = "ATA Main"
                 placeholder = "ATA Main" /
@@ -122,14 +125,16 @@ export const EqIDSelector = (props) => {
   const [EqID, setEqID] = React.useState([]);
   const [EqList,setEqIDList] = useState([]);
   useEffect(() => {
-    const path = Constants.APIURL+ '/GenerateReport/equation_id/ALL'
+    const path = Constants.APIURL+ 'GenerateReport/equation_id/ALL'
 
     try{
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
         let EQArray = ['NONE'];
         Object.values(data).map((item=>{
-          EQArray.push(item.Equation_ID.toString());
+          if (item.EQ_ID) {
+            EQArray.push(item.EQ_ID.toString());
+          }
         }))
         setEqIDList(EQArray);
       });
