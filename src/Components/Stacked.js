@@ -9,6 +9,7 @@ import { saveAs } from 'file-saver';
 import axios from 'axios';
 import {ATAMainSelector} from './ATAGraphSelectors';
 import Constants from './utils/const';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,8 +53,9 @@ export default function Stacked() {
   const handleATAChange = (ATA) => {
     setATAMain(ATA);
   };
-
+  const [loadProgress , setLoadProgress] = useState();
   function submit(e) {
+    setLoadProgress(true);
     e.preventDefault();
     let aircraftno = [];
     let ata_main = [];
@@ -142,6 +144,7 @@ export default function Stacked() {
       datasets: intiDataSet(dataMetaData)
       
     });
+    setLoadProgress(false);
     })
     .catch(err => {
       //console.log(err);
@@ -175,6 +178,7 @@ export default function Stacked() {
             <div style={{ paddingBottom: "20px" }}><Button onClick={(e) => submit(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE" }}>GENERATE  </Button>
               <Button onClick={(e) => save(e)} variant="contained" style={{ backgroundColor: "#001C3E", color: "WHITE", float: 'right', marginRight: "1200px" }}>SAVE</Button></div>
           </form>
+          {loadProgress ? <CircularProgress /> : ""}
           <Paper className={classes.paper}>
             <HorizontalBar
               id="chart1"
