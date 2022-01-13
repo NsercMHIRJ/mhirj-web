@@ -770,7 +770,7 @@ export default function FileUpload() {
 						<Grid className={classes.Grid} container spacing={3}>
             <Grid item xs={4} container spacing={2}>
                 <div>
-                  <div>
+                 {/* <div>
                   <input className={classes.input} name="file" type="file" onChange={(e) => handleChange(e)} />
                   <Button type="button" style={{marginLeft : "350px",marginTop : " -45px", width:"200px",backgroundColor: "#001c3e",color: "White"}} onClick={onClickMDC}> Upload MDC RAW Data</Button>
                   </div>
@@ -778,7 +778,7 @@ export default function FileUpload() {
                   <br></br>
                   <div>
                   {fileUploadInProgress ? <ProgressMDC /> : <NoStatus />}
-                  </div>
+                  </div> */}
                   {/* <Button type="button" style={{marginLeft : "520px",marginTop : "-56px", width:"200px",backgroundColor: "#001c3e",color: "White"}} onClick={(e) => mdcStatus(e)}> Show Status</Button> */}
                   
                  
