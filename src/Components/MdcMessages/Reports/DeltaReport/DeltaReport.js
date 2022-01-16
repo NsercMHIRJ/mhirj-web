@@ -407,17 +407,7 @@ const DeltaReport = (props) => {
         );
       },
       setRowProps: (row, index) => {
-        if (row[22] === true) {
-          return {style: {background: '#ff4c00'}} // dark orange - row 22 from columns
-        } else if (row[23] === true) {
-          return {style: {background: '#ff0000'}} // dark red - row 23 from columns
-        } else if (row[24] === true) {
-          return {style: {background: '#ff7f50'}} //is jam - row 24 from columns
-        } else if (row[25] === true) {
-           return {style: {background: '#ffb89a'}} // light orange - row 25 from columns
-        } else if (row[26] === true) {
-          return {style: {background: '#ff9a9a'}} // light red - row 26 from columns
-        }
+        return {style: {background: data[index].background}}
     },
       draggableColumns: {
         enabled: false,
