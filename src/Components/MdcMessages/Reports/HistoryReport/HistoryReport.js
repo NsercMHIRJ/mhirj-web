@@ -77,7 +77,7 @@ const HistoryReport = (props) => {
     },
     {
       name: 'EICASMessages', 
-      label: 'EICAS Related',
+      label: 'EICAS Message',
       options: {
        filter: true,
         filterType: 'dropdown',
@@ -88,7 +88,7 @@ const HistoryReport = (props) => {
     },
     {
       name: 'mdcMessages', 
-      label: 'MDC Messages',
+      label: 'MDC Message',
       options: {
        filter: true,
         filterType: 'dropdown',
@@ -121,7 +121,7 @@ const HistoryReport = (props) => {
     },
     {
       name: 'B1Equation', 
-      label: 'B1 Equation',
+      label: 'B1-Equation',
       options: {
        filter: true,
         filterType: 'dropdown',
@@ -159,7 +159,7 @@ const HistoryReport = (props) => {
         filter: false,
         filterType: 'dropdown',
         sort: true,
-        secondaryLabel: 'Total Occurences',
+        secondaryLabel: 'Total Occurrences',
         setCellProps: () => ({style: columnStyle}),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
@@ -195,14 +195,14 @@ const HistoryReport = (props) => {
         filter: false,
         filterType: 'dropdown',
         sort: true,
-        secondaryLabel: 'Intermittency',
+        secondaryLabel: 'Intermittent',
         setCellProps: () => ({style: columnStyle}),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'dateFrom', 
-      label: 'Date From',
+      label: 'Date from',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -213,7 +213,7 @@ const HistoryReport = (props) => {
      },
      {
       name: 'dateTo', 
-      label: 'Date To',
+      label: 'Date to',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -224,7 +224,7 @@ const HistoryReport = (props) => {
      },
      {
       name: 'reasons', 
-      label: 'Reasons For Flag',
+      label: 'Reason(s) for flag',
       options: {
        filter: false,
         filterType: 'dropdown',
@@ -246,17 +246,18 @@ const HistoryReport = (props) => {
      },
      {
       name: 'topMessage', 
-      label: 'MHIRJ Known Message',
+      label: 'Known Top Message',
       options: {
         filter: false,
         sort: true,
+        secondaryLabel: 'Known Top Message - Recommended Documents',
         setCellProps: () => ({style: columnStyle}),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
-      name: 'honey', 
-      label: 'Mel or No-Dispatch',
+      name: 'mel', 
+      label: 'MEL or No-Dispatch',
       options: {
         filter: false,
         sort: true,
@@ -283,7 +284,7 @@ const HistoryReport = (props) => {
      },
      {
       name: 'recommendation', 
-      label: 'MHIRJ Recommended Action',
+      label: 'MHIRJ Recommendation',
       options: {
         filter: false,
         setCellProps: () => ({
@@ -299,7 +300,7 @@ const HistoryReport = (props) => {
      },
      {
       name: 'comments', 
-      label: 'MHIRJ Additional Comment',
+      label: 'Additional Comments',
       options: {
         filter: false,
         sort: true,
@@ -358,7 +359,7 @@ const HistoryReport = (props) => {
             comments: comments, 
             input: input,  
             isJam: item["is_jam"],
-            honey: item["MEL or No-Dispatch"],
+            mel: item["MEL or No-Dispatch"],
             dateFrom: DateConverter(item["Date from"]),
             dateTo: DateConverter(item["Date to"]),
           }

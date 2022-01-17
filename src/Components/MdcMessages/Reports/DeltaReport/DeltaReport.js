@@ -35,17 +35,6 @@ const DeltaReport = (props) => {
 
   const columns = [
     {
-      name: 'tail', 
-      label: 'Tail#',
-      options: {
-        filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({ style: columnStyle }),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
       name: 'ACSN', 
       label: 'ACSN',
       options: {
@@ -57,8 +46,8 @@ const DeltaReport = (props) => {
       }
     },
     {
-      name: 'EICASMessages', 
-      label: 'EICAS Related',
+      name: 'B1Equation', 
+      label: 'B1-Equation',
       options: {
         filter: true,
         filterType: 'dropdown',
@@ -67,17 +56,39 @@ const DeltaReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    // {
-    //   name: 'mdcMessages', 
-    //   label: 'MDC Messages',
-    //   options: {
-    //     filter: true,
-    //     filterType: 'dropdown',
-    //     sort: true,
-    //     setCellProps: () => ({style: columnStyle}),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    // },
+    {
+      name: 'tail', 
+      label: 'Tail#',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({ style: columnStyle }),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
+      name: 'EICASMessages', 
+      label: 'EICAS Message',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({ style: columnStyle }),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
+      name: 'mdcMessages', 
+      label: 'MDC Message',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
     {
       name: 'LRU', 
       label: 'LRU',
@@ -92,17 +103,6 @@ const DeltaReport = (props) => {
     {
       name: 'ATA', 
       label: 'ATA',
-      options: {
-        filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({ style: columnStyle }),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
-      name: 'B1Equation', 
-      label: 'B1 Equation',
       options: {
         filter: true,
         filterType: 'dropdown',
@@ -140,7 +140,7 @@ const DeltaReport = (props) => {
         filter: false,
         filterType: 'dropdown',
         sort: true,
-        secondaryLabel: 'Total Occurences',
+        secondaryLabel: 'Total Occurrences',
         setCellProps: (row , index) => {
           if( data[index].Total_occurrences_color ) {
             return { style: { ...columnStyle, background: data[index].Total_occurrences_color } }
@@ -194,7 +194,7 @@ const DeltaReport = (props) => {
         filter: false,
         filterType: 'dropdown',
         sort: true,
-        secondaryLabel: 'Intermittency',
+        secondaryLabel: 'Intermittent',
         setCellProps: (row , index) => {
           if(data[index].Intermittent_color) {
             return { style: {...columnStyle, background: data[index].Intermittent_color } }
