@@ -100,6 +100,8 @@ const Report = (props) => {
           setDailyReportData([]);
           setLoadingDaily(true);
 
+          console.log(path);
+
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
             console.log(data);

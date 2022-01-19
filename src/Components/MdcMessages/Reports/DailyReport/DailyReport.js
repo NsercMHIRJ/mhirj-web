@@ -288,8 +288,6 @@ const DailyReport = (props) => {
      },
     ];
 
-    console.log(props.data);
-
     let data = [];
       props.data?.map((item => {
         let input = item["MHIRJ ISE Input"] === '0' ? '' : item["MHIRJ ISE Input"];
