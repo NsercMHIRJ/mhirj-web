@@ -297,16 +297,16 @@ const DailyReport = (props) => {
 
         data.push(
           {
-            tail: item["AC_TN"],
-            date: DateConverter(item["Date"]), 
+            tail: item["AC_TN"], 
+            date: DateConverter(item["Date"]),
             ACSN: item["AC SN"], 
             EICASMessage: item["EICAS Message"], 
-            // MDCMessage
+            // mdcMessages: item["MDC Message"],
             LRU: item["LRU"],  
             ATA: item["ATA"],  
-            B1Equation: item["B1-Equation"],  
+            B1Equation: item["B1-Equation"], 
             type: item["Type"],   
-            equationDescription: item["Equation Description"],   
+            equationDescription: item["Equation Description"], 
             totalOccurences: item["Total Occurences"],  
             ConsecutiveFlights: item["Consecutive FL"], 
             intermittent: item["INTERMITNT"],  
