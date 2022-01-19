@@ -15,6 +15,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import "../../../scss/_main.scss";
 import {GenerateReportValidation, NotFirstRender} from '../../Helper/Helper';
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -37,7 +38,10 @@ const Conditions = (props) => {
 
   const [analysis, setAnalysisType] = useState("daily");
   const [EqID, setEqID] = useState("");
-  var todayDate = new Date().toISOString().slice(0, 10);
+  var todayDate = new Date();
+  if (todayDate) {
+    todayDate = moment(todayDate).format("YYYY-MM-DD")
+  }
   const [dateFrom, setDateFrom] = useState(todayDate);
   const [dateTo, setDateTo] = useState(todayDate);
   const [deltaFrom, setDeltaFrom] = useState(todayDate);
@@ -146,10 +150,10 @@ const Conditions = (props) => {
       operator: airline,
       ata: ATAMain,
       messages: messagesChoice,
-      fromDate: dateFrom,
-      toDate: dateTo,
-      deltaFrom: deltaFrom,
-      deltaTo: deltaTo,
+      fromDate: dateFrom ? dateFrom : todayDate,
+      toDate: dateTo ? dateTo : todayDate,
+      deltaFrom: deltaFrom ? deltaFrom : todayDate,
+      deltaTo: deltaTo ? deltaTo : todayDate,
     });
   }    
 

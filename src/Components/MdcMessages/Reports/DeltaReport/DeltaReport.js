@@ -58,7 +58,7 @@ const DeltaReport = (props) => {
     },
     {
       name: 'EICASMessages', 
-      label: 'EICAS Related',
+      label: 'EICAS Message',
       options: {
         filter: true,
         filterType: 'dropdown',
@@ -67,17 +67,17 @@ const DeltaReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    // {
-    //   name: 'mdcMessages', 
-    //   label: 'MDC Messages',
-    //   options: {
-    //     filter: true,
-    //     filterType: 'dropdown',
-    //     sort: true,
-    //     setCellProps: () => ({style: columnStyle}),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    // },
+    {
+      name: 'mdcMessages', 
+      label: 'MDC Message',
+      options: {
+       filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
     {
       name: 'LRU', 
       label: 'LRU',
@@ -102,7 +102,7 @@ const DeltaReport = (props) => {
     },
     {
       name: 'B1Equation', 
-      label: 'B1 Equation',
+      label: 'B1-Equation',
       options: {
         filter: true,
         filterType: 'dropdown',
@@ -140,7 +140,7 @@ const DeltaReport = (props) => {
         filter: false,
         filterType: 'dropdown',
         sort: true,
-        secondaryLabel: 'Total Occurences',
+        secondaryLabel: 'Total Occurrences',
         setCellProps: (row , index) => {
           if( data[index].Total_occurrences_color ) {
             return { style: { ...columnStyle, background: data[index].Total_occurrences_color } }
@@ -194,7 +194,7 @@ const DeltaReport = (props) => {
         filter: false,
         filterType: 'dropdown',
         sort: true,
-        secondaryLabel: 'Intermittency',
+        secondaryLabel: 'Intermittent',
         setCellProps: (row , index) => {
           if(data[index].Intermittent_color) {
             return { style: {...columnStyle, background: data[index].Intermittent_color } }
@@ -207,7 +207,7 @@ const DeltaReport = (props) => {
      },
      {
       name: 'dateFrom', 
-      label: 'Date From',
+      label: 'Date from',
       options: {
         filter: true,
         filterType: 'dropdown',
@@ -218,7 +218,7 @@ const DeltaReport = (props) => {
      },
      {
       name: 'dateTo', 
-      label: 'Date To',
+      label: 'Date to',
       options: {
         filter: true,
         filterType: 'dropdown',
@@ -229,7 +229,7 @@ const DeltaReport = (props) => {
      },
      {
       name: 'reasons', 
-      label: 'Reasons For Flag',
+      label: 'Reason(s) for flag',
       options: {
         filter: false,
         filterType: 'dropdown',
@@ -245,21 +245,24 @@ const DeltaReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'topMessage', 
-      label: 'MHIRJ Known Message',
+      label: 'Known Top Message',
       options: {
         filter: false,
         sort: true,
+        secondaryLabel: 'Known Top Message - Recommended Documents',
         setCellProps: () => ({ style: columnStyle }),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
-      name: 'honey', 
-      label: 'Mel or No-Dispatch',
+      name: 'mel', 
+      label: 'MEL or No-Dispatch',
       options: {
         filter: false,
         sort: true,
@@ -286,7 +289,7 @@ const DeltaReport = (props) => {
      },
      {
       name: 'recommendation', 
-      label: 'MHIRJ Recommended Action',
+      label: 'MHIRJ Recommendation',
       options: {
         filter: false,
         sort: true,
@@ -303,7 +306,7 @@ const DeltaReport = (props) => {
      },
      {
       name: 'comments', 
-      label: 'MHIRJ Additional Comment',
+      label: 'Additional Comments',
       options: {
        filter: false,
        sort: true,
@@ -340,7 +343,7 @@ const DeltaReport = (props) => {
         {
           ACSN: item["AC SN"],
           tail: item["Tail#"],
-          EICASMessages: item["EICAS Message"],
+          EICASMessages: item["EICAS Related"],
           // mdcMessages: item["MDC Message"],
           LRU: item["LRU"],
           ATA: item["ATA"],
@@ -363,7 +366,7 @@ const DeltaReport = (props) => {
           Consecutive_days_color: item["Consecutive Days Col"],
           Consecutive_FL_color: item["Consecutive FL Col"],
           Intermittent_color: item["INTERMITNT Col"],
-          // honey: "",
+          mel: item["Mel or No-Dispatch"],
           dateFrom: item["Date From"],
           dateTo: item["Date To"],
         }

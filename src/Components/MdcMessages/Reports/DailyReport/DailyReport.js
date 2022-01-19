@@ -81,8 +81,8 @@ const DailyReport = (props) => {
       }
     },
     {
-      name: 'EICASRelated', 
-      label: 'EICAS Related',
+      name: 'EICASMessage', 
+      label: 'EICAS Message',
       options: {
        filter: true,
         filterType: 'dropdown',
@@ -91,6 +91,17 @@ const DailyReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
+    // {
+    //   name: 'MDCMessage', 
+    //   label: 'MDC Message',
+    //   options: {
+    //    filter: true,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
     {
       name: 'LRU', 
       label: 'LRU',
@@ -115,7 +126,7 @@ const DailyReport = (props) => {
     },
     {
       name: 'B1Equation', 
-      label: 'B1 Equation',
+      label: 'B1-Equation',
       options: {
        filter: true,
         filterType: 'dropdown',
@@ -153,7 +164,7 @@ const DailyReport = (props) => {
         filter: false,
         filterType: 'dropdown',
         sort: true,
-        secondaryLabel: 'Total Occurences',
+        secondaryLabel: 'Total Occurrences',
         setCellProps: () => ({style: columnStyle}),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
@@ -177,14 +188,14 @@ const DailyReport = (props) => {
         filter: false,
         filterType: 'dropdown',
         sort: true,
-        secondaryLabel: 'Intermittency',
+        secondaryLabel: 'Intermittent',
         setCellProps: () => ({style: columnStyle}),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
       name: 'reasons', 
-      label: 'Reasons For Flag',
+      label: 'Reason(s) for flag',
       options: {
        filter: false,
         filterType: 'dropdown',
@@ -206,7 +217,18 @@ const DailyReport = (props) => {
      },
      {
       name: 'topMessage', 
-      label: 'MHIRJ Known Message',
+      label: 'Known Top Message',
+      options: {
+        filter: false,
+        sort: true,
+        secondaryLabel: 'Known Top Message - Recommended Documents',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'mel', 
+      label: 'MEL or No-Dispatch',
       options: {
         filter: false,
         sort: true,
@@ -214,16 +236,6 @@ const DailyReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
-    //  {
-    //   name: 'honey', 
-    //   label: 'Mel or No-Dispatch',
-    //   options: {
-    //     filter: false,
-    //     sort: true,
-    //     setCellProps: () => ({style: columnStyle}),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    //  },
      {
       name: 'input', 
       label: 'MHIRJ Input',
@@ -243,7 +255,7 @@ const DailyReport = (props) => {
      },
      {
       name: 'recommendation', 
-      label: 'MHIRJ Recommended Action',
+      label: 'MHIRJ Recommendation',
       options: {
         filter: false,
         setCellProps: () => ({
@@ -259,7 +271,7 @@ const DailyReport = (props) => {
      },
      {
       name: 'comments', 
-      label: 'MHIRJ Additional Comment',
+      label: 'Additional Comments',
       options: {
         filter: false,
         sort: true,
@@ -285,25 +297,26 @@ const DailyReport = (props) => {
 
         data.push(
           {
-            date: DateConverter(item["Date"]), 
+            tail: item["AC_TN"], 
+            date: DateConverter(item["Date"]),
             ACSN: item["AC SN"], 
-            tail: item["AC_TN"],
-            EICASRelated: item["EICAS Message"], 
+            EICASMessage: item["EICAS Message"], 
+            // mdcMessages: item["MDC Message"],
             LRU: item["LRU"],  
             ATA: item["ATA"],  
-            B1Equation: item["B1-Equation"],  
+            B1Equation: item["B1-Equation"], 
             type: item["Type"],   
-            equationDescription: item["Equation Description"],   
+            equationDescription: item["Equation Description"], 
             totalOccurences: item["Total Occurences"],  
             ConsecutiveFlights: item["Consecutive FL"], 
             intermittent: item["INTERMITNT"],  
             reasons: item["Reason(s) for flag"],   
             priority: item["Priority"],   
             topMessage: topMessage,  
+            // mel: item["MEL or No-Dispatch"],
+            input: input,  
             recommendation: recommendation, 
             comments: comments, 
-            input: input,  
-            // honey: item["MEL or No-Dispatch"],
           }
         );
         return data;
