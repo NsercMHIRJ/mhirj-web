@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
 import { Avatar } from '@material-ui/core';
-import {EqIDSelector, ATAMainSelector, AirlineOperatorSelector} from './ATAGraphSelectors';
+import {EqIDSelector,ReportTypeSelector, ATAMainSelector, AirlineOperatorSelector} from './ATAGraphSelectors';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -48,6 +48,7 @@ export default function Chart4() {
   const [ATAMain, setATAMain] = useState('');
   const [airline, setAilineType] = useState("");
   const [EqID, setEqID] = useState("");
+  const [reportType, setreportType] = useState('');
 
 
   const [data_chart4, setData_chart4] = useState({
@@ -81,6 +82,10 @@ const handleAirlineChange = (Airline) => {
   setAilineType(Airline);
 };
 
+const handleReportType = (reportType) => {
+  setreportType(reportType);
+};
+
 const handleATAChange = (ATA) => {
   setATAMain(ATA);
 };
@@ -97,7 +102,7 @@ const [loadProgress , setLoadProgress] = useState();
     let ATA_Main = [];
     
     
-    const path=Constants.APIURL+ '/chart_four/' +data_chart4.top_values+ '/' +data_chart4.analysis_Type+ '/'+data_chart4.occurences+ '/'+data_chart4.legs+'/'+data_chart4.intermittent+'/'+data_chart4.consecutive_Days+'/'+ATAMain+'/'+EqID+ '/'+airline+'/'+flightphase+ '/'+data_chart4.from_date+ '/' +data_chart4.to_date;
+    const path=Constants.APIURL+ 'chart_four/' +data_chart4.top_values+ '/' +reportType+ '/'+data_chart4.occurences+ '/'+data_chart4.legs+'/'+data_chart4.intermittent+'/'+data_chart4.consecutive_Days+'/'+ATAMain+'/'+EqID+ '/'+airline+'/'+flightphase+ '/'+data_chart4.from_date+ '/' +data_chart4.to_date;
     axios.post(path)
       .then(res => {
         console.log(res,"response");
@@ -149,7 +154,11 @@ const [loadProgress , setLoadProgress] = useState();
           <form className={classes.root1} noValidate autoComplete="off">
           <div><h1 style={{color:"#001C3E", textAlign: "center"}}>TOP ATA IN REPORTS</h1></div>   
             <div> <TextField onChange= {(e)=>handle_chart4(e)} id="top_values" value={data_chart4.top_values} label="Top Values" defaultValue=" " variant="outlined" style={{ paddingRight: '100px'}}  />
-            <TextField onChange= {(e)=>handle_chart4(e)} id="analysis_Type" value={data_chart4.analysis_Type} label="Analysis Type" defaultValue=" " variant="outlined" /></div>
+            </div>
+            <div style={{ width: '225px', marginTop: '-65px', marginLeft: '320px'}}>
+            <ReportTypeSelector
+             handleReportType ={handleReportType} 
+            /> </div>
             <br></br>
             
             <div> <TextField onChange= {(e)=>handle_chart4(e)} id="occurences" value={data_chart4.occurences} label="Occurences" defaultValue=" " variant="outlined" style={{ paddingRight: '100px'}} />
@@ -197,7 +206,7 @@ const [loadProgress , setLoadProgress] = useState();
               // indexAxis: "y",
               title: {
                 display: true,
-                text: 'TOP ATA IN '+data_chart4.analysis_Type,
+                text: 'TOP ATA IN '+reportType,
                 fontSize: 20
               },
               scales: {
