@@ -13,6 +13,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
+import {EqIDSelectorInput} from './ATAGraphSelectors';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -74,6 +75,7 @@ export default function FileUpload() {
 	const [pm_file, setPM_File] = useState({
 		selectedFile: null
 	});
+  const [EqID, setEqID] = useState("");
 
   const getMuiTheme = () => createMuiTheme({
     palette: {type: 'light'},
@@ -91,17 +93,11 @@ export default function FileUpload() {
       },
     }
   });
-  const [data_update, setData_update] = useState({
-    Equation_ID: "",
-    EICAS: "",
-    Priority_: "",
-    MHIRJ_ISE_inputs: "",
-    MHIRJ_ISE_Recommended_Action: "",
-    Additional_Comments: "",
-    MEL_or_No_Dispatch: ""
-  });
  
-
+ 
+  const handleEqIDChangeInput = (eqIDList) => {
+    setEqID(eqIDList);
+  };
   const [mdc_raw_file, setMDC_Raw_File] = useState({
     selectedFile: null
   });
@@ -113,6 +109,22 @@ export default function FileUpload() {
   const [input_Message_file, setInput_Message_File] = useState({
     selectedInputFile: null
   });
+
+  const headingStyle = {
+    maxWidth:'200px',
+    minWidth:'50px',
+    padding:'5px',
+    textAlign:"center",
+    margin: '0px',
+    whiteSpace: 'normal',
+  }
+
+  const columnStyle = {
+    maxWidth:'150px',
+    padding:'13px',
+    textAlign:"left",
+    margin: '0px',
+  }
 
   const columns = [
 
@@ -132,6 +144,8 @@ export default function FileUpload() {
         filter: true,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -141,6 +155,8 @@ export default function FileUpload() {
         filter: true,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -150,6 +166,8 @@ export default function FileUpload() {
         filter: true,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -159,6 +177,8 @@ export default function FileUpload() {
         filter: true,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
 
       }
     },
@@ -169,7 +189,9 @@ export default function FileUpload() {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({ style: { whiteSpace: 'nowrap' } })
+        setCellProps: () => ({ style: { whiteSpace: 'nowrap' } }),
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -179,7 +201,9 @@ export default function FileUpload() {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({ style: { whiteSpace: 'nowrap' } })
+        setCellProps: () => ({ style: { whiteSpace: 'nowrap' } }),
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -189,6 +213,8 @@ export default function FileUpload() {
         filter: true,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -198,6 +224,8 @@ export default function FileUpload() {
         filter: false,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -207,6 +235,8 @@ export default function FileUpload() {
         filter: false,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -216,6 +246,8 @@ export default function FileUpload() {
         filter: false,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -225,6 +257,8 @@ export default function FileUpload() {
         filter: false,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -234,6 +268,8 @@ export default function FileUpload() {
         filter: false,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -243,6 +279,8 @@ export default function FileUpload() {
         filter: false,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -252,6 +290,8 @@ export default function FileUpload() {
         filter: true,
         filterType: 'dropdown',
         sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -260,7 +300,9 @@ export default function FileUpload() {
       options: {
         filter: false,
         sort: true,
-        setCellProps: () => ({ style: { minWidth: '200px' } })
+        setCellProps: () => ({ style: { minWidth: '200px' } }),
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -269,7 +311,9 @@ export default function FileUpload() {
       options: {
         filter: false,
         sort: true,
-        setCellProps: () => ({ style: { minWidth: '400px' } })
+        setCellProps: () => ({ style: { minWidth: '400px' } }),
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -278,7 +322,9 @@ export default function FileUpload() {
       options: {
         filter: false,
         sort: true,
-        setCellProps: () => ({ style: { minWidth: '700px' } })
+        setCellProps: () => ({ style: { minWidth: '700px' } }),
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -287,7 +333,9 @@ export default function FileUpload() {
       options: {
         filter: false,
         sort: true,
-        setCellProps: () => ({ style: { minWidth: '400px' } })
+        setCellProps: () => ({ style: { minWidth: '400px' } }),
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -297,6 +345,8 @@ export default function FileUpload() {
         filter: true,
         filterType: 'dropdown',
         sort: false,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
 
       }
     },
@@ -311,6 +361,7 @@ export default function FileUpload() {
     jumpToPage: true,
     resizableColumns: false,
     selectableRowsHideCheckboxes: true,
+    
     
     setRowProps: (row, index) => {
       if (row[20] === true){
@@ -331,57 +382,58 @@ export default function FileUpload() {
 
  
 
-  function update_data(e) {
-    e.preventDefault();
-    let Equation_ID = [];
-    let EICAS = [];
-    let Priority_ = [];
-    let MHIRJ_ISE_inputs = [];
-    let MHIRJ_ISE_Recommended_Action = [];
-    let Additional_Comments = [];
-    let MEL_or_No_Dispatch = [];
+  // function update_data(e) {
+  //   e.preventDefault();
+  //   let Equation_ID = [];
+  //   let EICAS = [];
+  //   let Priority_ = [];
+  //   let MHIRJ_ISE_inputs = [];
+  //   let MHIRJ_ISE_Recommended_Action = [];
+  //   let Additional_Comments = [];
+  //   let MEL_or_No_Dispatch = [];
 
-    const path = Constants.APIURL + 'update_input_message_data/' + data_update.Equation_ID + '/' + data_update.EICAS + '/' + data_update.Priority_ + '/' + data_update.MHIRJ_ISE_inputs + '/' + data_update.MHIRJ_ISE_Recommended_Action + '/' + data_update.Additional_Comments + '/' + data_update.MEL_or_No_Dispatch;
-    console.log(path)
-    axios.post(path)
-      .then(res => {
-        //console.log(res,"response");
-        for (const dataObj of JSON.parse(res.data)) {
-          Equation_ID.push(dataObj.Equation_ID);
-          EICAS.push(dataObj.EICAS);
-          Priority_.push(dataObj.Priority_);
-          MHIRJ_ISE_inputs.push(dataObj.MHIRJ_ISE_inputs);
-          MHIRJ_ISE_Recommended_Action.push(dataObj.MHIRJ_ISE_Recommended_Action);
-          Additional_Comments.push(dataObj.Additional_Comments);
-          MEL_or_No_Dispatch.push(dataObj.MEL_or_No_Dispatch);
-        }
+  //   const path = Constants.APIURL + 'update_input_message_data/' + data_update.Equation_ID + '/' + data_update.EICAS + '/' + data_update.Priority_ + '/' + data_update.MHIRJ_ISE_inputs + '/' + data_update.MHIRJ_ISE_Recommended_Action + '/' + data_update.Additional_Comments + '/' + data_update.MEL_or_No_Dispatch;
+  //   console.log(path)
+  //   axios.post(path)
+  //     .then(res => {
+  //       //console.log(res,"response");
+  //       for (const dataObj of JSON.parse(res.data)) {
+  //         Equation_ID.push(dataObj.Equation_ID);
+  //         EICAS.push(dataObj.EICAS);
+  //         Priority_.push(dataObj.Priority_);
+  //         MHIRJ_ISE_inputs.push(dataObj.MHIRJ_ISE_inputs);
+  //         MHIRJ_ISE_Recommended_Action.push(dataObj.MHIRJ_ISE_Recommended_Action);
+  //         Additional_Comments.push(dataObj.Additional_Comments);
+  //         MEL_or_No_Dispatch.push(dataObj.MEL_or_No_Dispatch);
+  //       }
         
-      })
-      .catch(err => {
-        //console.log(err);
-      });
+  //     })
+  //     .catch(err => {
+  //       //console.log(err);
+  //     });
     
-  }
+  // }
   
   function show_inputMessage_data(e){
   
     
-    const path1 = Constants.APIURL + 'list_mdc_messages_input/' +data_update.Equation_ID;
+    const path1 = Constants.APIURL + 'all_mdc_messages_input/' +EqID;
     console.log(path1)
     axios.post(path1)
       .then(res => {
          const data = JSON.parse (res.data);
          setupdateData(data) 
+         console.log(data)
         }
         
       )
   }
-  function handle_update(e) {
-    const newdata = { ...data_update }
-    newdata[e.target.id] = e.target.value
-    setData_update(newdata)
-    //console.log(newdata)
-  }
+  // function handle_update(e) {
+  //   const newdata = { ...data_update }
+  //   newdata[e.target.id] = e.target.value
+  //   setData_update(newdata)
+  //   //console.log(newdata)
+  // }
 
   function handleChange(e) {
     console.log(e.target.files)
@@ -770,7 +822,7 @@ export default function FileUpload() {
 						<Grid className={classes.Grid} container spacing={3}>
             <Grid item xs={4} container spacing={2}>
                 <div>
-                 {/* <div>
+                  {/* <div>
                   <input className={classes.input} name="file" type="file" onChange={(e) => handleChange(e)} />
                   <Button type="button" style={{marginLeft : "350px",marginTop : " -45px", width:"200px",backgroundColor: "#001c3e",color: "White"}} onClick={onClickMDC}> Upload MDC RAW Data</Button>
                   </div>
@@ -854,27 +906,16 @@ export default function FileUpload() {
 
 							<Grid item xs={5} style={{ marginLeft: '10px' }}>
 								<div>
-									<div> <TextField onChange={(e) => handle_update(e)} value={data_update.Equation_ID} id="Equation_ID" label="Equation ID" defaultValue=" " variant="outlined" /></div>
+									<div style={{ marginLeft:'50px', marginTop: '30px',width: '1450px'}}>  <EqIDSelectorInput 
+                handleEqIDChangeInput = {handleEqIDChangeInput}
+              /></div>
 									<br></br>
-									<div> <TextField onChange={(e) => handle_update(e)} value={data_update.EICAS} id="EICAS" label="EICAS" defaultValue=" " variant="outlined" /></div>
-									<br></br>
-									<div> <TextField onChange={(e) => handle_update(e)} value={data_update.Priority_} id="Priority_" label="Priority" defaultValue=" " variant="outlined" /></div>
-									<br></br>
-									<div> <TextField onChange={(e) => handle_update(e)} value={data_update.MHIRJ_ISE_inputs} id="MHIRJ_ISE_inputs" label="Input Messages" defaultValue=" " variant="outlined" /></div>
-									<br></br>
+					
 								</div>
 							</Grid>
 
 							<Grid item xs={5} style={{ paddingLeft: '100px' }}>
 								<div>
-									<div> <TextField onChange={(e) => handle_update(e)} value={data_update.MHIRJ_ISE_Recommended_Action} id="MHIRJ_ISE_Recommended_Action" label="Recommended Action" defaultValue=" " variant="outlined" /></div>
-									<br></br>
-									<div> <TextField onChange={(e) => handle_update(e)} value={data_update.Additional_Comments} id="Additional_Comments" label="Additonal Comments" defaultValue=" " variant="outlined" /></div>
-									<br></br>
-									<div> <TextField onChange={(e) => handle_update(e)} value={data_update.MEL_or_No_Dispatch} id="MEL_or_No_Dispatch" label="MEL_or_No_Dispatch" defaultValue=" " variant="outlined" /></div>
-									<br></br>
-
-									<Button onClick={(e) => update_data(e)} id="update" variant="contained" component="span" style={{ width: '250px', padding: "6px", TextAlign: 'center', backgroundColor: "#001c3e", color: "White" }} >Update Input Message Data </Button>
 									<Button onClick={(e) => show_inputMessage_data(e)} id="show" variant="contained" component="span" style={{ width: '250px', marginTop: '50px', TextAlign: 'center', padding: "6px", backgroundColor: "#001c3e", color: "White" }} >Show Input Message Data </Button>
 
 								</div>
