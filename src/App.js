@@ -462,6 +462,9 @@ export default function MiniDrawer() {
             <Route path="/Chart5">
               <Chart5 />
             </Route>
+             <Route path="/ChartB">
+              <ChartB />
+            </Route>
             <Route path="/analysis">
               <Analysis />
             </Route>
