@@ -371,6 +371,17 @@ export default function MiniDrawer() {
                       </ListItem>
                     </Link>
                   </List>
+
+                   <List component="div" disablePadding>
+                    <Link to="/ChartB" style={{ textDecoration: 'none' }}>
+                      <ListItem button className={classes.nested_1}>
+                        <ListItemIcon>
+                        <EqualizerSharpIcon style={{ color: "#001c3e" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="ATA Breakdown for Aircraft" style={{ color: "#001c3e" }} />
+                      </ListItem>
+                    </Link>
+                  </List>
                 </Collapse>
               </List>
 
@@ -404,10 +415,11 @@ export default function MiniDrawer() {
                   <AttachFileSharpIcon style={{ color: "#001c3e" }} />
                 </ListItemIcon>
                 <Button variant="contained" color="#d8e4f0">
-                  <typography>File Upload</typography>
+                  <typography>Input Message Update</typography>
                 </Button>
               </Link>
             </ListItem>
+
 
           </List>
 
