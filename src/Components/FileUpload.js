@@ -906,9 +906,11 @@ export default function FileUpload() {
 
 							<Grid item xs={5} style={{ marginLeft: '10px' }}>
 								<div>
-									<div style={{ marginLeft:'50px', marginTop: '30px',width: '1450px'}}>  <EqIDSelectorInput 
-                handleEqIDChangeInput = {handleEqIDChangeInput}
-              /></div>
+									<div style={{ marginLeft:'50px', marginTop: '30px',width: '1450px'}}>  
+										<EqIDSelectorInput 
+              									 handleEqIDChangeInput = {handleEqIDChangeInput}
+             									 />
+									</div>
 									<br></br>
 					
 								</div>
