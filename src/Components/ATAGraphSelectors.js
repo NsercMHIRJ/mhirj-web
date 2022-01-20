@@ -64,6 +64,40 @@ export const AirlineOperatorSelector = (props) => {
   );
 }
 
+const reportTypeList = ['Daily','History'];
+export const ReportTypeSelector = (props) => {
+  const [reportType, setreportType] = useState('');
+
+  const handleReportType = (event) => {
+    if ( event.target.value === "none"){
+      setreportType("");
+      props.handleReportType("");
+    }
+    else{
+      setreportType(event.target.value);
+      props.handleReportType(event.target.value);
+    }  
+  };
+
+  return(
+    <FormControl variant="outlined" className="form-control">
+      <InputLabel id="demo-simple-select-outlined-label" >Analysis Type</InputLabel>
+      <Select
+        labelId="demo-simple-select-outlined-label"
+        id="demo-simple-select-outlined"
+        value={reportType}
+        onChange={handleReportType}
+        label="Analysis Type"
+      >
+      <MenuItem value="none"> </MenuItem>
+      {reportTypeList.map( item => 
+        <MenuItem value={item} key={item}> {item} </MenuItem>
+      )};
+      </Select>
+    </FormControl>
+  );
+}
+
 export const ATAMainSelector = (props) => {
     const classes = useStyles();
     const [ATAMain, setATAMain] = useState([]);
@@ -173,6 +207,72 @@ export const EqIDSelector = (props) => {
         value = {EqID}
         filterSelectedOptions
         onChange = {handleEqIDChange}
+        searchEnabled = {true}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="outlined"
+            label="Equation ID"
+            placeholder="EqID"
+            />
+        )}
+      />
+  );
+};
+
+export const EqIDSelectorInput = (props) => {
+  const classes = useStyles();
+  const [EqID, setEqID] = React.useState([]);
+  const [EqList,setEqIDList] = useState([]);
+  useEffect(() => {
+    const path = Constants.APIURL+ 'GenerateReport/equation_id/ALL'
+
+    try{
+      axios.post(path).then(function (res) {
+        var data = JSON.parse(res.data);
+        let EQArray = ['ALL'];
+        Object.values(data).map((item=>{
+          if (item.EQ_ID) {
+            EQArray.push(item.EQ_ID.toString());
+          }
+        }))
+        setEqIDList(EQArray);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+},[]);
+
+  const handleEqIDChangeInput = (event, values) => {
+    var copy = [];
+    //Analysis inputs, as soon as one ATA under “ATA Main” is selected the “ALL” should de-select. 
+    if(Object.values(values)[0] === "NONE" && EqID.length !== 0){
+      copy.push(Object.values(values)[1]);
+      setEqID(copy);
+      }
+    else{
+      setEqID(values);
+    }
+   
+    if(values.includes("ALL")){
+      props.handleEqIDChangeInput("?eq_id=");
+    }
+    else{
+      let eqIDLIST =  "?eq_id="+ values;
+      props.handleEqIDChangeInput(eqIDLIST);
+    }
+  };
+
+  return(
+
+    <Autocomplete
+        className={classes.autocomplete}
+        multiple
+        options={EqList}
+        getOptionLabel={(item => item)}
+        value = {EqID}
+        filterSelectedOptions
+        onChange = {handleEqIDChangeInput}
         searchEnabled = {true}
         renderInput={(params) => (
           <TextField
