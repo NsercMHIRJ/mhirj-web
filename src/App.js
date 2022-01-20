@@ -41,6 +41,7 @@ import Chart2 from './Components/Chart2';
 import Chart3 from './Components/Chart3';
 import Chart4 from './Components/Chart4';
 import Chart5 from './Components/Chart5';
+import ChartB from './Components/ChartB';
 import Scatter1 from './Components/Scatter1';
 import Stacked from './Components/Stacked';
 import FileUpload from './Components/FileUpload';
@@ -372,7 +373,8 @@ export default function MiniDrawer() {
                     </Link>
                   </List>
 
-                   <List component="div" disablePadding>
+                  
+                  <List component="div" disablePadding>
                     <Link to="/ChartB" style={{ textDecoration: 'none' }}>
                       <ListItem button className={classes.nested_1}>
                         <ListItemIcon>
@@ -420,7 +422,6 @@ export default function MiniDrawer() {
               </Link>
             </ListItem>
 
-
           </List>
 
           <Divider />
@@ -456,13 +457,13 @@ export default function MiniDrawer() {
             <Route path="/Chart3">
               <Chart3 />
             </Route>
-            {<Route path="/Chart4">
-            <Chart4 />
-          </Route>}
+            <Route path="/Chart4">
+              <Chart4 />
+            </Route>
             <Route path="/Chart5">
               <Chart5 />
             </Route>
-             <Route path="/ChartB">
+            <Route path="/ChartB">
               <ChartB />
             </Route>
             <Route path="/analysis">
