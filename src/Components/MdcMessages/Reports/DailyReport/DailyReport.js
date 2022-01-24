@@ -297,11 +297,11 @@ const DailyReport = (props) => {
 
         data.push(
           {
-            tail: item["AC_TN"], 
+            tail: item["AC_TN"],  
             date: DateConverter(item["Date"]),
             ACSN: item["AC SN"], 
             EICASMessage: item["EICAS Message"], 
-            // mdcMessages: item["MDC Message"],
+            // mdcMessages: item["MDC Message"],  // Missing from API  -> Need to update key
             LRU: item["LRU"],  
             ATA: item["ATA"],  
             B1Equation: item["B1-Equation"], 
@@ -313,7 +313,7 @@ const DailyReport = (props) => {
             reasons: item["Reason(s) for flag"],   
             priority: item["Priority"],   
             topMessage: topMessage,  
-            // mel: item["MEL or No-Dispatch"],
+            // mel: item["MEL or No-Dispatch"],  // Missing from API  -> Need to update key
             input: input,  
             recommendation: recommendation, 
             comments: comments, 

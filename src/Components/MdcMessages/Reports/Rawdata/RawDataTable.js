@@ -290,34 +290,35 @@ const RawDataTable = (props) => {
     props.data?.map((item => {
       data.push(
           {
-            aircraftModel: item["AC_MODEL"],
-            aircraft: item["AC_SN"], 
-            tail: item["AC_TN"],
-            operator: item["OPERATOR"],
-            type: item["MSG_TYPE"],
-            software: item["MDC_Software"], 
-            version: item["Version"],
-            date: DateConverter(item["DateAndTime"]), 
-            flightNumber: item["Flight_NUM"], 
-            fightLeg: item["Flight_LEG"], 
-            phase: item["Flight_Phase"],
-            ATA: item["ATA"],  
-            ATAName: item["ATA_Name"],
-            LRU: item["LRU"],  
-            compId: item["COMP_ID"],
-            msgText: item["MSG_TXT"],
-            equationID: item["EQ_ID"],
-            intermittent: item["INTERMITNT"], 
-            eventNote: item["Event_Note"],
-            eqTsNote: item["EQ_TS_Note"],
-            source: item["Source"], 
-            isDup: item["IS_DUP"],
-            msgId: item["message_id"],
-            isInserted: item["IS_INSERTED"],
-            isUpdated: item["IS_UPDATED"],
-            reviewReq: item["REVIEW_REQ"],
-            falseMsg: item["FALSE_MSG"],
-            status: item["msg_status"],            
+            aircraftModel: item["AC_MODEL"], //ok
+            //BOOKMARK
+            aircraft: item["AC_SN"], //ok
+            tail: item["AC_TN"], //ok
+            operator: item["OPERATOR"], //ok
+            type: item["MSG_TYPE"], //ok
+            software: item["MDC_SOFTWARE"], //ok
+            version: item["MDT_VERSION"], //ok
+            date: DateConverter(item["MSG_Date"]), //ok
+            flightNumber: item["FLIGHT_NUM"], //ok
+            fightLeg: item["FLIGHT_LEG"], //ok
+            phase: item["FLIGHT_PHASE"], //ok
+            ATA: item["ATA"],  //ok
+            ATAName: item["ATA_NAME"], //ok
+            LRU: item["LRU"],  //ok
+            compId: item["COMP_ID"], //ok
+            msgText: item["MSG_TXT"], //ok
+            equationID: item["EQ_ID"], //ok
+            intermittent: item["INTERMITNT"], //ok
+            eventNote: item["EVENT_NOTE"], //ok
+            eqTsNote: item["EQ_TS_NOTE"], //ok
+            source: item["SOURCE"], //ok
+            isDup: item["IS_DUP"], // Missing from API  -> Need to update key
+            msgId: item["MSG_ID"], //ok
+            isInserted: item["IS_INSERTED"], // Missing from API  -> Need to update key
+            isUpdated: item["IS_UPDATED"], // Missing from API  -> Need to update key
+            reviewReq: item["REVIEW_REQ"], // Missing from API  -> Need to update key
+            falseMsg: item["FALSE_MSG"], //ok
+            status: item["msg_status"], //ok    
           }
         );
         return data;

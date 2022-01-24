@@ -340,28 +340,28 @@ const HistoryReport = (props) => {
         data.push(
           {
             ACSN: item["AC SN"], 
-            tail: item["Tail#"],
-            EICASMessages: item["EICAS Message"], 
-            mdcMessages: item["MDC Message"],  
+            tail: item["AC_TN"], 
+            EICASMessages: item["EICAS Message"],  
+            // mdcMessages: item["MDC Message"],  // Missing from API  -> Need to update key
             LRU: item["LRU"],  
             ATA: item["ATA"],  
             B1Equation: item["B1-Equation"],  
             type: item["Type"],   
             equationDescription: item["Equation Description"],   
             totalOccurences: item["Total Occurrences"],  
-            consecutiveDays: item["Consecutive Days"],
+            consecutiveDays: item["Consecutive Days"], 
             ConsecutiveFlights: item["Consecutive FL"],  
-            intermittent: item["Intermittent"],  
+            intermittent: item["INTERMITNT"],  
             reasons: item["Reason(s) for flag"],   
             priority: item["Priority"],   
             topMessage: topMessage,  
             recommendation: recommendation, 
             comments: comments, 
             input: input,  
-            isJam: item["is_jam"],
-            mel: item["MEL or No-Dispatch"],
-            dateFrom: DateConverter(item["Date from"]),
-            dateTo: DateConverter(item["Date to"]),
+            isJam: item["is_jam"], 
+            mel: item["MEL or No-Dispatch"], 
+            dateFrom: DateConverter(item["Date from"]), 
+            dateTo: DateConverter(item["Date to"]), 
           }
         );
         return data;
