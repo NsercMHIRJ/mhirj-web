@@ -82,6 +82,7 @@ const Report = (props) => {
           
           axios.post(path).then(function (res){
             // var data = JSON.parse(res.data);
+            console.log(res.data);
             setDeltaData(res.data);    
             setLoadingDelta(false);
           }).catch(function (err){

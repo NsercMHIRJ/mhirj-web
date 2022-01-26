@@ -290,35 +290,35 @@ const RawDataTable = (props) => {
     props.data?.map((item => {
       data.push(
           {
-            aircraftModel: item["AC_MODEL"], //ok
+            aircraftModel: item["AC_MODEL"],
             //BOOKMARK
-            aircraft: item["AC_SN"], //ok
-            tail: item["AC_TN"], //ok
-            operator: item["OPERATOR"], //ok
-            type: item["MSG_TYPE"], //ok
-            software: item["MDC_SOFTWARE"], //ok
-            version: item["MDT_VERSION"], //ok
-            date: DateConverter(item["MSG_Date"]), //ok
-            flightNumber: item["FLIGHT_NUM"], //ok
-            fightLeg: item["FLIGHT_LEG"], //ok
-            phase: item["FLIGHT_PHASE"], //ok
-            ATA: item["ATA"],  //ok
-            ATAName: item["ATA_NAME"], //ok
-            LRU: item["LRU"],  //ok
-            compId: item["COMP_ID"], //ok
-            msgText: item["MSG_TXT"], //ok
-            equationID: item["EQ_ID"], //ok
-            intermittent: item["INTERMITNT"], //ok
-            eventNote: item["EVENT_NOTE"], //ok
-            eqTsNote: item["EQ_TS_NOTE"], //ok
-            source: item["SOURCE"], //ok
+            aircraft: item["AC_SN"],
+            tail: item["AC_TN"],
+            operator: item["OPERATOR"],
+            type: item["MSG_TYPE"],
+            software: item["MDC_SOFTWARE"],
+            version: item["MDT_VERSION"],
+            date: DateConverter(item["MSG_Date"]),
+            flightNumber: item["FLIGHT_NUM"],
+            fightLeg: item["FLIGHT_LEG"],
+            phase: item["FLIGHT_PHASE"],
+            ATA: item["ATA"], 
+            ATAName: item["ATA_NAME"],
+            LRU: item["LRU"], 
+            compId: item["COMP_ID"],
+            msgText: item["MSG_TXT"],
+            equationID: item["EQ_ID"],
+            intermittent: item["INTERMITNT"],
+            eventNote: item["EVENT_NOTE"],
+            eqTsNote: item["EQ_TS_NOTE"],
+            source: item["SOURCE"],
             isDup: item["IS_DUP"], // Missing from API  -> Need to update key
-            msgId: item["MSG_ID"], //ok
+            msgId: item["MSG_ID"],
             isInserted: item["IS_INSERTED"], // Missing from API  -> Need to update key
             isUpdated: item["IS_UPDATED"], // Missing from API  -> Need to update key
             reviewReq: item["REVIEW_REQ"], // Missing from API  -> Need to update key
-            falseMsg: item["FALSE_MSG"], //ok
-            status: item["msg_status"], //ok    
+            falseMsg: item["FALSE_MSG"],
+            status: item["msg_status"],    
           }
         );
         return data;

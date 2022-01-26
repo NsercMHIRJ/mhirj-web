@@ -13,7 +13,7 @@ const DeltaReport = (props) => {
   
   const AddCellClass = (index) => {
     let row = index + 1;
-    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+    $('.reports-root.delta-report .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
 
 
@@ -67,17 +67,17 @@ const DeltaReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    {
-      name: 'mdcMessages', 
-      label: 'MDC Message',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
+    // {
+    //   name: 'mdcMessages', 
+    //   label: 'MDC Message',
+    //   options: {
+    //    filter: true,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
     {
       name: 'LRU', 
       label: 'LRU',

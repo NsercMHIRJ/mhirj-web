@@ -5,6 +5,8 @@ import {DateConverter} from '../../Helper/Helper';
 import Constants from '../../utils/const';
 import "../../../scss/_main.scss";
 import moment from "moment";
+import $ from 'jquery';
+import Grid from '@material-ui/core/Grid';
 
 const CorrelationAnalysisTable = (props) => {
   const [data, setData] = useState([]);
@@ -17,15 +19,44 @@ const CorrelationAnalysisTable = (props) => {
       tail: props.tail
     },
   );
+  const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [ isDefault, setIsDefault ] = useState(true);
+
+  const AddCellClass = (index) => {
+    let row = index + 1;
+    $('.reports-root.analysis-correlation .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+  }
+
+  const onChangeRowsPerPage = (rowsPerPage) => {
+    setRowsPerPage(rowsPerPage);
+  };
+
+  const headingStyle = {
+    maxWidth:'200px',
+    minWidth:'50px',
+    padding:'5px',
+    textAlign:"center",
+    margin: '0px',
+    whiteSpace: 'normal',
+  }
+
+  const columnStyle = {
+    maxWidth:'150px',
+    padding:'13px',
+    textAlign:"left",
+    margin: '0px',
+  }
 
   useEffect(() => {
     if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined && PMConditions.EqID !== '' && PMConditions.tail !== '') {
-      let path = Constants.APIURL + 'corelation_new/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail;
 
-      //console.log("https://mhirjapi.azurewebsites.net/api/corelation_new/2021-05-03/2021-05-25/B1-005804/773SK", "working path");
-      // let path = Constants.APIURL + 'corelation_new/' + '2021-05-03' + '/' + '2021-05-25' + '/' + "B1-005804" + '/' + "773SK";
-
-      console.log(path, "used path");
+      //full path
+      //let path = Constants.APIURL + 'corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail;
+      //let path = Constants.APIURL + 'corelation/' + '2021-05-01' + '/' + '2021-05-05' + '/' + "B1-005804" + '/' + "773SK"; 
+     
+      //conditional path (working now)
+      let path= Constants.APIURL + 'corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '?equation_id=' + PMConditions.EqID + '&tail=' + PMConditions.tail;
+      //let path = Constants.APIURL + 'corelation/' + '2021-05-01' + '/' + '2021-05-05' + '?equation_id=B1-005804' + '&tail=773SK';
 
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
@@ -48,7 +79,8 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {width:'120px'}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     // {
@@ -58,7 +90,8 @@ const CorrelationAnalysisTable = (props) => {
     //     filter: true,
     //     filterType: 'dropdown',
     //     sort: true,
-    //     setCellProps: () => ({style: {minWidth:'150px'}})
+    //     setCellProps: () => ({style: columnStyle}),
+          //setCellHeaderProps: () => ({ style: headingStyle }),
     //   }
     // },
     {
@@ -68,7 +101,8 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {width:'250px'}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -78,7 +112,15 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {width:'500px'}})
+        setCellProps: () => ({
+          style: {
+            maxWidth:'300px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -88,7 +130,8 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {width:'150px'}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -98,7 +141,15 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {width:'300px'}})
+        setCellProps: () => ({
+          style: {
+            maxWidth:'300px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -108,7 +159,8 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {width:'180px'}})
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -118,7 +170,15 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: {width:'250px'}})
+        setCellProps: () => ({
+          style: {
+            maxWidth:'400px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
   ];
@@ -153,6 +213,10 @@ const options = {
   fixedSelectColumn: true,
   jumpToPage: true,
   resizableColumns: false,
+  onCellClick: (colData, cellMeta) => {
+    setIsDefault(!isDefault);
+    AddCellClass(cellMeta.rowIndex);
+  },
   downloadOptions: {
     filename: 'Correlation Report from ' + PMConditions.dateFrom + ' to ' + PMConditions.dateTo + ' from '+ PMConditions.tail +'.csv',
     separator: ',',
@@ -163,24 +227,31 @@ const options = {
   },
   textLabels: {
     body: {
-        noMatch: loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display"
+        noMatch: loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display",
+        toolTip: "Sort",
+        columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
     },
   },
   elevation: 1,
-  rowsPerPage: 10,
+  rowsPerPage:  rowsPerPage,
+  onChangeRowsPerPage: onChangeRowsPerPage,
   rowsPerPageOptions: [10,20,50],
   selectToolbarPlacement:"none",
   };
 
   return (
     <div class="reports-root analysis-correlation">
-      <MUIDataTable
-        title="Correlation Report"
-        data={responseData}
-        columns={columns}
-        options={options}
-      />
-</div>
+      <Grid container spacing={0}>
+        <Grid item xs={12}>
+          <MUIDataTable
+            title="Correlation Report"
+            data={responseData}
+            columns={columns}
+            options={options}
+          />
+        </Grid> 
+      </Grid> 
+    </div>
 );}
 
 export default CorrelationAnalysisTable;

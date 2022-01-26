@@ -16,7 +16,7 @@ const HistoryReport = (props) => {
 
   const AddCellClass = (index) => {
     let row = index + 1;
-    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+    $('.reports-root.history-report .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
 
   const HandleMultipleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
@@ -429,7 +429,7 @@ const HistoryReport = (props) => {
   
 
   return (
-    <div class="reports-root">
+    <div class="reports-root history-report">
       <Grid container spacing={0}>
         <Grid item xs={12}>
           <MUIDataTable

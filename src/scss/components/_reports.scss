@@ -68,7 +68,7 @@
       cursor: default;
     }
   }
-  .MuiTableBody-root tr.MuiTableRow-root.MuiTableRow-hover:not(.correlation-analysis-subtable) td.MuiTableCell-root {
+  .MuiTableBody-root tr.MuiTableRow-root.MuiTableRow-hover td.MuiTableCell-root {
     div {
       display: block;
       -webkit-box-orient: vertical;
@@ -78,11 +78,11 @@
       text-overflow: ellipsis;
     }
   }
-  .analysis-correlation .MuiTableBody-root td.MuiTableCell-root.MuiTableCell-body {
-    div {
-      white-space: normal !important;
-    }
-  }
+  // .analysis-correlation .MuiTableBody-root td.MuiTableCell-root.MuiTableCell-body {
+  //   div {
+  //     white-space: normal !important;
+  //   }
+  // }
 
   .MuiTableBody-root {
     border-collapse: unset;
