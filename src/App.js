@@ -28,6 +28,9 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import TocSharpIcon from '@material-ui/icons/TocSharp';
+
+import { useState } from "react";
+import { css } from "@emotion/react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -44,7 +47,7 @@ import Chart5 from './Components/Chart5';
 import ChartB from './Components/ChartB';
 import Scatter1 from './Components/Scatter1';
 import Stacked from './Components/Stacked';
-import FileUpload from './Components/FileUpload';
+import MessageInput from './Components/MessageInput';
 import Analysis from './Components/MdcMessages/GenerateReport/Analysis';
 import Report from './Components/MdcMessages/Reports/Report';
 import Correlation from './Components/Correlation/CorrelationScreen/Correlation';
@@ -156,8 +159,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
@@ -190,7 +191,6 @@ export default function MiniDrawer() {
   const handleGraphsClick = () => {
     setOpenGraphs(!openGraphs);
   };
-
 
   return (
 
@@ -412,12 +412,12 @@ export default function MiniDrawer() {
             </ListItem>
 
             <ListItem >
-              <Link to="/fileUpload" style={{ textDecoration: 'none' }}>
+              <Link to="/MessageInput" style={{ textDecoration: 'none' }}>
                 <ListItemIcon>
                   <AttachFileSharpIcon style={{ color: "#001c3e" }} />
                 </ListItemIcon>
                 <Button variant="contained" color="#d8e4f0">
-                  <typography>Input Message Update</typography>
+                  <typography>MessageInput</typography>
                 </Button>
               </Link>
             </ListItem>
@@ -478,15 +478,13 @@ export default function MiniDrawer() {
             <Route path="/corr">
               <Correlation />
             </Route>
-            <Route path="/fileUpload">
-              <FileUpload />
+            <Route path="/MessageInput">
+              <MessageInput />
             </Route>
           </Switch>
         </main>
 
       </Router>
-      
-
     </div>
   );
 }
