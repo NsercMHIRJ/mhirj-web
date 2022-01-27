@@ -17,7 +17,7 @@ const FlagReport = (props) => {
 
   const AddCellClass = (index) => {
     let row = index + 1;
-    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+    $('.reports-root.flag-report .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
 
   const onChangeRowsPerPage = (rowsPerPage) => {
@@ -325,7 +325,7 @@ const FlagReport = (props) => {
 
   
   return (
-    <div className="reports-root">
+    <div className="reports-root flag-report">
       <Grid container spacing={0}>
         <Grid item xs={12}>
           <MUIDataTable

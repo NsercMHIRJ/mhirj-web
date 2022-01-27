@@ -15,7 +15,7 @@ const DailyReport = (props) => {
   
   const AddCellClass = (index) => {
     let row = index + 1;
-    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+    $('.reports-root.daily-report .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
 
   const HandleSingleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
@@ -92,7 +92,7 @@ const DailyReport = (props) => {
       }
     },
     // {
-    //   name: 'MDCMessage', 
+    //   name: 'mdcMessages', 
     //   label: 'MDC Message',
     //   options: {
     //    filter: true,
@@ -297,11 +297,11 @@ const DailyReport = (props) => {
 
         data.push(
           {
-            tail: item["AC_TN"], 
+            tail: item["AC_TN"],  
             date: DateConverter(item["Date"]),
             ACSN: item["AC SN"], 
             EICASMessage: item["EICAS Message"], 
-            // mdcMessages: item["MDC Message"],
+            // mdcMessages: item["MDC Message"],  // Missing from API  -> Need to update key
             LRU: item["LRU"],  
             ATA: item["ATA"],  
             B1Equation: item["B1-Equation"], 
@@ -313,7 +313,7 @@ const DailyReport = (props) => {
             reasons: item["Reason(s) for flag"],   
             priority: item["Priority"],   
             topMessage: topMessage,  
-            // mel: item["MEL or No-Dispatch"],
+            mel: item["MEL or No-Dispatch"],
             input: input,  
             recommendation: recommendation, 
             comments: comments, 
@@ -346,7 +346,7 @@ const DailyReport = (props) => {
                 dateFrom = {rowData[1]} 
                 dateTo = {rowData[1]}
                 tail = {rowData[0]}
-                EqID = {rowData[7]}
+                EqID = {rowData[6]}
               />
               </TableCell>
           </TableRow>
@@ -378,7 +378,7 @@ const DailyReport = (props) => {
     };
   
   return (
-    <div className="reports-root">
+    <div className="reports-root daily-report">
       <Grid container spacing={0}>
         <Grid item xs={12}>
           <MUIDataTable

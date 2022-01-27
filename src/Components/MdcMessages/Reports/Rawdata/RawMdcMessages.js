@@ -10,7 +10,6 @@ import axios from 'axios';
 import Constants from '../../../utils/const';
 import "../../../../scss/_main.scss";
 
-
 const useStyles = makeStyles((theme) => ({
 root: {
   flexGrow: 1,
@@ -135,15 +134,17 @@ useEffect(() => {
 
   if (flag === false) {  
     const path = `${Constants.APIURL}RawData/${rawDataConditions.fromDate}/${rawDataConditions.toDate}/?ata=${rawDataConditions.ata}&eqID=${rawDataConditions.eqID}&msg=${rawDataConditions.messages}`;
+    console.log(path);
 
       axios.get(path).then(function (res) {
         var data = JSON.parse(res.data);
-          setRawData(data);
-          setLoading(false);
+        console.log(data);
+        setRawData(data);
+        setLoading(false);
       }).catch(function (err){
-            console.log(err);
-            setLoading(false);
-          })
+        console.log(err);
+        setLoading(false);
+      })
       }
   },[rawDataConditions]);
 
