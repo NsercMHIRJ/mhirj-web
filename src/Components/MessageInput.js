@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useMemo, useRef } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import PropTypes from 'prop-types';
 import Constants from './utils/const';
 import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core';
 import {randomId} from '@mui/x-data-grid-generator';
@@ -84,6 +82,7 @@ const override = css`
   border-color: red;
 `;
 
+var tmpObjects = {};
 
 export default function FileUpload() {
 	const classes = useStyles();
@@ -116,46 +115,17 @@ export default function FileUpload() {
     setEqID(eqIDList);
   };
 
-
-  // const headingStyle = {
-  //   maxWidth:'200px',
-  //   minWidth:'50px',
-  //   padding:'5px',
-  //   textAlign:"center",
-  //   margin: '0px',
-  //   whiteSpace: 'normal',
-  // }
-
-  // const columnStyle = {
-  //   maxWidth:'150px',
-  //   padding:'13px',
-  //   textAlign:"left",
-  //   margin: '0px',
-  // }
-
   const columns = [
     {
       field: 'ATA',
       headerName: 'ATA',
       editable: true
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'LRU',
       headerName: 'LRU',
       flex: 1,
       editable: true
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      // }
     },
     {
       field: 'Message_No',
@@ -163,40 +133,18 @@ export default function FileUpload() {
       editable: true,
       flex: 1,
       width: 120
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Comp_ID',
       headerName: 'Comp_ID',
       flex: 1,
       editable: true
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Keywords',
       headerName: 'Keywords',
       flex: 1,
       editable: true
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-
-      // }
     },
     {
       field: 'Fault_Logged',
@@ -204,28 +152,12 @@ export default function FileUpload() {
       flex: 1,
       editable: true,
       width: 125
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({ style: { whiteSpace: 'nowrap' } }),
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Status',
       headerName: 'Status',
       flex: 1,
       editable: true
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({ style: { whiteSpace: 'nowrap' } }),
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Message_Type',
@@ -233,65 +165,30 @@ export default function FileUpload() {
       editable: true,
       flex: 1,
       width: 130
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Message',
       headerName: 'Message',
       flex: 1,
       editable: true,
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'EICAS',
       headerName: 'EICAS',
       flex: 1,
       editable: true
-      // options: {
-      //   filter: false,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Timer',
       headerName: 'Timer',
       flex: 1,
       editable: true
-      // options: {
-      //   filter: false,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Logic',
       headerName: 'Logic',
       flex: 1,
       editable: true
-      // options: {
-      //   filter: false,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Equation_Description',
@@ -299,118 +196,54 @@ export default function FileUpload() {
       flex: 1,
       editable: true,
       width: 200
-      // options: {
-      //   filter: false,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Equation_ID',
       headerName: 'Equation_ID',
       flex: 1,
       width: 150
-      // options: {
-      //   filter: false,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Occurrence_Flag',
       headerName: 'Occurrence_Flag',
       flex: 1,
       editable: true
-      // options: {
-      //   filter: false,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Days_Count',
       headerName: 'Days_Count',
       flex: 1,
       editable: true
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: true,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Priority',
       headerName: 'Priority',
       flex: 1,
       editable: true
-      // options: {
-      //   filter: false,
-      //   sort: true,
-      //   setCellProps: () => ({ style: { minWidth: '200px' } }),
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'MHIRJ_ISE_Recommended_Action',
       headerName: 'MHIRJ Recommended Action',
       editable: true,
       flex: 1,
-      // options: {
-      //   filter: false,
-      //   sort: true,
-      //   setCellProps: () => ({ style: { minWidth: '400px' } }),
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'Additional_Comments',
       headerName: 'MHIRJ Additional Comment',
       editable: true,
       flex: 1,
-      // options: {
-      //   filter: false,
-      //   sort: true,
-      //   setCellProps: () => ({ style: { minWidth: '700px' } }),
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'MHIRJ_ISE_inputs',
       headerName: 'MHIRJ Input',
       editable: true,
       flex: 1,
-      // options: {
-      //   filter: false,
-      //   sort: true,
-      //   setCellProps: () => ({ style: { minWidth: '400px' } }),
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-      // }
     },
     {
       field: 'MEL_or_No_Dispatch',
       headerName: 'MEL_or_No_Dispatch',
       editable: true,
       flex: 1
-      // options: {
-      //   filter: true,
-      //   filterType: 'dropdown',
-      //   sort: false,
-      //   setCellProps: () => ({style: columnStyle}),
-      //   setCellHeaderProps: () => ({ style: headingStyle }),
-
-      // }
     },
   ];
 
@@ -434,80 +267,76 @@ export default function FileUpload() {
         
       )
   }
-  function saveTable() {  
-    
-    if(updatedObjects[0]){
-      loading = true
-      setLoading(loading)
-      var status = ""
-        status = updatedObjects[0].Status.replace("/"," "); 
-    
-      let path = `${Constants.APIURL}update_input_message_data/${updatedObjects[0].Equation_ID}/${updatedObjects[0].LRU}/${updatedObjects[0].ATA}/${updatedObjects[0].Message_No}/
-      ${updatedObjects[0].Comp_ID}/${updatedObjects[0].Message}/${updatedObjects[0].Fault_Logged}/${status}/${updatedObjects[0].Message_Type}/${updatedObjects[0].EICAS}/
-      ${updatedObjects[0].Timer}/${updatedObjects[0].Logic}/${updatedObjects[0].Equation_Description}/${updatedObjects[0].Occurrence_Flag}/${updatedObjects[0].Days_Count}/${updatedObjects[0].Priority}/
-      ${updatedObjects[0].MHIRJ_ISE_Recommended_Action}/${updatedObjects[0].Additional_Comments}/${updatedObjects[0].MHIRJ_ISE_inputs}/${updatedObjects[0].MEL_or_No_Dispatch}/
-      ${updatedObjects[0].Keywords}`
-      console.log(updatedObjects);
-      axios.post(path).then(function (res){
-        if(res){
-          notification = "data is updated"
-          loading = false
-          setLoading(loading)
-          setNotification(notification)
-          notify();
+  function getDataById(id){
+     return updateData.find(data => {
+        if(data.id === id){
+          return data
         }
+      })
+  }
+  function saveTable() {  
+    setLoading(true)
+    for (const property in tmpObjects) {
+        let d = getDataById(property)
+        d.ATA = tmpObjects[property]['ATA'].value;
+        d.Additional_Comments =  tmpObjects[property]['Additional_Comments'].value;
+        d.Comp_ID =  tmpObjects[property]['Comp_ID'].value;
+        d.Days_Count = tmpObjects[property]['Days_Count'].value;
+        d.EICAS = tmpObjects[property]['EICAS'].value;
+        d.Equation_Description = tmpObjects[property]['Equation_Description'].value;
+        d.Fault_Logged = tmpObjects[property]['Fault_Logged'].value;
+        d.Keywords = tmpObjects[property]['Keywords'].value;
+        d.LRU = tmpObjects[property]['LRU'].value;
+        d.Logic = tmpObjects[property]['Logic'].value;
+        d.MEL_or_No_Dispatch = tmpObjects[property]['MEL_or_No_Dispatch'].value;
+        d.MHIRJ_ISE_Recommended_Action = tmpObjects[property]['MHIRJ_ISE_Recommended_Action'].value;
+        d.MHIRJ_ISE_inputs = tmpObjects[property]['MHIRJ_ISE_inputs'].value;
+        d.Message = tmpObjects[property]['Message'].value;
+        d.Message_No = tmpObjects[property]['Message_No'].value;
+        d.Message_Type = tmpObjects[property]['Message_Type'].value;
+        d.Occurrence_Flag = tmpObjects[property]['Occurrence_Flag'].value;
+        d.Priority = tmpObjects[property]['Priority'].value;
+        d.Status = tmpObjects[property]['Status'].value;
+        d.Timer = tmpObjects[property]['Timer'].value; 
+        updatedObjects.push(d);
+        setUpdatedObjects(updatedObjects);
+  }
+  
+  //   if(updatedObjects[0]){
+  //     loading = true
+  //     
+  //     var status = ""
+  //       status = updatedObjects[0].Status.replace("/"," "); 
+    
+  //     let path = `${Constants.APIURL}update_input_message_data/${updatedObjects[0].Equation_ID}/${updatedObjects[0].LRU}/${updatedObjects[0].ATA}/${updatedObjects[0].Message_No}/
+  //     ${updatedObjects[0].Comp_ID}/${updatedObjects[0].Message}/${updatedObjects[0].Fault_Logged}/${status}/${updatedObjects[0].Message_Type}/${updatedObjects[0].EICAS}/
+  //     ${updatedObjects[0].Timer}/${updatedObjects[0].Logic}/${updatedObjects[0].Equation_Description}/${updatedObjects[0].Occurrence_Flag}/${updatedObjects[0].Days_Count}/${updatedObjects[0].Priority}/
+  //     ${updatedObjects[0].MHIRJ_ISE_Recommended_Action}/${updatedObjects[0].Additional_Comments}/${updatedObjects[0].MHIRJ_ISE_inputs}/${updatedObjects[0].MEL_or_No_Dispatch}/
+  //     ${updatedObjects[0].Keywords}`
+  //     console.log(updatedObjects);
+  //     axios.post(path).then(function (res){
+  //       if(res){
+  //         notification = "data is updated"
+  //         loading = false
+  //         setLoading(loading)
+  //         setNotification(notification)
+  //         notify();
+  //       }
        
-      }).catch(function (err){
-        console.log(err);
-      });
-      show_inputMessage_data()
+  //     }).catch(function (err){
+  //       console.log(err);
+  //     });
+  //     show_inputMessage_data()
+  // }
   }
-  }
-
-  var isThere = false;
 	const themes = getMuiTheme();
   const handleEditRowsModelChange = React.useCallback((model) => {
     setEditRowsModel(model);
     const editedIds = Object.keys(model);
-    console.log(model);
-    updateData.map(d => {
-      if(d.id === editedIds[0]){
-        d.ATA = model[editedIds[0]]['ATA'].value;
-        d.Additional_Comments =  model[editedIds[0]]['Additional_Comments'].value;
-        d.Comp_ID =  model[editedIds[0]]['Comp_ID'].value;
-        d.Days_Count = model[editedIds[0]]['Days_Count'].value;
-        d.EICAS = model[editedIds[0]]['EICAS'].value;
-        d.Equation_Description = model[editedIds[0]]['Equation_Description'].value;
-        d.Fault_Logged = model[editedIds[0]]['Fault_Logged'].value;
-        d.Keywords = model[editedIds[0]]['Keywords'].value;
-        d.LRU = model[editedIds[0]]['LRU'].value;
-        d.Logic = model[editedIds[0]]['Logic'].value;
-        d.MEL_or_No_Dispatch = model[editedIds[0]]['MEL_or_No_Dispatch'].value;
-        d.MHIRJ_ISE_Recommended_Action = model[editedIds[0]]['MHIRJ_ISE_Recommended_Action'].value;
-        d.MHIRJ_ISE_inputs = model[editedIds[0]]['MHIRJ_ISE_inputs'].value;
-        d.Message = model[editedIds[0]]['Message'].value;
-        d.Message_No = model[editedIds[0]]['Message_No'].value;
-        d.Message_Type = model[editedIds[0]]['Message_Type'].value;
-        d.Occurrence_Flag = model[editedIds[0]]['Occurrence_Flag'].value;
-        d.Priority = model[editedIds[0]]['Priority'].value;
-        d.Status = model[editedIds[0]]['Status'].value;
-        d.Timer = model[editedIds[0]]['Timer'].value; 
-        if(updatedObjects.length > 0){
-          for(let i = 0; i < updatedObjects.length; i++){
-            if(updatedObjects[i].Equation_ID === d.Equation_ID){
-              updatedObjects[i] = d;
-              isThere = true;
-            }else{
-              isThere = false;
-            }
-          }
-        }
-        if(!isThere){
-          updatedObjects.push(d);
-        }
-        setUpdatedObjects(updatedObjects);
-      }
-    });
+    console.log(editedIds)
+    if(model[editedIds] !== undefined){
+      tmpObjects[editedIds] = model[editedIds] 
+    }
   });
 
   let [loading, setLoading] = useState(false);
