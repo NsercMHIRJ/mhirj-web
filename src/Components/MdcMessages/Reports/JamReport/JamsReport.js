@@ -259,18 +259,18 @@ const JamsReport = (props) => {
             ATASub: item["ATA_SUB"],
             ATA: item["ATA"],
             ATADescription: item["ATA_NAME"],
-            LRU: item["LRU"], 
-            DateAndTime: DateConverter(item["MSG_Date"]),  
+            LRU: item["LRU"],
+            DateAndTime: DateConverter(item["MSG_Date"]), 
             MDCMessage: item["MDC Message"],
-            status: item["msg_status"], 
-            flightPhase: item["FLIGHT_PHASE"],  
-            type: item["MSG_TYPE"],   
-            intermittent: item["INTERMITNT"],  
+            status: item["msg_status"],
+            flightPhase: item["FLIGHT_PHASE"], 
+            type: item["MSG_TYPE"],  
+            intermittent: item["INTERMITNT"], 
             equationID: item["EQ_ID"], 
-            source: item["SOURCE"], 
+            source: item["SOURCE"],
             diagnosticData: item["Diagnostic Data"],  // Missing from API  -> Need to update key
             determineData: item["Data Used to Determine Msg"],   // Missing from API  -> Need to update key
-            ID: item["MSG_ID"],  
+            ID: item["MSG_ID"], 
             flight: item["aircraftno"],  // Missing from API  -> Need to update key
           }
         );

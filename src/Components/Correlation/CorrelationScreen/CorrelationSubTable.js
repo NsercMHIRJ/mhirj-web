@@ -7,17 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import $ from 'jquery';
 import '../../../scss/_main.scss';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    padding:'5px',
-    margin:'auto',
-    width:'100%',
-  },
-}));
-
 const CorrelationSubTable = (props) => {
-  const classes = useStyles();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [ isDefault, setIsDefault ] = useState(true);
@@ -25,7 +15,7 @@ const CorrelationSubTable = (props) => {
 
   const AddCellClass = (index) => {
     let row = index + 1;
-    $('.reports-root .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+    $('.reports-root.analysis-correlation .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
 
   const onChangeRowsPerPage = (rowsPerPage) => {
@@ -33,10 +23,11 @@ const CorrelationSubTable = (props) => {
   };
 
   useEffect(()=>{
-    const path = Constants.APIURL + 'corelation/' + props.p_id;
+    const path = Constants.APIURL + 'corelation_pid/' + props.p_id;
 
     axios.post(path).then(function (res){
       var data = JSON.parse(res.data);
+      console.log(data);
       setData(data);    
       setLoading(false);
     }).catch(function (err){
@@ -168,7 +159,14 @@ const CorrelationSubTable = (props) => {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: columnStyle}),
+      setCellProps: () => ({
+        style: {
+          maxWidth:'250px',
+          padding:'13px',
+          textAlign:"left",
+          margin: '0px',
+        }}
+      ),
       setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
@@ -180,16 +178,16 @@ if (data){
   data.map((item => {
     responseData.push(
       {
-        aircraftno: item["aircraftno"],
-        tail: item["Aircraft_tail_No"],
-        mdc_ata_main: item["ATA_Main"],
-        mdc_ata_sub: item["ATA_Sub"],
+        aircraftno: item["aircraftno"], 
+        tail: item["Aircraft_tail_No"], 
+        mdc_ata_main: item["ATA_Main"], 
+        mdc_ata_sub: item["ATA_Sub"], 
         ata_description: item["ATA_Description"], 
-        CAS: item["CAS"],
-        EQ_ID: item["EQ_ID"],
+        CAS: item["CAS"], 
+        EQ_ID: item["EQ_ID"], 
         EQ_DESCRIPTION: item["EQ_DESCRIPTION"],   
         LRU: item["LRU"],  
-        MDC_MESSAGE: item["MDC_MESSAGE"], 
+        MDC_MESSAGE: item["MDC_MESSAGE"],  
       }
     );
     return responseData
@@ -199,14 +197,13 @@ if (data){
 const options = {
   filter: true,
   filterType: 'multiselect',
+  selectableRowsHideCheckboxes: true,
+  selectableRowsOnClick: false,
   responsive: "standard",
   fixedHeader: true,
   fixedSelectColumn: true,
   jumpToPage: true,
   resizableColumns: false,
-  selectableRowsHideCheckboxes: true,
-  selectableRowsOnClick: false,
-  expandableRows: true,
   onCellClick: (colData, cellMeta) => {
     setIsDefault(!isDefault);
     AddCellClass(cellMeta.rowIndex);
@@ -231,10 +228,11 @@ const options = {
   onChangeRowsPerPage: onChangeRowsPerPage,
   rowsPerPageOptions: [10,20,50],
   selectToolbarPlacement:"none",
+  tableBodyHeight: responseData ? '450px' : '200px'
 };
 
   return (
-    <div className="reports-root">
+    <div className="reports-root analysis-correlation">
       <Grid container spacing={0}>
         <Grid item xs={12}>
           <MUIDataTable

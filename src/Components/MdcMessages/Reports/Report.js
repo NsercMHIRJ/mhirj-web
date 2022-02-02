@@ -82,7 +82,6 @@ const Report = (props) => {
           
           axios.post(path).then(function (res){
             // var data = JSON.parse(res.data);
-            console.log(res.data);
             setDeltaData(res.data);    
             setLoadingDelta(false);
           }).catch(function (err){
@@ -121,6 +120,7 @@ const Report = (props) => {
 
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
+            console.log(data);
             setHistoryReportData(data);  
             setLoadingHistory(false);  
           }).catch(function (err){
@@ -169,6 +169,7 @@ const Report = (props) => {
 
       axios.post(jamsPath).then(function (res){
         var data = JSON.parse(res.data);
+        console.log(data);
         setJamHistoryData(data);
         setLoadingHistoryJam(false);
       }).catch(function (err){
@@ -186,8 +187,6 @@ const Report = (props) => {
       flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
       flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.fromDate + '/' + 
       flagConditions.toDate + '/1/' + flagConditions.flagList;
-
-      //const flagPath = Constants.APIURL + "GenerateReport/history/2/2/2/2/ALL/NONE/SKW/0/2021-09-01/2021-09-10/1/('10231','B1-006987'),('10231','B1-007026')"
 
       axios.post(flagPath).then(function (res){
         var data = JSON.parse(res.data);

@@ -86,17 +86,17 @@ const HistoryReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    {
-      name: 'mdcMessages', 
-      label: 'MDC Message',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
+    // {
+    //   name: 'mdcMessages', 
+    //   label: 'MDC Message',
+    //   options: {
+    //    filter: true,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
     {
       name: 'LRU', 
       label: 'LRU',
@@ -404,7 +404,7 @@ const HistoryReport = (props) => {
         separator: ',',
       },
       setRowProps: (row, index) => {
-        if (row[22] === true){
+        if (row[21] === true){ //change to 22 when mdc message is available
           return {style: {background:'#FF7F50'}}
         }
       },

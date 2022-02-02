@@ -14,6 +14,7 @@ import CorrelationSubTable from './CorrelationSubTable';
 import {DateConverter,GenerateCorrelationValidation, NotFirstRender} from '../../Helper/Helper';
 import Constants from '../../utils/const';
 import "../../../scss/_main.scss";
+import $ from 'jquery';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -45,6 +46,17 @@ const PMTable = (props) => {
       ATAMain: '',
     },
   );
+  const [ isDefault, setIsDefault ] = useState(true);
+  const [rowsPerPage, setRowsPerPage] = useState('10');
+
+  const AddCellClass = (index) => {
+    let row = index + 1;
+    $('.reports-root.correlation-pm-table .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+  }
+
+  const onChangeRowsPerPage = (rowsPerPage) => {
+    setRowsPerPage(rowsPerPage);
+  };
 
   const handleDateFrom = (date) => {
     setDateFrom(date);
@@ -84,7 +96,7 @@ const PMTable = (props) => {
     }
     if ( PMValue !== 0) {
       if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined) {
-        let path = Constants.APIURL + 'corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo;
+        let path = Constants.APIURL + 'corelation_ata/' + PMConditions.dateFrom + '/' + PMConditions.dateTo;
         if ( PMConditions.EqID !== '' && PMConditions.ATAMain !== '') {
           path += '?equation_id=' + PMConditions.EqID + '&ata=' + PMConditions.ATAMain;
         }else {
@@ -95,6 +107,7 @@ const PMTable = (props) => {
             path += '?ata=' + PMConditions.ATAMain;
           }
         }
+        
         console.log(path);
         axios.post(path).then(function (res) {
           var data = JSON.parse(res.data);
@@ -110,6 +123,23 @@ const PMTable = (props) => {
     }
   },[PMConditions]);
 
+
+  const headingStyle = {
+    maxWidth:'200px',
+    minWidth:'50px',
+    padding:'5px',
+    textAlign:"center",
+    margin: '0px',
+    whiteSpace: 'normal',
+  }
+
+  const columnStyle = {
+    maxWidth:'150px',
+    padding:'13px',
+    textAlign:"left",
+    margin: '0px',
+  }
+
 const columns = [
   {
     name: 'p_id', 
@@ -118,17 +148,30 @@ const columns = [
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
-    name: 'ATA', 
-    label: 'ATA',
+    name: 'ATAMain', 
+    label: 'ATA Main',
     options: {
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
+    }
+  },
+  {
+    name: 'ATASub', 
+    label: 'ATA Sub',
+    options: {
+      filter: true,
+      filterType: 'dropdown',
+      sort: true,
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -138,7 +181,15 @@ const columns = [
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {minWidth:'400px'}})
+      setCellProps: () => ({
+        style: {
+          maxWidth:'300px',
+          padding:'13px',
+          textAlign:"left",
+          margin: '0px',
+        }}
+      ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -148,7 +199,15 @@ const columns = [
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {minWidth:'400px'}})
+      setCellProps: () => ({
+        style: {
+          maxWidth:'300px',
+          padding:'13px',
+          textAlign:"left",
+          margin: '0px',
+        }}
+      ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -158,7 +217,8 @@ const columns = [
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -168,7 +228,15 @@ const columns = [
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {minWidth:'300px'}})
+      setCellProps: () => ({
+        style: {
+          maxWidth:'300px',
+          padding:'13px',
+          textAlign:"left",
+          margin: '0px',
+        }}
+      ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -178,7 +246,8 @@ const columns = [
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {minWidth:'200px'}})
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
   {
@@ -188,7 +257,15 @@ const columns = [
       filter: true,
       filterType: 'dropdown',
       sort: true,
-      setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      setCellProps: () => ({
+        style: {
+          maxWidth:'300px',
+          padding:'13px',
+          textAlign:"left",
+          margin: '0px',
+        }}
+      ),
+      setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
 ];
@@ -198,7 +275,8 @@ const columns = [
     responseData.push(
       {
         p_id: item["MaintTransID"],
-        ATA: item["ATA"],
+        ATAMain: item["ATA_Main"],
+        ATASub: item["ATA_Sub"],
         discrepancy: item["Discrepancy"],
         action: item["CorrectiveAction"],
         date: DateConverter(item["DateAndTime"]),
@@ -216,7 +294,16 @@ const options = {
   filterType: 'multiselect',
   responsive: "standard",
   fixedHeader: true,
+  fixedSelectColumn: true,
+  jumpToPage: true,
+  resizableColumns: false,
+  selectableRowsHideCheckboxes: true,
+  selectableRowsOnClick: false,
   expandableRows: true,
+  onCellClick: (colData, cellMeta) => {
+    setIsDefault(!isDefault);
+    AddCellClass(cellMeta.rowIndex);
+  },
   renderExpandableRow: (rowData, rowMeta) => {
     return ( 
     <TableRow>
@@ -234,12 +321,11 @@ const options = {
   },
   textLabels: {
     body: {
-        noMatch: loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display"
-    },
+        noMatch: loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display",
+        toolTip: "Sort",
+        columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
+      },
 },
-  fixedSelectColumn: true,
-  selectableRowsHideCheckboxes: true,
-  selectableRowsOnClick: false,
   downloadOptions: {
     filename: 'Correlation Report from ' + dateFrom + ' to ' + dateTo + '.csv',
     separator: ',',
@@ -249,8 +335,9 @@ const options = {
     transitionTime: 300,
   },
   elevation: 4,
-  rowsPerPage: 20,
-  rowsPerPageOptions: [20, 50],
+  rowsPerPage: rowsPerPage,
+  onChangeRowsPerPage: onChangeRowsPerPage,
+  rowsPerPageOptions: [10,20,50],
   selectToolbarPlacement:"none",
 };
 
@@ -293,7 +380,7 @@ const options = {
                     variant="contained" 
                     onClick = {async()=>handleGeneratePMTable()}
                     className={classes.button}>
-                      Generate Correlation Table
+                      Generate Correlation
                   </Button>  
                 </Grid>     
               </Grid>      
@@ -302,11 +389,11 @@ const options = {
       </form>
     {data !== "" && data !== "undefined" && PMValue === 1 && validationResponse.status === true &&
       <>
-      <div className="reports-root">
+      <div className="reports-root correlation-pm-table">
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <MUIDataTable
-              title="Correlation Report "
+              title="Correlation Report"
               data={responseData}
               columns={columns}
               options={options}
