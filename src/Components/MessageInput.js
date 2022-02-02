@@ -18,9 +18,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   dataGrid: {
     width: "100%"
   },
@@ -79,19 +76,16 @@ const useStyles = makeStyles((theme) => ({
 const override = css`
   display: block;
   margin: 0 auto;
-  border-color: red;
 `;
 
 var tmpObjects = {};
-
+var data = [];
 export default function FileUpload() {
 	const classes = useStyles();
-  const [notification , setNotification] = useState("")
-  const notify = () => toast(notification);
 	const [updateData, setupdateData] = useState([]);
   const [editRowsModel, setEditRowsModel] = React.useState({});
-  const [updatedObjects , setUpdatedObjects] = React.useState([]);
   const [EqID, setEqID] = useState("");
+  const[finalEditedData , setFinalEditedData] = useState([])
 
   const getMuiTheme = () => createMuiTheme({
     palette: {type: 'light'},
@@ -117,6 +111,11 @@ export default function FileUpload() {
 
   const columns = [
     {
+      field: 'Equation_ID',
+      headerName: 'Equation_ID',
+      width: 150
+    },
+    {
       field: 'ATA',
       headerName: 'ATA',
       editable: true
@@ -124,126 +123,116 @@ export default function FileUpload() {
     {
       field: 'LRU',
       headerName: 'LRU',
-      flex: 1,
+      width: 120,
       editable: true
     },
     {
       field: 'Message_No',
       headerName: 'Message_No',
       editable: true,
-      flex: 1,
       width: 120
     },
     {
       field: 'Comp_ID',
       headerName: 'Comp_ID',
-      flex: 1,
+      width: 150,
       editable: true
     },
     {
       field: 'Keywords',
       headerName: 'Keywords',
-      flex: 1,
+      width: 120,
       editable: true
     },
     {
       field: 'Fault_Logged',
       headerName: 'Fault_Logged',
-      flex: 1,
       editable: true,
       width: 125
     },
     {
       field: 'Status',
       headerName: 'Status',
-      flex: 1,
+      width: 120,
       editable: true
     },
     {
       field: 'Message_Type',
       headerName: 'Message_Type',
       editable: true,
-      flex: 1,
       width: 130
     },
     {
       field: 'Message',
       headerName: 'Message',
-      flex: 1,
+      width: 120,
       editable: true,
     },
     {
       field: 'EICAS',
       headerName: 'EICAS',
-      flex: 1,
+      width: 120,
       editable: true
     },
     {
       field: 'Timer',
       headerName: 'Timer',
-      flex: 1,
+      width: 120,
       editable: true
     },
     {
       field: 'Logic',
       headerName: 'Logic',
-      flex: 1,
+      width: 120,
       editable: true
     },
     {
       field: 'Equation_Description',
       headerName: ' Equation_Description',
-      flex: 1,
       editable: true,
-      width: 200
-    },
-    {
-      field: 'Equation_ID',
-      headerName: 'Equation_ID',
-      flex: 1,
-      width: 150
+      width: 200,
     },
     {
       field: 'Occurrence_Flag',
       headerName: 'Occurrence_Flag',
-      flex: 1,
-      editable: true
+      editable: true,
+      width: 140
     },
     {
       field: 'Days_Count',
       headerName: 'Days_Count',
-      flex: 1,
+      width: 130,
       editable: true
     },
     {
       field: 'Priority',
       headerName: 'Priority',
-      flex: 1,
+      width: 120,
       editable: true
     },
     {
       field: 'MHIRJ_ISE_Recommended_Action',
       headerName: 'MHIRJ Recommended Action',
-      editable: true,
-      flex: 1,
+      width: 240,
+      editable: true
     },
     {
       field: 'Additional_Comments',
       headerName: 'MHIRJ Additional Comment',
       editable: true,
-      flex: 1,
+      width: 220
     },
     {
       field: 'MHIRJ_ISE_inputs',
       headerName: 'MHIRJ Input',
       editable: true,
-      flex: 1,
+      width: 150
     },
     {
       field: 'MEL_or_No_Dispatch',
       headerName: 'MEL_or_No_Dispatch',
       editable: true,
-      flex: 1
+      width: 180
     },
   ];
 
@@ -255,18 +244,17 @@ export default function FileUpload() {
     axios.post(path1)
       .then(res => {
          const data = JSON.parse(res.data);
-         data.map(item => {
+         data.map(item => {                                            //Insert id in each data comming
           item['id'] = randomId();
-         })
-        
+         })      
          setupdateData(data) 
-         console.log(updateData)
          loading = false
          setLoading(loading)
         }
         
       )
   }
+  /**Find each edited rows by id from the whole data**/
   function getDataById(id){
      return updateData.find(data => {
         if(data.id === id){
@@ -274,6 +262,7 @@ export default function FileUpload() {
         }
       })
   }
+  /** Massage the data and send it to the api**/
   function saveTable() {  
     setLoading(true)
     for (const property in tmpObjects) {
@@ -298,50 +287,36 @@ export default function FileUpload() {
         d.Priority = tmpObjects[property]['Priority'].value;
         d.Status = tmpObjects[property]['Status'].value;
         d.Timer = tmpObjects[property]['Timer'].value; 
-        updatedObjects.push(d);
-        setUpdatedObjects(updatedObjects);
-  }
-  
-  //   if(updatedObjects[0]){
-  //     loading = true
-  //     
-  //     var status = ""
-  //       status = updatedObjects[0].Status.replace("/"," "); 
-    
-  //     let path = `${Constants.APIURL}update_input_message_data/${updatedObjects[0].Equation_ID}/${updatedObjects[0].LRU}/${updatedObjects[0].ATA}/${updatedObjects[0].Message_No}/
-  //     ${updatedObjects[0].Comp_ID}/${updatedObjects[0].Message}/${updatedObjects[0].Fault_Logged}/${status}/${updatedObjects[0].Message_Type}/${updatedObjects[0].EICAS}/
-  //     ${updatedObjects[0].Timer}/${updatedObjects[0].Logic}/${updatedObjects[0].Equation_Description}/${updatedObjects[0].Occurrence_Flag}/${updatedObjects[0].Days_Count}/${updatedObjects[0].Priority}/
-  //     ${updatedObjects[0].MHIRJ_ISE_Recommended_Action}/${updatedObjects[0].Additional_Comments}/${updatedObjects[0].MHIRJ_ISE_inputs}/${updatedObjects[0].MEL_or_No_Dispatch}/
-  //     ${updatedObjects[0].Keywords}`
-  //     console.log(updatedObjects);
-  //     axios.post(path).then(function (res){
-  //       if(res){
-  //         notification = "data is updated"
-  //         loading = false
-  //         setLoading(loading)
-  //         setNotification(notification)
-  //         notify();
-  //       }
-       
-  //     }).catch(function (err){
-  //       console.log(err);
-  //     });
-  //     show_inputMessage_data()
-  // }
+        finalEditedData.push(d);
+        setFinalEditedData(finalEditedData)
+    }
+    if(finalEditedData[0] !== undefined){  
+      let data = finalEditedData;
+      let path = `${Constants.APIURL}update_input_message_data/`
+      axios.post(path, {data}).then(function (res){
+        if(res.statusText === "OK"){
+          setFinalEditedData([]);
+          alert("Success");
+        }
+      }).catch(function (err){
+        console.log(err);
+        alert("Something wrong try later");
+      });
+    }else{
+      alert("No Editing Data to Save")
+    }
+    setLoading(false)
   }
 	const themes = getMuiTheme();
+  /**Fetch all data for each selected row.**/
   const handleEditRowsModelChange = React.useCallback((model) => {
     setEditRowsModel(model);
-    const editedIds = Object.keys(model);
-    console.log(editedIds)
+    const editedIds = Object.keys(model); 
     if(model[editedIds] !== undefined){
       tmpObjects[editedIds] = model[editedIds] 
     }
   });
-
   let [loading, setLoading] = useState(false);
-  let [color, setColor] = useState("#ffffff");
-
 	return (
 		<div>
 			<form className={classes.form}>
@@ -349,38 +324,27 @@ export default function FileUpload() {
 					<div className={classes.card}>
 						<h2>INPUT MESSAGE DATA</h2>
 					</div>
-
 					<div className={classes.container}>
 						<Grid className={classes.Grid} container spacing={3}>
-
 							<div style={{ margin: '20px 300px 10px -60px', height: '50px', width: '92vw', backgroundColor: "#C5D3E0", textAlign: 'center', justify: 'center', padding: '0px' }}>
 								<h3>UPDATE INPUT MESSAGE DATA</h3>
 							</div>
-
 							<Grid item xs={5} style={{ marginLeft: '10px' }}>
 								<div>
 									<div style={{ marginLeft:'50px', marginTop: '30px',width: '1450px'}}>  
-										<EqIDSelectorInput 
-              									 handleEqIDChangeInput = {handleEqIDChangeInput}
-             									 />
+										<EqIDSelectorInput handleEqIDChangeInput= {handleEqIDChangeInput}/>
 									</div>
 									<br></br>
-					
 								</div>
 							</Grid>
-
 							<Grid item xs={5} style={{ paddingLeft: '100px' }}>
 								<div>
 									<Button onClick={(e) => show_inputMessage_data(e)} id="show" variant="contained" component="span" style={{ width: '250px', marginTop: '50px', TextAlign: 'center', padding: "6px", backgroundColor: "#001c3e", color: "White" }} >Show Input Message Data </Button>
-
 								</div>
-
 							</Grid>
 							<Grid item xs={12}>
 								<Paper style={{ marginLeft: '-230px' }}>
-        
-                    <MuiThemeProvider theme={themes}>
-                    
+                    <MuiThemeProvider theme={themes}>      
                     <div style={{ display: 'flex', height: '100%' }}>
                       <div style={{ flexGrow: 1 }}>
                         <ClipLoader loading={loading} css={override} />
@@ -396,7 +360,8 @@ export default function FileUpload() {
                         onEditRowsModelChange={handleEditRowsModelChange}
                         className={classes.dataGrid}
                         rowsPerPageOptions={[7,20,50]}
-                        pageSize={20}
+                        pageSize={5}
+                        density="compact"
                         />
                       </div>  
                     </div>
@@ -406,16 +371,10 @@ export default function FileUpload() {
                     </MuiThemeProvider>   
 								</Paper>
 							</Grid>
-
 						</Grid>
 					</div>
 				</Paper>
 			</form>
-
-
-
-
 		</div>
-
 	);
 }
