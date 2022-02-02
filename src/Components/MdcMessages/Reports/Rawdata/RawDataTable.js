@@ -3,8 +3,36 @@ import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import { DateConverter } from '../../../Helper/Helper';
 import "../../../../scss/_main.scss";
+import $ from 'jquery';
 
 const RawDataTable = (props) => {
+  const [ isDefault, setIsDefault ] = useState(true);
+  const [rowsPerPage, setRowsPerPage] = useState('10');
+
+  const AddCellClass = (index) => {
+    let row = index + 1;
+    $('.reports-root.raw-data .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+  }
+
+  const onChangeRowsPerPage = (rowsPerPage) => {
+    setRowsPerPage(rowsPerPage);
+  };
+
+  const headingStyle = {
+    maxWidth:'200px',
+    minWidth:'50px',
+    padding:'5px',
+    textAlign:"center",
+    margin: '0px',
+    whiteSpace: 'normal',
+  }
+
+  const columnStyle = {
+    maxWidth:'150px',
+    padding:'13px',
+    textAlign:"left",
+    margin: '0px',
+  }
 
   const columns = [
     {
@@ -14,7 +42,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -24,7 +53,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -34,7 +64,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -44,7 +75,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -54,7 +86,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -64,7 +97,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -74,7 +108,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -84,7 +119,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -94,7 +130,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -104,7 +141,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -114,7 +152,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -124,7 +163,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -134,7 +174,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -144,7 +185,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -153,7 +195,8 @@ const RawDataTable = (props) => {
       options: {
        filter: false,
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -162,7 +205,8 @@ const RawDataTable = (props) => {
       options: {
        filter: false,
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -171,7 +215,8 @@ const RawDataTable = (props) => {
       options: {
        filter: false,
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -181,7 +226,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -191,7 +237,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -201,7 +248,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -211,7 +259,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -221,7 +270,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -231,7 +281,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -241,7 +292,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -251,7 +303,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -261,7 +314,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -271,7 +325,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
      {
@@ -281,7 +336,8 @@ const RawDataTable = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-       setCellProps: () => ({style: {minWidth:'120px'}}),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
     ];
@@ -330,6 +386,11 @@ const RawDataTable = (props) => {
       responsive: "standard",
       fixedHeader: true,
       fixedSelectColumn: true,
+      jumpToPage: true,
+      resizableColumns: false,
+      selectableRowsHideCheckboxes: true,
+      selectableRowsOnClick: false,
+      expandableRows: false,
       downloadOptions: {
         filename: 'MDC Raw Data from ' + props.rawDataConditions.fromDate + ' to ' + props.rawDataConditions.toDate + '.csv',
         separator: ',',
@@ -340,18 +401,25 @@ const RawDataTable = (props) => {
       },
       textLabels: {
         body: {
-            noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display"
-        },
+            noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display",
+            toolTip: "Sort",
+        columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
+          },
+      },
+      onCellClick: (colData, cellMeta) => {
+        setIsDefault(!isDefault);
+        AddCellClass(cellMeta.rowIndex);
       },
       elevation: 4,
-      rowsPerPage: 7,
-      rowsPerPageOptions: [7,20,50],
+      rowsPerPage: rowsPerPage,
+      onChangeRowsPerPage: onChangeRowsPerPage,
+      rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '500px'
     };
 
   return (
-    <div class="reports-root">
+    <div class="reports-root raw-data">
       <Grid container spacing={0}>
         <Grid item xs={12}>
           <MUIDataTable
