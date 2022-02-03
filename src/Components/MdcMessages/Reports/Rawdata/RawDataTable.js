@@ -263,53 +263,9 @@ const RawDataTable = (props) => {
        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
-     {
-      name: 'isDup', 
-      label: 'IS Duplicated',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
+    {
       name: 'msgId', 
       label: 'Message ID',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'isInserted', 
-      label: 'IS Inserted',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'isUpdated', 
-      label: 'IS Updated',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'reviewReq', 
-      label: 'Review Request',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -347,7 +303,7 @@ const RawDataTable = (props) => {
       data.push(
           {
             aircraftModel: item["AC_MODEL"],
-            //BOOKMARK
+            BOOKMARK: item["BOOKMARK"],
             aircraft: item["AC_SN"],
             tail: item["AC_TN"],
             operator: item["OPERATOR"],
@@ -368,11 +324,7 @@ const RawDataTable = (props) => {
             eventNote: item["EVENT_NOTE"],
             eqTsNote: item["EQ_TS_NOTE"],
             source: item["SOURCE"],
-            isDup: item["IS_DUP"], // Missing from API  -> Need to update key
             msgId: item["MSG_ID"],
-            isInserted: item["IS_INSERTED"], // Missing from API  -> Need to update key
-            isUpdated: item["IS_UPDATED"], // Missing from API  -> Need to update key
-            reviewReq: item["REVIEW_REQ"], // Missing from API  -> Need to update key
             falseMsg: item["FALSE_MSG"],
             status: item["msg_status"],    
           }
