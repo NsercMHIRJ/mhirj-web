@@ -45,7 +45,6 @@ import Chart3 from './Components/Chart3';
 import Chart4 from './Components/Chart4';
 import Chart5 from './Components/Chart5';
 import ChartB from './Components/ChartB';
-import Scatter1 from './Components/Scatter1';
 import Stacked from './Components/Stacked';
 import MessageInput from './Components/MessageInput';
 import Analysis from './Components/MdcMessages/GenerateReport/Analysis';
@@ -260,17 +259,6 @@ export default function MiniDrawer() {
             <Collapse in={openMAIN} timeout="auto" unmountOnExit>
 
               <List component="div" disablePadding>
-                <Link to="/Scatter1" style={{ textDecoration: 'none' }}>
-                  <ListItem button className={classes.nested}>
-                    <ListItemIcon>
-                      <TrendingUpSharpIcon style={{ color: "#001c3e" }} />
-                    </ListItemIcon>
-                    <ListItemText primary="SCATTER" style={{ color: "#001c3e" }} />
-                  </ListItem>
-                </Link>
-              </List>
-
-              <List component="div" disablePadding>
                 <Link to="/Stacked" style={{ textDecoration: 'none' }}>
                   <ListItem button className={classes.nested}>
                     <ListItemIcon>
@@ -436,9 +424,7 @@ export default function MiniDrawer() {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route path="/Scatter1">
-              <Scatter1 />
-            </Route>
+            
             <Route path="/Stacked">
               <Stacked />
             </Route>

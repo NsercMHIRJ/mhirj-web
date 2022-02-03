@@ -121,58 +121,7 @@ export default function Chart1() {
         //console.log(err);
       });
 
-    //  console.log(aircraftno);
-    //  console.log(ata_main);
-    //  console.log(msg);
-
-
-    //const path1 = 'http://mhirjapi.azurewebsites.net/api/scatter_chart_MDC_PM'
-    const path1 = Constants.APIURL+'scatter_chart_MDC_PM'
-
-
-    axios.post(path1).then(res => {
-      //console.log(res,"response");
-
-      for (const dataObj of JSON.parse(res.data)) {
-        let mdc = parseInt(dataObj.MDC_Message_Cnt)
-        let pm = parseInt(dataObj.MX_actions)
-        aircraftno_scatter.push(dataObj.aircraftno)
-        pmMessage.push({ "x": mdc, "y": pm })
-
-      }
-
-
-      // const getUniqueBackgroundColorScatter = (pmMessage) => {
-      //   switch(pmMessage){
-      //     case ((pmMessage.x >= 0 && pmMessage.x <= 400) ||  (pmMessage.y >=0 && pmMessage.y <= 40)) :
-      //       return "#ef5350";
-      //   }
-      // }
-
-      const intiDataSet_Scatter = (pmMessage) => {
-        let finalDatasetScatter = [];
-        let dataObjScatter = {};
-        //dataObjScatter.label = "";
-        dataObjScatter.data = pmMessage;
-        dataObjScatter.backgroundColor = "#d8e4f0";
-        dataObjScatter.borderWidth = '2';
-        dataObjScatter.borderColor = "black";
-        dataObjScatter.pointRadius = '6';
-        finalDatasetScatter.push(dataObjScatter);
-
-        return finalDatasetScatter;
-      };
-
-      setChartData2({
-        labels: aircraftno_scatter,
-        datasets: intiDataSet_Scatter(pmMessage)
-      })
-
-
-    })
-      .catch(err => {
-        //console.log(err);
-      });
+    
 
   }, []);
 
@@ -181,69 +130,6 @@ export default function Chart1() {
     <div className={classes.root}>
       <Grid container spacing={12}>
         <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <form className={classes.root1}>
-              <div><h2 style={{ color: "#001C3E", textAlign: "center" }}>FLEET STATUS FOR LAST 7 DAYS</h2></div>
-            </form>
-            <Scatter
-              id="chart1"
-              data={chartData2}
-              options={{
-                legend: { display: false },
-                tooltips: {
-                  displayColors: false,
-                  backgroundColor: 'black',
-                  titleFontColor: 'rgb(255,255,255)',
-                  bodyFontColor: 'rgb(255,255,255)',
-                  footerFontColor: 'rgb(255,255,255)',
-                  footerFontStyle: 'normal',
-                  callbacks: {
-                    title: function (item, everything) {
-                      return;
-                    },
-                    label: function (item, everything) {
-                      console.log(item, everything);
-                      let ind = item.index;
-                      let aircraft_name = everything.labels[ind];
-                      return "Aircraft: " + aircraft_name;
-                    },
-
-                    footer: function (item, everything) {
-                      console.log(item, everything);
-                      let xvalue = item[0].xLabel;
-                      let yvalue = item[0].yLabel;
-                      return "x =" + xvalue +','+" y = " + yvalue;
-
-                    }
-                  }
-                },
-                scales: {
-                  xAxes: [{
-                    type: 'linear',
-                    scaleLabel: {
-                      display: true,
-                      labelString: '# of MDC Messages- Last 7 days',
-                      fontStyle: 'bold',
-                      fontColor: '#001C3E'
-
-                    },
-                    position: 'bottom'
-                  }],
-                  yAxes: [{
-                    display: true,
-                    scaleLabel: {
-                      display: true,
-                      labelString: '# of log-book entries',
-                      fontStyle: 'bold',
-                      fontColor: '#001C3E'
-                    }
-                  }],
-                  title: { display: false, text: 'Scatter Plot', fontSize: 20 },
-
-                }
-              }}
-            />
-          </Paper>
           <Paper className={classes.paper}>
             <form className={classes.root1}>
               <div><h2 style={{ color: "#001C3E", textAlign: "center" }}>MAGNITUDE OF MESSAGES IN DATA</h2></div>

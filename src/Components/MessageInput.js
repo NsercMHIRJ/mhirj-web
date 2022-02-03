@@ -15,6 +15,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import IconButton from '@mui/material/IconButton';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -103,8 +104,40 @@ export default function FileUpload() {
       },
     }
   });
- 
- 
+ /* Input message data file upload */
+  const [input_Message_file, setInput_Message_File] = useState({
+    selectedInputFile: null
+  });
+
+  function handleInputFileChange(e) {
+    console.log(e.target.files)
+    console.log(e.target.files[0]);
+    let input_message_file = e.target.files[0]
+    setInput_Message_File({
+      selectedInputFile: input_message_file
+    })
+  }
+
+  function upload_InputMessage_data(e) {
+    let file = input_Message_file.selectedInputFile
+    let data = new FormData()
+    data.append('file', file)
+    axios({
+      url:  Constants.APIURL + 'uploadfile_input_message/',
+      method: "POST",
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+      data: data
+    }).then((res) => {
+      alert("File Uploaded Successfully!")
+    })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+
   const handleEqIDChangeInput = (eqIDList) => {
     setEqID(eqIDList);
   };
@@ -324,6 +357,15 @@ export default function FileUpload() {
 					<div className={classes.card}>
 						<h2>INPUT MESSAGE DATA</h2>
 					</div>
+          <div className={classes.container}>
+						<Grid className={classes.Grid} container spacing={3}>
+							<div>
+								<input className={classes.input} id="contained-button-file" multiple type="file" onChange={(e) => handleInputFileChange(e)} />
+								<Button type="button" style={{marginLeft: "370px", padding: "5px", backgroundColor: "#001c3e",color: "White"}} onClick={(e) => upload_InputMessage_data(e)}>Upload Input Message Data</Button>
+							</div>
+
+						</Grid>
+            </div>
 					<div className={classes.container}>
 						<Grid className={classes.Grid} container spacing={3}>
 							<div style={{ margin: '20px 300px 10px -60px', height: '50px', width: '92vw', backgroundColor: "#C5D3E0", textAlign: 'center', justify: 'center', padding: '0px' }}>
