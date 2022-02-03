@@ -15,6 +15,7 @@
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/pickers": "^3.2.10",
     "@material/drawer": "^10.0.0",
+    "@mui/icons-material": "^5.3.1",
     "@mui/lab": "^5.0.0-alpha.65",
     "@mui/material": "^5.3.0",
     "@mui/x-data-grid": "^5.3.0",
