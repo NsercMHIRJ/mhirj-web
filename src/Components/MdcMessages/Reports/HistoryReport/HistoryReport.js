@@ -342,7 +342,7 @@ const HistoryReport = (props) => {
             ACSN: item["AC SN"], 
             tail: item["AC_TN"], 
             EICASMessages: item["EICAS Message"],  
-            // mdcMessages: item["MDC Message"],  // Missing from API  -> Need to update key
+            mdcMessages: item["MDC Message"], 
             LRU: item["LRU"],  
             ATA: item["ATA"],  
             B1Equation: item["B1-Equation"],  
@@ -404,7 +404,7 @@ const HistoryReport = (props) => {
         separator: ',',
       },
       setRowProps: (row, index) => {
-        if (row[22] === true){
+        if (row[22] === true){ 
           return {style: {background:'#FF7F50'}}
         }
       },

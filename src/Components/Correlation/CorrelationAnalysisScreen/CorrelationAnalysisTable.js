@@ -50,16 +50,12 @@ const CorrelationAnalysisTable = (props) => {
   useEffect(() => {
     if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined && PMConditions.EqID !== '' && PMConditions.tail !== '') {
 
-      //full path
-      //let path = Constants.APIURL + 'corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail;
-      //let path = Constants.APIURL + 'corelation/' + '2021-05-01' + '/' + '2021-05-05' + '/' + "B1-005804" + '/' + "773SK"; 
-     
-      //conditional path (working now)
-      let path= Constants.APIURL + 'corelation/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '?equation_id=' + PMConditions.EqID + '&tail=' + PMConditions.tail;
-      //let path = Constants.APIURL + 'corelation/' + '2021-05-01' + '/' + '2021-05-05' + '?equation_id=B1-005804' + '&tail=773SK';
+      let path = Constants.APIURL + 'corelation_tail/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail;
+      //let path = Constants.APIURL + 'corelation_tail/' + '2021-05-01' + '/' + '2021-05-05' + '/' + "B1-005804" + '/' + "773SK"; 
 
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
+        console.log(data);
         setData(data);
         setLoading(false);
       }).catch(function (err){

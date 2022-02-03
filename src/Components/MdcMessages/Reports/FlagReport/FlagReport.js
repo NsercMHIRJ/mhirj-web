@@ -247,7 +247,7 @@ const FlagReport = (props) => {
         let input = item["MHIRJ Input"] === '0' ? '' : item["MHIRJ Input"];
         let recommendation = item["MHIRJ Recommendation"] === '0' ? '' : item["MHIRJ Recommendation"];
         let action = item["SKW action WIP"] === '0' ? '' : item["SKW action WIP"];
-
+        
         data.push(
           {
             MSN: item["MSN"], 

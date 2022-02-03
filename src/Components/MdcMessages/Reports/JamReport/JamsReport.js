@@ -38,17 +38,17 @@ const JamsReport = (props) => {
   }
 
   const columns = [
-    {
-      name: "flight",
-      label: "Flight Leg No",
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
+    // {
+    //   name: "flight",
+    //   label: "Flight Leg No",
+    //   options: {
+    //    filter: true,
+    //    filterType: 'dropdown',
+    //    sort: true,
+    //    setCellProps: () => ({style: columnStyle}),
+    //    setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
     {
       name: 'tail', 
       label: 'Tail#',
@@ -122,16 +122,16 @@ const JamsReport = (props) => {
        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    {
-      name: 'MDCMessage', 
-      label: 'MDC Message',
-      options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
+    // {
+    //   name: 'MDCMessage', 
+    //   label: 'MDC Message',
+    //   options: {
+    //    filter: false,
+    //    sort: true,
+    //    setCellProps: () => ({style: columnStyle}),
+    //    setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
     {
       name: 'status', 
       label: 'Status',
@@ -199,28 +199,28 @@ const JamsReport = (props) => {
        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
-     {
-      name: 'diagnosticData', 
-      label: 'Diagnostic Data',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'determineData', 
-      label: 'Data Used to Determine Msg',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
+    //  {
+    //   name: 'diagnosticData', 
+    //   label: 'Diagnostic Data',
+    //   options: {
+    //    filter: true,
+    //    filterType: 'dropdown',
+    //    sort: true,
+    //    setCellProps: () => ({style: columnStyle}),
+    //    setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    //  {
+    //   name: 'determineData', 
+    //   label: 'Data Used to Determine Msg',
+    //   options: {
+    //    filter: true,
+    //    filterType: 'dropdown',
+    //    sort: true,
+    //    setCellProps: () => ({style: columnStyle}),
+    //    setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
      {
       name: 'ID', 
       label: 'ID',
@@ -232,17 +232,17 @@ const JamsReport = (props) => {
        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
-     {
-      name: 'flight', 
-      label: 'Flight #',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
+    //  {
+    //   name: 'flight', 
+    //   label: 'Flight #',
+    //   options: {
+    //    filter: true,
+    //    filterType: 'dropdown',
+    //    sort: true,
+    //    setCellProps: () => ({style: columnStyle}),
+    //    setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
     ];
 
     const flightNumber = props.data ? props.data :  '';
@@ -253,25 +253,25 @@ const JamsReport = (props) => {
         
         data.push(
           {
-            flightLegNumber: item["Flight"], // Missing from API  -> Need to update key
+            // flightLegNumber: item["Flight"], // Missing from API  -> Need to update key
             tail: item["AC_TN"],
             ATAMain: item["ATA_Main"],
             ATASub: item["ATA_SUB"],
             ATA: item["ATA"],
             ATADescription: item["ATA_NAME"],
-            LRU: item["LRU"], 
-            DateAndTime: DateConverter(item["MSG_Date"]),  
-            MDCMessage: item["MDC Message"],
-            status: item["msg_status"], 
-            flightPhase: item["FLIGHT_PHASE"],  
-            type: item["MSG_TYPE"],   
-            intermittent: item["INTERMITNT"],  
+            LRU: item["LRU"],
+            DateAndTime: DateConverter(item["MSG_Date"]), 
+            // MDCMessage: item["MDC Message"],  // Missing from API  -> Need to update key
+            status: item["msg_status"],
+            flightPhase: item["FLIGHT_PHASE"], 
+            type: item["MSG_TYPE"],  
+            intermittent: item["INTERMITNT"], 
             equationID: item["EQ_ID"], 
-            source: item["SOURCE"], 
-            diagnosticData: item["Diagnostic Data"],  // Missing from API  -> Need to update key
-            determineData: item["Data Used to Determine Msg"],   // Missing from API  -> Need to update key
-            ID: item["MSG_ID"],  
-            flight: item["aircraftno"],  // Missing from API  -> Need to update key
+            source: item["SOURCE"],
+            //diagnosticData: item["Diagnostic Data"],  // Missing from API  -> Need to update key
+            //determineData: item["Data Used to Determine Msg"],   // Missing from API  -> Need to update key
+            ID: item["MSG_ID"], 
+            //flight: item["aircraftno"],  // Missing from API  -> Need to update key
           }
         );
         return data;

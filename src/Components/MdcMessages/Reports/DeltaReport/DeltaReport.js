@@ -344,7 +344,7 @@ const DeltaReport = (props) => {
           ACSN: item["AC SN"],
           tail: item["Tail#"],
           EICASMessages: item["EICAS Related"],
-          // mdcMessages: item["MDC Message"],  // Missing from API  -> Need to update key
+          // mdcMessages: item["MDC Message"],   // Missing from API  -> Need to update key
           LRU: item["LRU"],
           ATA: item["ATA"],
           B1Equation: item["B1-Equation"],
