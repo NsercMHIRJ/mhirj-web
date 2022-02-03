@@ -91,17 +91,17 @@ const DailyReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    // {
-    //   name: 'mdcMessages', 
-    //   label: 'MDC Message',
-    //   options: {
-    //    filter: true,
-    //     filterType: 'dropdown',
-    //     sort: true,
-    //     setCellProps: () => ({style: columnStyle}),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    // },
+    {
+      name: 'mdcMessages', 
+      label: 'MDC Message',
+      options: {
+       filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
     {
       name: 'LRU', 
       label: 'LRU',
@@ -301,7 +301,7 @@ const DailyReport = (props) => {
             date: DateConverter(item["Date"]),
             ACSN: item["AC SN"], 
             EICASMessage: item["EICAS Message"], 
-            // mdcMessages: item["MDC Message"],  // Missing from API  -> Need to update key
+            mdcMessages: item["MDC Message"], 
             LRU: item["LRU"],  
             ATA: item["ATA"],  
             B1Equation: item["B1-Equation"], 
@@ -346,7 +346,7 @@ const DailyReport = (props) => {
                 dateFrom = {rowData[1]} 
                 dateTo = {rowData[1]}
                 tail = {rowData[0]}
-                EqID = {rowData[6]}
+                EqID = {rowData[7]}
               />
               </TableCell>
           </TableRow>
