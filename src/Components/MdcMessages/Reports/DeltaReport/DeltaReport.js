@@ -67,17 +67,17 @@ const DeltaReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    // {
-    //   name: 'mdcMessages', 
-    //   label: 'MDC Message',
-    //   options: {
-    //    filter: true,
-    //     filterType: 'dropdown',
-    //     sort: true,
-    //     setCellProps: () => ({style: columnStyle}),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    // },
+    {
+      name: 'mdcMessages', 
+      label: 'MDC Message',
+      options: {
+       filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
     {
       name: 'LRU', 
       label: 'LRU',
@@ -344,7 +344,6 @@ const DeltaReport = (props) => {
           ACSN: item["AC SN"],
           tail: item["Tail#"],
           EICASMessages: item["EICAS Related"],
-          // mdcMessages: item["MDC Message"],   // Missing from API  -> Need to update key
           LRU: item["LRU"],
           ATA: item["ATA"],
           B1Equation: item["B1-Equation"],
@@ -369,6 +368,7 @@ const DeltaReport = (props) => {
           mel: item["Mel or No-Dispatch"],
           dateFrom: item["Date From"],
           dateTo: item["Date To"],
+          mdcMessages: item["MDC Message"]
         }
       );
       return data;
