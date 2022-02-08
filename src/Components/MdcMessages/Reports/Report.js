@@ -54,8 +54,8 @@ const Report = (props) => {
     if ( reportType === 'Flag Report') {
       handleGenerateFlagReport(event);
     }
-    else if ( reportType === 'Jam Report') {
-      handleGenerateJamsReport(event);
+    else if ( reportType === 'Surrounding Messages Report') {
+      handleGenerateSurroundingReport(event);
     }
   }
 
@@ -140,7 +140,7 @@ const Report = (props) => {
     setFlagValue(1);
   }
 
-  const handleGenerateJamsReport = (event) => {
+  const handleGenerateSurroundingReport = (event) => {
     let jamParameters = [];
     let jamACSNValue;
 
@@ -156,7 +156,7 @@ const Report = (props) => {
       if ( Object.entries( localStorage.getItem( 'history-report' ) ).length !== 0 ) {
         jamParameters = JSON.parse( localStorage.getItem( 'history-report' ) );
         jamACSNValue = jamACSNHistoryValue;
-        setJamHistTitle("MDC raw data for the same flight leg where the jam was reported for aircraft " + jamACSNValue);
+        setJamHistTitle("Surrounding Messages Report for ACSN " + jamACSNValue);
       }
     }
 
@@ -165,6 +165,8 @@ const Report = (props) => {
       jamParameters.legs + '/' + jamParameters.intermittent + '/' + jamParameters.days + '/' + jamParameters.ata + '/' + 
       jamParameters.eqID + '/'+ jamParameters.operator + '/' + jamParameters.messages + '/' + jamParameters.fromDate + '/' + 
       jamParameters.toDate + '/' + jamACSNValue;
+
+      console.log(jamsPath);
 
       axios.post(jamsPath).then(function (res){
         var data = JSON.parse(res.data);
