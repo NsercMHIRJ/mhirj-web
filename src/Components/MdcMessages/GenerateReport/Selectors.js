@@ -12,7 +12,7 @@ import Constants from '../../utils/const';
 
 const AirlineList = ['SKW'];
 const MessagesList = ['Include', 'Exclude'];
-const ReportSupportList = ['Flag Report', 'Jam Report'];
+const ReportSupportList = ['Flag Report', 'Surrounding Messages Report'];
 
 export const AirlineOperatorSelector = (props) => {
   const [airline, setAirline] = useState('');

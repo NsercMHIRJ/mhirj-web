@@ -148,7 +148,14 @@ const HistoryReport = (props) => {
        filter: false,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: columnStyle}),
+        setCellProps: () => ({
+          style: {
+            maxWidth:'350px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
