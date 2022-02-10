@@ -96,7 +96,7 @@ const PMTable = (props) => {
     }
     if ( PMValue !== 0) {
       if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined) {
-        let path = Constants.APIURL + 'corelation_ata/' + PMConditions.dateFrom + '/' + PMConditions.dateTo;
+        let path = Constants.APIURL + 'corelation_ata/' + PMConditions.dateFrom + '/' + PMConditions.dateTo  + '/1';
         if ( PMConditions.EqID !== '' && PMConditions.ATAMain !== '') {
           path += '?equation_id=' + PMConditions.EqID + '&ata=' + PMConditions.ATAMain;
         }else {
@@ -108,9 +108,9 @@ const PMTable = (props) => {
           }
         }
         
-        console.log(path);
         axios.post(path).then(function (res) {
           var data = JSON.parse(res.data);
+          console.log(data);
           setData(data);
           setLoading(false);
         }).catch(function (err){
@@ -163,9 +163,20 @@ const columns = [
       setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
+  // {
+  //   name: 'ATASub', 
+  //   label: 'ATA Sub',
+  //   options: {
+  //     filter: true,
+  //     filterType: 'dropdown',
+  //     sort: true,
+  //     setCellProps: () => ({style: columnStyle}),
+  //     setCellHeaderProps: () => ({ style: headingStyle }),
+  //   }
+  // },
   {
-    name: 'ATASub', 
-    label: 'ATA Sub',
+    name: 'PM_ATA', 
+    label: 'PM ATA',
     options: {
       filter: true,
       filterType: 'dropdown',
@@ -183,7 +194,7 @@ const columns = [
       sort: true,
       setCellProps: () => ({
         style: {
-          maxWidth:'300px',
+          maxWidth:'400px',
           padding:'13px',
           textAlign:"left",
           margin: '0px',
@@ -221,68 +232,69 @@ const columns = [
       setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
-  {
-    name: 'failureFlag', 
-    label: 'Failure Flag',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({
-        style: {
-          maxWidth:'300px',
-          padding:'13px',
-          textAlign:"left",
-          margin: '0px',
-        }}
-      ),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-    }
-  },
-  {
-    name: 'squawkSource', 
-    label: 'Squawk Source',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: columnStyle}),
-      setCellHeaderProps: () => ({ style: headingStyle }),
-    }
-  },
-  {
-    name: 'MRB', 
-    label: 'MRB',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({
-        style: {
-          maxWidth:'300px',
-          padding:'13px',
-          textAlign:"left",
-          margin: '0px',
-        }}
-      ),
-      setCellHeaderProps: () => ({ style: headingStyle }),
-    }
-  },
+  // {
+  //   name: 'failureFlag', 
+  //   label: 'Failure Flag',
+  //   options: {
+  //     filter: true,
+  //     filterType: 'dropdown',
+  //     sort: true,
+  //     setCellProps: () => ({
+  //       style: {
+  //         maxWidth:'300px',
+  //         padding:'13px',
+  //         textAlign:"left",
+  //         margin: '0px',
+  //       }}
+  //     ),
+  //       setCellHeaderProps: () => ({ style: headingStyle }),
+  //   }
+  // },
+  // {
+  //   name: 'squawkSource', 
+  //   label: 'Squawk Source',
+  //   options: {
+  //     filter: true,
+  //     filterType: 'dropdown',
+  //     sort: true,
+  //     setCellProps: () => ({style: columnStyle}),
+  //     setCellHeaderProps: () => ({ style: headingStyle }),
+  //   }
+  // },
+  // {
+  //   name: 'MRB', 
+  //   label: 'MRB',
+  //   options: {
+  //     filter: true,
+  //     filterType: 'dropdown',
+  //     sort: true,
+  //     setCellProps: () => ({
+  //       style: {
+  //         maxWidth:'300px',
+  //         padding:'13px',
+  //         textAlign:"left",
+  //         margin: '0px',
+  //       }}
+  //     ),
+  //     setCellHeaderProps: () => ({ style: headingStyle }),
+  //   }
+  // },
 ];
 
   let responseData = [];
   data.map((item => {
     responseData.push(
       {
-        p_id: item["MaintTransID"],
-        ATAMain: item["ATA_Main"],
-        ATASub: item["ATA_Sub"],
-        discrepancy: item["Discrepancy"],
-        action: item["CorrectiveAction"],
-        date: DateConverter(item["DateAndTime"]),
-        failureFlag: item["Failure_Flag"],
-        squawkSource: item["SquawkSource"],
-        MRB: item["MRB"],
+        p_id: item["MaintTransID"], //ok
+        ATAMain: item["ATA_Main"], //ok
+        //ATASub: item["ATA_Sub"], 
+        PM_ATA: item["PM_ATA"], //ok
+        discrepancy: item["Discrepancy"], //ok
+        action: item["CorrectiveAction"], //ok
+        date: DateConverter(item["TransDate"]), //ok
+        // failureFlag: item["Failure_Flag"],
+        // squawkSource: item["SquawkSource"],
+        // MRB: item["MRB"],
       }
     );
      return responseData

@@ -50,7 +50,7 @@ const CorrelationAnalysisTable = (props) => {
   useEffect(() => {
     if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined && PMConditions.EqID !== '' && PMConditions.tail !== '') {
 
-      let path = Constants.APIURL + 'corelation_tail/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail;
+      let path = Constants.APIURL + 'corelation_tail/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail + '/1';
       //let path = Constants.APIURL + 'corelation_tail/' + '2021-05-01' + '/' + '2021-05-05' + '/' + "B1-005804" + '/' + "773SK"; 
 
       axios.post(path).then(function (res) {
@@ -79,17 +79,28 @@ const CorrelationAnalysisTable = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    // {
-    //   name: 'ATA', 
-    //   label: 'ATA',
-    //   options: {
-    //     filter: true,
-    //     filterType: 'dropdown',
-    //     sort: true,
-    //     setCellProps: () => ({style: columnStyle}),
-          //setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    // },
+    {
+      name: 'ATA', 
+      label: 'ATA',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+          setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
+      name: 'PM_ATA', 
+      label: 'PM ATA',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+          setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
     {
       name: 'discrepancy', 
       label: 'Discrepancy',
@@ -97,7 +108,14 @@ const CorrelationAnalysisTable = (props) => {
         filter: true,
         filterType: 'dropdown',
         sort: true,
-        setCellProps: () => ({style: columnStyle}),
+        setCellProps: () => ({
+          style: {
+            maxWidth:'400px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
@@ -130,53 +148,53 @@ const CorrelationAnalysisTable = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    {
-      name: 'failureFlag', 
-      label: 'Failure Flag',
-      options: {
-        filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({
-          style: {
-            maxWidth:'300px',
-            padding:'13px',
-            textAlign:"left",
-            margin: '0px',
-          }}
-        ),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
-      name: 'squawkSource', 
-      label: 'Squawk Source',
-      options: {
-        filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
-      name: 'MRB', 
-      label: 'MRB',
-      options: {
-        filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({
-          style: {
-            maxWidth:'400px',
-            padding:'13px',
-            textAlign:"left",
-            margin: '0px',
-          }}
-        ),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
+    // {
+    //   name: 'failureFlag', 
+    //   label: 'Failure Flag',
+    //   options: {
+    //     filter: true,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({
+    //       style: {
+    //         maxWidth:'300px',
+    //         padding:'13px',
+    //         textAlign:"left",
+    //         margin: '0px',
+    //       }}
+    //     ),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
+    // {
+    //   name: 'squawkSource', 
+    //   label: 'Squawk Source',
+    //   options: {
+    //     filter: true,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
+    // {
+    //   name: 'MRB', 
+    //   label: 'MRB',
+    //   options: {
+    //     filter: true,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({
+    //       style: {
+    //         maxWidth:'400px',
+    //         padding:'13px',
+    //         textAlign:"left",
+    //         margin: '0px',
+    //       }}
+    //     ),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
   ];
 
   let responseData = [];
@@ -184,14 +202,15 @@ const CorrelationAnalysisTable = (props) => {
     data.map((item => {
       responseData.push(
         {
-          p_id: item["MaintTransID"],
-          //ATA: item["ATA"],
-          discrepancy: item["Discrepancy"],
-          action: item["CorrectiveAction"],
-          date: DateConverter(item["DateAndTime"]),
-          failureFlag: item["Failure_Flag"],
-          squawkSource: item["SquawkSource"],
-          MRB: item["MRB"],
+          p_id: item["MaintTransID"], //ok
+          ATA: item["ATA_Main"], //ok
+          PM_ATA: item["PM_ATA"], //ok
+          discrepancy: item["Discrepancy"], //ok
+          action: item["CorrectiveAction"], //ok
+          date: DateConverter(item["TransDate"]), //ok
+          // failureFlag: item["Failure_Flag"],
+          // squawkSource: item["SquawkSource"],
+          // MRB: item["MRB"],
         }
       );
       return responseData

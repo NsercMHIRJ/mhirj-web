@@ -23,11 +23,10 @@ const CorrelationSubTable = (props) => {
   };
 
   useEffect(()=>{
-    const path = Constants.APIURL + 'corelation_pid/' + props.p_id;
+    const path = Constants.APIURL + 'corelation_pid/' + props.p_id + '/1';
 
     axios.post(path).then(function (res){
       var data = JSON.parse(res.data);
-      console.log(data);
       setData(data);    
       setLoading(false);
     }).catch(function (err){
@@ -66,7 +65,7 @@ const CorrelationSubTable = (props) => {
   },
   {
     name: 'tail', 
-    label: 'Tail #',
+    label: 'Tail#',
     options: {
       filter: true,
       filterType: 'dropdown',
@@ -86,17 +85,17 @@ const CorrelationSubTable = (props) => {
       setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
-  {
-    name: 'mdc_ata_sub', 
-    label: 'ATA SUB',
-    options: {
-      filter: true,
-      filterType: 'dropdown',
-      sort: true,
-      setCellProps: () => ({style: columnStyle}),
-      setCellHeaderProps: () => ({ style: headingStyle }),
-    }
-  },
+  // {
+  //   name: 'mdc_ata_sub', 
+  //   label: 'ATA SUB',
+  //   options: {
+  //     filter: true,
+  //     filterType: 'dropdown',
+  //     sort: true,
+  //     setCellProps: () => ({style: columnStyle}),
+  //     setCellHeaderProps: () => ({ style: headingStyle }),
+  //   }
+  // },
   {
     name: 'ata_description', 
     label: 'ATA Description',
@@ -170,6 +169,16 @@ const CorrelationSubTable = (props) => {
       setCellHeaderProps: () => ({ style: headingStyle }),
     }
   },
+  {
+    name: 'mel', 
+    label: 'MEL or No-Dispatch',
+    options: {
+      filter: false,
+      sort: true,
+      setCellProps: () => ({style: columnStyle}),
+      setCellHeaderProps: () => ({ style: headingStyle }),
+    }
+   },
 ];
 
 const responseData = [];
@@ -178,16 +187,17 @@ if (data){
   data.map((item => {
     responseData.push(
       {
-        aircraftno: item["aircraftno"], 
-        tail: item["Aircraft_tail_No"], 
-        mdc_ata_main: item["ATA_Main"], 
-        mdc_ata_sub: item["ATA_Sub"], 
-        ata_description: item["ATA_Description"], 
-        CAS: item["CAS"], 
-        EQ_ID: item["EQ_ID"], 
-        EQ_DESCRIPTION: item["EQ_DESCRIPTION"],   
-        LRU: item["LRU"],  
-        MDC_MESSAGE: item["MDC_MESSAGE"],  
+        aircraftno: item["Aircraft_No"], //ok
+        tail: item["Aircraft_tail_No"], //ok
+        mdc_ata_main: item["ATA_Main"], //ok
+        // mdc_ata_sub: item["ATA_Sub"], 
+        ata_description: item["ATA_Description"], //ok
+        CAS: item["CAS"], //ok
+        EQ_ID: item["Equation_ID"], //ok
+        EQ_DESCRIPTION: item["Equation_DESCRIPTION"], //ok
+        LRU: item["LRU"],  //ok
+        MDC_MESSAGE: item["MDC_MESSAGE"],  //ok
+        mel: item["MEL_or_No_Dispatch"] //ok
       }
     );
     return responseData
