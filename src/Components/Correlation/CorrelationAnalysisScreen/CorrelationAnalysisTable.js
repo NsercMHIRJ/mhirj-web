@@ -27,6 +27,7 @@ const CorrelationAnalysisTable = (props) => {
 
   const AddCellClass = (index) => {
     let row = index + 1;
+    $('.reports-root.analysis-correlation .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
     $('.reports-root.analysis-correlation .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
 

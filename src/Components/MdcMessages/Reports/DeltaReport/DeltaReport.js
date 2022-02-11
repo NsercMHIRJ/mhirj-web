@@ -13,6 +13,7 @@ const DeltaReport = (props) => {
   
   const AddCellClass = (index) => {
     let row = index + 1;
+    $('.reports-root.delta-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
     $('.reports-root.delta-report .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
 

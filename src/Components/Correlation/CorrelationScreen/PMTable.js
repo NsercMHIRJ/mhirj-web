@@ -54,6 +54,7 @@ const PMTable = (props) => {
 
   const AddCellClass = (index) => {
     let row = index + 1;
+    $('.reports-root.correlation-pm-table .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
     $('.reports-root.correlation-pm-table .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
 

@@ -16,6 +16,7 @@ const HistoryReport = (props) => {
 
   const AddCellClass = (index) => {
     let row = index + 1;
+    $('.reports-root.history-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
     $('.reports-root.history-report .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
 
@@ -150,7 +151,7 @@ const HistoryReport = (props) => {
         sort: true,
         setCellProps: () => ({
           style: {
-            maxWidth:'350px',
+            maxWidth:'400px',
             padding:'13px',
             textAlign:"left",
             margin: '0px',
