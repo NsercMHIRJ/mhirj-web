@@ -65,12 +65,9 @@ const CorrelationAnalysisTable = (props) => {
 
       let status = correlationReportStatus ? 3 : 1;
       let path = Constants.APIURL + 'corelation_tail/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail + '/' + status;
-      
-      console.log(path);
 
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
-        console.log(data);
         setData(data);
         setLoading(false);
       }).catch(function (err){
@@ -283,7 +280,7 @@ const options = {
         <Grid item xs={12}>
           <MUIDataTable
             title= {correlationReportStatus ? "Correlation Report: Good Matches" : "Correlation Report: Bad Matches"}
-            data={responseData}
+            data={ loading ? [] : responseData }
             columns={columns}
             options={options}
           />

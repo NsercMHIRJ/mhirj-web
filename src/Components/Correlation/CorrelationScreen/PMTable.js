@@ -14,7 +14,7 @@ import CorrelationSubTable from './CorrelationSubTable';
 import {DateConverter,GenerateCorrelationValidation, NotFirstRender} from '../../Helper/Helper';
 import Constants from '../../utils/const';
 import "../../../scss/_main.scss";
-import $ from 'jquery';
+import $, { cssNumber } from 'jquery';
 import CorrelationCustomToolbar from "../CorrelationCustomToolbar";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,6 +58,7 @@ const PMTable = (props) => {
   }
 
   const handleCorrelationReportChange = (event) => {
+    console.log(correlationReportButtonLabel);
     if (correlationReportButtonLabel === "Load Bad Matches") {
       setCorrelationReportButtonLabel("Load Good Matches");
     } else {
@@ -98,6 +99,8 @@ const PMTable = (props) => {
     setData([]);
     setPMValue(1);
     setLoading(true);
+    setCorrelationReportButtonLabel("Load Bad Matches");
+    setCorrelationReportStatus(true);
   }
 
   const notFirstRender = NotFirstRender();
@@ -427,7 +430,7 @@ const options = {
           <Grid item xs={12}>
             <MUIDataTable
               title= {correlationReportStatus ? "Correlation Report: Good Matches" : "Correlation Report: Bad Matches"}
-              data={responseData}
+              data={ loading ? [] : responseData }
               columns={columns}
               options={options}
             />

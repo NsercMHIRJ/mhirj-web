@@ -269,7 +269,7 @@ const options = {
         <Grid item xs={12}>
           <MUIDataTable
             title={correlationReportStatus ? "Correlation Report for P_ID "+props.p_id+": Good Matches": "Correlation Report for P_ID "+props.p_id+": Bad Matches"}
-            data={responseData}
+            data={ loading ? [] : responseData }
             columns={columns}
             options={options}
           />

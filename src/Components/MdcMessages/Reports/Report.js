@@ -166,8 +166,6 @@ const Report = (props) => {
       jamParameters.eqID + '/'+ jamParameters.operator + '/' + jamParameters.messages + '/' + jamParameters.fromDate + '/' + 
       jamParameters.toDate + '/' + jamACSNValue;
 
-      console.log(jamsPath);
-
       axios.post(jamsPath).then(function (res){
         var data = JSON.parse(res.data);
         setJamHistoryData(data);
