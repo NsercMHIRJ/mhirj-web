@@ -7,10 +7,13 @@ import "../../../scss/_main.scss";
 import moment from "moment";
 import $ from 'jquery';
 import Grid from '@material-ui/core/Grid';
+import CorrelationCustomToolbar from "../CorrelationCustomToolbar";
 
 const CorrelationAnalysisTable = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [correlationReportStatus, setCorrelationReportStatus] = useState(true);
+  const [correlationReportButtonLabel, setCorrelationReportButtonLabel] = useState("Load Bad Matches");
   const [PMConditions,setPMConditions] = useState(
     {         
       dateFrom: moment(props.dateFrom).format('YYYY-MM-DD'),
@@ -25,6 +28,16 @@ const CorrelationAnalysisTable = (props) => {
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root.analysis-correlation .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+  }
+
+  const handleCorrelationReportChange = (event) => {
+    if (correlationReportButtonLabel === "Load Bad Matches") {
+      setCorrelationReportButtonLabel("Load Good Matches");
+    } else {
+      setCorrelationReportButtonLabel("Load Bad Matches");
+    }
+    setCorrelationReportStatus(!correlationReportStatus);
+    setLoading(true);
   }
 
   const onChangeRowsPerPage = (rowsPerPage) => {
@@ -50,8 +63,10 @@ const CorrelationAnalysisTable = (props) => {
   useEffect(() => {
     if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined && PMConditions.EqID !== '' && PMConditions.tail !== '') {
 
-      let path = Constants.APIURL + 'corelation_tail/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail + '/1';
-      //let path = Constants.APIURL + 'corelation_tail/' + '2021-05-01' + '/' + '2021-05-05' + '/' + "B1-005804" + '/' + "773SK"; 
+      let status = correlationReportStatus ? 3 : 1;
+      let path = Constants.APIURL + 'corelation_tail/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail + '/' + status;
+      
+      console.log(path);
 
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
@@ -65,7 +80,7 @@ const CorrelationAnalysisTable = (props) => {
     } else {
       setLoading(false);
     }
-  },[PMConditions]);
+  },[PMConditions, correlationReportStatus]);
 
   const columns = [
     {
@@ -232,6 +247,14 @@ const options = {
     setIsDefault(!isDefault);
     AddCellClass(cellMeta.rowIndex);
   },
+  customToolbar: () => {
+    return (
+      <CorrelationCustomToolbar 
+        label = {correlationReportButtonLabel}
+        handleCorrelationReportChange = {handleCorrelationReportChange}
+      />
+    );
+  },
   downloadOptions: {
     filename: 'Correlation Report from ' + PMConditions.dateFrom + ' to ' + PMConditions.dateTo + ' from '+ PMConditions.tail +'.csv',
     separator: ',',
@@ -259,7 +282,7 @@ const options = {
       <Grid container spacing={0}>
         <Grid item xs={12}>
           <MUIDataTable
-            title="Correlation Report"
+            title= {correlationReportStatus ? "Correlation Report: Good Matches" : "Correlation Report: Bad Matches"}
             data={responseData}
             columns={columns}
             options={options}

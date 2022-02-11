@@ -13,9 +13,10 @@ import Constants from '../../utils/const';
 const AirlineList = ['SKW'];
 const MessagesList = ['Include', 'Exclude'];
 const ReportSupportList = ['Flag Report', 'Surrounding Messages Report'];
+const CorrelationList = ['Good match', 'Bad match'];
 
 export const AirlineOperatorSelector = (props) => {
-  const [airline, setAirline] = useState('');
+  const [airline, setAirline] = useState(''); 
 
   useEffect(() => {
     if(props.operator){

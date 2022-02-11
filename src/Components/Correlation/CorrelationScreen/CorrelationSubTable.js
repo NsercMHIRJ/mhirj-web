@@ -6,12 +6,15 @@ import Constants from '../../utils/const';
 import Grid from '@material-ui/core/Grid';
 import $ from 'jquery';
 import '../../../scss/_main.scss';
+import CorrelationCustomToolbar from "../CorrelationCustomToolbar";
 
 const CorrelationSubTable = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [ isDefault, setIsDefault ] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [correlationReportStatus, setCorrelationReportStatus] = useState(true);
+  const [correlationReportButtonLabel, setCorrelationReportButtonLabel] = useState("Load Bad Matches");
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -22,8 +25,19 @@ const CorrelationSubTable = (props) => {
     setRowsPerPage(rowsPerPage);
   };
 
+  const handleCorrelationReportChange = (event) => {
+    if (correlationReportButtonLabel === "Load Bad Matches") {
+      setCorrelationReportButtonLabel("Load Good Matches");
+    } else {
+      setCorrelationReportButtonLabel("Load Bad Matches");
+    }
+    setCorrelationReportStatus(!correlationReportStatus);
+    setLoading(true);
+  }
+
   useEffect(()=>{
-    const path = Constants.APIURL + 'corelation_pid/' + props.p_id + '/1';
+    let status = correlationReportStatus ? 3 : 1;
+    const path = Constants.APIURL + 'corelation_pid/' + props.p_id + '/' + status;
 
     axios.post(path).then(function (res){
       var data = JSON.parse(res.data);
@@ -33,7 +47,7 @@ const CorrelationSubTable = (props) => {
       console.log(err);
       setLoading(false);
     });
-  },[props.p_id])
+  },[props.p_id, correlationReportStatus])
 
   const headingStyle = {
     maxWidth:'200px',
@@ -218,6 +232,14 @@ const options = {
     setIsDefault(!isDefault);
     AddCellClass(cellMeta.rowIndex);
   },
+  customToolbar: () => {
+    return (
+      <CorrelationCustomToolbar 
+        label = {correlationReportButtonLabel}
+        handleCorrelationReportChange = {handleCorrelationReportChange}
+      />
+    );
+  },
   downloadOptions: {
     filename: 'Correlation Report from ' + props.dateFrom + ' to ' + props.dateTo + ' from '+ props.p_id +'.csv',
     separator: ',',
@@ -228,7 +250,7 @@ const options = {
   },
   textLabels: {
     body: {
-      noMatch: props.loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display",
+      noMatch: loading ? 'Please wait, loading data ...' : "Sorry, there is no matching data to display",
       toolTip: "Sort",
       columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
     },
@@ -246,7 +268,7 @@ const options = {
       <Grid container spacing={0}>
         <Grid item xs={12}>
           <MUIDataTable
-            title={"Correlation Report for P_ID "+props.p_id+" from " + props.dateFrom + ' to ' + props.dateTo}
+            title={correlationReportStatus ? "Correlation Report for P_ID "+props.p_id+": Good Matches": "Correlation Report for P_ID "+props.p_id+": Bad Matches"}
             data={responseData}
             columns={columns}
             options={options}
