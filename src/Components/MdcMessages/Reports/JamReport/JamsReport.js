@@ -114,7 +114,7 @@ const JamsReport = (props) => {
     },
     {
       name: 'DateAndTime', 
-      label: 'Date and Time',
+      label: 'Date',
       options: {
        filter: true,
        filterType: 'dropdown',

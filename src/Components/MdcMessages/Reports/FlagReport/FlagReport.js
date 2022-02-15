@@ -136,8 +136,8 @@ const FlagReport = (props) => {
        filter: true,
        filterType: 'dropdown',
        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {

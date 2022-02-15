@@ -240,7 +240,7 @@ const columns = [
   },
   {
     name: 'date', 
-    label: 'Date and Time',
+    label: 'Date',
     options: {
       filter: true,
       filterType: 'dropdown',

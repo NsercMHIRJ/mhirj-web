@@ -3,7 +3,7 @@ import moment from 'moment'
 
 export const DateConverter = (date) => {
   var t = moment.utc(date);
-  var formatted = t.format('DD-MMM-YYYY HH:mm');
+  var formatted = t.format('DD-MMM-YYYY');
   return formatted;
 }
 
