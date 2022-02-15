@@ -39,17 +39,17 @@ const JamsReport = (props) => {
   }
 
   const columns = [
-    // {
-    //   name: "flight",
-    //   label: "Flight Leg No",
-    //   options: {
-    //    filter: true,
-    //    filterType: 'dropdown',
-    //    sort: true,
-    //    setCellProps: () => ({style: columnStyle}),
-    //    setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    // },
+    {
+      name: "flight",
+      label: "Flight Leg No",
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
     {
       name: 'tail', 
       label: 'Tail#',
@@ -233,17 +233,17 @@ const JamsReport = (props) => {
        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
-    //  {
-    //   name: 'flight', 
-    //   label: 'Flight #',
-    //   options: {
-    //    filter: true,
-    //    filterType: 'dropdown',
-    //    sort: true,
-    //    setCellProps: () => ({style: columnStyle}),
-    //    setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    //  },
+     {
+      name: 'flight', 
+      label: 'Flight #',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
     ];
 
     const flightNumber = props.data ? props.data :  '';
@@ -254,7 +254,7 @@ const JamsReport = (props) => {
         
         data.push(
           {
-            // flightLegNumber: item["Flight"], // Missing from API  -> Need to update key
+            flight: item["FLIGHT_NUM"], 
             tail: item["AC_TN"],
             ATAMain: item["ATA_Main"],
             ATASub: item["ATA_SUB"],
@@ -272,7 +272,7 @@ const JamsReport = (props) => {
             //diagnosticData: item["Diagnostic Data"],  // Missing from API  -> Need to update key
             //determineData: item["Data Used to Determine Msg"],   // Missing from API  -> Need to update key
             ID: item["MSG_ID"], 
-            //flight: item["aircraftno"],  // Missing from API  -> Need to update key
+            // flightLegNumber: item["Flight"], // Missing from API  -> Need to update key
           }
         );
         return data;
