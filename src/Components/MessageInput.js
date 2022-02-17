@@ -16,6 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from "@material-ui/icons/Edit";
 import 'react-toastify/dist/ReactToastify.css';
 import { blue } from "@material-ui/core/colors";
+import '../scss/components/_analysis.scss';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -144,32 +145,38 @@ export default function FileUpload() {
 
   const MatEdit = ({ index }) => {
     const handleEditClick = () => {
-      console.log(index)
-      if (expand){
-        let row = document.querySelector(`[data-id='${index}']`);
-        row.style.maxHeight = '52% '
-        row.style.minHeight = '52% '
-        for(let i =0; i < row.childNodes.length; i++){
-          let column = row.childNodes[i]
-          column.style.maxHeight = '52% ';
-          column.style.minHeight = '52% ';
-          column.style.whiteSpace = 'nowrap';
-          column.style.lineHeight= 'normal';
-        }
-        setExpand(false)
-      }else{
-        let row = document.querySelector(`[data-id='${index}']`);
-        row.style.maxHeight = '150% '
-        row.style.minHeight = '100% '
-        for(let i =0; i < row.childNodes.length; i++){
-          let column = row.childNodes[i]
-          column.style.maxHeight = '100% ';
-          column.style.minHeight = '100% ';
-          column.style.whiteSpace = 'break-spaces ';
-          column.style.lineHeight= 'normal';
-        }
-        setExpand(true)
-      }
+      let row = document.querySelector(`[data-id='${index}']`);
+            row.style.removeProperty("min-height");
+            row.style.removeProperty("max-height");
+            if (row.classList.contains('rowAfterExpand')) {
+                row.classList.remove('rowAfterExpand');
+                row.classList.add("rowBeforeExpand");
+                for (let i = 0; i < row.childNodes.length; i++) {
+                    let column = row.childNodes[i]
+                    column.style.removeProperty("min-height");
+                    column.style.removeProperty("max-height");
+                    column.classList.remove('columnAfterExpand')
+                    column.classList.add('columnBeforeExpand');
+                }
+            } else if (row.classList.contains('rowBeforeExpand')) {
+                row.classList.remove('rowBeforeExpand')
+                row.classList.add("rowAfterExpand")
+                for (let i = 0; i < row.childNodes.length; i++) {
+                    let column = row.childNodes[i]
+                    column.style.removeProperty("min-height");
+                    column.style.removeProperty("max-height");
+                    column.classList.remove('columnBeforeExpand')
+                    column.classList.add('columnAfterExpand');
+                }
+            } else {
+                row.classList.add("rowAfterExpand")
+                for (let i = 0; i < row.childNodes.length; i++) {
+                    let column = row.childNodes[i]
+                    column.style.removeProperty("min-height");
+                    column.style.removeProperty("max-height");
+                    column.classList.add('columnAfterExpand');
+                }
+            }
     };
 
     return (
@@ -452,7 +459,7 @@ export default function FileUpload() {
                     <div style={{height: '100%' }}>
                       <div>
                         <ClipLoader loading={loading} css={override} />
-                        <DataGrid 
+                        <DataGrid disableVirtualization
                         getRowId={row => row.id}
                         title={"INPUT MESSAGE DATA "}
                         rows={updateData}
@@ -463,8 +470,15 @@ export default function FileUpload() {
                         onEditRowsModelChange={handleEditRowsModelChange}
                         className={classes.dataGrid}
                         rowsPerPageOptions={[7,20,50]}
-                        pageSize={15}
-                        onSelectionModelChange={onRowClick}
+                        pageSize={5}
+                        sx={{
+                          boxShadow: 2,
+                          border: 2,
+                          borderColor: 'primary.light',
+                          '& .MuiDataGrid-cell:hover': {
+                              color: 'primary.main',
+                          },
+                      }}
                         />
                       </div>  
                     </div>
