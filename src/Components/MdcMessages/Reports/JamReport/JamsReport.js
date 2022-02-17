@@ -40,7 +40,7 @@ const JamsReport = (props) => {
 
   const columns = [
     {
-      name: "flight",
+      name: "flightLegNumber",
       label: "Flight Leg No",
       options: {
        filter: true,
@@ -272,7 +272,7 @@ const JamsReport = (props) => {
             //diagnosticData: item["Diagnostic Data"],  // Missing from API  -> Need to update key
             //determineData: item["Data Used to Determine Msg"],   // Missing from API  -> Need to update key
             ID: item["MSG_ID"], 
-            // flightLegNumber: item["Flight"], // Missing from API  -> Need to update key
+            flightLegNumber: item["FLIGHT_LEG"],
           }
         );
         return data;
