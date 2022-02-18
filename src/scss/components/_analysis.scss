@@ -91,14 +91,14 @@
 }
 
 .rowAfterExpand{
-  max-height :200px ; 
-  min-height :200px ;
+  max-height :250px ; 
+  min-height :250px ;
   white-space: normal;
 }
 
 .columnAfterExpand{
-  max-height :200px ;
-  min-height :200px ;
+  max-height :250px ;
+  min-height :250px ;
   white-space: normal !important;
   line-height: normal ;
   position: relative;
@@ -115,4 +115,21 @@
   word-break: break-word !important;
   white-space: normal !important;
   overflow: auto !important;
+}
+
+.icon {
+  cursor: pointer;  
+ 
+  transition: transform 333ms ease-out, color 333ms;    
+ color:green;
+margin-left:15px;
+border:1px solid #000;
+text-align:center;
+line-height:1;
+}
+.title.open .icon {
+  fill: #3266D5;
+  -ms-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+color:red;
 }

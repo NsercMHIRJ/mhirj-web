@@ -17,6 +17,10 @@ import EditIcon from "@material-ui/icons/Edit";
 import 'react-toastify/dist/ReactToastify.css';
 import { blue } from "@material-ui/core/colors";
 import '../scss/components/_analysis.scss';
+import $ from 'jquery'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import SettingsOverscanOutlinedIcon from '@mui/icons-material/SettingsOverscanOutlined';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 }));
+
 
 const override = css`
   display: block;
@@ -144,7 +149,15 @@ export default function FileUpload() {
   };
 
   const MatEdit = ({ index }) => {
-    const handleEditClick = () => {
+
+    // $(document).ready( function (){
+  
+    //   $('.title').click( function(){
+       
+    //   })
+      
+    // })
+    const handleExpandClick = () => {
       let row = document.querySelector(`[data-id='${index}']`);
             row.style.removeProperty("min-height");
             row.style.removeProperty("max-height");
@@ -185,9 +198,10 @@ export default function FileUpload() {
           <IconButton
             color="secondary"
             aria-label="add an alarm"
-            onClick={handleEditClick}
+            onClick={handleExpandClick}
+            id="expandCloumn"
           >
-            <Button style={{ color: blue[500] }} >Expand</Button>
+              <SettingsOverscanOutlinedIcon style={{color:'black', fontSize:'28px'}} />
           </IconButton>
         }
       />
@@ -215,7 +229,8 @@ export default function FileUpload() {
     },
     {
       field: 'Equation_ID',
-      headerName: 'Equation_ID'
+      headerName: 'Equation_ID',
+      width:150,
     },
     {
       field: 'ATA',
@@ -230,7 +245,8 @@ export default function FileUpload() {
     {
       field: 'Message_No',
       headerName: 'Message_No',
-      editable: true
+      editable: true,
+      width:150
     },
     {
       field: 'Comp_ID',
@@ -255,6 +271,7 @@ export default function FileUpload() {
     {
       field: 'Message_Type',
       headerName: 'Message_Type',
+      width:180,
       editable: true
     },
     {
@@ -265,7 +282,8 @@ export default function FileUpload() {
     {
       field: 'EICAS',
       headerName: 'EICAS',
-      editable: true
+      editable: true,
+      width: 260
     },
     {
       field: 'Timer',
@@ -280,6 +298,7 @@ export default function FileUpload() {
     {
       field: 'Equation_Description',
       headerName: ' Equation_Description',
+      width:250,
       editable: true,
     },
     {
@@ -373,7 +392,7 @@ export default function FileUpload() {
     }
     if(finalEditedData[0] !== undefined){  
       let data = finalEditedData;
-      let path = `${Constants.LOCALURL}update_input_message_data/`
+      let path = `${Constants.APIURL}update_input_message_data/`
       axios.post(path, {data}).then(function (res){
         if(res.statusText === "OK"){
           setFinalEditedData([]);
@@ -395,28 +414,6 @@ export default function FileUpload() {
     const editedIds = Object.keys(model); 
     if(model[editedIds] !== undefined){
       tmpObjects[editedIds] = model[editedIds] 
-    }
-  });
-
-  const onRowClick = React.useCallback((model) => {
-    console.log(model)
-    let row = document.querySelector(`[data-id='${model[0]}']`);
-
-    for(let i =2; i < row.childNodes.length; i++){
-      if(row.childNodes[i].children[0]){
-      row.style.maxHeight = '150% '
-      row.style.minHeight = '100% '
-      let column = row.childNodes[i].children[0]
-      column.style.maxHeight = '100% ';
-      column.style.minHeight = '100% ';
-      column.style.whiteSpace = 'break-spaces ';
-      column.style.lineHeight= 'normal';
-      let cell = column.childNodes[0]
-      cell.style.maxHeight = '100% ';
-      cell.style.minHeight = '100% ';
-      cell.style.whiteSpace = 'break-spaces ';
-      cell.style.lineHeight= 'normal';
-      }
     }
   });
 	return (
@@ -456,8 +453,8 @@ export default function FileUpload() {
 							<Grid item xs={12}>
 								<Paper style={{ marginLeft: '-230px' }}>
                     <MuiThemeProvider theme={themes}>      
-                    <div style={{height: '100%' }}>
-                      <div>
+                    <div >
+                      <div style={{height: '400px' }}>
                         <ClipLoader loading={loading} css={override} />
                         <DataGrid disableVirtualization
                         getRowId={row => row.id}
@@ -465,7 +462,7 @@ export default function FileUpload() {
                         rows={updateData}
                         columns={columns}
                         editMode="row"
-                        autoHeight={true}
+                        // autoHeight={true}
                         editRowsModel={editRowsModel}
                         onEditRowsModelChange={handleEditRowsModelChange}
                         className={classes.dataGrid}
@@ -483,7 +480,7 @@ export default function FileUpload() {
                       </div>  
                     </div>
                     <IconButton aria-label="Save" className={classes.SaveIcon}>
-                    <SaveIcon onClick={() => saveTable()} />   
+                    <SaveIcon onClick={() => saveTable()} style={{fontSize:'40px'}} /> Save
                   </IconButton>
                     </MuiThemeProvider>   
 								</Paper>
