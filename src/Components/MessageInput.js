@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Constants from './utils/const';
-import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core';
+import { MuiThemeProvider, createMuiTheme, FormControlLabel } from '@material-ui/core';
 import {randomId} from '@mui/x-data-grid-generator';
 import {EqIDSelectorInput} from './ATAGraphSelectors';
 import { DataGrid } from '@mui/x-data-grid';
@@ -13,15 +13,14 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { css } from "@emotion/react";
 import SaveIcon from '@mui/icons-material/Save';
 import IconButton from '@mui/material/IconButton';
-import { ToastContainer, toast } from 'react-toastify';
+import EditIcon from "@material-ui/icons/Edit";
 import 'react-toastify/dist/ReactToastify.css';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { blue } from "@material-ui/core/colors";
+import '../scss/components/_analysis.scss';
 
 
 const useStyles = makeStyles((theme) => ({
-  dataGrid: {
-    width: "100%"
-  },
+  
   form: {
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
@@ -87,6 +86,8 @@ export default function FileUpload() {
   const [editRowsModel, setEditRowsModel] = React.useState({});
   const [EqID, setEqID] = useState("");
   const[finalEditedData , setFinalEditedData] = useState([])
+  const [loading, setLoading] = useState(false);
+  const [expand, setExpand] = useState(false);
 
   const getMuiTheme = () => createMuiTheme({
     palette: {type: 'light'},
@@ -142,11 +143,79 @@ export default function FileUpload() {
     setEqID(eqIDList);
   };
 
+  const MatEdit = ({ index }) => {
+    const handleEditClick = () => {
+      let row = document.querySelector(`[data-id='${index}']`);
+            row.style.removeProperty("min-height");
+            row.style.removeProperty("max-height");
+            if (row.classList.contains('rowAfterExpand')) {
+                row.classList.remove('rowAfterExpand');
+                row.classList.add("rowBeforeExpand");
+                for (let i = 0; i < row.childNodes.length; i++) {
+                    let column = row.childNodes[i]
+                    column.style.removeProperty("min-height");
+                    column.style.removeProperty("max-height");
+                    column.classList.remove('columnAfterExpand')
+                    column.classList.add('columnBeforeExpand');
+                }
+            } else if (row.classList.contains('rowBeforeExpand')) {
+                row.classList.remove('rowBeforeExpand')
+                row.classList.add("rowAfterExpand")
+                for (let i = 0; i < row.childNodes.length; i++) {
+                    let column = row.childNodes[i]
+                    column.style.removeProperty("min-height");
+                    column.style.removeProperty("max-height");
+                    column.classList.remove('columnBeforeExpand')
+                    column.classList.add('columnAfterExpand');
+                }
+            } else {
+                row.classList.add("rowAfterExpand")
+                for (let i = 0; i < row.childNodes.length; i++) {
+                    let column = row.childNodes[i]
+                    column.style.removeProperty("min-height");
+                    column.style.removeProperty("max-height");
+                    column.classList.add('columnAfterExpand');
+                }
+            }
+    };
+
+    return (
+      <FormControlLabel
+        control={
+          <IconButton
+            color="secondary"
+            aria-label="add an alarm"
+            onClick={handleEditClick}
+          >
+            <Button style={{ color: blue[500] }} >Expand</Button>
+          </IconButton>
+        }
+      />
+    );
+  };
+
+
   const columns = [
+    
+    {
+      field: 'Action',
+      headerName: 'Action',
+      sortable: false,
+      disableClickEventBubbling: true,
+      renderCell: (params) => {
+        return (
+          <div
+            className="d-flex justify-content-between align-items-center"
+            style={{ cursor: "pointer" }}
+          >
+            <MatEdit index={params.row.id} />
+          </div>
+        );
+      }
+    },
     {
       field: 'Equation_ID',
-      headerName: 'Equation_ID',
-      width: 150
+      headerName: 'Equation_ID'
     },
     {
       field: 'ATA',
@@ -156,122 +225,102 @@ export default function FileUpload() {
     {
       field: 'LRU',
       headerName: 'LRU',
-      width: 120,
       editable: true
     },
     {
       field: 'Message_No',
       headerName: 'Message_No',
-      editable: true,
-      width: 120
+      editable: true
     },
     {
       field: 'Comp_ID',
       headerName: 'Comp_ID',
-      width: 150,
       editable: true
     },
     {
       field: 'Keywords',
       headerName: 'Keywords',
-      width: 120,
       editable: true
     },
     {
       field: 'Fault_Logged',
       headerName: 'Fault_Logged',
-      editable: true,
-      width: 125
+      editable: true
     },
     {
       field: 'Status',
       headerName: 'Status',
-      width: 120,
       editable: true
     },
     {
       field: 'Message_Type',
       headerName: 'Message_Type',
-      editable: true,
-      width: 130
+      editable: true
     },
     {
       field: 'Message',
       headerName: 'Message',
-      width: 120,
       editable: true,
     },
     {
       field: 'EICAS',
       headerName: 'EICAS',
-      width: 120,
       editable: true
     },
     {
       field: 'Timer',
       headerName: 'Timer',
-      width: 120,
       editable: true
     },
     {
       field: 'Logic',
       headerName: 'Logic',
-      width: 120,
       editable: true
     },
     {
       field: 'Equation_Description',
       headerName: ' Equation_Description',
       editable: true,
-      width: 200,
     },
     {
       field: 'Occurrence_Flag',
       headerName: 'Occurrence_Flag',
       editable: true,
-      width: 140
     },
     {
       field: 'Days_Count',
       headerName: 'Days_Count',
-      width: 130,
       editable: true
     },
     {
       field: 'Priority',
       headerName: 'Priority',
-      width: 120,
       editable: true
     },
     {
       field: 'MHIRJ_ISE_Recommended_Action',
       headerName: 'MHIRJ Recommended Action',
-      width: 240,
       editable: true
     },
     {
       field: 'Additional_Comments',
       headerName: 'MHIRJ Additional Comment',
-      editable: true,
-      width: 220
+      editable: true
     },
     {
       field: 'MHIRJ_ISE_inputs',
       headerName: 'MHIRJ Input',
-      editable: true,
-      width: 150
+      editable: true
     },
     {
       field: 'MEL_or_No_Dispatch',
       headerName: 'MEL_or_No_Dispatch',
-      editable: true,
-      width: 180
+      editable: true
     },
   ];
 
   function show_inputMessage_data(){
-    loading = true
-    setLoading(loading)
+    setLoading(true)
     const path1 = Constants.APIURL + 'all_mdc_messages_input/' +EqID;
     console.log(path1)
     axios.post(path1)
@@ -281,11 +330,10 @@ export default function FileUpload() {
           item['id'] = randomId();
          })      
          setupdateData(data) 
-         loading = false
-         setLoading(loading)
         }
         
       )
+      setLoading(false)
   }
   /**Find each edited rows by id from the whole data**/
   function getDataById(id){
@@ -325,7 +373,7 @@ export default function FileUpload() {
     }
     if(finalEditedData[0] !== undefined){  
       let data = finalEditedData;
-      let path = `${Constants.APIURL}update_input_message_data/`
+      let path = `${Constants.LOCALURL}update_input_message_data/`
       axios.post(path, {data}).then(function (res){
         if(res.statusText === "OK"){
           setFinalEditedData([]);
@@ -349,7 +397,28 @@ export default function FileUpload() {
       tmpObjects[editedIds] = model[editedIds] 
     }
   });
-  let [loading, setLoading] = useState(false);
+
+  const onRowClick = React.useCallback((model) => {
+    console.log(model)
+    let row = document.querySelector(`[data-id='${model[0]}']`);
+
+    for(let i =2; i < row.childNodes.length; i++){
+      if(row.childNodes[i].children[0]){
+      row.style.maxHeight = '150% '
+      row.style.minHeight = '100% '
+      let column = row.childNodes[i].children[0]
+      column.style.maxHeight = '100% ';
+      column.style.minHeight = '100% ';
+      column.style.whiteSpace = 'break-spaces ';
+      column.style.lineHeight= 'normal';
+      let cell = column.childNodes[0]
+      cell.style.maxHeight = '100% ';
+      cell.style.minHeight = '100% ';
+      cell.style.whiteSpace = 'break-spaces ';
+      cell.style.lineHeight= 'normal';
+      }
+    }
+  });
 	return (
 		<div>
 			<form className={classes.form}>
@@ -387,23 +456,29 @@ export default function FileUpload() {
 							<Grid item xs={12}>
 								<Paper style={{ marginLeft: '-230px' }}>
                     <MuiThemeProvider theme={themes}>      
-                    <div style={{ display: 'flex', height: '100%' }}>
-                      <div style={{ flexGrow: 1 }}>
+                    <div style={{height: '100%' }}>
+                      <div>
                         <ClipLoader loading={loading} css={override} />
-                        <DataGrid 
+                        <DataGrid disableVirtualization
                         getRowId={row => row.id}
                         title={"INPUT MESSAGE DATA "}
                         rows={updateData}
                         columns={columns}
                         editMode="row"
                         autoHeight={true}
-                        disableExtendRowFullWidth={false}
                         editRowsModel={editRowsModel}
                         onEditRowsModelChange={handleEditRowsModelChange}
                         className={classes.dataGrid}
                         rowsPerPageOptions={[7,20,50]}
                         pageSize={5}
-                        density="compact"
+                        sx={{
+                          boxShadow: 2,
+                          border: 2,
+                          borderColor: 'primary.light',
+                          '& .MuiDataGrid-cell:hover': {
+                              color: 'primary.main',
+                          },
+                      }}
                         />
                       </div>  
                     </div>
