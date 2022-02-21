@@ -8,6 +8,7 @@ import moment from "moment";
 import $ from 'jquery';
 import Grid from '@material-ui/core/Grid';
 import CorrelationCustomToolbar from "../CorrelationCustomToolbar";
+import CorrelationKeywordModal from '../CorrelationKeywordModal';
 
 const CorrelationAnalysisTable = (props) => {
   const [data, setData] = useState([]);
@@ -23,7 +24,8 @@ const CorrelationAnalysisTable = (props) => {
     },
   );
   const [rowsPerPage, setRowsPerPage] = useState('10');
-  const [ isDefault, setIsDefault ] = useState(true);
+  const [isDefault, setIsDefault] = useState(true);
+  const [openCorrelationModal, setOpenCorrelationModal] = useState(false);
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -39,6 +41,10 @@ const CorrelationAnalysisTable = (props) => {
     }
     setCorrelationReportStatus(!correlationReportStatus);
     setLoading(true);
+  }
+
+  const toggleKeyword = (event) => {
+    setOpenCorrelationModal(!openCorrelationModal);
   }
 
   const onChangeRowsPerPage = (rowsPerPage) => {
@@ -250,6 +256,9 @@ const options = {
       <CorrelationCustomToolbar 
         label = {correlationReportButtonLabel}
         handleCorrelationReportChange = {handleCorrelationReportChange}
+        analysis={true}
+        toggleKeyword = {toggleKeyword}
+        openCorrelationModal={openCorrelationModal}
       />
     );
   },
@@ -276,18 +285,26 @@ const options = {
   };
 
   return (
-    <div class="reports-root analysis-correlation">
-      <Grid container spacing={0}>
-        <Grid item xs={12}>
-          <MUIDataTable
-            title= {correlationReportStatus ? "Correlation Report: Good Matches" : "Correlation Report: Bad Matches"}
-            data={ loading ? [] : responseData }
-            columns={columns}
-            options={options}
-          />
+    <>
+      <CorrelationKeywordModal 
+        keywordContent={"Lorem Ipsum"}
+        toggleKeyword = {toggleKeyword}
+        openCorrelationModal={openCorrelationModal}
+        correlationKeywords = { props.correlationKeywords ? props.correlationKeywords  : "No keys available yet..." }
+      />
+      <div class="reports-root analysis-correlation">
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            <MUIDataTable
+              title= {correlationReportStatus ? "Correlation Report: Good Matches" : "Correlation Report: Bad Matches"}
+              data={ loading ? [] : responseData }
+              columns={columns}
+              options={options}
+            />
+          </Grid> 
         </Grid> 
-      </Grid> 
-    </div>
+      </div>
+    </>
 );}
 
 export default CorrelationAnalysisTable;
