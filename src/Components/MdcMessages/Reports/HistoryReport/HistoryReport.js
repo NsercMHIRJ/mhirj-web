@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 import $ from 'jquery';
+import { FALSE } from 'node-sass';
 
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
@@ -336,6 +337,15 @@ const HistoryReport = (props) => {
        display: false,
       }
      },
+    //  {
+    //   name: 'correlationKeywords', 
+    //   label: 'Correlation Keywords',
+    //   options: {
+    //    filter: false,
+    //    sort: false,
+    //    display: false,
+    //   }
+    //  },
     ];
 
     let data = [];
@@ -396,6 +406,7 @@ const HistoryReport = (props) => {
               dateTo = {rowData[14]}
               tail = {rowData[0]}
               EqID = {rowData[6]}
+              correlationKeywords = {rowData[2]} //Returning EICAS change to new keyword column
             />
             </TableCell>
         </TableRow>
