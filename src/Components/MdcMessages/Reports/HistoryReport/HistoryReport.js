@@ -7,7 +7,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 import $ from 'jquery';
-import { FALSE } from 'node-sass';
 
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
