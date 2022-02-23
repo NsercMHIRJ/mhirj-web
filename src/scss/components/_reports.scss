@@ -60,7 +60,7 @@
 .reports-root {
   .MuiTableBody-root tr.MuiTableRow-root.MuiTableRow-hover td.MuiTableCell-root {
     border-right: 1px solid lightgray;
-    &:last-of-type {
+    &:last-of-type, &:first-of-type {
       border-right: none;
     }
     cursor: default;
@@ -111,5 +111,19 @@
 .analysys-correlation {
   .MuiTableRow-root .MuiTableCell-root {
     padding: 16px 0;
+  }
+}
+
+.reports-expand-icon {
+  padding: '5px 13px 0 0';
+  margin: '0px';
+  color: grey;
+  &:hover{
+    cursor: pointer;
+  }
+  &.header {
+    margin: 7px 0 0;
+    height: 42px;
+    width: 24px;
   }
 }

@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 import $ from 'jquery';
+import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 
 const JamsReport = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState('10');
@@ -40,14 +41,37 @@ const JamsReport = (props) => {
 
   const columns = [
     {
-      name: "flightLegNumber",
-      label: "Flight Leg No",
+      name: 'action', 
+      label: <ExpandIcon className="reports-expand-icon header"/>,
       options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
+       filter: false,
+       sort: false,
+       empty: true,
+      customBodyRenderLite: (dataIndex, rowIndex) => {
+        return (
+          <ExpandIcon 
+            className="reports-expand-icon"
+            label="Expand Row"
+          />
+        );
+      },
+      setCellProps: () => ({
+        style: {
+          maxWidth:'60px',
+          padding: '5px 13px 0 0',
+          textAlign:"left",
+          margin: '0px',
+          color: 'grey'
+        }}
+      ),
+      setCellHeaderProps: () => ({
+        style: {
+          maxWidth:'60px',
+          padding:'5px',
+          textAlign:"center",
+          margin: '0px',
+          whiteSpace: 'normal',
+        }}),
       }
     },
     {
@@ -59,6 +83,261 @@ const JamsReport = (props) => {
         sort: true,
         setCellProps: () => ({style: columnStyle}),
         setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    // {
+    //   name: 'ACSN', 
+    //   label: 'ACSN',
+    //   options: {
+    //    filter: true,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
+    // {
+    //   name: 'EICASMessages', 
+    //   label: 'EICAS Message',
+    //   options: {
+    //    filter: true,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
+    // {
+    //   name: 'MDCMessage', 
+    //   label: 'MDC Message',
+    //   options: {
+    //    filter: false,
+    //    sort: true,
+    //    setCellProps: () => ({style: columnStyle}),
+    //    setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    // },
+    {
+      name: 'LRU', 
+      label: 'LRU',
+      options: {
+       filter: false,
+       sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
+      name: 'ATA', 
+      label: 'ATA',
+      options: {
+       filter: true,
+       sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
+      name: 'equationID', 
+      label: 'B1-Equation',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'type', 
+      label: 'Type',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+    //  {
+    //   name: 'equationDescription', 
+    //   label: 'Equation Description',
+    //   options: {
+    //    filter: false,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({
+    //       style: {
+    //         maxWidth:'400px',
+    //         padding:'13px',
+    //         textAlign:"left",
+    //         margin: '0px',
+    //       }}
+    //     ),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    // {
+    //   name: 'totalOccurences', 
+    //   label: 'Occ',
+    //   options: {
+    //     filter: false,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     secondaryLabel: 'Total Occurrences',
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    // {
+    //   name: 'consecutiveDays', 
+    //   label: 'Cons. Days',
+    //   options: {
+    //     filter: false,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     secondaryLabel: 'Consecutive Days',
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    // {
+    //   name: 'ConsecutiveFlights', 
+    //   label: 'Cons. Legs', 
+    //   options: {
+    //     filter: false,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     secondaryLabel: 'Consecutive Flight Legs',
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    {
+      name: 'intermittent', 
+      label: 'Int.', 
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Intermittent',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'DateAndTime', 
+      label: 'Date',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    // {
+    //   name: 'reasons', 
+    //   label: 'Reason(s) for flag',
+    //   options: {
+    //    filter: false,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    // {
+    //   name: 'priority', 
+    //   label: 'Priority',
+    //   options: {
+    //    filter: true,
+    //     filterType: 'dropdown',
+    //     sort: true,
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  }, 
+    //{
+    //   name: 'topMessage', 
+    //   label: 'Known Top Message',
+    //   options: {
+    //     filter: false,
+    //     sort: true,
+    //     secondaryLabel: 'Known Top Message - Recommended Documents',
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    //  {
+    //   name: 'mel', 
+    //   label: 'MEL or No-Dispatch',
+    //   options: {
+    //     filter: false,
+    //     sort: true,
+    //     setCellProps: () => ({style: columnStyle}),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    //  {
+    //   name: 'input', 
+    //   label: 'MHIRJ Input',
+    //   options: {
+    //     filter: false,
+    //     sort: true,
+    //     setCellProps: () => ({
+    //       style: {
+    //         maxWidth:'300px',
+    //         padding:'13px',
+    //         textAlign:"left",
+    //         margin: '0px',
+    //       }}
+    //     ),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    //  {
+    //   name: 'recommendation', 
+    //   label: 'MHIRJ Recommendation',
+    //   options: {
+    //     filter: false,
+    //     setCellProps: () => ({
+    //       style: {
+    //         maxWidth:'400px',
+    //         padding:'13px',
+    //         textAlign:"left",
+    //         margin: '0px',
+    //       }}
+    //     ),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    //  {
+    //   name: 'comments', 
+    //   label: 'Additional Comments',
+    //   options: {
+    //     filter: false,
+    //     sort: true,
+    //     setCellProps: () => ({
+    //       style: {
+    //         maxWidth:'300px',
+    //         padding:'13px',
+    //         textAlign:"left",
+    //         margin: '0px',
+    //       }}
+    //     ),
+    //     setCellHeaderProps: () => ({ style: headingStyle }),
+    //   }
+    //  },
+    {
+      name: "flightLegNumber",
+      label: "Flight Leg No",
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
     {
@@ -83,16 +362,6 @@ const JamsReport = (props) => {
       }
     },
     {
-      name: 'ATA', 
-      label: 'ATA',
-      options: {
-       filter: true,
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
       name: 'ATADescription', 
       label: 'ATA Description',
       options: {
@@ -102,37 +371,6 @@ const JamsReport = (props) => {
        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    {
-      name: 'LRU', 
-      label: 'LRU',
-      options: {
-       filter: false,
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
-      name: 'DateAndTime', 
-      label: 'Date',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    // {
-    //   name: 'MDCMessage', 
-    //   label: 'MDC Message',
-    //   options: {
-    //    filter: false,
-    //    sort: true,
-    //    setCellProps: () => ({style: columnStyle}),
-    //    setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    // },
     {
       name: 'status', 
       label: 'Status',
@@ -155,40 +393,6 @@ const JamsReport = (props) => {
        setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    {
-      name: 'type', 
-      label: 'Type',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'intermittent', 
-      label: 'Int.', 
-      options: {
-        filter: false,
-        filterType: 'dropdown',
-        sort: true,
-        secondaryLabel: 'Intermittent',
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
-     {
-      name: 'equationID', 
-      label: 'B1-Equation',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-     },
      {
       name: 'source', 
       label: 'Source',
@@ -290,6 +494,10 @@ const JamsReport = (props) => {
       selectableRowsHideCheckboxes: true,
       selectableRowsOnClick: false,
       expandableRows: true,
+      // sortOrder: {
+      //   name: 'totalOccurences',
+      //   direction: 'desc'
+      // },
       onCellClick: (colData, cellMeta) => {
         setIsDefault(!isDefault);
         AddCellClass(cellMeta.rowIndex);

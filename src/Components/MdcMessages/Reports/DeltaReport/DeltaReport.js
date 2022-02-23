@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 import $ from 'jquery';
+import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 
 const DeltaReport = (props) => {
   const [deltaParameters, setDeltaParameters] = useState(JSON.parse(localStorage.getItem('delta-report')));
@@ -35,6 +36,40 @@ const DeltaReport = (props) => {
   }
 
   const columns = [
+    {
+      name: 'action', 
+      label: <ExpandIcon className="reports-expand-icon header"/>,
+      options: {
+       filter: false,
+       sort: false,
+       empty: true,
+      customBodyRenderLite: (dataIndex, rowIndex) => {
+        return (
+          <ExpandIcon 
+            className="reports-expand-icon"
+            label="Expand Row"
+          />
+        );
+      },
+      setCellProps: () => ({
+        style: {
+          maxWidth:'60px',
+          padding: '5px 13px 0 0',
+          textAlign:"left",
+          margin: '0px',
+          color: 'grey'
+        }}
+      ),
+      setCellHeaderProps: () => ({
+        style: {
+          maxWidth:'60px',
+          padding:'5px',
+          textAlign:"center",
+          margin: '0px',
+          whiteSpace: 'normal',
+        }}),
+      }
+    },
     {
       name: 'tail', 
       label: 'Tail#',
@@ -387,6 +422,10 @@ const DeltaReport = (props) => {
       jumpToPage: true,
       resizableColumns: false,
       expandableRowsHeader: false,
+      sortOrder: {
+        name: 'totalOccurences',
+        direction: 'desc'
+      },
       downloadOptions: {
         filename: 'Delta Report.csv',
         separator: ',',

@@ -14,8 +14,9 @@ import CorrelationSubTable from './CorrelationSubTable';
 import {DateConverter,GenerateCorrelationValidation, NotFirstRender} from '../../Helper/Helper';
 import Constants from '../../utils/const';
 import "../../../scss/_main.scss";
-import $, { cssNumber } from 'jquery';
+import $ from 'jquery';
 import CorrelationCustomToolbar from "../CorrelationCustomToolbar";
+import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -51,6 +52,11 @@ const PMTable = (props) => {
   );
   const [ isDefault, setIsDefault ] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [openCorrelationModal, setOpenCorrelationModal] = useState(false);
+
+  const toggleKeyword = (event) => {
+    setOpenCorrelationModal(!openCorrelationModal);
+  }
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -158,6 +164,40 @@ const PMTable = (props) => {
   }
 
 const columns = [
+  {
+    name: 'action', 
+    label: <ExpandIcon className="reports-expand-icon header"/>,
+    options: {
+     filter: false,
+     sort: false,
+     empty: true,
+    customBodyRenderLite: (dataIndex, rowIndex) => {
+      return (
+        <ExpandIcon 
+          className="reports-expand-icon"
+          label="Expand Row"
+        />
+      );
+    },
+    setCellProps: () => ({
+      style: {
+        maxWidth:'60px',
+        padding: '5px 13px 0 0',
+        textAlign:"left",
+        margin: '0px',
+        color: 'grey'
+      }}
+    ),
+    setCellHeaderProps: () => ({
+      style: {
+        maxWidth:'60px',
+        padding:'5px',
+        textAlign:"center",
+        margin: '0px',
+        whiteSpace: 'normal',
+      }}),
+    }
+  },
   {
     name: 'p_id', 
     label: 'ID',
@@ -329,18 +369,25 @@ const options = {
   selectableRowsHideCheckboxes: true,
   selectableRowsOnClick: false,
   expandableRows: true,
+  sortOrder: {
+    name: 'date',
+    direction: 'desc'
+  },
   onCellClick: (colData, cellMeta) => {
     setIsDefault(!isDefault);
     AddCellClass(cellMeta.rowIndex);
   },
-  customToolbar: () => {
-    return (
-      <CorrelationCustomToolbar 
-        label = {correlationReportButtonLabel}
-        handleCorrelationReportChange = {handleCorrelationReportChange}
-      />
-    );
-  },
+  // customToolbar: () => {
+  //   return (
+  //     <CorrelationCustomToolbar 
+  //       label = {correlationReportButtonLabel}
+  //       handleCorrelationReportChange = {handleCorrelationReportChange}
+  //       analysis={false}
+  //       toggleKeyword = {toggleKeyword}
+  //       openCorrelationModal={openCorrelationModal}
+  //     />
+  //   );
+  // },
   renderExpandableRow: (rowData, rowMeta) => {
     return ( 
     <TableRow>

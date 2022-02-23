@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import $ from 'jquery';
 import '../../../scss/_main.scss';
 import CorrelationCustomToolbar from "../CorrelationCustomToolbar";
+import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 
 const CorrelationSubTable = (props) => {
   const [data, setData] = useState([]);
@@ -15,7 +16,12 @@ const CorrelationSubTable = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState('10');
   const [correlationReportStatus, setCorrelationReportStatus] = useState(true);
   const [correlationReportButtonLabel, setCorrelationReportButtonLabel] = useState("Load Bad Matches");
+  const [openCorrelationModal, setOpenCorrelationModal] = useState(false);
 
+  const toggleKeyword = (event) => {
+    setOpenCorrelationModal(!openCorrelationModal);
+  }
+  
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root.analysis-correlation .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
@@ -67,6 +73,40 @@ const CorrelationSubTable = (props) => {
   }
 
   const columns = [
+    {
+      name: 'action', 
+      label: <ExpandIcon className="reports-expand-icon header"/>,
+      options: {
+       filter: false,
+       sort: false,
+       empty: true,
+      customBodyRenderLite: (dataIndex, rowIndex) => {
+        return (
+          <ExpandIcon 
+            className="reports-expand-icon"
+            label="Expand Row"
+          />
+        );
+      },
+      setCellProps: () => ({
+        style: {
+          maxWidth:'60px',
+          padding: '5px 13px 0 0',
+          textAlign:"left",
+          margin: '0px',
+          color: 'grey'
+        }}
+      ),
+      setCellHeaderProps: () => ({
+        style: {
+          maxWidth:'60px',
+          padding:'5px',
+          textAlign:"center",
+          margin: '0px',
+          whiteSpace: 'normal',
+        }}),
+      }
+    },
   {
     name: 'aircraftno', 
     label: 'Aircraft Number',
@@ -229,18 +269,25 @@ const options = {
   fixedSelectColumn: true,
   jumpToPage: true,
   resizableColumns: false,
+  // sortOrder: {
+  //   name: 'date',
+  //   direction: 'desc'
+  // },
   onCellClick: (colData, cellMeta) => {
     setIsDefault(!isDefault);
     AddCellClass(cellMeta.rowIndex);
   },
-  customToolbar: () => {
-    return (
-      <CorrelationCustomToolbar 
-        label = {correlationReportButtonLabel}
-        handleCorrelationReportChange = {handleCorrelationReportChange}
-      />
-    );
-  },
+  // customToolbar: () => {
+  //   return (
+  //     <CorrelationCustomToolbar 
+  //       label = {correlationReportButtonLabel}
+  //       handleCorrelationReportChange = {handleCorrelationReportChange}
+  //       analysis={false}
+  //       toggleKeyword = {toggleKeyword}
+  //       openCorrelationModal={openCorrelationModal}
+  //     />
+  //   );
+  // },
   downloadOptions: {
     filename: 'Correlation Report from ' + props.dateFrom + ' to ' + props.dateTo + ' from '+ props.p_id +'.csv',
     separator: ',',

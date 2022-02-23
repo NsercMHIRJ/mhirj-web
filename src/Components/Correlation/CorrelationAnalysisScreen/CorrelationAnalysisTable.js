@@ -9,6 +9,7 @@ import $ from 'jquery';
 import Grid from '@material-ui/core/Grid';
 import CorrelationCustomToolbar from "../CorrelationCustomToolbar";
 import CorrelationKeywordModal from '../CorrelationKeywordModal';
+import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 
 const CorrelationAnalysisTable = (props) => {
   const [data, setData] = useState([]);
@@ -87,6 +88,40 @@ const CorrelationAnalysisTable = (props) => {
   },[PMConditions, correlationReportStatus]);
 
   const columns = [
+    {
+      name: 'action', 
+      label: <ExpandIcon className="reports-expand-icon header"/>,
+      options: {
+       filter: false,
+       sort: false,
+       empty: true,
+      customBodyRenderLite: (dataIndex, rowIndex) => {
+        return (
+          <ExpandIcon 
+            className="reports-expand-icon"
+            label="Expand Row"
+          />
+        );
+      },
+      setCellProps: () => ({
+        style: {
+          maxWidth:'60px',
+          padding: '5px 13px 0 0',
+          textAlign:"left",
+          margin: '0px',
+          color: 'grey'
+        }}
+      ),
+      setCellHeaderProps: () => ({
+        style: {
+          maxWidth:'60px',
+          padding:'5px',
+          textAlign:"center",
+          margin: '0px',
+          whiteSpace: 'normal',
+        }}),
+      }
+    },
     {
       name: 'p_id', 
       label: 'ID',
@@ -247,6 +282,10 @@ const options = {
   fixedSelectColumn: true,
   jumpToPage: true,
   resizableColumns: false,
+  sortOrder: {
+    name: 'date',
+    direction: 'desc'
+  },
   onCellClick: (colData, cellMeta) => {
     setIsDefault(!isDefault);
     AddCellClass(cellMeta.rowIndex);

@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 import $ from 'jquery';
+import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
@@ -15,6 +16,7 @@ const HistoryReport = (props) => {
   const [ isDefault, setIsDefault ] = useState(true);
 
   const AddCellClass = (index) => {
+    console.log(index);
     let row = index + 1;
     $('.reports-root.history-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
     $('.reports-root.history-report .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
@@ -56,6 +58,40 @@ const HistoryReport = (props) => {
   }
 
   const columns = [
+    {
+      name: 'action', 
+      label: <ExpandIcon className="reports-expand-icon header"/>,
+      options: {
+       filter: false,
+       sort: false,
+       empty: true,
+      customBodyRenderLite: (dataIndex, rowIndex) => {
+        return (
+          <ExpandIcon 
+            className="reports-expand-icon"
+            label="Expand Row"
+          />
+        );
+      },
+      setCellProps: () => ({
+        style: {
+          maxWidth:'60px',
+          padding: '5px 13px 0 0',
+          textAlign:"left",
+          margin: '0px',
+          color: 'grey'
+        }}
+      ),
+      setCellHeaderProps: () => ({
+        style: {
+          maxWidth:'60px',
+          padding:'5px',
+          textAlign:"center",
+          margin: '0px',
+          whiteSpace: 'normal',
+        }}),
+      }
+    },
     {
       name: 'tail', 
       label: 'Tail#',
@@ -356,7 +392,7 @@ const HistoryReport = (props) => {
 
         data.push(
           {
-            ACSN: item["AC SN"], 
+            ACSN: item["AC SN"],
             tail: item["AC_TN"], 
             EICASMessages: item["EICAS Message"],  
             mdcMessages: item["MDC Message"], 
@@ -392,6 +428,10 @@ const HistoryReport = (props) => {
       selectableRowsOnClick: false,
       resizableColumns: false,
       expandableRows: true,
+      sortOrder: {
+        name: 'totalOccurences',
+        direction: 'desc'
+      },
       onCellClick: (colData, cellMeta) => {
         setIsDefault(!isDefault);
         AddCellClass(cellMeta.rowIndex);
@@ -405,7 +445,7 @@ const HistoryReport = (props) => {
               dateTo = {rowData[14]}
               tail = {rowData[0]}
               EqID = {rowData[6]}
-              correlationKeywords = {rowData[2]} //Returning EICAS change to new keyword column
+              correlationKeywords = {rowData[3]} //Returning EICAS change to new keyword column
             />
             </TableCell>
         </TableRow>
