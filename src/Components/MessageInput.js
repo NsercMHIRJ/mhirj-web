@@ -19,6 +19,7 @@ import { blue } from "@material-ui/core/colors";
 import '../scss/components/_analysis.scss';
 import $ from 'jquery'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import SettingsOverscanOutlinedIcon from '@mui/icons-material/SettingsOverscanOutlined';
 
 
@@ -124,7 +125,21 @@ export default function FileUpload() {
     })
   }
 
+  
+  const [loadProgress , setLoadProgress] = useState();
+  // const [progress, setProgress] = React.useState({
+  //   status:"",
+  // });
+  // const onClickInputMessage = (e) => {
+  //   inputMessageStatus(e);
+  //   upload_MDC_data(e);
+    
+  // }
+  // let abortController = new AbortController();
+  // const {signal} = abortController;
+
   function upload_InputMessage_data(e) {
+    setLoadProgress(true);
     let file = input_Message_file.selectedInputFile
     let data = new FormData()
     data.append('file', file)
@@ -136,6 +151,7 @@ export default function FileUpload() {
       },
       data: data
     }).then((res) => {
+      setLoadProgress(false);
       alert("File Uploaded Successfully!")
     })
       .catch(err => {
@@ -429,8 +445,9 @@ export default function FileUpload() {
 								<input className={classes.input} id="contained-button-file" multiple type="file" onChange={(e) => handleInputFileChange(e)} />
 								<Button type="button" style={{marginLeft: "370px", padding: "5px", backgroundColor: "#001c3e",color: "White"}} onClick={(e) => upload_InputMessage_data(e)}>Upload Input Message Data</Button>
 							</div>
-
+              <br></br>
 						</Grid>
+            {loadProgress ? <CircularProgress style={{ marginLeft: '580px' }} /> : ""}
             </div>
 					<div className={classes.container}>
 						<Grid className={classes.Grid} container spacing={3}>

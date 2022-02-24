@@ -267,6 +267,7 @@ export const EqIDSelectorInput = (props) => {
 
     <Autocomplete
         className={classes.autocomplete}
+        autoHighlight={true}
         multiple
         options={EqList}
         getOptionLabel={(item => item)}

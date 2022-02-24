@@ -55,10 +55,11 @@ const Conditions = (props) => {
   const [ATAMain, setATAMain] = useState("");
   const [messagesChoice, setIncludeMessages] = useState("");
   const [importedData, setImportedData] = useState({});
-  let newDate = new Date();
-  let currDate = newDate.getDate();
-  let currMonth = newDate.getMonth()+1;
-  let currYear = newDate.getFullYear();
+
+  let currentTimestamp = Date.now()
+  let filter_date = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(currentTimestamp)
+
+  console.log(filter_date);
   
   const [validationResponse, setValidationResponse] = useState('');
  
@@ -340,7 +341,7 @@ function upload_filter(e) {
                 </Button>  
                 <Button 
                   variant="contained" 
-                  onClick = {()=>SaveFilter("Filter_"+ currDate+"-"+currMonth+"-"+currYear)}
+                  onClick = {()=>SaveFilter("","Filter_"+filter_date)}
                   >
                     Save Filter
                 </Button>
