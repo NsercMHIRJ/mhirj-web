@@ -78,8 +78,8 @@ const FlagReport = (props) => {
       }
     },
     {
-      name: "MSN",
-      label: "MSN",
+      name: "tail",
+      label: "Tail#",
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -89,8 +89,41 @@ const FlagReport = (props) => {
       }
     },
     {
-      name: "tail",
-      label: "Tail#",
+      name: 'ACSN', 
+      label: 'ACSN',
+      options: {
+       filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
+      name: 'EICASMessages', 
+      label: 'EICAS Message',
+      options: {
+       filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
+      name: 'mdcMessages', 
+      label: 'MDC Message',
+      options: {
+       filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
+      name: 'LRU', 
+      label: 'LRU',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -111,34 +144,12 @@ const FlagReport = (props) => {
       }
     },
     {
-      name: 'code', 
-      label: 'B1-code',
+      name: 'B1Equation', 
+      label: 'B1-Equation',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
-      name: 'LRU', 
-      label: 'LRU',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
-      name: 'message', 
-      label: 'Message',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
+        filterType: 'dropdown',
+        sort: true,
         setCellProps: () => ({style: columnStyle}),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
@@ -154,16 +165,71 @@ const FlagReport = (props) => {
       }
     },
     {
-      name: 'FDE', 
-      label: 'Potential FDE',
+      name: 'equationDescription', 
+      label: 'Equation Description',
       options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
+       filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'400px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'totalOccurences', 
+      label: 'Occ',
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Total Occurrences',
         setCellProps: () => ({style: columnStyle}),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
-    },
+     },
+     {
+      name: 'consecutiveDays', 
+      label: 'Cons. Days',
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Consecutive Days',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'ConsecutiveFlights', 
+      label: 'Cons. Legs', 
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Consecutive Flight Legs',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'intermittent', 
+      label: 'Int.', 
+      options: {
+        filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        secondaryLabel: 'Intermittent',
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
     {
       name: 'dateFrom', 
       label: 'Date From',
@@ -187,20 +253,35 @@ const FlagReport = (props) => {
       }
      },
      {
-      name: 'action', 
-      label: 'SKW action WIP',
+      name: 'reasons', 
+      label: 'Reason(s) for flag',
+      options: {
+       filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'priority', 
+      label: 'Priority',
       options: {
        filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({
-        style: {
-          maxWidth:'400px',
-          padding:'13px',
-          textAlign:"left",
-          margin: '0px',
-        }}
-      ),
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'topMessage', 
+      label: 'Known Top Message',
+      options: {
+        filter: false,
+        sort: true,
+        secondaryLabel: 'Known Top Message - Recommended Documents',
+        setCellProps: () => ({style: columnStyle}),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
@@ -208,17 +289,9 @@ const FlagReport = (props) => {
       name: 'mel', 
       label: 'MEL or No-Dispatch',
       options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({
-        style: {
-          maxWidth:'400px',
-          padding:'13px',
-          textAlign:"left",
-          margin: '0px',
-        }}
-      ),
+        filter: false,
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
@@ -231,7 +304,7 @@ const FlagReport = (props) => {
        sort: true,
        setCellProps: () => ({
         style: {
-          maxWidth:'400px',
+          maxWidth:'300px',
           padding:'13px',
           textAlign:"left",
           margin: '0px',
@@ -267,7 +340,7 @@ const FlagReport = (props) => {
        sort: true,
        setCellProps: () => ({
         style: {
-          maxWidth:'400px',
+          maxWidth:'300px',
           padding:'13px',
           textAlign:"left",
           margin: '0px',
@@ -282,24 +355,31 @@ const FlagReport = (props) => {
       props.data?.map((item => {
         let input = item["MHIRJ Input"] === '0' ? '' : item["MHIRJ Input"];
         let recommendation = item["MHIRJ Recommendation"] === '0' ? '' : item["MHIRJ Recommendation"];
-        let action = item["SKW action WIP"] === '0' ? '' : item["SKW action WIP"];
-        
+        let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
+
         data.push(
           {
-            MSN: item["MSN"], 
+            ACSN: item["AC SN"],
             tail: item["AC_TN"],
+            EICASMessages: item["EICAS Message"], 
+            mdcMessages: item["MDC Message"],
+            LRU: item["LRU"], 
             ATA: item["ATA"], 
-            code: item["B1-code"], 
-            LRU: item["LRU"],  
-            message: item["Message"],  
-            type: item["Type"],  
-            FDE: item["Potential FDE"],  
-            dateFrom: DateConverter(item["Date From"]),   
-            dateTo: DateConverter(item["Date To"]),   
-            action: action,  
+            B1Equation: item["B1-code"],
+            type: item["Type"], 
+            equationDescription: item["Equation Description"],  
+            totalOccurences: item["Total Occurrences"], 
+            consecutiveDays: item["Consecutive Days"],
+            ConsecutiveFlights: item["Consecutive FL"], 
+            intermittent: item["INTERMITNT"], 
+            reasons: item["Reason(s) for flag"],  
+            priority: item["Priority"],  
+            topMessage: topMessage, 
+            dateFrom: DateConverter(item["Date From"]),  
+            dateTo: DateConverter(item["Date To"]),  
             mel: item["MEL or No-Dispatch"],
-            input: input,  
-            recommendation: recommendation,  
+            input: input, 
+            recommendation: recommendation, 
             comments: item["Additional Comments"]
           }
         );
@@ -318,10 +398,10 @@ const FlagReport = (props) => {
       selectableRowsHideCheckboxes: true,
       selectableRowsOnClick: false,
       expandableRows: true,
-      // sortOrder: {
-      //   name: 'totalOccurences',
-      //   direction: 'desc'
-      // },
+      sortOrder: {
+        name: 'totalOccurences',
+        direction: 'desc'
+      },
       onCellClick: (colData, cellMeta) => {
         setIsDefault(!isDefault);
         AddCellClass(cellMeta.rowIndex);
