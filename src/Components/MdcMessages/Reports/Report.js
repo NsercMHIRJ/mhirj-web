@@ -120,7 +120,7 @@ const Report = (props) => {
 
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
-            console.log(data);
+            console.log(data,"hist");
             setHistoryReportData(data);  
             setLoadingHistory(false);  
           }).catch(function (err){
@@ -169,6 +169,7 @@ const Report = (props) => {
 
       axios.post(jamsPath).then(function (res){
         var data = JSON.parse(res.data);
+        console.log(data, "jam");
         setJamHistoryData(data);
         setLoadingHistoryJam(false);
       }).catch(function (err){
@@ -189,6 +190,7 @@ const Report = (props) => {
 
       axios.post(flagPath).then(function (res){
         var data = JSON.parse(res.data);
+        console.log(data,"flag");
         setFlagData(data);
         setLoadingFlag(false);
       }).catch(function (err){
