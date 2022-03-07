@@ -72,7 +72,10 @@ const useStyles = makeStyles((theme) => ({
 		width: '320px'
 	},
   SaveIcon: {
-    fontSize:'40px'
+    fontSize:'30px'
+  },
+  cellTable:{
+    whiteSpace:'normal'
   }
 
 
@@ -91,12 +94,16 @@ function EditInputCell(props) {
       <TextField
         value={value}
         multiline
+        inputProps={{style: {fontSize: 15}}}
         minRows={2}
-        maxRows={7}
+        maxRows={10}
         onChange={handleChange}
       />
   );
 }
+
+
+
 const override = css`
   display: block;
   margin: 0 auto;
@@ -109,26 +116,12 @@ export default function FileUpload(props) {
 	const [updateData, setupdateData] = useState([]);
   const [editRowsModel, setEditRowsModel] = React.useState({});
   const [EqID, setEqID] = useState("");
+  const [rowID, setRowID] = useState("");
   const[finalEditedData , setFinalEditedData] = useState([])
   const [loading, setLoading] = useState(false);
   const [expand, setExpand] = useState(false);
 
-  const getMuiTheme = () => createMuiTheme({
-    palette: {type: 'light'},
-    typography: {useNextVariants: true},
-    overrides: {
-      MUIDataTableBodyCell: {
-        root: {
-          padding: '10px 8px',
-        }
-      },
-      MUIDataTableHeadCell:{
-        root: {
-          whiteSpace:'nowrap',
-        },
-      },
-    }
-  });
+
  /* Input message data file upload */
   const [input_Message_file, setInput_Message_File] = useState({
     selectedInputFile: null
@@ -143,41 +136,29 @@ export default function FileUpload(props) {
     })
   }
 
-  function handleBtnExpandClick(rowID){
-    let row = document.querySelector(`[data-id='${rowID}']`);
-      row.style.removeProperty("min-height");
-      row.style.removeProperty("max-height");
-      if (row.classList.contains('rowAfterExpand')) {
-          row.classList.remove('rowAfterExpand');
-          row.classList.add("rowBeforeExpand");
-          for (let i = 0; i < row.childNodes.length; i++) {
-              let column = row.childNodes[i]
-              column.style.removeProperty("min-height");
-              column.style.removeProperty("max-height");
-              column.classList.remove('columnAfterExpand')
-              column.classList.add('columnBeforeExpand');
-          }
-      } else if (row.classList.contains('rowBeforeExpand')) {
-          row.classList.remove('rowBeforeExpand')
-          row.classList.add("rowAfterExpand")
-          for (let i = 0; i < row.childNodes.length; i++) {
-              let column = row.childNodes[i]
-              column.style.removeProperty("min-height");
-              column.style.removeProperty("max-height");
-              column.classList.remove('columnBeforeExpand')
-              column.classList.add('columnAfterExpand');
-          }
-      } else {
-          row.classList.add("rowAfterExpand")
-          for (let i = 0; i < row.childNodes.length; i++) {
-              let column = row.childNodes[i]
-              column.style.removeProperty("min-height");
-              column.style.removeProperty("max-height");
-              column.classList.add('columnAfterExpand');
-          }
+  function ExpandCell(params) {
+    if(params.id === rowID){
+      if(expand){
+        return(
+          <div class='cellIsExpand'>
+            {params.value}
+          </div>
+        )
+      }else{
+        return(
+          <div class='cellIsCollapse'>
+            {params.value}
+          </div>
+        )
       }
+    }else{
+      return(
+        <div class='cellIsCollapse'>
+        {params.value}
+      </div>
+      )
+    }
   }
-
   
   const [loadProgress , setLoadProgress] = useState();
   // const [progress, setProgress] = React.useState({
@@ -220,7 +201,13 @@ export default function FileUpload(props) {
 
   const MatEdit = ({ index }) => {
     const handleExpandClick = () => {
-      handleBtnExpandClick(index)
+      setRowID(index)
+      if (expand){
+        setExpand(false);
+      }else{
+        setExpand(true)
+      }
+      
     };
     return (
       <FormControlLabel
@@ -267,37 +254,43 @@ export default function FileUpload(props) {
       field: 'ATA',
       headerName: 'ATA',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell  {...params} /> },
       editable: true
     },
     {
       field: 'LRU',
       headerName: 'LRU',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell  {...params} /> },
       editable: true
     },
     {
       field: 'Message_No',
       headerName: 'Message_No',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell  {...params} /> },
       editable: true
     },
     {
       field: 'Comp_ID',
       headerName: 'Comp_ID',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true
     },
     {
       field: 'Keywords',
       headerName: 'Keywords',
       renderEditCell: (params)=>{ return <EditInputCell   {...params} /> },
+      renderCell: (params) => { return <ExpandCell  {...params} /> },
       editable: true
       
     },
     {
       field: 'Fault_Logged',
       headerName: 'Fault_Logged',
-      renderEditCell: (params)=>{ return <EditInputCell style={{ width: "150" }}  {...params} /> },
+      renderEditCell: (params)=>{ return <EditInputCell style={{ width: "100%" }}  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true,
       width:150
     },
@@ -305,6 +298,7 @@ export default function FileUpload(props) {
       field: 'Status',
       headerName: 'Status',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true,
       width:150
     },
@@ -312,6 +306,7 @@ export default function FileUpload(props) {
       field: 'Message_Type',
       headerName: 'Message_Type',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true,
       width:180,
     },
@@ -319,6 +314,7 @@ export default function FileUpload(props) {
       field: 'Message',
       headerName: 'Message',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true,
       width: 160
     },
@@ -326,6 +322,7 @@ export default function FileUpload(props) {
       field: 'EICAS',
       headerName: 'EICAS',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell  {...params} /> },
       editable: true,
       width: 260
     },
@@ -333,44 +330,51 @@ export default function FileUpload(props) {
       field: 'Timer',
       headerName: 'Timer',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true
     },
     {
       field: 'Logic',
       headerName: 'Logic',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true
     },
     {
       field: 'Equation_Description',
       headerName: ' Equation_Description',
-      width:250,
-      renderEditCell: (params)=>{ return <EditInputCell  style={{ width: "250" }}  {...params} /> },
-      editable: true
+      width:200,
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      editable: true,
     },
     {
       field: 'Occurrence_Flag',
       headerName: 'Occurrence_Flag',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true
     },
     {
       field: 'Days_Count',
       headerName: 'Days_Count',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true
     },
     {
       field: 'Priority',
       headerName: 'Priority',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell  {...params} /> },
       editable: true
     },
     {
       field: 'MHIRJ_ISE_Recommended_Action',
       headerName: 'MHIRJ Recommended Action',
       width: 250,
-      renderEditCell: (params)=>{ return <EditInputCell  style={{ width: "250" }}  {...params} /> },
+      renderEditCell: (params)=>{ return <EditInputCell  style={{ alignSelf:"flex-start"}}  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true
     },
     {
@@ -378,6 +382,7 @@ export default function FileUpload(props) {
       headerName: 'MHIRJ Additional Comment',
       width: 250,
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true
     },
     {
@@ -385,12 +390,14 @@ export default function FileUpload(props) {
       headerName: 'MHIRJ Input',
       width: 250,
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true
     },
     {
       field: 'MEL_or_No_Dispatch',
       headerName: 'MEL_or_No_Dispatch',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true
     },
   ];
@@ -464,7 +471,6 @@ export default function FileUpload(props) {
     }
     setLoading(false)
   }
-	const themes = getMuiTheme();
   /**Fetch all data for each selected row.**/
   const handleEditRowsModelChange = React.useCallback((model) => {
     setEditRowsModel(model);
@@ -511,7 +517,6 @@ export default function FileUpload(props) {
 							</Grid>
 							<Grid item xs={12}>
 								<Paper style={{ marginLeft: '-230px' }}>
-                    <MuiThemeProvider theme={themes}>      
                     <div >
                       <div style={{height: '400px' }}>
                         <ClipLoader loading={loading} css={override} />
@@ -521,10 +526,15 @@ export default function FileUpload(props) {
                         rows={updateData}
                         columns={columns}
                         editMode="row"
-                        // onRowClick={(params, event) => {
-                        //     event.target.onclick = handleRowClick(params.row.id)
-                        //   }
-                        // }
+                        getRowHeight={({ id, densityFactor }) => {
+                          if(id === rowID){
+                            if(expand){
+                              return 260 * densityFactor;
+                            }else{
+                              return 50 * densityFactor;
+                            }
+                          }      
+                        }}
                         editRowsModel={editRowsModel}
                         onEditRowsModelChange={handleEditRowsModelChange}
                         className={classes.dataGrid}
@@ -537,6 +547,7 @@ export default function FileUpload(props) {
                           '& .MuiDataGrid-cell:hover': {
                               color: 'primary.main',
                           },
+                          whiteSpace: 'normal'
                   
                       }}
                         />
@@ -545,7 +556,6 @@ export default function FileUpload(props) {
                     <IconButton aria-label="Save" className={classes.SaveIcon}>
                     <SaveIcon onClick={() => saveTable()} style={{fontSize:'40px'}} /> Save
                   </IconButton>
-                    </MuiThemeProvider>   
 								</Paper>
 							</Grid>
 						</Grid>

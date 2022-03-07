@@ -68,46 +68,15 @@
   }
 }
 
-.textAreaEdit {
-  font-size: 100% ;
-  height: 100% ;
-  width: 100% ;
-  resize:none;
-  // overflow:hidden;
-}
-.divForEditing {
-  height: 100% ;
-  width: 100% ;
-}
-.rowBeforeExpand{
-  max-height :52px ;
-  min-height :52px ;
-}
-.columnBeforeExpand{
-  min-height: 52px ;
-  max-height: 52px ;
+
+.cellIsCollapse{
   white-space: nowrap !important;
-  line-height: normal ;
 }
 
-.rowAfterExpand{
-  max-height :250px ; 
-  min-height :250px ;
-  white-space: normal;
-}
-
-.columnAfterExpand{
-  max-height :250px ;
-  min-height :250px ;
+.cellIsExpand{
   white-space: normal !important;
-  line-height: normal ;
-  position: relative;
 }
 
-.cellEditing{
-  min-height: 52px ;
-  max-height: 150px ;
-}
 .MuiInputBase-fullWidth{
   height: 100% !important;
 }
