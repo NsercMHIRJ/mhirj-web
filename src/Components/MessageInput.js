@@ -21,7 +21,7 @@ import $ from 'jquery'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SettingsOverscanOutlinedIcon from '@mui/icons-material/SettingsOverscanOutlined';
-
+import TextField from '@material-ui/core/TextField';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -78,7 +78,25 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+function EditInputCell(props) {
+  const { id, value, api, field } = props;
 
+  const handleChange = async (event) => {
+    if (event.nativeEvent.type === 'input'){
+      api.setEditCellValue({ id, field, value: event.target.value });
+    }
+  };
+
+  return (
+      <TextField
+        value={value}
+        multiline
+        minRows={2}
+        maxRows={7}
+        onChange={handleChange}
+      />
+  );
+}
 const override = css`
   display: block;
   margin: 0 auto;
@@ -86,7 +104,7 @@ const override = css`
 
 var tmpObjects = {};
 var data = [];
-export default function FileUpload() {
+export default function FileUpload(props) {
 	const classes = useStyles();
 	const [updateData, setupdateData] = useState([]);
   const [editRowsModel, setEditRowsModel] = React.useState({});
@@ -125,7 +143,7 @@ export default function FileUpload() {
     })
   }
 
-  function handleRowClick(rowID){
+  function handleBtnExpandClick(rowID){
     let row = document.querySelector(`[data-id='${rowID}']`);
       row.style.removeProperty("min-height");
       row.style.removeProperty("max-height");
@@ -202,13 +220,9 @@ export default function FileUpload() {
 
   const MatEdit = ({ index }) => {
     const handleExpandClick = () => {
-      handleRowClick(index)
+      handleBtnExpandClick(index)
     };
-    const handleEidtClick = () => {
-      console.log(index)
-    }
     return (
-      <div>
       <FormControlLabel
         control={
           <IconButton
@@ -221,19 +235,6 @@ export default function FileUpload() {
           </IconButton>
         }
       />
-      <FormControlLabel
-      control={
-        <IconButton
-          color="secondary"
-          aria-label="add an alarm"
-          onClick={handleEidtClick}
-          id="expandCloumn"
-        >
-            <EditIcon style={{color:'black', fontSize:'28px'}} />
-        </IconButton>
-      }
-    />
-    </div>
     );
   };
 
@@ -260,114 +261,136 @@ export default function FileUpload() {
       field: 'Equation_ID',
       headerName: 'Equation_ID',
       width:150,
+     
     },
     {
       field: 'ATA',
       headerName: 'ATA',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true
     },
     {
       field: 'LRU',
       headerName: 'LRU',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true
     },
     {
       field: 'Message_No',
       headerName: 'Message_No',
-      editable: true,
-      width:150
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      editable: true
     },
     {
       field: 'Comp_ID',
       headerName: 'Comp_ID',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true
     },
     {
       field: 'Keywords',
       headerName: 'Keywords',
+      renderEditCell: (params)=>{ return <EditInputCell   {...params} /> },
       editable: true
+      
     },
     {
       field: 'Fault_Logged',
       headerName: 'Fault_Logged',
+      renderEditCell: (params)=>{ return <EditInputCell style={{ width: "150" }}  {...params} /> },
       editable: true,
       width:150
     },
     {
       field: 'Status',
       headerName: 'Status',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true,
       width:150
     },
     {
       field: 'Message_Type',
       headerName: 'Message_Type',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      editable: true,
       width:180,
-      editable: true
     },
     {
       field: 'Message',
       headerName: 'Message',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true,
+      width: 160
     },
     {
       field: 'EICAS',
       headerName: 'EICAS',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true,
       width: 260
     },
     {
       field: 'Timer',
       headerName: 'Timer',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true
     },
     {
       field: 'Logic',
       headerName: 'Logic',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true
     },
     {
       field: 'Equation_Description',
       headerName: ' Equation_Description',
       width:250,
-      editable: true,
+      renderEditCell: (params)=>{ return <EditInputCell  style={{ width: "250" }}  {...params} /> },
+      editable: true
     },
     {
       field: 'Occurrence_Flag',
       headerName: 'Occurrence_Flag',
-      editable: true,
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      editable: true
     },
     {
       field: 'Days_Count',
       headerName: 'Days_Count',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true
     },
     {
       field: 'Priority',
       headerName: 'Priority',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true
     },
     {
       field: 'MHIRJ_ISE_Recommended_Action',
       headerName: 'MHIRJ Recommended Action',
-      editable: true,
-      width: 250
+      width: 250,
+      renderEditCell: (params)=>{ return <EditInputCell  style={{ width: "250" }}  {...params} /> },
+      editable: true
     },
     {
       field: 'Additional_Comments',
       headerName: 'MHIRJ Additional Comment',
-      editable: true,
-      width: 250
+      width: 250,
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      editable: true
     },
     {
       field: 'MHIRJ_ISE_inputs',
       headerName: 'MHIRJ Input',
-      editable: true,
-      width: 250
+      width: 250,
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      editable: true
     },
     {
       field: 'MEL_or_No_Dispatch',
       headerName: 'MEL_or_No_Dispatch',
+      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       editable: true
     },
   ];
@@ -445,6 +468,7 @@ export default function FileUpload() {
   /**Fetch all data for each selected row.**/
   const handleEditRowsModelChange = React.useCallback((model) => {
     setEditRowsModel(model);
+    console.log(model)
     const editedIds = Object.keys(model); 
     if(model[editedIds] !== undefined){
       tmpObjects[editedIds] = model[editedIds] 
