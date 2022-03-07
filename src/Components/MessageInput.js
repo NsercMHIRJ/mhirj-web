@@ -124,6 +124,41 @@ export default function FileUpload() {
     })
   }
 
+  function handleRowClick(rowID){
+    let row = document.querySelector(`[data-id='${rowID}']`);
+      row.style.removeProperty("min-height");
+      row.style.removeProperty("max-height");
+      if (row.classList.contains('rowAfterExpand')) {
+          row.classList.remove('rowAfterExpand');
+          row.classList.add("rowBeforeExpand");
+          for (let i = 0; i < row.childNodes.length; i++) {
+              let column = row.childNodes[i]
+              column.style.removeProperty("min-height");
+              column.style.removeProperty("max-height");
+              column.classList.remove('columnAfterExpand')
+              column.classList.add('columnBeforeExpand');
+          }
+      } else if (row.classList.contains('rowBeforeExpand')) {
+          row.classList.remove('rowBeforeExpand')
+          row.classList.add("rowAfterExpand")
+          for (let i = 0; i < row.childNodes.length; i++) {
+              let column = row.childNodes[i]
+              column.style.removeProperty("min-height");
+              column.style.removeProperty("max-height");
+              column.classList.remove('columnBeforeExpand')
+              column.classList.add('columnAfterExpand');
+          }
+      } else {
+          row.classList.add("rowAfterExpand")
+          for (let i = 0; i < row.childNodes.length; i++) {
+              let column = row.childNodes[i]
+              column.style.removeProperty("min-height");
+              column.style.removeProperty("max-height");
+              column.classList.add('columnAfterExpand');
+          }
+      }
+  }
+
   function upload_InputMessage_data(e) {
     let file = input_Message_file.selectedInputFile
     let data = new FormData()
@@ -149,50 +184,14 @@ export default function FileUpload() {
   };
 
   const MatEdit = ({ index }) => {
-
-    // $(document).ready( function (){
-  
-    //   $('.title').click( function(){
-       
-    //   })
-      
-    // })
     const handleExpandClick = () => {
-      let row = document.querySelector(`[data-id='${index}']`);
-            row.style.removeProperty("min-height");
-            row.style.removeProperty("max-height");
-            if (row.classList.contains('rowAfterExpand')) {
-                row.classList.remove('rowAfterExpand');
-                row.classList.add("rowBeforeExpand");
-                for (let i = 0; i < row.childNodes.length; i++) {
-                    let column = row.childNodes[i]
-                    column.style.removeProperty("min-height");
-                    column.style.removeProperty("max-height");
-                    column.classList.remove('columnAfterExpand')
-                    column.classList.add('columnBeforeExpand');
-                }
-            } else if (row.classList.contains('rowBeforeExpand')) {
-                row.classList.remove('rowBeforeExpand')
-                row.classList.add("rowAfterExpand")
-                for (let i = 0; i < row.childNodes.length; i++) {
-                    let column = row.childNodes[i]
-                    column.style.removeProperty("min-height");
-                    column.style.removeProperty("max-height");
-                    column.classList.remove('columnBeforeExpand')
-                    column.classList.add('columnAfterExpand');
-                }
-            } else {
-                row.classList.add("rowAfterExpand")
-                for (let i = 0; i < row.childNodes.length; i++) {
-                    let column = row.childNodes[i]
-                    column.style.removeProperty("min-height");
-                    column.style.removeProperty("max-height");
-                    column.classList.add('columnAfterExpand');
-                }
-            }
+      handleRowClick(index)
     };
-
+    const handleEidtClick = () => {
+      console.log(index)
+    }
     return (
+      <div>
       <FormControlLabel
         control={
           <IconButton
@@ -205,6 +204,19 @@ export default function FileUpload() {
           </IconButton>
         }
       />
+      <FormControlLabel
+      control={
+        <IconButton
+          color="secondary"
+          aria-label="add an alarm"
+          onClick={handleEidtClick}
+          id="expandCloumn"
+        >
+            <EditIcon style={{color:'black', fontSize:'28px'}} />
+        </IconButton>
+      }
+    />
+    </div>
     );
   };
 
@@ -261,12 +273,14 @@ export default function FileUpload() {
     {
       field: 'Fault_Logged',
       headerName: 'Fault_Logged',
-      editable: true
+      editable: true,
+      width:150
     },
     {
       field: 'Status',
       headerName: 'Status',
-      editable: true
+      editable: true,
+      width:150
     },
     {
       field: 'Message_Type',
@@ -319,17 +333,20 @@ export default function FileUpload() {
     {
       field: 'MHIRJ_ISE_Recommended_Action',
       headerName: 'MHIRJ Recommended Action',
-      editable: true
+      editable: true,
+      width: 250
     },
     {
       field: 'Additional_Comments',
       headerName: 'MHIRJ Additional Comment',
-      editable: true
+      editable: true,
+      width: 250
     },
     {
       field: 'MHIRJ_ISE_inputs',
       headerName: 'MHIRJ Input',
-      editable: true
+      editable: true,
+      width: 250
     },
     {
       field: 'MEL_or_No_Dispatch',
@@ -462,7 +479,10 @@ export default function FileUpload() {
                         rows={updateData}
                         columns={columns}
                         editMode="row"
-                        // autoHeight={true}
+                        // onRowClick={(params, event) => {
+                        //     event.target.onclick = handleRowClick(params.row.id)
+                        //   }
+                        // }
                         editRowsModel={editRowsModel}
                         onEditRowsModelChange={handleEditRowsModelChange}
                         className={classes.dataGrid}
@@ -475,6 +495,7 @@ export default function FileUpload() {
                           '& .MuiDataGrid-cell:hover': {
                               color: 'primary.main',
                           },
+                  
                       }}
                         />
                       </div>  
