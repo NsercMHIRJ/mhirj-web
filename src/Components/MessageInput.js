@@ -125,7 +125,6 @@ export default function FileUpload() {
     })
   }
 
-<<<<<<< HEAD
   function handleRowClick(rowID){
     let row = document.querySelector(`[data-id='${rowID}']`);
       row.style.removeProperty("min-height");
@@ -160,7 +159,7 @@ export default function FileUpload() {
           }
       }
   }
-=======
+
   
   const [loadProgress , setLoadProgress] = useState();
   // const [progress, setProgress] = React.useState({
@@ -173,7 +172,7 @@ export default function FileUpload() {
   // }
   // let abortController = new AbortController();
   // const {signal} = abortController;
->>>>>>> 2a84ed332d66ad45891a83500a2306d7cbcb08c0
+
 
   function upload_InputMessage_data(e) {
     setLoadProgress(true);
