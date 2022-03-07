@@ -85,38 +85,38 @@ const JamsReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
-    // {
-    //   name: 'ACSN', 
-    //   label: 'ACSN',
-    //   options: {
-    //    filter: true,
-    //     filterType: 'dropdown',
-    //     sort: true,
-    //     setCellProps: () => ({style: columnStyle}),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    // },
-    // {
-    //   name: 'EICASMessages', 
-    //   label: 'EICAS Message',
-    //   options: {
-    //    filter: true,
-    //     filterType: 'dropdown',
-    //     sort: true,
-    //     setCellProps: () => ({style: columnStyle}),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    // },
-    // {
-    //   name: 'MDCMessage', 
-    //   label: 'MDC Message',
-    //   options: {
-    //    filter: false,
-    //    sort: true,
-    //    setCellProps: () => ({style: columnStyle}),
-    //    setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    // },
+    {
+      name: 'ACSN', 
+      label: 'ACSN',
+      options: {
+       filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
+      name: 'EICASMessages', 
+      label: 'EICAS Message',
+      options: {
+       filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
+    {
+      name: 'MDCMessage', 
+      label: 'MDC Message',
+      options: {
+       filter: false,
+       sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
     {
       name: 'LRU', 
       label: 'LRU',
@@ -138,7 +138,7 @@ const JamsReport = (props) => {
       }
     },
     {
-      name: 'equationID', 
+      name: 'B1Equation', 
       label: 'B1-Equation',
       options: {
        filter: true,
@@ -159,24 +159,24 @@ const JamsReport = (props) => {
        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
-    //  {
-    //   name: 'equationDescription', 
-    //   label: 'Equation Description',
-    //   options: {
-    //    filter: false,
-    //     filterType: 'dropdown',
-    //     sort: true,
-    //     setCellProps: () => ({
-    //       style: {
-    //         maxWidth:'400px',
-    //         padding:'13px',
-    //         textAlign:"left",
-    //         margin: '0px',
-    //       }}
-    //     ),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    //  },
+     {
+      name: 'equationDescription', 
+      label: 'Equation Description',
+      options: {
+       filter: false,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'400px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
     // {
     //   name: 'totalOccurences', 
     //   label: 'Occ',
@@ -247,18 +247,18 @@ const JamsReport = (props) => {
     //     setCellHeaderProps: () => ({ style: headingStyle }),
     //   }
     //  },
+    {
+      name: 'priority', 
+      label: 'Priority',
+      options: {
+       filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     }, 
     // {
-    //   name: 'priority', 
-    //   label: 'Priority',
-    //   options: {
-    //    filter: true,
-    //     filterType: 'dropdown',
-    //     sort: true,
-    //     setCellProps: () => ({style: columnStyle}),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    //  }, 
-    //{
     //   name: 'topMessage', 
     //   label: 'Known Top Message',
     //   options: {
@@ -269,66 +269,66 @@ const JamsReport = (props) => {
     //     setCellHeaderProps: () => ({ style: headingStyle }),
     //   }
     //  },
-    //  {
-    //   name: 'mel', 
-    //   label: 'MEL or No-Dispatch',
-    //   options: {
-    //     filter: false,
-    //     sort: true,
-    //     setCellProps: () => ({style: columnStyle}),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    //  },
-    //  {
-    //   name: 'input', 
-    //   label: 'MHIRJ Input',
-    //   options: {
-    //     filter: false,
-    //     sort: true,
-    //     setCellProps: () => ({
-    //       style: {
-    //         maxWidth:'300px',
-    //         padding:'13px',
-    //         textAlign:"left",
-    //         margin: '0px',
-    //       }}
-    //     ),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    //  },
-    //  {
-    //   name: 'recommendation', 
-    //   label: 'MHIRJ Recommendation',
-    //   options: {
-    //     filter: false,
-    //     setCellProps: () => ({
-    //       style: {
-    //         maxWidth:'400px',
-    //         padding:'13px',
-    //         textAlign:"left",
-    //         margin: '0px',
-    //       }}
-    //     ),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    //  },
-    //  {
-    //   name: 'comments', 
-    //   label: 'Additional Comments',
-    //   options: {
-    //     filter: false,
-    //     sort: true,
-    //     setCellProps: () => ({
-    //       style: {
-    //         maxWidth:'300px',
-    //         padding:'13px',
-    //         textAlign:"left",
-    //         margin: '0px',
-    //       }}
-    //     ),
-    //     setCellHeaderProps: () => ({ style: headingStyle }),
-    //   }
-    //  },
+     {
+      name: 'mel', 
+      label: 'MEL or No-Dispatch',
+      options: {
+        filter: false,
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'input', 
+      label: 'MHIRJ Input',
+      options: {
+        filter: false,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'300px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'recommendation', 
+      label: 'MHIRJ Recommendation',
+      options: {
+        filter: false,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'400px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
+     {
+      name: 'comments', 
+      label: 'Additional Comments',
+      options: {
+        filter: false,
+        sort: true,
+        setCellProps: () => ({
+          style: {
+            maxWidth:'300px',
+            padding:'13px',
+            textAlign:"left",
+            margin: '0px',
+          }}
+        ),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
     {
       name: "flightLegNumber",
       label: "Flight Leg No",
@@ -448,6 +448,17 @@ const JamsReport = (props) => {
        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
+     {
+      name: 'Keywords', 
+      label: 'Keywords',
+      options: {
+       filter: true,
+       filterType: 'dropdown',
+       sort: true,
+       setCellProps: () => ({style: columnStyle}),
+       setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+     },
     ];
 
     const flightNumber = props.data ? props.data :  '';
@@ -455,28 +466,46 @@ const JamsReport = (props) => {
 
     let data = [];
       props.data?.map((item => {
-        
+        let input = item["MHIRJ_ISE_inputs"] === '0' ? '' : item["MHIRJ_ISE_inputs"];
+        let recommendation = item["MHIRJ_ISE_Recommended_Action"] === '0' ? '' : item["MHIRJ_ISE_Recommended_Action"];
+        let comments = item["Additional_Comments"] === '0' ? '' : item["Additional_Comments"];
+       //let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
+
         data.push(
           {
-            flight: item["FLIGHT_NUM"], 
+            ACSN: item["AC SN"],
             tail: item["AC_TN"],
+            EICASMessages: item["EICAS"], 
+            MDCMessage: item["Message"],
+            LRU: item["LRU"], 
+            ATA: item["ATA"], 
+            B1Equation: item["Equation_ID"],  
+            type: item["MSG_TYPE"],   
+            equationDescription: item["Equation_Description"], 
+            // totalOccurences: item["Total Occurrences"],   // Not currently available on API response
+            // consecutiveDays: item["Consecutive Days"],  // Not currently available on API response
+            // ConsecutiveFlights: item["Consecutive FL"],   // Not currently available on API response
+            intermittent: item["INTERMITNT"], 
+            // reasons: item["Reason(s) for flag"],    // Not currently available on API response
+            priority: item["Priority"],  
+            // topMessage: topMessage,   // Not currently available on API response
+            recommendation: recommendation,
+            comments: comments,
+            input: input, 
+            mel: item["MEL_or_No_Dispatch"],
+            flight: item["FLIGHT_NUM"],
             ATAMain: item["ATA_Main"],
             ATASub: item["ATA_SUB"],
-            ATA: item["ATA"],
             ATADescription: item["ATA_NAME"],
-            LRU: item["LRU"],
             DateAndTime: DateConverter(item["MSG_Date"]), 
-            // MDCMessage: item["MDC Message"],  // Missing from API  -> Need to update key
             status: item["msg_status"],
-            flightPhase: item["FLIGHT_PHASE"], 
-            type: item["MSG_TYPE"],  
-            intermittent: item["INTERMITNT"], 
-            equationID: item["EQ_ID"], 
+            flightPhase: item["FLIGHT_PHASE"],
             source: item["SOURCE"],
-            //diagnosticData: item["Diagnostic Data"],  // Missing from API  -> Need to update key
-            //determineData: item["Data Used to Determine Msg"],   // Missing from API  -> Need to update key
-            ID: item["MSG_ID"], 
+            //diagnosticData: item["Diagnostic Data"],  // Not currently available on API response
+            //determineData: item["Data Used to Determine Msg"],   // Not currently available on API response
+            ID: item["MSG_ID"],
             flightLegNumber: item["FLIGHT_LEG"],
+            Keywords: item["Keywords"],
           }
         );
         return data;
@@ -537,7 +566,7 @@ const JamsReport = (props) => {
       onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
-      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : `${200+data.length*60}px`
+      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : `500px`
     };
 
   return (
