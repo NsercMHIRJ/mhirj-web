@@ -22,10 +22,26 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SettingsOverscanOutlinedIcon from '@mui/icons-material/SettingsOverscanOutlined';
 import TextField from '@material-ui/core/TextField';
+import Stack from '@mui/material/Stack';
+import LinearProgress from '@mui/material/LinearProgress';
+import { withStyles, createStyles } from "@material-ui/core/styles";
+import Chip from '@mui/material/Chip';
+import Check from '@mui/icons-material/Check';
 
 
-const useStyles = makeStyles((theme) => ({
-  
+
+const useStyles = makeStyles((theme) => createStyles({
+  root: {
+    // '& .MuiDataGrid-cell--withRenderer': {
+    //   color: "blue !important",
+    //   fontSize: 18,
+    //   "& div": {
+    //     minHeight: "60px !important",
+    //     height: 60,
+    //     lineHeight: "59px !important"
+    //   }
+    // }
+  },
   form: {
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
@@ -80,14 +96,20 @@ const useStyles = makeStyles((theme) => ({
 
 
 }));
-
+var tmpObjects = {};
 function EditInputCell(props) {
-  const { id, value, api, field } = props;
+  // console.log(props)
+  const { id, value, api, field, editByButton } = props;
 
   const handleChange = async (event) => {
-    if (event.nativeEvent.type === 'input'){
+    console.log(editByButton)
       api.setEditCellValue({ id, field, value: event.target.value });
-    }
+      const model = api.getEditRowsModel()
+      const editedIds = Object.keys(model); 
+      if(model[editedIds] !== undefined){
+        tmpObjects[editedIds] = model[editedIds] 
+        console.log(tmpObjects);
+      }
   };
 
   return (
@@ -109,18 +131,17 @@ const override = css`
   margin: 0 auto;
 `;
 
-var tmpObjects = {};
-var data = [];
-export default function FileUpload(props) {
+export default function FileUpload() {
 	const classes = useStyles();
 	const [updateData, setupdateData] = useState([]);
-  const [editRowsModel, setEditRowsModel] = React.useState({});
   const [EqID, setEqID] = useState("");
   const [rowID, setRowID] = useState("");
   const[finalEditedData , setFinalEditedData] = useState([])
   const [loading, setLoading] = useState(false);
   const [expand, setExpand] = useState(false);
-
+  const [isEdit, setIsEdit] = useState(true);
+  const [isSuccess, setIsSuccess] = useState(false);
+  
 
  /* Input message data file upload */
   const [input_Message_file, setInput_Message_File] = useState({
@@ -201,27 +222,43 @@ export default function FileUpload(props) {
 
   const MatEdit = ({ index }) => {
     const handleExpandClick = () => {
-      setRowID(index)
+      setRowID(index.row.id)
       if (expand){
         setExpand(false);
       }else{
         setExpand(true)
       }
-      
     };
+    const handleEidtClick = () => {
+      index.api.setRowMode(index.id, isEdit ? 'edit' : 'view')
+      setIsEdit(!isEdit)
+    }
     return (
+      <div>
       <FormControlLabel
         control={
           <IconButton
             color="secondary"
             aria-label="add an alarm"
             onClick={handleExpandClick}
-            id="expandCloumn"
           >
               <SettingsOverscanOutlinedIcon style={{color:'black', fontSize:'28px'}} />
           </IconButton>
         }
       />
+      <FormControlLabel
+      control={
+        <IconButton
+          color="secondary"
+          aria-label="add an alarm"
+          onClick={handleEidtClick}
+        >
+            <EditIcon style={{color:'black', fontSize:'28px'}} />
+        </IconButton>
+      }
+    />
+      </div>
+
     );
   };
 
@@ -229,17 +266,18 @@ export default function FileUpload(props) {
   const columns = [
     
     {
-      field: 'Action',
-      headerName: 'Action',
+      field: 'actions',
+      headerName: 'Actions',
       sortable: false,
       disableClickEventBubbling: true,
+      pinnable: false,
       renderCell: (params) => {
         return (
           <div
             className="d-flex justify-content-between align-items-center"
             style={{ cursor: "pointer" }}
           >
-            <MatEdit index={params.row.id} />
+            <MatEdit index={params} />
           </div>
         );
       }
@@ -254,13 +292,17 @@ export default function FileUpload(props) {
       field: 'ATA',
       headerName: 'ATA',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
-      renderCell: (params) => { return <ExpandCell  {...params} /> },
+      renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true
     },
     {
       field: 'LRU',
       headerName: 'LRU',
-      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderEditCell: (params)=>{
+        params.editByButton = isEdit
+         return <EditInputCell  {...params} 
+         />
+       },
       renderCell: (params) => { return <ExpandCell  {...params} /> },
       editable: true
     },
@@ -269,7 +311,8 @@ export default function FileUpload(props) {
       headerName: 'Message_No',
       renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
       renderCell: (params) => { return <ExpandCell  {...params} /> },
-      editable: true
+      editable: true,
+      width:150
     },
     {
       field: 'Comp_ID',
@@ -344,7 +387,11 @@ export default function FileUpload(props) {
       field: 'Equation_Description',
       headerName: ' Equation_Description',
       width:200,
-      renderEditCell: (params)=>{ return <EditInputCell  {...params} /> },
+      renderEditCell: (params)=>{
+         return <EditInputCell  {
+           ...params
+          } /> 
+        },
       renderCell: (params) => { return <ExpandCell {...params} /> },
       editable: true,
     },
@@ -403,20 +450,20 @@ export default function FileUpload(props) {
   ];
 
   function show_inputMessage_data(){
-    setLoading(true)
-    const path1 = Constants.APIURL + 'all_mdc_messages_input/' +EqID;
-    console.log(path1)
-    axios.post(path1)
-      .then(res => {
-         const data = JSON.parse(res.data);
-         data.map(item => {                                            //Insert id in each data comming
-          item['id'] = randomId();
-         })      
-         setupdateData(data) 
-        }
-        
-      )
-      setLoading(false)
+      setLoading(true)
+      const path1 = Constants.APIURL + 'all_mdc_messages_input/' +EqID;
+      console.log(path1)
+      axios.post(path1)
+        .then(res => {
+           const data = JSON.parse(res.data);
+           data.map(item => {                                            //Insert id in each data comming
+            item['id'] = randomId();
+           })      
+           setupdateData(data) 
+          }
+          
+        )
+        setLoading(false)
   }
   /**Find each edited rows by id from the whole data**/
   function getDataById(id){
@@ -460,26 +507,50 @@ export default function FileUpload(props) {
       axios.post(path, {data}).then(function (res){
         if(res.statusText === "OK"){
           setFinalEditedData([]);
-          alert("Success");
+          setIsSuccess(true)
+          setLoading(false)
         }
       }).catch(function (err){
         console.log(err);
+        setLoading(false)
         alert("Something wrong try later");
       });
     }else{
       alert("No Editing Data to Save")
+      setLoading(false)
     }
-    setLoading(false)
+  
   }
-  /**Fetch all data for each selected row.**/
-  const handleEditRowsModelChange = React.useCallback((model) => {
-    setEditRowsModel(model);
-    console.log(model)
-    const editedIds = Object.keys(model); 
-    if(model[editedIds] !== undefined){
-      tmpObjects[editedIds] = model[editedIds] 
+  const onCellClicked = (params) => {
+    if(params.field !== "actions"){
+      if(params.cellMode === "view"){
+        setRowID(params.id)
+        setExpand(!expand)
+      }
     }
-  });
+  }
+  function SuccessMessage(){
+    if(isSuccess){
+      setTimeout(()=>{
+        setIsSuccess(false)
+      },5000)
+      return(
+        <Chip
+        color="success"
+        label={
+          <span>
+            <b>Data Saved Successfully:</b>
+          </span>
+        }
+        icon={<Check fontSize="medium" />}
+      />
+      )
+    }else{
+      return(
+        <div></div>
+      )
+    }
+  }
 	return (
 		<div>
 			<form className={classes.form}>
@@ -519,13 +590,14 @@ export default function FileUpload(props) {
 								<Paper style={{ marginLeft: '-230px' }}>
                     <div >
                       <div style={{height: '400px' }}>
-                        <ClipLoader loading={loading} css={override} />
                         <DataGrid disableVirtualization
                         getRowId={row => row.id}
                         title={"INPUT MESSAGE DATA "}
+                        loading={loading}
                         rows={updateData}
+                        className={classes.root}
                         columns={columns}
-                        editMode="row"
+                        editMode='row'
                         getRowHeight={({ id, densityFactor }) => {
                           if(id === rowID){
                             if(expand){
@@ -535,8 +607,25 @@ export default function FileUpload(props) {
                             }
                           }      
                         }}
-                        editRowsModel={editRowsModel}
-                        onEditRowsModelChange={handleEditRowsModelChange}
+                        onCellClick={onCellClicked}
+                        onCellDoubleClick={(params, event) => {
+                          if (!event.ctrlKey) {
+                            event.defaultMuiPrevented = true;
+                          }
+                        }}
+                        components={{
+                          NoRowsOverlay: () => (
+                            <Stack height="100%" alignItems="center" justifyContent="center">
+                              Please press on the button to display the data.
+                            </Stack>
+                          ),
+                          NoResultsOverlay: () => (
+                            <Stack height="100%" alignItems="center" justifyContent="center">
+                              filter returns no result
+                            </Stack>
+                          ),
+                          LoadingOverlay: LinearProgress,
+                        }}
                         className={classes.dataGrid}
                         rowsPerPageOptions={[7,20,50]}
                         pageSize={5}
@@ -548,14 +637,14 @@ export default function FileUpload(props) {
                               color: 'primary.main',
                           },
                           whiteSpace: 'normal'
-                  
                       }}
                         />
                       </div>  
                     </div>
                     <IconButton aria-label="Save" className={classes.SaveIcon}>
-                    <SaveIcon onClick={() => saveTable()} style={{fontSize:'40px'}} /> Save
+                    <SaveIcon onClick={() => saveTable()} style={{fontSize:'40px'}} />
                   </IconButton>
+                  <SuccessMessage />
 								</Paper>
 							</Grid>
 						</Grid>
