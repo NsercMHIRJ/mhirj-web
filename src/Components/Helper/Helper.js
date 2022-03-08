@@ -69,6 +69,11 @@ export const GenerateReportValidation = (report) => {
     validationResponse.status = false;
   } 
 
+  if ( report.ACSN === "" ) {
+    validationResponse.ACSN = "ACSN is a required field";
+    validationResponse.status = false;
+  } 
+
   if ( report.fromDate === undefined ) {
     validationResponse.fromDateMessage = "From date is a required field."
     validationResponse.status = false;

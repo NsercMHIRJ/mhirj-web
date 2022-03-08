@@ -326,10 +326,9 @@ const options = {
   return (
     <>
       <CorrelationKeywordModal 
-        keywordContent={"Lorem Ipsum"}
         toggleKeyword = {toggleKeyword}
         openCorrelationModal={openCorrelationModal}
-        correlationKeywords = { props.correlationKeywords ? props.correlationKeywords  : "No keys available yet..." }
+        correlationKeywords = { props.correlationKeywords ? props.correlationKeywords  : "No keywords available..." }
       />
       <div class="reports-root analysis-correlation">
         <Grid container spacing={0}>

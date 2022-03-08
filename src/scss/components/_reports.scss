@@ -127,3 +127,12 @@
     width: 24px;
   }
 }
+
+.reports-root.analysis-correlation {
+  .MuiTableBody-root tr.MuiTableRow-root.MuiTableRow-hover td.MuiTableCell-root {
+    padding: 10px !important;
+    &:first-of-type {
+      border-right: 1px solid lightgray;
+    }
+  }
+}
