@@ -349,6 +349,14 @@ const FlagReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
+     {
+      name: 'keywords', 
+      label: 'Correlation Keywords',
+      options: {
+      filter: false,
+      sort: false
+      }
+     },
     ];
 
     let data = [];
@@ -380,7 +388,8 @@ const FlagReport = (props) => {
             mel: item["MEL or No-Dispatch"],
             input: input, 
             recommendation: recommendation, 
-            comments: item["Additional Comments"]
+            comments: item["Additional Comments"],
+            keywords: item["Keywords"]
           }
         );
         return data;
@@ -411,10 +420,11 @@ const FlagReport = (props) => {
           <TableRow className="correlation-analysis-subtable">
             <TableCell colSpan={rowData.length+1}>
               <CorrelationAnalysisTable
-                dateFrom = {rowData[8]} 
-                dateTo = {rowData[9]} 
+                dateFrom = {rowData[14]} 
+                dateTo = {rowData[15]} 
                 tail = {rowData[1]}  
-                EqID = {rowData[3]} 
+                EqID = {rowData[7]} 
+                correlationKeywords = {rowData[23]} 
               />
               </TableCell>
           </TableRow>
@@ -440,7 +450,7 @@ const FlagReport = (props) => {
       onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
-      tableBodyHeight: props.loading === true || data.length === 0 ? '160px' : `${200+data.length*60}px`
+      tableBodyHeight: props.loading === true || data.length === 0 ? '160px' : `300px`
     };
 
   

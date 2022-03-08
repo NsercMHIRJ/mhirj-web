@@ -86,17 +86,6 @@ const JamsReport = (props) => {
       }
     },
     {
-      name: 'ACSN', 
-      label: 'ACSN',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
       name: 'EICASMessages', 
       label: 'EICAS Message',
       options: {
@@ -448,15 +437,12 @@ const JamsReport = (props) => {
        setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
-     {
-      name: 'Keywords', 
-      label: 'Keywords',
+    {
+      name: 'keywords', 
+      label: 'Correlation Keywords',
       options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-       setCellProps: () => ({style: columnStyle}),
-       setCellHeaderProps: () => ({ style: headingStyle }),
+      filter: false,
+      sort: false
       }
      },
     ];
@@ -473,7 +459,6 @@ const JamsReport = (props) => {
 
         data.push(
           {
-            ACSN: item["AC SN"],
             tail: item["AC_TN"],
             EICASMessages: item["EICAS"], 
             MDCMessage: item["Message"],
@@ -505,7 +490,7 @@ const JamsReport = (props) => {
             //determineData: item["Data Used to Determine Msg"],   // Not currently available on API response
             ID: item["MSG_ID"],
             flightLegNumber: item["FLIGHT_LEG"],
-            Keywords: item["Keywords"],
+            keywords: item["Keywords"],
           }
         );
         return data;
@@ -523,10 +508,10 @@ const JamsReport = (props) => {
       selectableRowsHideCheckboxes: true,
       selectableRowsOnClick: false,
       expandableRows: true,
-      // sortOrder: {
-      //   name: 'totalOccurences',
-      //   direction: 'desc'
-      // },
+      sortOrder: {
+        name: 'DateAndTime',
+        direction: 'desc'
+      },
       onCellClick: (colData, cellMeta) => {
         setIsDefault(!isDefault);
         AddCellClass(cellMeta.rowIndex);
@@ -536,10 +521,11 @@ const JamsReport = (props) => {
         <TableRow>
           <TableCell colSpan={rowData.length+1}>
             <CorrelationAnalysisTable
-              dateFrom = {rowData[7]} 
-              dateTo = {rowData[7]} 
+              dateFrom = {rowData[10]} 
+              dateTo = {rowData[10]} 
               tail = {rowData[1]}
-              EqID = {rowData[13]}
+              EqID = {rowData[6]}
+              correlationKeywords = {rowData[25]} 
             />
             </TableCell>
         </TableRow>

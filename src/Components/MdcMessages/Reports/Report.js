@@ -66,12 +66,13 @@ const Report = (props) => {
   useEffect(() => {
     let path = "";
 
+    // Delta-Daily-History Report
     if (report.analysis !== "" && report.occurences !== "" && report.legs !== "" && report.eqID !== "" && report.intermittent !== "" && 
       report.days !== "" && report.operator !== "" && report.ata !== "" && report.messages !== "" && report.fromDate !== undefined && report.toDate !== undefined ) {
         if (report.analysis === "delta") {
           if (report.deltaFrom !== undefined && report.deltaTo !== undefined ) {
             path = Constants.APIURL + 'GenerateReport/history/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-            report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + 0 + '/' + report.fromDate + '/' + report.toDate + 
+            report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + 0 + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate + 
             '/' + report.deltaFrom + '/' + report.deltaTo;
           }
 
@@ -93,7 +94,7 @@ const Report = (props) => {
         else if (report.analysis === "daily") {
           let consecutiveDays = 0;
           path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
+          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
 
           localStorage.setItem('daily-report', JSON.stringify( report ) );
           setDailyValue(1);
@@ -111,7 +112,7 @@ const Report = (props) => {
         }
         else if (report.analysis === "history") {
           path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-          report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.fromDate + '/' + report.toDate;
+          report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
 
           localStorage.setItem('history-report', JSON.stringify( report ) );
           setHistValue(1);
@@ -120,7 +121,6 @@ const Report = (props) => {
 
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
-            console.log(data,"hist");
             setHistoryReportData(data);  
             setLoadingHistory(false);  
           }).catch(function (err){
@@ -131,16 +131,7 @@ const Report = (props) => {
      }
   }, [report]);
 
-  const handleGenerateFlagReport = (event) => {
-    setFlagConditions({
-      ...props.reportConditions,
-      flagList
-    });
-    setFlagData([]);
-    setLoadingFlag(true);
-    setFlagValue(1);
-  }
-
+  //Jam Report
   const handleGenerateSurroundingReport = (event) => {
     let jamParameters = [];
     let jamACSNValue;
@@ -164,12 +155,11 @@ const Report = (props) => {
     if (jamParameters.lenght !== 0) {
       const jamsPath = Constants.APIURL + 'GenerateReport/' + jamParameters.analysis + '/' + jamParameters.occurences + '/' + 
       jamParameters.legs + '/' + jamParameters.intermittent + '/' + jamParameters.days + '/' + jamParameters.ata + '/' + 
-      jamParameters.eqID + '/'+ jamParameters.operator + '/' + jamParameters.messages + '/' + jamParameters.fromDate + '/' + 
+      jamParameters.eqID + '/'+ jamParameters.operator + '/' + jamParameters.messages + '/' + jamParameters.ACSN + '/' + jamParameters.fromDate + '/' + 
       jamParameters.toDate + '/' + jamACSNValue;
 
       axios.post(jamsPath).then(function (res){
         var data = JSON.parse(res.data);
-        console.log(data, "jam");
         setJamHistoryData(data);
         setLoadingHistoryJam(false);
       }).catch(function (err){
@@ -181,16 +171,26 @@ const Report = (props) => {
     }
   }
 
+  //Flag Report
+  const handleGenerateFlagReport = (event) => {
+    setFlagConditions({
+      ...props.reportConditions,
+      flagList
+    });
+    setFlagData([]);
+    setLoadingFlag(true);
+    setFlagValue(1);
+  }
+
   useEffect(() => {
     if (!(Object.keys(flagConditions).length === 0 || Object.values(flagConditions).includes(""))){
       const flagPath = Constants.APIURL + 'GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
       flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
-      flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.fromDate + '/' + 
+      flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.ACSN + '/' + flagConditions.fromDate + '/' + 
       flagConditions.toDate + '/1/' + flagConditions.flagList;
 
       axios.post(flagPath).then(function (res){
         var data = JSON.parse(res.data);
-        console.log(data,"flag");
         setFlagData(data);
         setLoadingFlag(false);
       }).catch(function (err){

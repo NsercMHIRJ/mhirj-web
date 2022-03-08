@@ -65,7 +65,6 @@ const PMTable = (props) => {
   }
 
   const handleCorrelationReportChange = (event) => {
-    console.log(correlationReportButtonLabel);
     if (correlationReportButtonLabel === "Load Bad Matches") {
       setCorrelationReportButtonLabel("Load Good Matches");
     } else {
@@ -393,7 +392,7 @@ const options = {
     <TableRow>
         <TableCell colSpan={rowData.length+1}>
         <CorrelationSubTable
-          p_id = {rowData[0]}
+          p_id = {rowData[1]}
           dateFrom = {dateFrom}
           dateTo = {dateTo}
           EqID = {EqID}

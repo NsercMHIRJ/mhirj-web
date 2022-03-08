@@ -322,6 +322,14 @@ const DailyReport = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
      },
+     {
+      name: 'keywords', 
+      label: 'Correlation Keywords',
+      options: {
+      filter: false,
+      sort: false
+      }
+     },
     ];
 
     let data = [];
@@ -353,6 +361,7 @@ const DailyReport = (props) => {
             input: input,  
             recommendation: recommendation, 
             comments: comments, 
+            keywords: item["Keywords"]
           }
         );
         return data;
@@ -383,10 +392,11 @@ const DailyReport = (props) => {
           <TableRow className="correlation-analysis-subtable">
             <TableCell colSpan={rowData.length+1}>
               <CorrelationAnalysisTable
-                dateFrom = {rowData[1]} 
-                dateTo = {rowData[1]}
-                tail = {rowData[0]}
-                EqID = {rowData[7]}
+                dateFrom = {rowData[2]} 
+                dateTo = {rowData[2]}
+                tail = {rowData[1]}
+                EqID = {rowData[8]}
+                correlationKeywords = {rowData[21]} 
               />
               </TableCell>
           </TableRow>

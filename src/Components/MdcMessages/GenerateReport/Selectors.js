@@ -103,7 +103,6 @@ export const ATAMainSelector = (props) => {
           let vals = props.ata.match(pattern);
           setATAMain(vals);
           props.handleATAChange(props.ata);
-          //console.log("vals =",vals);
       } 
     }
   },[props.ata])
@@ -124,6 +123,80 @@ export const ATAMainSelector = (props) => {
         variant="outlined"
         label="ATA Main"
         placeholder="ATA Main"
+        />
+    )}
+  />
+  );
+}
+
+export const ACSNSelector = (props) => {
+  const [ACSN, setACSN] = useState([]);
+  const [ACSNList,setACSNList] = useState([]);
+  useEffect(() => {
+    const path = Constants.APIURL + 'get_all_ACSN'
+
+    try{
+      axios.post(path).then(function (res) {
+        var data = JSON.parse(res.data);
+        let ACSNArray = ['ALL'];
+        Object.values(data).map((item=>{
+          if (item.AC_SN !== null){
+            ACSNArray.push(item.AC_SN.toString());
+          }
+        }))
+        setACSNList(ACSNArray);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+},[]);
+
+ 
+  const handleACSNChange = (event, values) => {
+    const ACSNValues = [];
+    if(values.includes("ALL")){
+      ACSNValues.push("ALL");
+      setACSN(ACSNValues);
+      props.handleACSNChange("ALL");
+    }
+    else{
+      setACSN(values);    
+      let ACSNList = Object.values(values).length >0 ?  "('"+ values.join("','") +"')" : "";
+      props.handleACSNChange(ACSNList);
+    }
+  };
+
+  useEffect(() => {
+    if(props.ACSN){
+      if(props.ACSN == 'ALL') {
+          setACSN(['ALL']);
+          props.handleACSNChange("ALL");
+      }
+      else {
+          var pattern = /(\d+)/g;
+          let vals = props.ACSN.match(pattern);
+          setACSN(vals);
+          props.handleACSNChange(props.ACSN);
+      } 
+    }
+  },[props.ACSN])
+
+  return(
+    <Autocomplete
+    className="autocomplete"
+    multiple
+    limitTags={2}
+    options={ACSNList}
+    getOptionLabel={(item => item)}
+    value = {ACSN}
+    filterSelectedOptions
+    onChange = {handleACSNChange}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        variant="outlined"
+        label="ACSN"
+        placeholder="ACSN"
         />
     )}
   />
@@ -174,12 +247,10 @@ export const EqIDSelector = (props) => {
       }
       else {
           props.handleEqIDChange(props.eqID);
-          // console.log(props.eqID)
           let var1 = props.eqID.substring(1);
       
 
           var1 = var1.substring(0, var1.length - 1).replace(/'/g,'').split(',');
-          console.log("vals = ", var1)
           setEqID(var1);
           
       } 
@@ -241,7 +312,6 @@ export const MessagesSelector = (props) => {
       else if (props.messages === 1 || props.messages === "1"){
           setIncludeMessages('Include');
           props.handleMessagesChange("1");
-          console.log("include =", props.messages)
       }
     }
   },[props.messages]);

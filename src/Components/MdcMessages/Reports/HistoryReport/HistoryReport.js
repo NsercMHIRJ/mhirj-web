@@ -372,15 +372,14 @@ const HistoryReport = (props) => {
        display: false,
       }
      },
-    //  {
-    //   name: 'correlationKeywords', 
-    //   label: 'Correlation Keywords',
-    //   options: {
-    //    filter: false,
-    //    sort: false,
-    //    display: false,
-    //   }
-    //  },
+     {
+      name: 'keywords', 
+      label: 'Correlation Keywords',
+      options: {
+       filter: false,
+       sort: false
+      }
+     },
     ];
 
     let data = [];
@@ -415,6 +414,7 @@ const HistoryReport = (props) => {
             mel: item["MEL or No-Dispatch"], 
             dateFrom: DateConverter(item["Date from"]), 
             dateTo: DateConverter(item["Date to"]), 
+            keywords: item["Keywords"]
           }
         );
         return data;
@@ -441,11 +441,11 @@ const HistoryReport = (props) => {
         <TableRow>
           <TableCell colSpan={rowData.length+1}>
             <CorrelationAnalysisTable
-              dateFrom = {rowData[13]}
-              dateTo = {rowData[14]}
-              tail = {rowData[0]}
-              EqID = {rowData[6]}
-              correlationKeywords = {rowData[3]} //Returning EICAS change to new keyword column
+              dateFrom = {rowData[14]}
+              dateTo = {rowData[15]}
+              tail = {rowData[1]}
+              EqID = {rowData[7]}
+              correlationKeywords = {rowData[24]} 
             />
             </TableCell>
         </TableRow>

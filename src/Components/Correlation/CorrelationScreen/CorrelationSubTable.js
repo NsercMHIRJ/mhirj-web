@@ -308,7 +308,7 @@ const options = {
   onChangeRowsPerPage: onChangeRowsPerPage,
   rowsPerPageOptions: [10,20,50],
   selectToolbarPlacement:"none",
-  tableBodyHeight: responseData ? '450px' : '200px'
+  tableBodyHeight: responseData ? '400px' : '200px'
 };
 
   return (
