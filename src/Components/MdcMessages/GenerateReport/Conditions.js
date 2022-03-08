@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import {OccurencesInput,LegsInput,IntermittentInput,DaysInput} from './AnalysisInput';
 import Paper from '@material-ui/core/Paper';
 import DatePicker from './DatePicker';
-import {AirlineOperatorSelector,ATAMainSelector,MessagesSelector,EqIDSelector} from './Selectors';
+import {AirlineOperatorSelector, ATAMainSelector, ACSNSelector, MessagesSelector, EqIDSelector} from './Selectors';
 import Report from '../Reports/Report';
 //Radio Button Imports
 import Radio from '@material-ui/core/Radio';
@@ -53,6 +53,7 @@ const Conditions = (props) => {
   const [days, setDays] = useState(0);
   const [airline, setAilineType] = useState("");
   const [ATAMain, setATAMain] = useState("");
+  const [ACSN, setACSN] = useState("");
   const [messagesChoice, setIncludeMessages] = useState("");
   const [importedData, setImportedData] = useState({});
 
@@ -71,6 +72,7 @@ const Conditions = (props) => {
     intermittent: '',
     days: '',
     operator: '',
+    ACSN: '',
     ata: '',
     eqID: '',
     messages: '',
@@ -80,7 +82,6 @@ const Conditions = (props) => {
     deltaTo: todayDate,
   }
   );
-
 
   const handleAnalysisChange = (analysis) => {
     setAnalysisType(analysis);
@@ -131,6 +132,10 @@ const Conditions = (props) => {
     setATAMain(ATA);
   };
 
+  const handleACSNChange = (ACSN) => {
+    setACSN(ACSN);
+  };
+
   const handleMessagesChange = (messages) => {
     setIncludeMessages(messages);
   };
@@ -150,6 +155,7 @@ const Conditions = (props) => {
       days: days,
       operator: airline,
       ata: ATAMain,
+      ACSN: ACSN,
       messages: messagesChoice,
       fromDate: dateFrom ? dateFrom : todayDate,
       toDate: dateTo ? dateTo : todayDate,
@@ -176,6 +182,7 @@ const SaveFilter = (jsonData,filename) => {
     intermittent,
     days,
     operator: airline,
+    ACSN: ACSN,
     ata: ATAMain,
     messages: messagesChoice,
     fromDate: dateFrom,
@@ -301,6 +308,11 @@ function upload_filter(e) {
                 handleEqIDChange = {handleEqIDChange}
                 eqID = {importedData.eqID}
               />  
+              <p class="validation-message">{validationResponse.ACSNMessage}</p>
+              <ACSNSelector 
+                handleACSNChange = {handleACSNChange}
+                ACSN = {importedData.ACSN}
+              />   
             </div>                    
             </Grid>       
             <Grid item xs={3}>     

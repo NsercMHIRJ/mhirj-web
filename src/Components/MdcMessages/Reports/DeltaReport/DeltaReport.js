@@ -370,6 +370,14 @@ const DeltaReport = (props) => {
        display: false,
       }
      },
+     {
+      name: 'keywords', 
+      label: 'Correlation Keywords',
+      options: {
+      filter: false,
+      sort: false
+      }
+     },
     ];
 
     let data = [];
@@ -404,7 +412,8 @@ const DeltaReport = (props) => {
           mel: item["Mel or No-Dispatch"],
           dateFrom: item["Date From"],
           dateTo: item["Date To"],
-          mdcMessages: item["MDC Message"]
+          mdcMessages: item["MDC Message"],
+          keywords: item["Keywords"]
         }
       );
       return data;
@@ -442,8 +451,9 @@ const DeltaReport = (props) => {
             <CorrelationAnalysisTable
               dateFrom = {deltaParameters.deltaFrom}
               dateTo = {deltaParameters.deltaTo}
-              tail = {rowData[0]}
-              EqID = {rowData[6]}
+              tail = {rowData[1]}
+              EqID = {rowData[7]}
+              correlationKeywords = {rowData[24]} 
             />
             </TableCell>
         </TableRow>
