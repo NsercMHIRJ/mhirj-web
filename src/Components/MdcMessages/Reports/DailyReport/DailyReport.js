@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import {DateConverter} from '../../../Helper/Helper';
@@ -8,16 +8,34 @@ import TableRow from '@material-ui/core/TableRow';
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 import $ from 'jquery';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
+import AnalysisCustomToolbar from '../../GenerateReport/AnalysisCustomToolbar';
+import SearchTab from '../../GenerateReport/Search';
 
 const DailyReport = (props) => {
   const [rowsSelectedState, setRowsSelected] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState('10');
   const [ isDefault, setIsDefault ] = useState(true);
+  const [ searchParameters, setSearchParameters ] = useState([]);
+  const [ openSearch, setOpenSearch ] = useState(false);
+  const [ searchLoading, setSearchLoading ] = useState(false);
   
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root.daily-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
     $('.reports-root.daily-report .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
+  }
+
+  const toggleSearchModal = () => {
+    setOpenSearch(!openSearch);
+  }
+
+  const handleSearchChange = (column, operator, value) => {
+    // setSearchLoading(true);
+    const searchParametersCopy = [];
+    searchParametersCopy.push(column);
+    searchParametersCopy.push(operator);
+    searchParametersCopy.push(value);
+    setSearchParameters(searchParametersCopy);
   }
 
   const HandleSingleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
@@ -88,6 +106,7 @@ const DailyReport = (props) => {
     {
       name: 'tail', 
       label: 'Tail#',
+      className: 'daily-column-header',
       options: {
        filter: true,
        filterType: 'dropdown',
@@ -367,6 +386,87 @@ const DailyReport = (props) => {
         return data;
       }
       ));
+      
+      if ( searchParameters.length ) {
+        let isFound = false;
+        //switch on operator: searchParameters
+        let columnKey;
+        columns.map( (column, index ) => {
+          if ( column.label === searchParameters[0] ) {
+            columnKey = column.name;
+          }
+        })
+        let dataCopy = [];
+        switch( searchParameters[1] ) {
+          case 'contains':
+            data.map( (item, index) => {
+              isFound = item?.[columnKey]?.toLowerCase()?.includes(searchParameters[2]?.toLowerCase());
+              if ( isFound ) {
+                dataCopy.push(item);
+              }
+            })
+           data = dataCopy;
+          break;
+          case 'equal':
+            data.map( (item, index) => {
+              isFound = item?.[columnKey]?.toLowerCase() === searchParameters[2]?.toLowerCase();
+              if ( isFound ) {
+                dataCopy.push(item);
+              }
+            })
+           data = dataCopy;
+          break;
+          case 'starts with':
+             data.map( (item, index) => {
+              isFound = item?.[columnKey]?.toLowerCase() === searchParameters[2]?.toLowerCase();
+              if ( isFound ) {
+                dataCopy.push(item);
+              }
+            })
+           data = dataCopy;
+            break;
+          case 'ends with':
+             data.map( (item, index) => {
+              isFound = item?.[columnKey]?.toLowerCase()?.endsWith(searchParameters[2]?.toLowerCase());
+              if ( isFound ) {
+                dataCopy.push(item);
+              }
+            })
+           data = dataCopy;
+            break;
+          case 'is empty':
+            data.map( (item, index) => {
+              isFound = item?.[columnKey] === "";
+              if ( isFound ) {
+                dataCopy.push(item);
+              }
+            })
+           data = dataCopy;
+            break;
+          case 'is not empty':
+            data.map( (item, index) => {
+              isFound = item?.[columnKey] !== "";
+              if ( isFound ) {
+                dataCopy.push(item);
+              }
+            })
+           data = dataCopy;
+            break;
+          case 'is any of':
+            data.map( (item, index) => {
+              isFound = item?.[columnKey].some(searchParameters[2]);
+              if ( isFound ) {
+                dataCopy.push(item);
+              }
+            })
+           data = dataCopy;
+            break;
+          default:
+            data = props.data;
+            break;
+        }
+        // setSearchLoading(false);
+      }
   
     const options = {
       filter: true,
@@ -382,6 +482,14 @@ const DailyReport = (props) => {
       sortOrder: {
         name: 'totalOccurences',
         direction: 'desc'
+      },
+      customToolbar: () => {
+        return (
+          <AnalysisCustomToolbar 
+            toggleSearchModal={toggleSearchModal}
+            openSearch = {openSearch}
+          />
+        );
       },
       onCellClick: (colData, cellMeta) => {
         setIsDefault(!isDefault);
@@ -428,18 +536,27 @@ const DailyReport = (props) => {
     };
   
   return (
-    <div className="reports-root daily-report">
-      <Grid container spacing={0}>
-        <Grid item xs={12}>
-          <MUIDataTable
-            title={props.title}
-            data={data}
+    <>
+      <div className="reports-root daily-report">
+        { openSearch &&
+          <SearchTab 
             columns={columns}
-            options={options}
-          />
+            handleSearchChange={handleSearchChange}
+            // searchLoading={searchLoading}
+            />  
+        }
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            <MUIDataTable
+              title={props.title}
+              data={data}
+              columns={columns}
+              options={options}
+            />
+          </Grid> 
         </Grid> 
-      </Grid> 
-    </div>
+      </div>
+    </>
   );
 }
 export default DailyReport;
