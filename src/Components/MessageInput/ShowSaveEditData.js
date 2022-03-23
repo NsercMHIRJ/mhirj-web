@@ -24,6 +24,7 @@ import Chip from '@mui/material/Chip';
 import Check from '@mui/icons-material/Check';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import Alert from '@mui/material/Alert';
+import $ from 'jquery'
 
 const useStyles = makeStyles((theme) => createStyles({
   SaveIcon: {
@@ -51,8 +52,9 @@ const useStyles = makeStyles((theme) => createStyles({
 function ShowSaveEditData() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
-  const [rowID, setRowID] = useState("");
-  const [expand, setExpand] = useState(false);
+  const [rowExpand, setRowExpand] = useState({});
+  const [rowEdit, setRowEdit] = useState({});
+  const [expand, setExpand] = useState(true);
   const [isEdit, setIsEdit] = useState(true);
   const [EqID, setEqID] = useState("");
   const [updateData, setupdateData] = useState([]);
@@ -62,15 +64,15 @@ function ShowSaveEditData() {
   const [isFaild, setIsFaild] = useState(false);
   const [isNoSavedData, setIsNoSavedData] = useState(false);
   const [tmpObjects, setTmpObjects] = useState({});
-
+  const [pageSize, setPageSize] = React.useState(5);
 
   const handleEqIDChangeInput = (eqIDList) => {
     setEqID(eqIDList);
   };
 
   const ExpandCell = (params) => {
-    if(params.id === rowID){
-      if(expand){
+    if(rowExpand.hasOwnProperty(params.id)){
+      if(rowExpand[params.id]){
         return(
           <div className='cellIsExpand'>
             {params.value}
@@ -94,10 +96,9 @@ function ShowSaveEditData() {
 
   const EditInputCell = (props) => {
    
-    const { id, value, api, field, editByButton } = props;
+    const { id, value, api, field } = props;
   
     const handleChange = async (event) => {
-      console.log(editByButton)
         api.setEditCellValue({ id, field, value: event.target.value });
         api.commitRowChange(id)
         const model = api.getEditRowsModel()
@@ -113,20 +114,23 @@ function ShowSaveEditData() {
           multiline
           inputProps={{style: {fontSize: 15}}}
           minRows={2}
-          maxRows={10}
+          maxRows={25}
           onChange={handleChange}
         />
     );
   }
   
   const MatEdit = ({ index }) => {
-      const handleExpandClick = () => {
-        setRowID(index.row.id)
-        setExpand(!expand)
+      const handleExpandClick = () => { 
+        setExpand(!expand)   
+        rowExpand[index.row.id] = !!!rowExpand[index.row.id];  
+        setRowExpand(rowExpand);
       };
       const handleEidtClick = () => {
-        index.api.setRowMode(index.id, isEdit ? 'edit' : 'view')
+        index.api.setRowMode(index.id, rowEdit[index.row.id] ? 'edit' : 'view')
         setIsEdit(!isEdit)
+        rowEdit[index.row.id] = !!!rowEdit[index.row.id]
+        setRowEdit(rowEdit)
       }
       return (
         <div>
@@ -137,19 +141,19 @@ function ShowSaveEditData() {
               aria-label="add an alarm"
               onClick={handleExpandClick}
             >
-               { expand && index.row.id === rowID ? <ExpandLessSharpIcon style={{ fontSize:'28px'}}/> : <ExpandMoreSharpIcon  style={{ fontSize:'28px'}}/>}
+               { rowExpand[index.row.id] && rowExpand.hasOwnProperty(index.row.id)? <ExpandLessSharpIcon style={{ fontSize:'28px'}}/> : <ExpandMoreSharpIcon  style={{ fontSize:'28px'}}/>}
             </IconButton>
           }
         />
         <FormControlLabel
         control={
           <IconButton     
-            color={!isEdit && index.row.id === rowID ? "success" : "secondary"}
+            color={!rowEdit[index.row.id] && rowEdit.hasOwnProperty(index.row.id)? "success" : "secondary"}
             aria-label="add an alarm"
             onClick={handleEidtClick}
             id={`EditId${index.row.id}`}
           >
-            { !isEdit && index.row.id === rowID ? <CheckIcon style={{ fontSize:'28px'}}/>  :<EditIcon style={{ fontSize:'28px'}}/>} 
+            { !rowEdit[index.row.id] && rowEdit.hasOwnProperty(index.row.id)? <CheckIcon style={{ fontSize:'28px'}}/>  :<EditIcon style={{ fontSize:'28px'}}/>} 
           </IconButton>
         }
       />
@@ -160,11 +164,11 @@ function ShowSaveEditData() {
     };
 
     const components = {
-      NoRowsOverlay: () => (
-        <Stack height="100%" alignItems="center" justifyContent="center">
-          {!loading ? 'Please press on the button to display the data.' : 'Please wait while collecting the Data......'}
-        </Stack>
-      ),
+      // NoRowsOverlay: () => (
+      //   <Stack alignItems="center" justifyContent="center">
+      //     {!loading ? 'Please press on the button to display the data.' : 'Please wait while collecting the Data......'}
+      //   </Stack>
+      // ),
       NoResultsOverlay: () => (
         <Stack height="100%" alignItems="center" justifyContent="center">
           filter returns no result
@@ -249,19 +253,19 @@ function ShowSaveEditData() {
   })
 
   const onCellClicked = (params) => {
-    setRowID(params.id)
     if(params.field !== "actions"){
       if(params.cellMode === "view"){
-        setRowID(params.id)
         setExpand(!expand)
+        rowExpand[params.id] = expand 
+        setRowExpand(rowExpand) 
       }
     }
   }
 
   const getRowHeights = ({ id, densityFactor }) => {
-    if(id === rowID){
-      if(expand){
-        return 260 * densityFactor;
+    if(rowExpand.hasOwnProperty(id)){
+      if(rowExpand[id] === true){
+        return 340 * densityFactor;
       }else{
         return 50 * densityFactor;
       }
@@ -355,7 +359,6 @@ function ShowSaveEditData() {
       field: 'LRU',
       headerName: 'LRU',
       renderEditCell: (params)=>{
-        params.editByButton = isEdit
          return <EditInputCell  {...params} 
          />
        },
@@ -542,23 +545,26 @@ function ShowSaveEditData() {
         <ValidationMessages />
         </div>
           <div >
-          <div style={{ height: 500, width: '100%' }}>
+          <div height='400%'>
             {/* <ClipLoader loading={loading} css={override} size={32} /> */}
-              <DataGrid disableClickEventBubbling
-              getRowId={row => row.id}
+              <DataGrid disableClickEventBubbling disableVirtualization
+              getrowExpand={row => row.id}
               title={"INPUT MESSAGE DATA "}
               rows={updateData}
               columns={columns}
               editMode='row'
+              autoHeight={true}
               loading={loading}
               getRowHeight={getRowHeights}
               onCellClick={onCellClicked}
               onCellDoubleClick={onCellDoubleClicked}
               components={components}
-              rowsPerPageOptions={[7,20,50]}
               pageSize={7}
               sx={sxStyle}
-              disableExtendRowFullWidth={false}
+              pageSize={pageSize}
+              onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+              rowsPerPageOptions={[5, 10, 20]}
+              pagination
               />
             </div>  
           </div>
