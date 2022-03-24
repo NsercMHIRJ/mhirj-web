@@ -67,7 +67,7 @@ export default function Chart1() {
                 console.log(res, "response");
 
                 for (const dataObj of JSON.parse(res.data)) {
-                    msgName.push(dataObj.Equation_ID + "\n" + dataObj.ATA + "\n" + dataObj.LRU);
+                    msgName.push(dataObj.LRU);
                     messageOcc.push(parseInt(dataObj.total_message));
                 }
                 setChartData1({
