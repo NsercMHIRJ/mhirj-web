@@ -26,8 +26,18 @@ const Search = (props) => {
         'is not empty',
         'is any of',
     ];
+    const signList = [
+        '=',
+        '<',
+        '>',
+        '<=',
+        '>=',
+        '%',
+        '≠',
+    ];
+    const [ sign, setSign ] = useState('');
     const [ visibility, setVisibility ] = useState(true);
-    const [ searchLoading, setSearchLoading ] = useState(false);
+    const [ searchLoading, setSearchLoading ] = useState(props.searchLoading);
 
     useEffect(() => {
         let columnsCopy = [];
@@ -41,7 +51,7 @@ const Search = (props) => {
 
     const handleSearch = () => {
         if (column && operators && searchValue ) {
-            props.handleSearchChange(column, operators, searchValue);
+            props.handleSearchChange(column, operators, searchValue, sign);
         }
     }
 
@@ -51,17 +61,9 @@ const Search = (props) => {
     }
 
     useEffect(()=> {
-        if ( searchValue && operators && column) {
-            setSearchLoading(true);
-            handleSearch();
-            const timer = setTimeout(() => {
-                setSearchLoading(false);
-                }, 2000);
-                return () => clearTimeout(timer);       
-        } else {
-            setSearchLoading(false);
-        }
-    }, [searchValue])
+        setSearchLoading(props.searchLoading);
+    }, [props.searchLoading])
+
     return (
         <>
             { visibility && 
@@ -70,9 +72,8 @@ const Search = (props) => {
                         <Grid container spacing={1}> 
                             <Grid item xs={1} className="close-icon-container">
                                 <CloseIcon className="search-icons" onClick={()=>handleClear()}/>
-                                {/* <DoneIcon className="search-icons" onClick={()=>handleSearch()}/> */}
                             </Grid>
-                            <Grid item xs={3}>   
+                            <Grid item xs={2}>   
                                 <FormControl variant="outlined" className="form-control">
                                 <InputLabel id="demo-simple-select-outlined-label">Columns</InputLabel>
                                     <Select
@@ -89,7 +90,7 @@ const Search = (props) => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={2}>
                                 <FormControl variant="outlined" className="form-control">
                                     <InputLabel id="demo-simple-select-outlined-label">Operators</InputLabel>
                                         <Select
@@ -106,7 +107,26 @@ const Search = (props) => {
                                         </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={4}>  
+                            { operators === "is any of" &&
+                                <Grid item xs={2}>  
+                                    <FormControl variant="outlined" className="form-control">
+                                        <InputLabel id="demo-simple-select-outlined-label">Sign</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-outlined-label"
+                                            id="demo-simple-select-outlined"
+                                            value={sign}
+                                            onChange={(event)=>setSign(event.target.value)}
+                                            label="Mathematical Sign"
+                                        >
+                                        <MenuItem value="none"></MenuItem>
+                                        {signList.map( item => 
+                                            <MenuItem value={item} key={item}> {item} </MenuItem>
+                                        )};
+                                        </Select>
+                                    </FormControl>                   
+                                </Grid>
+                            }
+                            <Grid item xs={2}>  
                                 <TextField 
                                     id="outlined-basic" 
                                     variant="outlined"
@@ -116,10 +136,19 @@ const Search = (props) => {
                                     value={searchValue}
                                     onChange={(event)=>setSearchValue(event.target.value)}
                                 />
-                                { searchLoading &&
+                            </Grid>
+                            <Grid item xs={3} className="submit-search-container">
+                                <DoneIcon className="search-icons" onClick={()=>handleSearch()}/>
+                                { props.searchLoading && !props.searchError &&
                                     <div className="search-spin">
                                         <CachedIcon/>           
                                     </div>
+                                }
+                                { props.searchError &&
+                                    <div className="validation-message-search-container">
+                                        <p className="validation-message search-message">Search not found.</p>
+                                        <p className="validation-message search-message">Please try again...</p>  
+                                    </div> 
                                 }
                             </Grid>
                         </Grid>
