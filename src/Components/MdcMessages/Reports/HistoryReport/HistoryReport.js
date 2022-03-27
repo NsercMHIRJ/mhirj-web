@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import "../../../../scss/_main.scss";
@@ -8,12 +8,20 @@ import TableRow from '@material-ui/core/TableRow';
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 import $ from 'jquery';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
+import AnalysisCustomToolbar from '../../GenerateReport/AnalysisCustomToolbar';
+import SearchTab from '../../GenerateReport/Search';
 
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
   const [rowsSelectedState, setRowsSelected] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState('10');
   const [ isDefault, setIsDefault ] = useState(true);
+  const [ searchParameters, setSearchParameters ] = useState([]);
+  const [ openSearch, setOpenSearch ] = useState(false);
+  const [ searchLoading, setSearchLoading ] = useState(false);
+  const [ searchError, setSearchError ] = useState(false);
+  const [ firstData, setFirstData ] = useState([]);
+  const [ data, setData ] = useState([]);
 
   const AddCellClass = (index) => {
     console.log(index);
@@ -21,6 +29,136 @@ const HistoryReport = (props) => {
     $('.reports-root.history-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
     $('.reports-root.history-report .MuiTableBody-root .MuiTableRow-root:nth-child('+row+') td div').toggleClass('isClicked');
   }
+
+  const toggleSearchModal = () => {
+    setOpenSearch(!openSearch);
+  }
+
+  const handleSearchChange = ( column, operator, value, sign ) => {
+    setSearchLoading(true);
+    const searchParametersCopy = [];
+    searchParametersCopy.push(column);
+    searchParametersCopy.push(operator);
+    searchParametersCopy.push(value);
+    searchParametersCopy.push(sign);
+    setSearchParameters(searchParametersCopy);
+  }
+
+  useEffect(()=> {
+    if ( searchParameters.length ) {
+      let isFound = false;
+      setSearchError(false);
+      let columnKey;
+      columns.map( (column, index ) => {
+        if ( column.label === searchParameters[0] ) {
+          columnKey = column.name;
+        }
+      })
+      let dataCopy = [];
+      switch( searchParameters[1] ) {
+        case 'contains':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toLowerCase()?.includes(searchParameters[2]?.toLowerCase());
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+        break;
+        case 'equal':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toString()?.toLowerCase() === searchParameters[2]?.toString()?.toLowerCase();
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+        break;
+        case 'starts with':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toString()?.toLowerCase()?.startsWith(searchParameters[2]?.toString()?.toLowerCase());
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+          break;
+        case 'ends with':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toString()?.toLowerCase()?.endsWith(searchParameters[2]?.toString()?.toLowerCase());
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+          break;
+        case 'is empty':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toString() === "";
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+          break;
+        case 'is not empty':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toString() !== "";
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+          break;
+        case 'is any of':
+          isFound = firstData?.some(
+            function(item, index) {
+               let result = eval(
+                item?.[columnKey]?.toString()?.toLowerCase() +
+                searchParameters[3]?.toString() + 
+                searchParameters[2]?.toString()?.toLowerCase() 
+              )
+                if ( result ) {
+                  dataCopy.push(firstData[index]);
+                } 
+            });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+          break;
+        default:
+          setSearchLoading(false);
+          setData(firstData);
+          break;
+      }
+    }
+  }, [searchParameters])
 
   const HandleMultipleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
     setRowsSelected(rowsSelected);
@@ -382,44 +520,48 @@ const HistoryReport = (props) => {
      },
     ];
 
-    let data = [];
-      props.data?.map((item => {
-        let input = item["MHIRJ Input"] === '0' ? '' : item["MHIRJ Input"];
-        let recommendation = item["MHIRJ Recommendation"] === '0' ? '' : item["MHIRJ Recommendation"];
-        let comments = item["Additional Comments"] === '0' ? '' : item["Additional Comments"];
-        let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
+  useEffect(()=> {
+    let dataCopy = [];
+    props.data?.map((item => {
+      let input = item["MHIRJ Input"] === '0' ? '' : item["MHIRJ Input"];
+      let recommendation = item["MHIRJ Recommendation"] === '0' ? '' : item["MHIRJ Recommendation"];
+      let comments = item["Additional Comments"] === '0' ? '' : item["Additional Comments"];
+      let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
 
-        data.push(
-          {
-            ACSN: item["AC SN"],
-            tail: item["AC_TN"], 
-            EICASMessages: item["EICAS Message"],  
-            mdcMessages: item["MDC Message"], 
-            LRU: item["LRU"],  
-            ATA: item["ATA"],  
-            B1Equation: item["B1-Equation"],  
-            type: item["Type"],   
-            equationDescription: item["Equation Description"],   
-            totalOccurences: item["Total Occurrences"],  
-            consecutiveDays: item["Consecutive Days"], 
-            ConsecutiveFlights: item["Consecutive FL"],  
-            intermittent: item["INTERMITNT"],  
-            reasons: item["Reason(s) for flag"],   
-            priority: item["Priority"],   
-            topMessage: topMessage,  
-            recommendation: recommendation, 
-            comments: comments, 
-            input: input,  
-            isJam: item["is_jam"], 
-            mel: item["MEL or No-Dispatch"], 
-            dateFrom: DateConverter(item["Date from"]), 
-            dateTo: DateConverter(item["Date to"]), 
-            keywords: item["Keywords"]
-          }
-        );
-        return data;
-      }
-      ));
+      data.push(
+        {
+          ACSN: item["AC SN"],
+          tail: item["AC_TN"], 
+          EICASMessages: item["EICAS Message"],  
+          mdcMessages: item["MDC Message"], 
+          LRU: item["LRU"],  
+          ATA: item["ATA"],  
+          B1Equation: item["B1-Equation"],  
+          type: item["Type"],   
+          equationDescription: item["Equation Description"],   
+          totalOccurences: item["Total Occurrences"],  
+          consecutiveDays: item["Consecutive Days"], 
+          ConsecutiveFlights: item["Consecutive FL"],  
+          intermittent: item["INTERMITNT"],  
+          reasons: item["Reason(s) for flag"],   
+          priority: item["Priority"],   
+          topMessage: topMessage,  
+          recommendation: recommendation, 
+          comments: comments, 
+          input: input,  
+          isJam: item["is_jam"], 
+          mel: item["MEL or No-Dispatch"], 
+          dateFrom: DateConverter(item["Date from"]), 
+          dateTo: DateConverter(item["Date to"]), 
+          keywords: item["Keywords"]
+        }
+      );
+      return data;
+    }
+    ));
+    setData(dataCopy);
+    setFirstData(dataCopy);
+  }, [props.data])
 
     const options = {
       selectableRows: 'multiple',
@@ -431,6 +573,14 @@ const HistoryReport = (props) => {
       sortOrder: {
         name: 'totalOccurences',
         direction: 'desc'
+      },
+      customToolbar: () => {
+        return (
+          <AnalysisCustomToolbar 
+            toggleSearchModal={toggleSearchModal}
+            openSearch = {openSearch}
+          />
+        );
       },
       onCellClick: (colData, cellMeta) => {
         setIsDefault(!isDefault);
@@ -487,18 +637,28 @@ const HistoryReport = (props) => {
   
 
   return (
-    <div class="reports-root history-report">
-      <Grid container spacing={0}>
-        <Grid item xs={12}>
-          <MUIDataTable
-            title= {props.title}
-            data={data}
-            columns={columns}
-            options={options}
-          />
+    <>
+      <div class="reports-root history-report">
+        { openSearch &&
+            <SearchTab 
+              columns={columns}
+              handleSearchChange={handleSearchChange}
+              searchLoading={searchLoading}
+              searchError = {searchError}
+            />  
+          }
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            <MUIDataTable
+              title= {props.title}
+              data={data}
+              columns={columns}
+              options={options}
+            />
+          </Grid> 
         </Grid> 
-      </Grid> 
-    </div>
+      </div>
+    </>
   );
 }
 export default HistoryReport;
