@@ -520,7 +520,7 @@ const DeltaReport = (props) => {
     useEffect(()=> {
       let dataCopy = [];
       props.data?.map((item => {
-        data.push(
+        dataCopy.push(
           {
             ACSN: item["AC SN"],
             tail: item["Tail#"],
@@ -553,7 +553,6 @@ const DeltaReport = (props) => {
             keywords: item["Keywords"]
           }
         );
-        return data;
       }
       ));
       setData(dataCopy);

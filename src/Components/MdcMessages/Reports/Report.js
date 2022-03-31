@@ -72,7 +72,7 @@ const Report = (props) => {
         if (report.analysis === "delta") {
           if (report.deltaFrom !== undefined && report.deltaTo !== undefined ) {
             path = Constants.APIURL + 'GenerateReport/history/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-            report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + 0 + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate + 
+            report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + 1 + '/' + report.fromDate + '/' + report.toDate + 
             '/' + report.deltaFrom + '/' + report.deltaTo;
           }
 
@@ -113,7 +113,7 @@ const Report = (props) => {
         else if (report.analysis === "history") {
           path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
           report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
-
+          
           localStorage.setItem('history-report', JSON.stringify( report ) );
           setHistValue(1);
           setHistoryReportData([]);

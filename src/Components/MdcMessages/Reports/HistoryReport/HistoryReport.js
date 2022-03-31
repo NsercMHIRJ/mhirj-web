@@ -528,7 +528,7 @@ const HistoryReport = (props) => {
       let comments = item["Additional Comments"] === '0' ? '' : item["Additional Comments"];
       let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
 
-      data.push(
+      dataCopy.push(
         {
           ACSN: item["AC SN"],
           tail: item["AC_TN"], 
@@ -556,7 +556,6 @@ const HistoryReport = (props) => {
           keywords: item["Keywords"]
         }
       );
-      return data;
     }
     ));
     setData(dataCopy);
