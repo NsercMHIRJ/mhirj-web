@@ -18,6 +18,9 @@ const DailyReport = (props) => {
   const [ searchParameters, setSearchParameters ] = useState([]);
   const [ openSearch, setOpenSearch ] = useState(false);
   const [ searchLoading, setSearchLoading ] = useState(false);
+  const [ searchError, setSearchError ] = useState(false);
+  const [ firstData, setFirstData ] = useState([]);
+  const [ data, setData ] = useState([]);
   
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -29,14 +32,131 @@ const DailyReport = (props) => {
     setOpenSearch(!openSearch);
   }
 
-  const handleSearchChange = (column, operator, value) => {
-    // setSearchLoading(true);
+  const handleSearchChange = ( column, operator, value, sign ) => {
+    setSearchLoading(true);
     const searchParametersCopy = [];
     searchParametersCopy.push(column);
     searchParametersCopy.push(operator);
     searchParametersCopy.push(value);
+    searchParametersCopy.push(sign);
     setSearchParameters(searchParametersCopy);
   }
+
+  useEffect(()=> {
+    if ( searchParameters.length ) {
+      let isFound = false;
+      setSearchError(false);
+      let columnKey;
+      columns.map( (column, index ) => {
+        if ( column.label === searchParameters[0] ) {
+          columnKey = column.name;
+        }
+      })
+      let dataCopy = [];
+      switch( searchParameters[1] ) {
+        case 'contains':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toLowerCase()?.includes(searchParameters[2]?.toLowerCase());
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+        break;
+        case 'equal':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toString()?.toLowerCase() === searchParameters[2]?.toString()?.toLowerCase();
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+        break;
+        case 'starts with':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toString()?.toLowerCase()?.startsWith(searchParameters[2]?.toString()?.toLowerCase());
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+          break;
+        case 'ends with':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toString()?.toLowerCase()?.endsWith(searchParameters[2]?.toString()?.toLowerCase());
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+          break;
+        case 'is empty':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toString() === "";
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+          break;
+        case 'is not empty':
+          firstData.map( (item, index) => {
+            isFound = item?.[columnKey]?.toString() !== "";
+            if ( isFound ) {
+              dataCopy.push(item);
+            } 
+          });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+          break;
+        case 'is any of':
+          isFound = firstData?.some(
+            function(item, index) {
+               let result = eval(
+                item?.[columnKey]?.toString()?.toLowerCase() +
+                searchParameters[3]?.toString() + 
+                searchParameters[2]?.toString()?.toLowerCase() 
+              )
+                if ( result ) {
+                  dataCopy.push(firstData[index]);
+                } 
+            });
+          if( dataCopy.length === 0 ) {
+            setSearchError(true);
+          }
+          setSearchLoading(false);
+          setData(dataCopy);
+          break;
+        default:
+          setSearchLoading(false);
+          setData(firstData);
+          break;
+      }
+    }
+  }, [searchParameters])
 
   const HandleSingleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
     if (rowsSelected.length !== 0 && data[rowsSelected].isJam === true) {
@@ -351,122 +471,45 @@ const DailyReport = (props) => {
      },
     ];
 
-    let data = [];
-      props.data?.map((item => {
-        let input = item["MHIRJ ISE Input"] === '0' ? '' : item["MHIRJ ISE Input"];
-        let recommendation = item["MHIRJ ISE Recommendation"] === '0' ? '' : item["MHIRJ ISE Recommendation"];
-        let comments = item["Additional Comments"] === '0' ? '' : item["Additional Comments"];
-        let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
-
-        data.push(
-          {
-            tail: item["AC_TN"],  
-            date: DateConverter(item["Date"]),
-            ACSN: item["AC SN"], 
-            EICASMessage: item["EICAS Message"], 
-            mdcMessages: item["MDC Message"], 
-            LRU: item["LRU"],  
-            ATA: item["ATA"],  
-            B1Equation: item["B1-Equation"], 
-            type: item["Type"],   
-            equationDescription: item["Equation Description"], 
-            totalOccurences: item["Total Occurences"],  
-            ConsecutiveFlights: item["Consecutive FL"], 
-            intermittent: item["INTERMITNT"],  
-            reasons: item["Reason(s) for flag"],   
-            priority: item["Priority"],   
-            topMessage: topMessage,  
-            mel: item["MEL or No-Dispatch"],
-            input: input,  
-            recommendation: recommendation, 
-            comments: comments, 
-            keywords: item["Keywords"]
-          }
-        );
-        return data;
-      }
-      ));
-      
-      if ( searchParameters.length ) {
-        let isFound = false;
-        //switch on operator: searchParameters
-        let columnKey;
-        columns.map( (column, index ) => {
-          if ( column.label === searchParameters[0] ) {
-            columnKey = column.name;
-          }
-        })
-        let dataCopy = [];
-        switch( searchParameters[1] ) {
-          case 'contains':
-            data.map( (item, index) => {
-              isFound = item?.[columnKey]?.toLowerCase()?.includes(searchParameters[2]?.toLowerCase());
-              if ( isFound ) {
-                dataCopy.push(item);
-              }
-            })
-           data = dataCopy;
-          break;
-          case 'equal':
-            data.map( (item, index) => {
-              isFound = item?.[columnKey]?.toLowerCase() === searchParameters[2]?.toLowerCase();
-              if ( isFound ) {
-                dataCopy.push(item);
-              }
-            })
-           data = dataCopy;
-          break;
-          case 'starts with':
-             data.map( (item, index) => {
-              isFound = item?.[columnKey]?.toLowerCase() === searchParameters[2]?.toLowerCase();
-              if ( isFound ) {
-                dataCopy.push(item);
-              }
-            })
-           data = dataCopy;
-            break;
-          case 'ends with':
-             data.map( (item, index) => {
-              isFound = item?.[columnKey]?.toLowerCase()?.endsWith(searchParameters[2]?.toLowerCase());
-              if ( isFound ) {
-                dataCopy.push(item);
-              }
-            })
-           data = dataCopy;
-            break;
-          case 'is empty':
-            data.map( (item, index) => {
-              isFound = item?.[columnKey] === "";
-              if ( isFound ) {
-                dataCopy.push(item);
-              }
-            })
-           data = dataCopy;
-            break;
-          case 'is not empty':
-            data.map( (item, index) => {
-              isFound = item?.[columnKey] !== "";
-              if ( isFound ) {
-                dataCopy.push(item);
-              }
-            })
-           data = dataCopy;
-            break;
-          case 'is any of':
-            data.map( (item, index) => {
-              isFound = item?.[columnKey].some(searchParameters[2]);
-              if ( isFound ) {
-                dataCopy.push(item);
-              }
-            })
-           data = dataCopy;
-            break;
-          default:
-            data = props.data;
-            break;
+  useEffect(()=> {
+    let dataCopy = [];
+    props.data?.map((item => {
+      let input = item["MHIRJ ISE Input"] === '0' ? '' : item["MHIRJ ISE Input"];
+      let recommendation = item["MHIRJ ISE Recommendation"] === '0' ? '' : item["MHIRJ ISE Recommendation"];
+      let comments = item["Additional Comments"] === '0' ? '' : item["Additional Comments"];
+      let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
+  
+      dataCopy.push(
+        {
+          tail: item["AC_TN"],  
+          date: DateConverter(item["Date"]),
+          ACSN: item["AC SN"], 
+          EICASMessage: item["EICAS Message"], 
+          mdcMessages: item["MDC Message"], 
+          LRU: item["LRU"],  
+          ATA: item["ATA"],  
+          B1Equation: item["B1-Equation"], 
+          type: item["Type"],   
+          equationDescription: item["Equation Description"], 
+          totalOccurences: item["Total Occurences"],  
+          ConsecutiveFlights: item["Consecutive FL"], 
+          intermittent: item["INTERMITNT"],  
+          reasons: item["Reason(s) for flag"],   
+          priority: item["Priority"],   
+          topMessage: topMessage,  
+          mel: item["MEL or No-Dispatch"],
+          input: input,  
+          recommendation: recommendation, 
+          comments: comments, 
+          keywords: item["Keywords"]
         }
-        // setSearchLoading(false);
-      }
+      );
+      //return data;
+    }
+    ));
+    setData(dataCopy);
+    setFirstData(dataCopy);
+  }, [props.data])
   
     const options = {
       filter: true,
@@ -542,8 +585,9 @@ const DailyReport = (props) => {
           <SearchTab 
             columns={columns}
             handleSearchChange={handleSearchChange}
-            // searchLoading={searchLoading}
-            />  
+            searchLoading={searchLoading}
+            searchError = {searchError}
+          />  
         }
         <Grid container spacing={0}>
           <Grid item xs={12}>

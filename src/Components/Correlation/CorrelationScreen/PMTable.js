@@ -347,7 +347,7 @@ const columns = [
         PM_ATA: item["PM_ATA"], //ok
         discrepancy: item["Discrepancy"], //ok
         action: item["CorrectiveAction"], //ok
-        date: DateConverter(item["TransDate"]), //ok
+        date: item["TransDate"], //ok
         // failureFlag: item["Failure_Flag"],
         // squawkSource: item["SquawkSource"],
         // MRB: item["MRB"],
