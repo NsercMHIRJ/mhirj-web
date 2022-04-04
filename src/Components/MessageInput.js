@@ -20,12 +20,14 @@ const useStyles = makeStyles((theme) => createStyles({
     width: '92vw',
     color: "#001c3e"
   },
+
   container: {
     padding: '20px 40px',
   },
   Grid: {
-    paddingLeft: '200px',
-    margin: 'auto',
+    width: '100%',
+    margin: '0 auto',
+    
   },
   card: {
     backgroundColor: "#C5D3E0",
@@ -33,6 +35,9 @@ const useStyles = makeStyles((theme) => createStyles({
     justify: 'center',
     padding: '5px',
   },
+
+
+
 }));
 
 export default function FileUpload() {
@@ -48,7 +53,7 @@ export default function FileUpload() {
           < UploadMessageInput />
 					<div className={classes.container}>
 						<Grid className={classes.Grid} container spacing={3}>
-							<div style={{ margin: '20px 300px 10px -60px', height: '50px', width: '92vw', backgroundColor: "#C5D3E0", textAlign: 'center', justify: 'center', padding: '0px' }}>
+            <div style={{height: '50px', width: '92vw', backgroundColor: "#C5D3E0", textAlign: 'center', justify: 'center' }}>
 								<h3>UPDATE INPUT MESSAGE DATA</h3>
 							</div>
                 <ShowSaveEditData />

@@ -1,4 +1,4 @@
-import React, {useState , useEffect , useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import { FormControlLabel } from '@material-ui/core';
 import IconButton from '@mui/material/IconButton';
@@ -11,24 +11,36 @@ import Grid from '@material-ui/core/Grid';
 import {EqIDSelectorInput} from '../ATAGraphSelectors';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import ClipLoader from "react-spinners/ClipLoader";
 import { DataGrid } from '@mui/x-data-grid';
 import Stack from '@mui/material/Stack';
-import SaveIcon from '@mui/icons-material/Save';
 import { makeStyles } from '@material-ui/core/styles';
 import { createStyles } from "@material-ui/core/styles";
 import ExpandLessSharpIcon from '@mui/icons-material/ExpandLessSharp';
 import ExpandMoreSharpIcon from '@mui/icons-material/ExpandMoreSharp';
-import { css } from "@emotion/react";
-import Chip from '@mui/material/Chip';
-import Check from '@mui/icons-material/Check';
-import DangerousIcon from '@mui/icons-material/Dangerous';
 import Alert from '@mui/material/Alert';
-import $ from 'jquery'
+import $ from 'jquery';
 
 const useStyles = makeStyles((theme) => createStyles({
-  SaveIcon: {
-    fontSize:'30px'
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: theme.spacing(2),
+    },
+    fontSize: 'medium',
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    WebkitFontSmoothing: 'auto',
   },
   button: {
     margin: '30px auto',
@@ -44,6 +56,12 @@ const useStyles = makeStyles((theme) => createStyles({
     width:'88%',
     borderRadius: '25px',
     color:'white'
+  },
+  buttonSave: {
+    margin: '40px 0% 4% -90%',
+    backgroundColor: "#001c3e",
+    color: "White",
+    width: '6vw',
   }
 }));
 
@@ -69,6 +87,13 @@ function ShowSaveEditData() {
   const handleEqIDChangeInput = (eqIDList) => {
     setEqID(eqIDList);
   };
+
+  useEffect(()=> {
+    var cells = $('.MuiDataGrid-cell')
+    let value = cells.attr('data-field');
+    console.log(cells, value)
+  })
+
 
   const ExpandCell = (params) => {
     if(rowExpand.hasOwnProperty(params.id)){
@@ -127,10 +152,10 @@ function ShowSaveEditData() {
         setRowExpand(rowExpand);
       };
       const handleEidtClick = () => {
-        index.api.setRowMode(index.id, rowEdit[index.row.id] ? 'edit' : 'view')
         setIsEdit(!isEdit)
         rowEdit[index.row.id] = !!!rowEdit[index.row.id]
         setRowEdit(rowEdit)
+        index.api.setRowMode(index.id, rowEdit[index.row.id] ? 'edit' : 'view')
       }
       return (
         <div>
@@ -148,12 +173,12 @@ function ShowSaveEditData() {
         <FormControlLabel
         control={
           <IconButton     
-            color={!rowEdit[index.row.id] && rowEdit.hasOwnProperty(index.row.id)? "success" : "secondary"}
+            color={rowEdit[index.row.id]? "success" : "secondary"}
             aria-label="add an alarm"
             onClick={handleEidtClick}
             id={`EditId${index.row.id}`}
           >
-            { !rowEdit[index.row.id] && rowEdit.hasOwnProperty(index.row.id)? <CheckIcon style={{ fontSize:'28px'}}/>  :<EditIcon style={{ fontSize:'28px'}}/>} 
+            { rowEdit[index.row.id]? <CheckIcon style={{ fontSize:'28px'}}/>  :<EditIcon style={{ fontSize:'28px'}}/>} 
           </IconButton>
         }
       />
@@ -162,19 +187,6 @@ function ShowSaveEditData() {
       );
 
     };
-
-    const components = {
-      // NoRowsOverlay: () => (
-      //   <Stack alignItems="center" justifyContent="center">
-      //     {!loading ? 'Please press on the button to display the data.' : 'Please wait while collecting the Data......'}
-      //   </Stack>
-      // ),
-      NoResultsOverlay: () => (
-        <Stack height="100%" alignItems="center" justifyContent="center">
-          filter returns no result
-        </Stack>
-      ),
-    }
   const Show_inputMessage_data = useCallback (() => {
         setLoading(true)
         const path1 = Constants.APIURL + 'all_mdc_messages_input/' +EqID;
@@ -304,7 +316,7 @@ function ShowSaveEditData() {
       },5000)
       return(
       <Stack sx={{ width: '100%' }} spacing={2}>
-      <Alert severity="error">Something wrong with the server Please try again!</Alert>
+      <Alert severity="error">Something wrong with the server Please try later!!!</Alert>
     </Stack>
       )
     }else if (isNoSavedData){
@@ -328,14 +340,12 @@ function ShowSaveEditData() {
     {
       field: 'actions',
       headerName: 'Actions',
-      sortable: false,
-      disableClickEventBubbling: true,
-      pinnable: false,
+
       renderCell: (params) => {
         return (
           <div
             className="d-flex justify-content-between align-items-center"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer",position: '-webkit-sticky',position: 'sticky', background: '#fff',left: 0, zIndex: 1, }}
           >
             <MatEdit index={params} />
           </div>
@@ -508,7 +518,6 @@ function ShowSaveEditData() {
     },
   ];
 
-
   const sxStyle = {
     boxShadow: 2,
     border: 2,
@@ -520,71 +529,65 @@ function ShowSaveEditData() {
     '& .MuiDataGrid-cell:hover': {
         color: 'primary.main',
     },
-    whiteSpace: 'normal'
+    whiteSpace: 'normal',
+    '& .MuiDataGrid-cell[data-field*="actions"]': {
+      position: '-webkit-sticky',
+      position: 'sticky',
+      background: '#fff',
+      left: 0,
+      zIndex: 1,
+    }
   }
 
   return(
-  <div>
+    <div>
     <Grid item xs={5} style={{ marginLeft: '10px' }}>
       <div>
-        <div style={{ marginLeft:'50px', marginTop: '30px',width: '1450px'}}>  
-          <EqIDSelectorInput handleEqIDChangeInput= {handleEqIDChangeInput}/>
+        <div style={{ marginLeft: '50px', marginTop: '30px', width: '1450px' }}>
+          <EqIDSelectorInput handleEqIDChangeInput={handleEqIDChangeInput} />
         </div>
         <br></br>
       </div>
     </Grid>
     <Grid item xs={5} className={classes.showButtonGrid}>
-      <div style={{paddingLeft: '100px'}}>
+      <div style={{ paddingLeft: '100px' }}>
         <Button className={classes.button} onClick={(e) => Show_inputMessage_data(e)} id="show" variant="contained" component="span">Show Input Message Data </Button>
-        
       </div>
     </Grid>
     <Grid item xs={12}>
-      <Paper style={{ marginLeft: '-230px', width: '123%' }}>
-      <div >
-        <ValidationMessages />
+      <Paper style={{ width: '88vw', textAlign: 'center', margin:'0 auto' }}>
+        <div >
+          <ValidationMessages />
         </div>
-          <div >
-          <div height='400%'>
-            {/* <ClipLoader loading={loading} css={override} size={32} /> */}
-              <DataGrid disableClickEventBubbling disableVirtualization
+        <div >
+          <div style={{ width: '100%' }}>
+            <DataGrid disableVirtualization disableClickEventBubbling 
               getrowExpand={row => row.id}
               title={"INPUT MESSAGE DATA "}
               rows={updateData}
               columns={columns}
+              columnBuffer={2}
+              columnThreshold={2}
               editMode='row'
               autoHeight={true}
               loading={loading}
               getRowHeight={getRowHeights}
               onCellClick={onCellClicked}
               onCellDoubleClick={onCellDoubleClicked}
-              components={components}
-              pageSize={7}
               sx={sxStyle}
               pageSize={pageSize}
               onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-              rowsPerPageOptions={[5, 10, 20]}
+              rowsPerPageOptions={[8, 15, 25]}
               pagination
-              />
-            </div>  
+            />
+      
           </div>
-         
-        <IconButton aria-label="Save" className={classes.SaveIcon}>
-        <Chip color="default" 
-          label={
-          <span>
-            <b>Save.</b>
-          </span>
-        }
-        onClick={() => saveTable()}
-        icon={<SaveIcon   style={{fontSize:'40px'}} />}
-        />
-        </IconButton>
-        
+          
+        </div>
+        <Button className={classes.buttonSave} onClick={(e) => saveTable()} id="save" variant="contained" component="span"> Save </Button>
       </Paper>
     </Grid>
   </div>
-  
   )
 }
   

@@ -6,6 +6,8 @@ import { createStyles } from "@material-ui/core/styles";
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 const useStyles = makeStyles((theme) => createStyles({
     container: {
@@ -24,14 +26,25 @@ const useStyles = makeStyles((theme) => createStyles({
       width:'23%',
       borderRadius: '25px',
       color:'white'
-    }
+    },
+    button: {
+        margin: '0 64%',
+        width: '60%',
+        backgroundColor: "#001c3e",
+        color: "White",
+      },
+      input: {
+
+      }
 }));
 
 function UploadMessageInput(){
     const [input_Message_file, setInput_Message_File] = useState({});
     const [loadProgress, setLoadProgress] = useState(false);
     const classes = useStyles();
-    
+    const [success, setSuccess] = useState(false)
+    const [failed, setFailed] = useState(false)
+    const [ValidationMsg, setValidationMsg] = useState("")
     const handleInputFileChange = (e) => {
         console.log(e.target.files)
         console.log(e.target.files[0]);
@@ -54,23 +67,53 @@ function UploadMessageInput(){
             data: data
         }).then((res) => {
             setLoadProgress(false);
-            alert("File Uploaded Successfully!")
+            setSuccess(true)
         }).catch(err => {
-            console.log(err);
+            setLoadProgress(false);
+            setValidationMsg(`${err.message}`)
+            setFailed(true)
         })
     }
 
+    const Validation = () => {
+        if (success){
+        setTimeout(()=>{
+            setSuccess(false)
+            },5000)
+        return(
+                <Stack sx={{ width: '80%' }} spacing={2}>
+                <Alert severity="success">Data Upload Successufly!</Alert>
+                </Stack>
+            )
+        }else if (failed) {
+            setTimeout(()=>{
+                setFailed(false)
+              },5000)
+              return(
+                <Stack sx={{ width: '100%', height: '60%' }} spacing={2}>
+                <Alert severity="error">{ValidationMsg}</Alert>
+              </Stack>
+                )
+        }  else {
+            return(
+                    <div> </div>
+                )
+        }
+    }
 
     return(
     <div className={classes.container}>
+        <div>
+        <Validation />
+        </div>
         <Grid className={classes.Grid} container spacing={3}>
             <div>
                 <input className={classes.input} id="contained-button-file" multiple type="file" onChange={(e) => handleInputFileChange(e)} />
-                <Button type="button" style={{marginLeft: "370px", padding: "5px", backgroundColor: "#001c3e",color: "white"}} onClick={(e) => upload_InputMessage_data(e)}>Upload Input Message Data</Button>
+                <Button className={classes.button} onClick={(e) => upload_InputMessage_data(e)} id="show" variant="contained" component="span">Upload Input Message Data</Button>
             </div>
             <br></br>
         </Grid>
-        {loadProgress ? <CircularProgress style={{ marginLeft: '580px' }} /> : ""}
+        {loadProgress ? <CircularProgress style={{ marginLeft: '400px' }} /> : ""}
     </div>
     )
 }
