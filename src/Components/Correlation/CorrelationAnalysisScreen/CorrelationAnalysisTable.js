@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import CorrelationCustomToolbar from "../CorrelationCustomToolbar";
 import CorrelationKeywordModal from '../CorrelationKeywordModal';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
+import CorrelationCustomFooter from '../CorrelationCustomFooter';
 
 const CorrelationAnalysisTable = (props) => {
   const [data, setData] = useState([]);
@@ -27,6 +28,7 @@ const CorrelationAnalysisTable = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState('10');
   const [isDefault, setIsDefault] = useState(true);
   const [openCorrelationModal, setOpenCorrelationModal] = useState(false);
+  const [backDate, setBackDate] = useState(10);
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -52,6 +54,10 @@ const CorrelationAnalysisTable = (props) => {
     setRowsPerPage(rowsPerPage);
   };
 
+  const handleCorrelationBackDateChange = (event) => {
+    setBackDate(event.target.value);
+  }
+
   const headingStyle = {
     maxWidth:'200px',
     minWidth:'50px',
@@ -76,6 +82,7 @@ const CorrelationAnalysisTable = (props) => {
 
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
+        console.log(data);
         setData(data);
         setLoading(false);
       }).catch(function (err){
@@ -202,6 +209,17 @@ const CorrelationAnalysisTable = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
+    {
+      name: 'pm_date', 
+      label: 'PM Resolved Date',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
     // {
     //   name: 'failureFlag', 
     //   label: 'Failure Flag',
@@ -256,12 +274,13 @@ const CorrelationAnalysisTable = (props) => {
     data.map((item => {
       responseData.push(
         {
-          p_id: item["MaintTransID"], //ok
+          p_id: item["MaintTransID"],  //ok
           ATA: item["ATA_Main"], //ok
           PM_ATA: item["PM_ATA"], //ok
           discrepancy: item["Discrepancy"], //ok
           action: item["CorrectiveAction"], //ok
-          date: DateConverter(item["TransDate"]), //ok
+          date: item["TransDate"], //ok
+          pm_date: item["PM_Resolved_Date"] //ok
           // failureFlag: item["Failure_Flag"],
           // squawkSource: item["SquawkSource"],
           // MRB: item["MRB"],
@@ -290,6 +309,21 @@ const options = {
     setIsDefault(!isDefault);
     AddCellClass(cellMeta.rowIndex);
   },
+  customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage, textLabels) => {
+    return (
+      <CorrelationCustomFooter
+        count={count}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        changeRowsPerPage={changeRowsPerPage}
+        changePage={changePage}
+        textLabels={textLabels}
+        handleCorrelationBackDateChange = {handleCorrelationBackDateChange}
+        backDate = {backDate}
+        setBackDate = {setBackDate}
+      />
+    );
+  },
   customToolbar: () => {
     return (
       <CorrelationCustomToolbar 
@@ -317,9 +351,9 @@ const options = {
     },
   },
   elevation: 1,
-  rowsPerPage:  rowsPerPage,
-  onChangeRowsPerPage: onChangeRowsPerPage,
-  rowsPerPageOptions: [10,20,50],
+  // rowsPerPage:  rowsPerPage,
+  // onChangeRowsPerPage: onChangeRowsPerPage,
+  // rowsPerPageOptions: [10,20,50],
   selectToolbarPlacement:"none",
   };
 

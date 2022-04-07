@@ -23,19 +23,8 @@ const Search = (props) => {
         'starts with',
         'ends with',
         'is empty',
-        'is not empty',
-        'is any of',
+        'is not empty'
     ];
-    const signList = [
-        '=',
-        '<',
-        '>',
-        '<=',
-        '>=',
-        '%',
-        '≠',
-    ];
-    const [ sign, setSign ] = useState('');
     const [ visibility, setVisibility ] = useState(true);
     const [ searchLoading, setSearchLoading ] = useState(props.searchLoading);
 
@@ -50,8 +39,14 @@ const Search = (props) => {
     }, [props.columns]);
 
     const handleSearch = () => {
-        if (column && operators && searchValue ) {
-            props.handleSearchChange(column, operators, searchValue, sign);
+        if ( operators !== 'is empty' || operators !== 'is not empty' ) {
+             if (column && operators && searchValue ) {
+                props.handleSearchChange(column, operators, searchValue );
+            }
+        } else {
+            if ( column && operators ) {
+                props.handleSearchChange(column, operators, searchValue );
+            }
         }
     }
 
@@ -73,7 +68,7 @@ const Search = (props) => {
                             <Grid item xs={1} className="close-icon-container">
                                 <CloseIcon className="search-icons" onClick={()=>handleClear()}/>
                             </Grid>
-                            <Grid item xs={2}>   
+                            <Grid item xs={3}>   
                                 <FormControl variant="outlined" className="form-control">
                                 <InputLabel id="demo-simple-select-outlined-label">Columns</InputLabel>
                                     <Select
@@ -107,26 +102,7 @@ const Search = (props) => {
                                         </Select>
                                 </FormControl>
                             </Grid>
-                            { operators === "is any of" &&
-                                <Grid item xs={2}>  
-                                    <FormControl variant="outlined" className="form-control">
-                                        <InputLabel id="demo-simple-select-outlined-label">Sign</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-outlined-label"
-                                            id="demo-simple-select-outlined"
-                                            value={sign}
-                                            onChange={(event)=>setSign(event.target.value)}
-                                            label="Mathematical Sign"
-                                        >
-                                        <MenuItem value="none"></MenuItem>
-                                        {signList.map( item => 
-                                            <MenuItem value={item} key={item}> {item} </MenuItem>
-                                        )};
-                                        </Select>
-                                    </FormControl>                   
-                                </Grid>
-                            }
-                            <Grid item xs={2}>  
+                            <Grid item xs={3}>  
                                 <TextField 
                                     id="outlined-basic" 
                                     variant="outlined"

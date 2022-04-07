@@ -30,13 +30,12 @@ const DeltaReport = (props) => {
     setOpenSearch(!openSearch);
   }
 
-  const handleSearchChange = ( column, operator, value, sign ) => {
+  const handleSearchChange = ( column, operator, value ) => {
     setSearchLoading(true);
     const searchParametersCopy = [];
     searchParametersCopy.push(column);
     searchParametersCopy.push(operator);
     searchParametersCopy.push(value);
-    searchParametersCopy.push(sign);
     setSearchParameters(searchParametersCopy);
   }
 
@@ -124,24 +123,6 @@ const DeltaReport = (props) => {
               dataCopy.push(item);
             } 
           });
-          if( dataCopy.length === 0 ) {
-            setSearchError(true);
-          }
-          setSearchLoading(false);
-          setData(dataCopy);
-          break;
-        case 'is any of':
-          isFound = firstData?.some(
-            function(item, index) {
-               let result = eval(
-                item?.[columnKey]?.toString()?.toLowerCase() +
-                searchParameters[3]?.toString() + 
-                searchParameters[2]?.toString()?.toLowerCase() 
-              )
-                if ( result ) {
-                  dataCopy.push(firstData[index]);
-                } 
-            });
           if( dataCopy.length === 0 ) {
             setSearchError(true);
           }
