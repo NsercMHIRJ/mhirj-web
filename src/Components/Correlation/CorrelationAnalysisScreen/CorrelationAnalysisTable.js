@@ -82,6 +82,7 @@ const CorrelationAnalysisTable = (props) => {
 
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
+        console.log(data);
         setData(data);
         setLoading(false);
       }).catch(function (err){
@@ -208,6 +209,17 @@ const CorrelationAnalysisTable = (props) => {
         setCellHeaderProps: () => ({ style: headingStyle }),
       }
     },
+    {
+      name: 'pm_date', 
+      label: 'PM Resolved Date',
+      options: {
+        filter: true,
+        filterType: 'dropdown',
+        sort: true,
+        setCellProps: () => ({style: columnStyle}),
+        setCellHeaderProps: () => ({ style: headingStyle }),
+      }
+    },
     // {
     //   name: 'failureFlag', 
     //   label: 'Failure Flag',
@@ -262,12 +274,13 @@ const CorrelationAnalysisTable = (props) => {
     data.map((item => {
       responseData.push(
         {
-          p_id: item["MaintTransID"], //ok
+          p_id: item["MaintTransID"],  //ok
           ATA: item["ATA_Main"], //ok
           PM_ATA: item["PM_ATA"], //ok
           discrepancy: item["Discrepancy"], //ok
           action: item["CorrectiveAction"], //ok
           date: item["TransDate"], //ok
+          pm_date: item["PM_Resolved_Date"] //ok
           // failureFlag: item["Failure_Flag"],
           // squawkSource: item["SquawkSource"],
           // MRB: item["MRB"],
