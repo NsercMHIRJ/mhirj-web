@@ -28,7 +28,7 @@ const CorrelationAnalysisTable = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState('10');
   const [isDefault, setIsDefault] = useState(true);
   const [openCorrelationModal, setOpenCorrelationModal] = useState(false);
-  const [backDate, setBackDate] = useState(10);
+  const [backDate, setBackDate] = useState(7);
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -78,11 +78,15 @@ const CorrelationAnalysisTable = (props) => {
     if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined && PMConditions.EqID !== '' && PMConditions.tail !== '') {
 
       let status = correlationReportStatus ? 3 : 1;
+
       let path = Constants.APIURL + 'corelation_tail/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail + '/' + status;
+
+      if ( backDate !== 7 && backDate !== "" ) {
+        path = path + '?days=' + backDate;
+      }
 
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
-        console.log(data);
         setData(data);
         setLoading(false);
       }).catch(function (err){
@@ -92,7 +96,7 @@ const CorrelationAnalysisTable = (props) => {
     } else {
       setLoading(false);
     }
-  },[PMConditions, correlationReportStatus]);
+  },[PMConditions, correlationReportStatus, backDate]);
 
   const columns = [
     {
