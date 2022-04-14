@@ -21,7 +21,6 @@ const CorrelationCustomFooter = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState('10');
 
   const handleChangePage = (event, newPage) => {
-    console.log(newPage);
     setPage(newPage);
   };
 

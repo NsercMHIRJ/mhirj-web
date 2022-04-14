@@ -80,8 +80,11 @@ const CorrelationAnalysisTable = (props) => {
         path = path + '?days=' + backDate;
       }
 
+      console.log(path);
+
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
+        console.log(data);
         setData(data);
         setLoading(false);
       }).catch(function (err){
@@ -199,7 +202,7 @@ const CorrelationAnalysisTable = (props) => {
     },
     {
       name: 'date', 
-      label: 'Date',
+      label: 'Reported Date',
       options: {
         filter: true,
         filterType: 'dropdown',
@@ -210,7 +213,7 @@ const CorrelationAnalysisTable = (props) => {
     },
     {
       name: 'pm_date', 
-      label: 'PM Resolved Date',
+      label: 'Resolved Date',
       options: {
         filter: true,
         filterType: 'dropdown',
