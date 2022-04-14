@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { withStyles } from "@material-ui/core/styles";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,14 +16,18 @@ const defaultToolbarStyles = {
 };
 
 const CorrelationCustomFooter = (props) => {
-  const { count, classes, textLabels, rowsPerPage, page } = props;
+  const { count, classes, textLabels } = props;
+  const [page, setPage] = useState(props.page);
+  const [rowsPerPage, setRowsPerPage] = useState('10');
 
-  const handleRowChange = event => {
-    props.changeRowsPerPage(event.target.value);
+  const handleChangePage = (event, newPage) => {
+    console.log(newPage);
+    setPage(newPage);
   };
 
-  const handlePageChange = (_, page) => {
-    props.changePage(page);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   const footerStyle = {
@@ -62,7 +66,6 @@ const CorrelationCustomFooter = (props) => {
             <MuiTablePagination
               component="div"
               count={count}
-              rowsPerPage={rowsPerPage}
               page={page}
               labelRowsPerPage={textLabels.rowsPerPage}
               labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${textLabels.displayRows} ${count}`}
@@ -72,9 +75,10 @@ const CorrelationCustomFooter = (props) => {
               nextIconButtonProps={{
                 'aria-label': props.textLabels.next,
               }}
+              rowsPerPage={rowsPerPage}
               rowsPerPageOptions={[10,20,50]}
-              onChangePage={handlePageChange}
-              onChangeRowsPerPage={handleRowChange}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </TableCell>
         </TableRow>

@@ -25,7 +25,6 @@ const CorrelationAnalysisTable = (props) => {
       tail: props.tail
     },
   );
-  const [rowsPerPage, setRowsPerPage] = useState('10');
   const [isDefault, setIsDefault] = useState(true);
   const [openCorrelationModal, setOpenCorrelationModal] = useState(false);
   const [backDate, setBackDate] = useState(7);
@@ -49,10 +48,6 @@ const CorrelationAnalysisTable = (props) => {
   const toggleKeyword = (event) => {
     setOpenCorrelationModal(!openCorrelationModal);
   }
-
-  const onChangeRowsPerPage = (rowsPerPage) => {
-    setRowsPerPage(rowsPerPage);
-  };
 
   const handleCorrelationBackDateChange = (event) => {
     setBackDate(event.target.value);
@@ -313,13 +308,11 @@ const options = {
     setIsDefault(!isDefault);
     AddCellClass(cellMeta.rowIndex);
   },
-  customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage, textLabels) => {
+  customFooter: ( count, page, rowsPerPage, changeRowsPerPage, changePage, textLabels ) => {
     return (
       <CorrelationCustomFooter
         count={count}
         page={page}
-        rowsPerPage={rowsPerPage}
-        changeRowsPerPage={changeRowsPerPage}
         changePage={changePage}
         textLabels={textLabels}
         handleCorrelationBackDateChange = {handleCorrelationBackDateChange}
@@ -355,9 +348,6 @@ const options = {
     },
   },
   elevation: 1,
-  // rowsPerPage:  rowsPerPage,
-  // onChangeRowsPerPage: onChangeRowsPerPage,
-  // rowsPerPageOptions: [10,20,50],
   selectToolbarPlacement:"none",
   };
 
