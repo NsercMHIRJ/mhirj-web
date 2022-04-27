@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import MUIDataTable from "mui-datatables";
 import axios from 'axios';
-import {DateConverter} from '../../Helper/Helper';
+import {DateConverter, DateConverterWithHour} from '../../Helper/Helper';
 import Constants from '../../utils/const';
 import "../../../scss/_main.scss";
 import moment from "moment";
@@ -80,11 +80,8 @@ const CorrelationAnalysisTable = (props) => {
         path = path + '?days=' + backDate;
       }
 
-      console.log(path);
-
       axios.post(path).then(function (res) {
         var data = JSON.parse(res.data);
-        console.log(data);
         setData(data);
         setLoading(false);
       }).catch(function (err){
@@ -282,7 +279,7 @@ const CorrelationAnalysisTable = (props) => {
           discrepancy: item["Discrepancy"], //ok
           action: item["CorrectiveAction"], //ok
           date: item["TransDate"], //ok
-          pm_date: item["PM_Resolved_Date"] //ok
+          pm_date: DateConverterWithHour(item["PM_Resolved_Date"]) //ok
           // failureFlag: item["Failure_Flag"],
           // squawkSource: item["SquawkSource"],
           // MRB: item["MRB"],

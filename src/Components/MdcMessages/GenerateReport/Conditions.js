@@ -59,8 +59,6 @@ const Conditions = (props) => {
 
   let currentTimestamp = Date.now()
   let filter_date = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(currentTimestamp)
-
-  console.log(filter_date);
   
   const [validationResponse, setValidationResponse] = useState('');
  
