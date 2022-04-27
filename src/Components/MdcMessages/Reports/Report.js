@@ -65,32 +65,6 @@ const Report = (props) => {
     setReport(props.reportConditions);
   }, [props.reportConditions]);
 
-  
-  
-
-  // useEffect( async ()=>{
-  //   const dbOpen = indexedDB.open('reportsData', 1);
-  //   dbOpen.onerror = err => {
-  //       console.error(`indexedDB error: ${ err.errorCode }`);
-  //   };
-  //   dbOpen.onsuccess = () => {
-  //       const db = dbOpen.result;
-  //       const reqTransaction = db.transaction('deltaData', 'readonly'),
-  //       note = reqTransaction.objectStore('deltaData'),
-  //       request =  note.get(1);
-        
-  //       request.onsuccess = ()=> {
-  //       const data = request.result;
-  //       setDeltaData(data.body)
-  //       setDeltaValue(1);
-  //       }
-    
-  //       request.onerror = (err)=> {
-  //       console.error(`Error to get student information: ${err}`)
-  //       }
-  //   }
-  // },[setDeltaData , setDeltaValue])
-
   useEffect(() => {
     let path = "";
 
