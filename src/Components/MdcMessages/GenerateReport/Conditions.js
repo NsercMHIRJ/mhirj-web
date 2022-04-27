@@ -218,6 +218,15 @@ function upload_filter(e) {
   }
 }
 
+useEffect(()=>{
+  const reportState = localStorage.getItem('report');
+  const reportJson = JSON.parse(reportState);
+  if(reportJson){
+    setImportedData(reportJson);
+    if(reportJson.analysis) setAnalysisType(reportJson.analysis);
+  }
+},[])
+
   return (
     <div class="analysis-root">
       <form class="analysis-form">

@@ -82,7 +82,7 @@ function ShowSaveEditData() {
   const [isFaild, setIsFaild] = useState(false);
   const [isNoSavedData, setIsNoSavedData] = useState(false);
   const [tmpObjects, setTmpObjects] = useState({});
-  const [pageSize, setPageSize] = React.useState(5);
+  const [pageSize, setPageSize] = React.useState(8);
 
   const handleEqIDChangeInput = (eqIDList) => {
     setEqID(eqIDList);

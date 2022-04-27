@@ -11,6 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import "../../../scss/_main.scss";
 import JamsReport from './JamReport/JamsReport';
 import {HistorySupportingSelector} from '../GenerateReport/Selectors';
+import Localbase from 'localbase'
+
 
 const Report = (props) => {
   const [report, setReport] = useState(props.reportConditions);
@@ -39,8 +41,8 @@ const Report = (props) => {
   const [jamHistValue, setJamHistValue] = useState(0);
   const [jamHistTitle, setJamHistTitle] = useState('');
   const [jamConditions, setJamConditions] = useState({});
-
   const [reportType, setReportType] = useState('');
+  let db = new Localbase('reportDatas')
 
   const HandleMultipleRowSelectReport = (flagList) => {
     setFlagList(flagList);
@@ -63,6 +65,32 @@ const Report = (props) => {
     setReport(props.reportConditions);
   }, [props.reportConditions]);
 
+  
+  
+
+  // useEffect( async ()=>{
+  //   const dbOpen = indexedDB.open('reportsData', 1);
+  //   dbOpen.onerror = err => {
+  //       console.error(`indexedDB error: ${ err.errorCode }`);
+  //   };
+  //   dbOpen.onsuccess = () => {
+  //       const db = dbOpen.result;
+  //       const reqTransaction = db.transaction('deltaData', 'readonly'),
+  //       note = reqTransaction.objectStore('deltaData'),
+  //       request =  note.get(1);
+        
+  //       request.onsuccess = ()=> {
+  //       const data = request.result;
+  //       setDeltaData(data.body)
+  //       setDeltaValue(1);
+  //       }
+    
+  //       request.onerror = (err)=> {
+  //       console.error(`Error to get student information: ${err}`)
+  //       }
+  //   }
+  // },[setDeltaData , setDeltaValue])
+
   useEffect(() => {
     let path = "";
 
@@ -76,14 +104,15 @@ const Report = (props) => {
             '/' + report.deltaFrom + '/' + report.deltaTo;
           }
 
-          localStorage.setItem('delta-report', JSON.stringify( report ) );
+          localStorage.setItem('report', JSON.stringify( report ) );
           setDeltaValue(1);
           setDeltaData([]);
           setLoadingDelta(true);
           
           axios.post(path).then(function (res){
             // var data = JSON.parse(res.data);
-            setDeltaData(res.data);    
+            setDeltaData(res.data);   
+            db.collection('reporstLocal').add({data: res.data},"deltaData")
             setLoadingDelta(false);
           }).catch(function (err){
             console.log(err);
@@ -96,7 +125,7 @@ const Report = (props) => {
           path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
           consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
 
-          localStorage.setItem('daily-report', JSON.stringify( report ) );
+          localStorage.setItem('report', JSON.stringify( report ) );
           setDailyValue(1);
           setDailyReportData([]);
           setLoadingDaily(true);
@@ -105,6 +134,7 @@ const Report = (props) => {
             var data = JSON.parse(res.data);
             setDailyReportData(data);    
             setLoadingDaily(false);
+            db.collection('reporstLocal').add({data: data},"dailyData")
           }).catch(function (err){
             console.log(err);
             setLoadingDaily(false);
@@ -114,7 +144,7 @@ const Report = (props) => {
           path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
           report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
           
-          localStorage.setItem('history-report', JSON.stringify( report ) );
+          localStorage.setItem('report', JSON.stringify( report ) );
           setHistValue(1);
           setHistoryReportData([]);
           setLoadingHistory(true);
@@ -123,6 +153,7 @@ const Report = (props) => {
             var data = JSON.parse(res.data);
             setHistoryReportData(data);  
             setLoadingHistory(false);  
+            db.collection('reporstLocal').add({data: data},"historyData")
           }).catch(function (err){
             console.log(err);    
             setLoadingHistory(false);
@@ -130,6 +161,29 @@ const Report = (props) => {
         }
      }
   }, [report]);
+
+  useEffect(async ()=> {
+    try {
+      let daily =  await db.collection('reporstLocal').doc("dailyData").get()
+      let history = await db.collection('reporstLocal').doc("historyData").get()
+      let delta =  await db.collection('reporstLocal').doc("deltaData").get()
+      if(daily){
+        setDailyValue(1)
+        setDailyReportData(daily.data)
+      }
+      if(history){
+        setHistValue(1)
+        setHistoryReportData(history.data)
+      }
+      if(delta){
+        setDeltaValue(1)
+        setDeltaData(delta.data)
+      }
+    }
+    catch(error) {
+      console.log('error: ', error)
+    }
+  },[setDailyValue, setDailyReportData, setHistValue, setHistoryReportData, setDeltaValue, setDeltaData])
 
   //Jam Report
   const handleGenerateSurroundingReport = (event) => {
