@@ -7,6 +7,12 @@ export const DateConverter = (date) => {
   return formatted;
 }
 
+export const DateConverterWithHour = (date) => {
+  var t = moment.utc(date);
+  var formatted = t.format('YYYY-MM-DD HH:mm:ss');
+  return formatted;
+}
+
 export const ConvertToTimestamp = (date) => {
   var timestamp = moment(date).format("X");
   return timestamp;

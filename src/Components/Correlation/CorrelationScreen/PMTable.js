@@ -279,7 +279,7 @@ const columns = [
   },
   {
     name: 'date', 
-    label: 'Date',
+    label: 'Reported Date',
     options: {
       filter: true,
       filterType: 'dropdown',
