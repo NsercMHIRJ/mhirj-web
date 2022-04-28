@@ -42,7 +42,8 @@ const Report = (props) => {
   const [jamHistTitle, setJamHistTitle] = useState('');
   const [jamConditions, setJamConditions] = useState({});
   const [reportType, setReportType] = useState('');
-  let db = new Localbase('reportDatas')
+  let db = new Localbase('reportDatas');
+  const [isFetching, setIsFetching] = useState(false);
 
   const HandleMultipleRowSelectReport = (flagList) => {
     setFlagList(flagList);
@@ -137,22 +138,24 @@ const Report = (props) => {
   }, [report]);
 
   useEffect(async ()=> {
+    setIsFetching(true);
     try {
-      let daily =  await db.collection('reporstLocal').doc("dailyData").get()
-      let history = await db.collection('reporstLocal').doc("historyData").get()
-      let delta =  await db.collection('reporstLocal').doc("deltaData").get()
+      let daily =  await db.collection('reporstLocal').doc("dailyData").get();
+      let history = await db.collection('reporstLocal').doc("historyData").get();
+      let delta =  await db.collection('reporstLocal').doc("deltaData").get();
       if(daily){
-        setDailyValue(1)
-        setDailyReportData(daily.data)
+        setDailyValue(1);
+        setDailyReportData(daily.data);
       }
       if(history){
-        setHistValue(1)
-        setHistoryReportData(history.data)
+        setHistValue(1);
+        setHistoryReportData(history.data);
       }
       if(delta){
-        setDeltaValue(1)
-        setDeltaData(delta.data)
+        setDeltaValue(1);
+        setDeltaData(delta.data);
       }
+      setIsFetching(false);
     }
     catch(error) {
       console.log('error: ', error)
@@ -230,6 +233,7 @@ const Report = (props) => {
 
   return(
     <div class="reports-root">
+      {isFetching ? <p style={{fontSize: '40px', margin: '0px 31%'}}> Please wait until returning the page state..... </p> : <div></div>}
       {dailyReportData !== "" && dailyReportData !== "undefined" && dailyValue === 1 &&
         <>
           <div class="daily-report">
