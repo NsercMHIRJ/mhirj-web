@@ -12,7 +12,7 @@ import "../../../scss/_main.scss";
 import JamsReport from './JamReport/JamsReport';
 import {HistorySupportingSelector} from '../GenerateReport/Selectors';
 import Localbase from 'localbase'
-
+import Skeleton from '@mui/material/Skeleton';
 
 const Report = (props) => {
   const [report, setReport] = useState(props.reportConditions);
@@ -143,6 +143,7 @@ const Report = (props) => {
       const daily =  await db.collection('reporstLocal').doc("dailyData").get();
       const history = await db.collection('reporstLocal').doc("historyData").get();
       const delta =  await db.collection('reporstLocal').doc("deltaData").get();
+      const flag = await db.collection('reporstLocal').doc("flagData").get();
       if(daily){
         setDailyValue(1);
         setDailyReportData(daily.data);
@@ -154,6 +155,10 @@ const Report = (props) => {
       if(delta){
         setDeltaValue(1);
         setDeltaData(delta.data);
+      }
+      if(flag){
+        setFlagValue(1);
+        setFlagData(flag.data);
       }
       setIsFetching(false);
     }
@@ -224,6 +229,7 @@ const Report = (props) => {
         var data = JSON.parse(res.data);
         setFlagData(data);
         setLoadingFlag(false);
+        db.collection('reporstLocal').add({data: data},"flagData");
       }).catch(function (err){
         console.log(err);
         setLoadingFlag(false);
@@ -233,7 +239,8 @@ const Report = (props) => {
 
   return(
     <div class="reports-root">
-      {isFetching ? <p style={{fontSize: '40px', margin: '0px 31%'}}> Please wait until returning the page state..... </p> : <div></div>}
+      {isFetching ?  <Skeleton animation="wave" height={200} width="100%" />: <div></div> 
+      }
       {dailyReportData !== "" && dailyReportData !== "undefined" && dailyValue === 1 &&
         <>
           <div class="daily-report">
