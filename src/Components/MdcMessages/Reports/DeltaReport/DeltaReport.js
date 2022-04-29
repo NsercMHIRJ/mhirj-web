@@ -19,6 +19,7 @@ const DeltaReport = (props) => {
   const [ searchError, setSearchError ] = useState(false);
   const [ firstData, setFirstData ] = useState([]);
   const [ data, setData ] = useState([]);
+  const [pageNo, setPageNo] = useState(0) 
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -40,6 +41,10 @@ const DeltaReport = (props) => {
   }
 
   useEffect(()=> {
+    let pageNumber = localStorage.getItem('deltaReportPageNum');
+    if(pageNumber){
+      setPageNo(parseInt(pageNumber));
+    }
     if ( searchParameters.length ) {
       let isFound = false;
       setSearchError(false);
@@ -560,6 +565,10 @@ const DeltaReport = (props) => {
         separator: ',',
       },
       expandableRows: true,
+      page: pageNo,
+      onChangePage: (currentPage) => {
+        localStorage.setItem('deltaReportPageNum' , currentPage);
+      },
       customToolbar: () => {
         return (
           <AnalysisCustomToolbar 

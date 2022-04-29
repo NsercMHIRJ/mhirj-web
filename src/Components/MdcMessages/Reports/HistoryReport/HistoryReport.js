@@ -14,7 +14,7 @@ import SearchTab from '../../GenerateReport/Search';
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
   const [rowsSelectedState, setRowsSelected] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [ isDefault, setIsDefault ] = useState(true);
   const [ searchParameters, setSearchParameters ] = useState([]);
   const [ openSearch, setOpenSearch ] = useState(false);
@@ -22,6 +22,7 @@ const HistoryReport = (props) => {
   const [ searchError, setSearchError ] = useState(false);
   const [ firstData, setFirstData ] = useState([]);
   const [ data, setData ] = useState([]);
+  const [pageNo, setPageNo] = useState(0) 
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -43,6 +44,10 @@ const HistoryReport = (props) => {
   }
 
   useEffect(()=> {
+    let pageNumber = localStorage.getItem('historyReportPageNum');
+    if(pageNumber){
+      setPageNo(parseInt(pageNumber));
+    }
     if ( searchParameters.length ) {
       let isFound = false;
       setSearchError(false);
@@ -138,7 +143,7 @@ const HistoryReport = (props) => {
           break;
       }
     }
-  }, [searchParameters])
+  }, [searchParameters, setPageNo])
 
   const HandleMultipleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
     setRowsSelected(rowsSelected);
@@ -560,6 +565,10 @@ const HistoryReport = (props) => {
             openSearch = {openSearch}
           />
         );
+      },
+      page: pageNo,
+      onChangePage: (currentPage) => {
+        localStorage.setItem('historyReportPageNum' , currentPage);
       },
       onCellClick: (colData, cellMeta) => {
         setIsDefault(!isDefault);

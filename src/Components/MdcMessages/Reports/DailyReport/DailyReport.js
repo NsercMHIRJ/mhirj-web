@@ -10,10 +10,11 @@ import $ from 'jquery';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 import AnalysisCustomToolbar from '../../GenerateReport/AnalysisCustomToolbar';
 import SearchTab from '../../GenerateReport/Search';
+import { set } from 'date-fns';
 
 const DailyReport = (props) => {
   const [rowsSelectedState, setRowsSelected] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [ isDefault, setIsDefault ] = useState(true);
   const [ searchParameters, setSearchParameters ] = useState([]);
   const [ openSearch, setOpenSearch ] = useState(false);
@@ -21,7 +22,7 @@ const DailyReport = (props) => {
   const [ searchError, setSearchError ] = useState(false);
   const [ firstData, setFirstData ] = useState([]);
   const [ data, setData ] = useState([]);
-  
+  const [pageNo, setPageNo] = useState(0) 
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root.daily-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
@@ -42,6 +43,10 @@ const DailyReport = (props) => {
   }
 
   useEffect(()=> {
+    const pageNumber = localStorage.getItem('dailyReportPageNum');
+    if(pageNumber){
+      setPageNo(parseInt(pageNumber));
+    }
     if ( searchParameters.length ) {
       let isFound = false;
       setSearchError(false);
@@ -137,7 +142,7 @@ const DailyReport = (props) => {
           break;
       }
     }
-  }, [searchParameters])
+  }, [searchParameters, setPageNo])
 
   const HandleSingleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
     if (rowsSelected.length !== 0 && data[rowsSelected].isJam === true) {
@@ -506,6 +511,10 @@ const DailyReport = (props) => {
       sortOrder: {
         name: 'totalOccurences',
         direction: 'desc'
+      },
+      page: pageNo,
+      onChangePage: (currentPage) => {
+        localStorage.setItem('dailyReportPageNum' , currentPage);
       },
       customToolbar: () => {
         return (

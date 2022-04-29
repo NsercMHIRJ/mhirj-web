@@ -140,9 +140,9 @@ const Report = (props) => {
   useEffect(async ()=> {
     setIsFetching(true);
     try {
-      let daily =  await db.collection('reporstLocal').doc("dailyData").get();
-      let history = await db.collection('reporstLocal').doc("historyData").get();
-      let delta =  await db.collection('reporstLocal').doc("deltaData").get();
+      const daily =  await db.collection('reporstLocal').doc("dailyData").get();
+      const history = await db.collection('reporstLocal').doc("historyData").get();
+      const delta =  await db.collection('reporstLocal').doc("deltaData").get();
       if(daily){
         setDailyValue(1);
         setDailyReportData(daily.data);
@@ -255,18 +255,19 @@ const Report = (props) => {
             <form>
               <Grid 
                 container
+                item={true}
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
                 >
-                  <Grid item xs={3} md={6} lg={2}>
+                  <Grid item={true} xs={3} md={6} lg={2}>
                     <div class="history-report-jam-parameters select">
                       <HistorySupportingSelector 
                         handleReportChange = {handleReportChange}
                       />
                     </div>              
                   </Grid>
-                  <Grid item xs={3} md={6} lg={3}>
+                  <Grid item={true} xs={3} md={6} lg={3}>
                     <div class="history-report-jam-parameters">
                       <label class="parameter-label">Jam ACSN:</label>
                       <TextField 
@@ -277,7 +278,7 @@ const Report = (props) => {
                         InputProps={{ readOnly: true, }} />
                     </div>
                   </Grid>
-                  <Grid item xs={3} md={6} lg={4}>
+                  <Grid item={true} xs={3} md={6} lg={4}>
                   <div class="history-report-jam-parameters flag">
                     <label class="parameter-label">Flag ACSN:</label>
                       <TextField 
@@ -289,7 +290,7 @@ const Report = (props) => {
                       />
                   </div>
                   </Grid>
-                  <Grid xs={3} md={6} lg={3}>
+                  <Grid item={true} xs={3} md={6} lg={3}>
                     <Button 
                       variant = "contained" 
                       class="reports-button MuiButtonBase-root MuiButton-root MuiButton-contained" 
@@ -301,7 +302,7 @@ const Report = (props) => {
               </Grid>
             </form>
 
-            <Grid item md={12}>
+            <Grid item={true} md={12}>
               <HistoryReport 
                 data = {historyReportData}  
                 title = "History Report" 
@@ -312,7 +313,7 @@ const Report = (props) => {
               />
             </Grid>
 
-            <Grid container>
+            <Grid container item={true}>
               {jamACSNHistoryValue !== "" && jamHistoryData !== "" && jamHistoryData !== "undefined" && jamHistValue === 1 &&
               <>
                 <Grid item md={12}>
