@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MUIDataTable from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import {DateConverter} from '../../../Helper/Helper';
@@ -10,9 +10,10 @@ import $ from 'jquery';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 
 const JamsReport = (props) => {
-  const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [ isDefault, setIsDefault ] = useState(true);
-
+  const [data, setData] = useState([]);
+  const [pageNo, setPageNo] = useState(0); 
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root.jam-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
@@ -449,8 +450,13 @@ const JamsReport = (props) => {
 
     const flightNumber = props.data ? props.data :  '';
     const [flightLegNumber,setFlightLegNumber] = useState(flightNumber);
-
-    let data = [];
+    useEffect(()=> {
+      const pageNumber = localStorage.getItem('jamReportPageNum');
+      if(pageNumber){
+        setPageNo(parseInt(pageNumber));
+      }
+    },[setPageNo])
+    useEffect(()=> {
       props.data?.map((item => {
         let input = item["MHIRJ_ISE_inputs"] === '0' ? '' : item["MHIRJ_ISE_inputs"];
         let recommendation = item["MHIRJ_ISE_Recommended_Action"] === '0' ? '' : item["MHIRJ_ISE_Recommended_Action"];
@@ -496,6 +502,10 @@ const JamsReport = (props) => {
         return data;
       }
       ));
+      setData(data);
+    }, [data, setData])
+  
+
   
     const options = {
       filter: true,
@@ -505,6 +515,7 @@ const JamsReport = (props) => {
       fixedSelectColumn: true,
       jumpToPage: true,
       resizableColumns: false,
+      selectableRows:'multiple',
       selectableRowsHideCheckboxes: true,
       selectableRowsOnClick: false,
       expandableRows: true,
@@ -516,6 +527,17 @@ const JamsReport = (props) => {
         setIsDefault(!isDefault);
         AddCellClass(cellMeta.rowIndex);
       },
+      onRowExpansionChange: (currentRowsExpanded, allRowsExpanded, rowsExpanded) => {
+        let arrayOfRows = allRowsExpanded.map((row)=> {
+          return row.dataIndex;
+        })
+        localStorage.setItem('jamReportExpandedRows', JSON.stringify(arrayOfRows));
+      },
+      page: pageNo,
+      onChangePage: (currentPage) => {
+        localStorage.setItem('jamReportPageNum' , currentPage);
+      },
+      rowsExpanded: JSON.parse(localStorage.getItem('jamReportExpandedRows')),
       renderExpandableRow: (rowData, rowMeta) => {
         return (    
         <TableRow>

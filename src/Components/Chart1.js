@@ -100,7 +100,7 @@ export default function Chart1() {
 return (
     
     <div className={classes.root}>
-        <Grid container spacing={12}>
+        <Grid container spacing={10}>
           <Grid item xs={12}>
             <form className={classes.root1}>
               <div><h1 style={{ color: "#001C3E", textAlign: "center" }}>MESSAGE OCCURENCE FOR AIRCRAFT</h1></div>

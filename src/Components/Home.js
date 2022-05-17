@@ -128,7 +128,7 @@ export default function Chart1() {
   return (
 
     <div className={classes.root}>
-      <Grid container spacing={12}>
+      <Grid container spacing={10}>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <form className={classes.root1}>

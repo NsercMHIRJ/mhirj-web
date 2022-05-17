@@ -123,6 +123,7 @@ const Report = (props) => {
           setHistValue(1);
           setHistoryReportData([]);
           setLoadingHistory(true);
+          localStorage.setItem( 'history-report', JSON.stringify( report ))
 
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
@@ -137,34 +138,42 @@ const Report = (props) => {
      }
   }, [report]);
 
-  useEffect(async ()=> {
-    setIsFetching(true);
-    try {
-      const daily =  await db.collection('reporstLocal').doc("dailyData").get();
-      const history = await db.collection('reporstLocal').doc("historyData").get();
-      const delta =  await db.collection('reporstLocal').doc("deltaData").get();
-      const flag = await db.collection('reporstLocal').doc("flagData").get();
-      if(daily){
-        setDailyValue(1);
-        setDailyReportData(daily.data);
+  useEffect( async()=> {
+      setIsFetching(true);
+      let jamACSNHistory = localStorage.getItem('jamACSNHistory');
+      try {
+        const daily = await (async function() {return db.collection('reporstLocal').doc("dailyData").get()})();
+        const history = await (async function() {return db.collection('reporstLocal').doc("historyData").get()})();
+        const delta = await (async function() {return db.collection('reporstLocal').doc("deltaData").get()})();
+        const flag = await (async function() {return db.collection('reporstLocal').doc("flagData").get()})();
+        const surrounding = await (async function() {return db.collection('reporstLocal').doc("surroundingData").get()})();
+        if(daily){
+          setDailyValue(1);
+          setDailyReportData(daily.data);
+        }
+        if(history){
+          setHistValue(1);
+          setHistoryReportData(history.data);
+        }
+        if(delta){
+          setDeltaValue(1);
+          setDeltaData(delta.data);
+        }
+        if(flag){
+          setFlagValue(1);
+          setFlagData(flag.data);
+        }
+        if(surrounding){
+          setJamHistoryData(surrounding.data);
+          setJamHistValue(1);
+          setJamACSNHistoryValue(jamACSNHistory);
+          setJamHistTitle("Surrounding Messages Report for ACSN " + jamACSNHistory);
+        }
+        setIsFetching(false);
       }
-      if(history){
-        setHistValue(1);
-        setHistoryReportData(history.data);
+      catch(error) {
+        console.log('error: ', error)
       }
-      if(delta){
-        setDeltaValue(1);
-        setDeltaData(delta.data);
-      }
-      if(flag){
-        setFlagValue(1);
-        setFlagData(flag.data);
-      }
-      setIsFetching(false);
-    }
-    catch(error) {
-      console.log('error: ', error)
-    }
   },[setDailyValue, setDailyReportData, setHistValue, setHistoryReportData, setDeltaValue, setDeltaData])
 
   //Jam Report
@@ -238,12 +247,17 @@ const Report = (props) => {
   },[flagConditions]);
 
   return(
-    <div class="reports-root">
-      {isFetching ?  <Skeleton animation="wave" height={200} width="100%" />: <div></div> 
-      }
+    <div className="reports-root">
+      <Grid item lg={12}>
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            {isFetching ? <Skeleton animation="wave" height='650px' style={{margin: '-5% 0px 0px 0px'}} /> : <div></div>} 
+          </Grid>
+        </Grid>
+      </Grid>
       {dailyReportData !== "" && dailyReportData !== "undefined" && dailyValue === 1 &&
         <>
-          <div class="daily-report">
+          <div className="daily-report">
             <Grid item lg={12}>
               <DailyReport 
                 data = {dailyReportData} 
@@ -257,8 +271,8 @@ const Report = (props) => {
       }
       {historyReportData !== "" && historyReportData !== "undefined" && histValue === 1 &&
         <>
-          <div class="history-report">
-            <h2 class="report-parameters-h2">History Report Parameters</h2>
+          <div className="history-report">
+            <h2 className="report-parameters-h2">History Report Parameters</h2>
             <form>
               <Grid 
                 container
@@ -268,15 +282,15 @@ const Report = (props) => {
                 alignItems="center"
                 >
                   <Grid item={true} xs={3} md={6} lg={2}>
-                    <div class="history-report-jam-parameters select">
+                    <div className="history-report-jam-parameters select">
                       <HistorySupportingSelector 
                         handleReportChange = {handleReportChange}
                       />
                     </div>              
                   </Grid>
                   <Grid item={true} xs={3} md={6} lg={3}>
-                    <div class="history-report-jam-parameters">
-                      <label class="parameter-label">Jam ACSN:</label>
+                    <div className="history-report-jam-parameters">
+                      <label className="parameter-label">Jam ACSN:</label>
                       <TextField 
                         required 
                         id="outlined-name"
@@ -286,8 +300,8 @@ const Report = (props) => {
                     </div>
                   </Grid>
                   <Grid item={true} xs={3} md={6} lg={4}>
-                  <div class="history-report-jam-parameters flag">
-                    <label class="parameter-label">Flag ACSN:</label>
+                  <div className="history-report-jam-parameters flag">
+                    <label className="parameter-label">Flag ACSN:</label>
                       <TextField 
                         required 
                         id="outlined-name"
@@ -300,7 +314,7 @@ const Report = (props) => {
                   <Grid item={true} xs={3} md={6} lg={3}>
                     <Button 
                       variant = "contained" 
-                      class="reports-button MuiButtonBase-root MuiButton-root MuiButton-contained" 
+                      className="reports-button MuiButtonBase-root MuiButton-root MuiButton-contained" 
                       id = "history-supporting-button"
                       onClick = {handleGenerateHistorySupportingReport} >
                       Generate History Supporting Report
@@ -324,12 +338,12 @@ const Report = (props) => {
               {jamACSNHistoryValue !== "" && jamHistoryData !== "" && jamHistoryData !== "undefined" && jamHistValue === 1 &&
               <>
                 <Grid item md={12}>
-                  <JamsReport data = {jamHistoryData} 
-                  reportConditions = {props.reportConditions} 
-                  title = {jamHistTitle} 
-                  loading = {loadingHistoryJam}/>
+                <JamsReport data = {jamHistoryData} 
+                reportConditions = {JSON.parse(localStorage.getItem('report'))} 
+                title = {jamHistTitle} 
+                loading = {loadingHistoryJam}/>
                 </Grid>
-              </>
+                </>
               }
           </Grid> 
 
@@ -349,8 +363,8 @@ const Report = (props) => {
 
       {deltaData !== "" && deltaData !== "undefined" && deltaValue === 1 &&
         <>
-          <div class="delta-report">
-            {/* <h2 class="report-parameters-h2">Delta Report Parameters - To be Defined</h2> */}
+          <div className="delta-report">
+            {/* <h2 className="report-parameters-h2">Delta Report Parameters - To be Defined</h2> */}
             <Grid item md={12}>
               <DeltaReport 
                 data = {deltaData}

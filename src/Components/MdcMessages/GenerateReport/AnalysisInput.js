@@ -93,7 +93,8 @@ export const DaysInput = (props) => {
     props.handleDaysChange(event.target.value);
   };
   useEffect(() => {
-    if (props.analysis === 'daily'){
+    const { analysis, ...rest } = props
+    if (analysis === 'daily'){
       setDisabled(prevState => ({ disabled: true}));
     }
     else {
@@ -102,7 +103,8 @@ export const DaysInput = (props) => {
   }, [props.analysis]);
 
   useEffect(() => {
-    if(props.days){
+    const { days, ...rest } = props
+    if(days){
       props.handleDaysChange(props.days);
       setDays(props.days);
     } 

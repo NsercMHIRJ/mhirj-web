@@ -156,6 +156,7 @@ const HistoryReport = (props) => {
     }));
     let flagList =  FlagArray.join(",");
     props.setJamACSNHistoryValue(ACSNArray[ACSNArray.length-1]);
+    localStorage.setItem('jamACSNHistory', ACSNArray[ACSNArray.length-1])
     setFlagList(flagList);
     props.HandleMultipleRowSelectReport(flagList);
   };
@@ -574,6 +575,13 @@ const HistoryReport = (props) => {
         setIsDefault(!isDefault);
         AddCellClass(cellMeta.rowIndex);
       },
+      onRowExpansionChange: (currentRowsExpanded, allRowsExpanded, rowsExpanded) => {
+        let arrayOfRows = allRowsExpanded.map((row)=> {
+          return row.dataIndex;
+        })
+        localStorage.setItem('historyReportExpandedRows', JSON.stringify(arrayOfRows));
+      },
+      rowsExpanded: JSON.parse(localStorage.getItem('historyReportExpandedRows')),
       renderExpandableRow: (rowData, rowMeta) => {
         return (    
         <TableRow>
@@ -626,7 +634,7 @@ const HistoryReport = (props) => {
 
   return (
     <>
-      <div class="reports-root history-report">
+      <div className="reports-root history-report">
         { openSearch &&
             <SearchTab 
               columns={columns}

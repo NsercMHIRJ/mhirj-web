@@ -18,7 +18,7 @@ const defaultToolbarStyles = {
 const CorrelationCustomFooter = (props) => {
   const { count, classes, textLabels } = props;
   const [page, setPage] = useState(props.page);
-  const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

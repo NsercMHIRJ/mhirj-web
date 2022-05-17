@@ -206,6 +206,7 @@ export const ACSNSelector = (props) => {
 export const EqIDSelector = (props) => {
   const [EqID, setEqID] = useState([]);
   const [EqList,setEqIDList] = useState([]);
+  // const [messages , ...rest] = props
   useEffect(() => {
     const path = Constants.APIURL + 'GenerateReport/equation_id/ALL'
 
@@ -226,6 +227,7 @@ export const EqIDSelector = (props) => {
 },[]);
 
   const handleEqIDChange = (event, values) => {
+    
     const EqIDValues = [];
     if(values.includes("NONE")){
       EqIDValues.push("NONE");
@@ -268,7 +270,7 @@ export const EqIDSelector = (props) => {
         value = {EqID}
         filterSelectedOptions
         onChange = {handleEqIDChange}
-        searchEnabled = {true}
+        searchenabled = "true"
         renderInput={(params) => (
           <TextField
             {...params}

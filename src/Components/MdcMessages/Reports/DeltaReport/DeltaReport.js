@@ -547,6 +547,7 @@ const DeltaReport = (props) => {
 
     const options = {
       selectableRows: false,
+      selectableRows:'none',
       selectableRowsOnClick: false,
       filter: true,
       filterType: 'multiselect',
@@ -577,6 +578,13 @@ const DeltaReport = (props) => {
           />
         );
       },
+      onRowExpansionChange: (currentRowsExpanded, allRowsExpanded, rowsExpanded) => {
+        let arrayOfRows = allRowsExpanded.map((row)=> {
+          return row.dataIndex;
+        })
+        localStorage.setItem('deltaReportExpandedRows', JSON.stringify(arrayOfRows));
+      },
+      rowsExpanded: JSON.parse(localStorage.getItem('deltaReportExpandedRows')),
       onCellClick: (colData, cellMeta) => {
         setIsDefault(!isDefault);
         AddCellClass(cellMeta.rowIndex);

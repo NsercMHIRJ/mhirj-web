@@ -23,6 +23,7 @@ const DailyReport = (props) => {
   const [ firstData, setFirstData ] = useState([]);
   const [ data, setData ] = useState([]);
   const [pageNo, setPageNo] = useState(0) 
+  const [expandRowState, setExpandRowState] = useState([]);
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root.daily-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
@@ -505,6 +506,7 @@ const DailyReport = (props) => {
       fixedSelectColumn: true,
       jumpToPage: true,
       resizableColumns: false,
+      selectableRows:'multiple',
       selectableRowsHideCheckboxes: true,
       selectableRowsOnClick: false,
       expandableRows: true,
@@ -528,6 +530,13 @@ const DailyReport = (props) => {
         setIsDefault(!isDefault);
         AddCellClass(cellMeta.rowIndex);
       },
+      onRowExpansionChange: (currentRowsExpanded, allRowsExpanded, rowsExpanded) => {
+        let arrayOfRows = allRowsExpanded.map((row)=> {
+          return row.dataIndex;
+        })
+        localStorage.setItem('dailyReportExpandedRows', JSON.stringify(arrayOfRows));
+      },
+      rowsExpanded: JSON.parse(localStorage.getItem('dailyReportExpandedRows')),
       renderExpandableRow: (rowData, rowMeta) => {
         return (    
           <TableRow className="correlation-analysis-subtable">

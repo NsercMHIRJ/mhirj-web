@@ -147,10 +147,10 @@ useEffect(() => {
   },[rawDataConditions]);
 
   return (
-    <div class="analysis-root">
-    <form class="analysis-form">
+    <div className="analysis-root">
+    <form className="analysis-form">
       <Paper className={classes.paper}>
-      <div class="analysis-card">
+      <div className="analysis-card">
         <h2>RAW DATA</h2>
       </div>
         <Grid className={classes.Grid} container spacing={3}> 

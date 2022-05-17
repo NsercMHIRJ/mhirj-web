@@ -470,4 +470,3 @@ const FlagReport = (props) => {
   );
 }
 export default FlagReport;
-

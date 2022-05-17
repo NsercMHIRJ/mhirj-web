@@ -226,10 +226,10 @@ useEffect(()=>{
 },[])
 
   return (
-    <div class="analysis-root">
-      <form class="analysis-form">
+    <div className="analysis-root">
+      <form className="analysis-form">
         <Paper className={classes.paper}>
-        <div class="analysis-card">
+        <div className="analysis-card">
           <h2>REPORT ANALYSIS</h2>
         </div>
         
@@ -238,11 +238,11 @@ useEffect(()=>{
           <Grid className={classes.Grid} container spacing={3}> 
           
             <Grid item xs={2}>
-            <div class="analysis-type-container">
+            <div className="analysis-type-container">
 
               <FormControl component="fieldset" className="form" >
-              <FormLabel component="legend" class="analysis-type-label" focused="false">Analysis Type</FormLabel>
-              <p class="validation-message">{validationResponse.analysisMessage}</p>
+              <FormLabel component="legend" className="analysis-type-label" focused={false}>Analysis Type</FormLabel>
+              <p className="validation-message">{validationResponse.analysisMessage}</p>
               <RadioGroup aria-label="analysis" name="analysis" value={analysis} >
                 <FormControlLabel value="daily" className="RadioButton" control={
                   <Radio 
@@ -269,22 +269,22 @@ useEffect(()=>{
             <Grid item xs={2}>     
               <div>
                 <h3>Analysis Input</h3>   
-                <p class="validation-message">{validationResponse.occurencesMessage}</p>
+                <p className="validation-message">{validationResponse.occurencesMessage}</p>
                 <OccurencesInput 
                   handleOccurencesChange = {handleOccurencesChange}
                   occurrences={importedData.occurences}
                 />
-                <p class="validation-message">{validationResponse.legsMessage}</p>
+                <p className="validation-message">{validationResponse.legsMessage}</p>
                 <LegsInput 
                   handleLegsChange = {handleLegsChange}
                   legs={importedData.legs}
                 />  
-                <p class="validation-message">{validationResponse.intermittentMessage}</p>
+                <p className="validation-message">{validationResponse.intermittentMessage}</p>
                 <IntermittentInput 
                   handleIntermittentChange = {handleIntermittentChange}
                   intermittent={importedData.intermittent}
                 />
-                <p class="validation-message">{validationResponse.daysMessage}</p>
+                <p className="validation-message">{validationResponse.daysMessage}</p>
                 <DaysInput 
                 analysis = {analysis}  
                 handleDaysChange = {handleDaysChange}
@@ -295,27 +295,27 @@ useEffect(()=>{
             <Grid item xs={3}>     
             <div>
             <h3>Raw Data Conditions</h3> 
-            <p class="validation-message">{validationResponse.operatorMessage}</p>
+            <p className="validation-message">{validationResponse.operatorMessage}</p>
             <AirlineOperatorSelector
                 handleAirlineChange = {handleAirlineChange}
                 operator = {importedData.operator}
               />         
-              <p class="validation-message">{validationResponse.currentMessage}</p>
+              <p className="validation-message">{validationResponse.currentMessage}</p>
               <MessagesSelector 
                 handleMessagesChange = {handleMessagesChange}
                 messages = {importedData.messages}
               />   
-              <p class="validation-message">{validationResponse.ataMessage}</p>
+              <p className="validation-message">{validationResponse.ataMessage}</p>
               <ATAMainSelector 
                 handleATAChange = {handleATAChange}
                 ata = {importedData.ata}
               />   
-              <p class="validation-message">{validationResponse.eqIDMessage}</p>
+              <p className="validation-message">{validationResponse.eqIDMessage}</p>
               <EqIDSelector 
                 handleEqIDChange = {handleEqIDChange}
                 eqID = {importedData.eqID}
               />  
-              <p class="validation-message">{validationResponse.ACSNMessage}</p>
+              <p className="validation-message">{validationResponse.ACSNMessage}</p>
               <ACSNSelector 
                 handleACSNChange = {handleACSNChange}
                 ACSN = {importedData.ACSN}
@@ -324,26 +324,26 @@ useEffect(()=>{
             </Grid>       
             <Grid item xs={3}>     
               <h3>Report Date</h3> 
-              <p class="validation-message">{validationResponse.fromDateMessage}</p>
+              <p className="validation-message">{validationResponse.fromDateMessage}</p>
               <DatePicker 
                 label = "From"
                 handleDateFrom = {handleDateFrom}
                 dateFrom = {importedData.fromDate}
               />   
-              <p class="validation-message">{validationResponse.toDateMessage}</p>
+              <p className="validation-message">{validationResponse.toDateMessage}</p>
               <DatePicker 
                 label = "To"
                 handleDateTo = {handleDateTo}
                 dateTo = {importedData.toDate}
               />   
-              <p class="validation-message">{validationResponse.fromDeltaMessage}</p>
+              <p className="validation-message">{validationResponse.fromDeltaMessage}</p>
                <DatePicker 
                 label = "Delta From"
                 handleDateFrom = {handleDeltaFrom}
                 disabled = {deltaDisable}
                 //dateFrom = {importedData.fromDate}
               />   
-              <p class="validation-message">{validationResponse.toDeltaMessage}</p>
+              <p className="validation-message">{validationResponse.toDeltaMessage}</p>
               <DatePicker 
                 label = "Delta To"
                 handleDateTo = {handleDeltaTo}
@@ -352,7 +352,7 @@ useEffect(()=>{
               />   
             </Grid>    
             <Grid item xs={2}> 
-              <div class="buttons-container">
+              <div className="buttons-container">
                 <Button 
                   variant="contained" 
                   onClick = {async()=>handleGenerateReport()}>
