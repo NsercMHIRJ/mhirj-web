@@ -595,12 +595,15 @@ const DailyReport = (props) => {
     <>
       <div className="reports-root daily-report">
         { openSearch &&
+        <div>
           <SearchTab 
             columns={columns}
             handleSearchChange={handleSearchChange}
             searchLoading={searchLoading}
             searchError = {searchError}
+            style={{backgroundColor:'black'}}
           />  
+          </div>
         }
         <Grid container spacing={0}>
           <Grid item xs={12}>
