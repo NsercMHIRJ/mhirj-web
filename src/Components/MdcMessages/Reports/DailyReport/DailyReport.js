@@ -23,7 +23,7 @@ const DailyReport = (props) => {
   const [ firstData, setFirstData ] = useState([]);
   const [ data, setData ] = useState([]);
   const [pageNo, setPageNo] = useState(0) 
-  const [expandRowState, setExpandRowState] = useState([]);
+  const [arrayOfRows, setArrayOfRows] = useState([]) 
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root.daily-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
@@ -531,10 +531,11 @@ const DailyReport = (props) => {
         AddCellClass(cellMeta.rowIndex);
       },
       onRowExpansionChange: (currentRowsExpanded, allRowsExpanded, rowsExpanded) => {
-        let arrayOfRows = allRowsExpanded.map((row)=> {
+        let arrayOfRows1 = allRowsExpanded.map((row)=> {
           return row.dataIndex;
         })
-        localStorage.setItem('dailyReportExpandedRows', JSON.stringify(arrayOfRows));
+        setArrayOfRows(arrayOfRows1)
+        localStorage.setItem('dailyReportExpandedRows', JSON.stringify(arrayOfRows1));
       },
       rowsExpanded: JSON.parse(localStorage.getItem('dailyReportExpandedRows')),
       renderExpandableRow: (rowData, rowMeta) => {
@@ -558,6 +559,13 @@ const DailyReport = (props) => {
         filename: 'Daily Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
       },
+      setRowProps: (row, index1 , rowIndex1) => {
+        for(let i = 0; i < arrayOfRows.length; i++){
+          if(arrayOfRows[i] === index1){
+            return {style: {backgroundColor:'#F3FFD0'}}
+          }
+        }
+      },
       draggableColumns: {
         enabled: false,
         transitionTime: 300,
@@ -576,6 +584,12 @@ const DailyReport = (props) => {
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };
+
+    useEffect(()=>{
+      if(localStorage.getItem('dailyReportExpandedRows')){
+        setArrayOfRows(JSON.parse(localStorage.getItem('dailyReportExpandedRows')))
+      }
+    },[setArrayOfRows])
   
   return (
     <>

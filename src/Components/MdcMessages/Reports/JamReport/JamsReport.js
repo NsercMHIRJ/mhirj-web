@@ -13,6 +13,7 @@ const JamsReport = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [ isDefault, setIsDefault ] = useState(true);
   const [pageNo, setPageNo] = useState(0); 
+  const [arrayOfRows, setArrayOfRows] = useState([]) 
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root.jam-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
@@ -524,10 +525,11 @@ const JamsReport = (props) => {
         AddCellClass(cellMeta.rowIndex);
       },
       onRowExpansionChange: (currentRowsExpanded, allRowsExpanded, rowsExpanded) => {
-        let arrayOfRows = allRowsExpanded.map((row)=> {
+        let arrayOfRows1 = allRowsExpanded.map((row)=> {
           return row.dataIndex;
         })
-        localStorage.setItem('jamReportExpandedRows', JSON.stringify(arrayOfRows));
+        setArrayOfRows(arrayOfRows1)
+        localStorage.setItem('jamReportExpandedRows', JSON.stringify(arrayOfRows1));
       },
       page: pageNo,
       onChangePage: (currentPage) => {
@@ -565,6 +567,15 @@ const JamsReport = (props) => {
           columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
       },
     },
+    setRowProps: (row, index1 , rowIndex1) => {
+   
+ 
+      for(let i = 0; i < arrayOfRows.length; i++){
+        if(arrayOfRows[i] === index1){
+          return {style: {backgroundColor:'#F3FFD0'}}
+        }
+      }
+    },
       elevation: 4,
       rowsPerPage: rowsPerPage,
       onChangeRowsPerPage: onChangeRowsPerPage,
@@ -572,6 +583,12 @@ const JamsReport = (props) => {
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : `650px`
     };
+
+    useEffect(()=>{
+      if(localStorage.getItem('jamReportExpandedRows')){
+        setArrayOfRows(JSON.parse(localStorage.getItem('jamReportExpandedRows')))
+      }
+    },[setArrayOfRows])
 
   return (
     <div className="reports-root jam-report">

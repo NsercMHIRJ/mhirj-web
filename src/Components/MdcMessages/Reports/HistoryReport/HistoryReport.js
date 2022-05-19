@@ -23,7 +23,7 @@ const HistoryReport = (props) => {
   const [ firstData, setFirstData ] = useState([]);
   const [ data, setData ] = useState([]);
   const [pageNo, setPageNo] = useState(0) 
-  const [index, setindex] = useState([]) 
+  const [arrayOfRows, setArrayOfRows] = useState([]) 
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -585,15 +585,16 @@ const HistoryReport = (props) => {
         AddCellClass(cellMeta.rowIndex);
       },
       onRowExpansionChange: (currentRowsExpanded, allRowsExpanded, rowsExpanded) => {
-        let arrayOfRows = allRowsExpanded.map((row)=> {
+        let arrayOfRows1 = allRowsExpanded.map((row)=> {
           return row.dataIndex;
         })
-        localStorage.setItem('historyReportExpandedRows', JSON.stringify(arrayOfRows));
+        setArrayOfRows(arrayOfRows1)
+        localStorage.setItem('historyReportExpandedRows', JSON.stringify(arrayOfRows1));
       },
       rowsExpanded: JSON.parse(localStorage.getItem('historyReportExpandedRows')),
       renderExpandableRow: (rowData, rowMeta) => {
         return (    
-        <TableRow>
+        <TableRow >
           <TableCell colSpan={rowData.length+1}>
             <CorrelationAnalysisTable
               dateFrom = {rowData[14]}
@@ -616,7 +617,13 @@ const HistoryReport = (props) => {
         filename: 'History Report from ' + props.reportConditions.fromDate + ' to ' + props.reportConditions.toDate + '.csv',
         separator: ',',
       },
-      setRowProps: (row, index) => {
+      setRowProps: (row, index1 , rowIndex1) => {
+        for(let i = 0; i < arrayOfRows.length; i++){
+          if(arrayOfRows[i] === index1){
+            return {style: {backgroundColor:'#F3FFD0'}}
+          }
+        }
+    
         if (row[22] === true){ 
           return {style: {background:'#FF7F50'}}
         }
@@ -641,7 +648,11 @@ const HistoryReport = (props) => {
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };
-
+    useEffect(()=>{
+      if(localStorage.getItem('historyReportExpandedRows')){
+        setArrayOfRows(JSON.parse(localStorage.getItem('historyReportExpandedRows')))
+      }
+    },[setArrayOfRows])
   return (
     <>
       <div className="reports-root history-report">

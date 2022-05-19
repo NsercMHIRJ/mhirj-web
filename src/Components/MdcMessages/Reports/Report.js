@@ -81,6 +81,7 @@ const Report = (props) => {
           }
 
           localStorage.setItem('report', JSON.stringify( report ) );
+          localStorage.setItem('delta-report', JSON.stringify( report ) );
           setDeltaValue(1);
           setDeltaData([]);
           setLoadingDelta(true);
@@ -99,10 +100,10 @@ const Report = (props) => {
         else if (report.analysis === "daily") {
           let consecutiveDays = 0;
           path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate + '/' + '0' + '/' + 
-          '50';
+          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
 
           localStorage.setItem('report', JSON.stringify( report ) );
+          localStorage.setItem('daily-report', JSON.stringify( report ) );
           setDailyValue(1);
           setDailyReportData([]);
           setLoadingDaily(true);
@@ -122,6 +123,7 @@ const Report = (props) => {
           report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
           
           localStorage.setItem('report', JSON.stringify( report ) );
+          
           setHistValue(1);
           setHistoryReportData([]);
           setLoadingHistory(true);

@@ -11,7 +11,7 @@ import AnalysisCustomToolbar from '../../GenerateReport/AnalysisCustomToolbar';
 import SearchTab from '../../GenerateReport/Search';
 
 const DeltaReport = (props) => {
-  const [deltaParameters, setDeltaParameters] = useState(JSON.parse(localStorage.getItem('delta-report')));
+  const [deltaParameters, setDeltaParameters] = useState({});
   const [ isDefault, setIsDefault ] = useState(true);
   const [ searchParameters, setSearchParameters ] = useState([]);
   const [ openSearch, setOpenSearch ] = useState(false);
@@ -20,6 +20,7 @@ const DeltaReport = (props) => {
   const [ firstData, setFirstData ] = useState([]);
   const [ data, setData ] = useState([]);
   const [pageNo, setPageNo] = useState(0) 
+  const [arrayOfRows, setArrayOfRows] = useState([]) 
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -30,6 +31,10 @@ const DeltaReport = (props) => {
   const toggleSearchModal = () => {
     setOpenSearch(!openSearch);
   }
+
+  useEffect(()=> {
+    setDeltaParameters(JSON.parse(localStorage.getItem('delta-report')));
+  },[setDeltaParameters])
 
   const handleSearchChange = ( column, operator, value ) => {
     setSearchLoading(true);
@@ -579,10 +584,11 @@ const DeltaReport = (props) => {
         );
       },
       onRowExpansionChange: (currentRowsExpanded, allRowsExpanded, rowsExpanded) => {
-        let arrayOfRows = allRowsExpanded.map((row)=> {
+        let arrayOfRows1 = allRowsExpanded.map((row)=> {
           return row.dataIndex;
         })
-        localStorage.setItem('deltaReportExpandedRows', JSON.stringify(arrayOfRows));
+        setArrayOfRows(arrayOfRows1)
+        localStorage.setItem('deltaReportExpandedRows', JSON.stringify(arrayOfRows1));
       },
       rowsExpanded: JSON.parse(localStorage.getItem('deltaReportExpandedRows')),
       onCellClick: (colData, cellMeta) => {
@@ -605,7 +611,17 @@ const DeltaReport = (props) => {
         );
       },
       setRowProps: (row, index) => {
-        return {style: {background: data[index].background}}
+        if(arrayOfRows.length !== 0){
+          for(let i = 0; i < arrayOfRows.length; i++){
+            if(arrayOfRows[i] === index){
+              return {style: {backgroundColor:'#F3FFD0'}}
+            }else {
+              return {style: {background: data[index].background}}
+            }
+          }
+        }else {
+          return {style: {background: data[index].background}}
+        }
     },
       draggableColumns: {
         enabled: false,
@@ -624,6 +640,12 @@ const DeltaReport = (props) => {
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };
+
+    useEffect(()=>{
+      if(localStorage.getItem('deltaReportExpandedRows')){
+        setArrayOfRows(JSON.parse(localStorage.getItem('deltaReportExpandedRows')))
+      }
+    },[setArrayOfRows])
   
 
   return (
