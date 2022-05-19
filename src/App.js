@@ -183,13 +183,24 @@ export default function MiniDrawer() {
   };
   const handleClick = () => {
     setOpenMDC(!openMDC);
+    setOpen(true)
   };
   const handleMainClick = () => {
     setOpenMAIN(!openMAIN);
+    setOpen(true)
   };
   const handleGraphsClick = () => {
     setOpenGraphs(!openGraphs);
+    setOpen(true)
   };
+
+  const handleClickCorrelation = ()=> {
+    setOpen(true)
+  }
+
+  const handleClickMsgInput = () => {
+    setOpen(true)
+  }
 
   return (
 
@@ -245,12 +256,12 @@ export default function MiniDrawer() {
           
           <Divider />
           <List>
-            <ListItem button onClick={handleMainClick} disablepadding="true">
+            <ListItem button onClick={handleMainClick} disablepadding="true" title= "Main">
               <Link to="/" style={{ textDecoration: 'none' }}>
-                <ListItemIcon>
+                <ListItemIcon >
                   <InfoSharpIcon style={{ color: "#001c3e" }} />
                 </ListItemIcon>
-                <Button variant="contained">
+                <Button variant="contained" >
                   <Typography>Main</Typography>
                   {openMAIN ? <ExpandLess /> : <ExpandMore />}
                 </Button>
@@ -270,8 +281,8 @@ export default function MiniDrawer() {
               </List>
             </Collapse>
 
-            <ListItem button onClick={handleClick} disablepadding="true">
-              <ListItemIcon>
+            <ListItem button onClick={handleClick} disablepadding="true" title="MDC">
+              <ListItemIcon >
                 <TableChartSharpIcon style={{ color: "#001c3e" }} />
               </ListItemIcon>
               <Button variant="contained">
@@ -285,7 +296,7 @@ export default function MiniDrawer() {
               <List component="div" disablepadding="true">
                 <Link to="/analysis" style={{ textDecoration: 'none' }}>
                   <ListItem button className={classes.nested}>
-                    <ListItemIcon>
+                    <ListItemIcon title="ANALYSIS">
                       <TrendingUpSharpIcon style={{ color: "#001c3e" }} />
                     </ListItemIcon>
                     <ListItemText primary="ANALYSIS" style={{ color: "#001c3e" }} />
@@ -296,7 +307,7 @@ export default function MiniDrawer() {
               <List component="div" disablepadding="true">
 
                 <ListItem button className={classes.nested} button onClick={handleGraphsClick}>
-                  <ListItemIcon>
+                  <ListItemIcon title="Graphs">
                     <TimelineSharpIcon style={{ color: "#001c3e" }} />
                   </ListItemIcon>
                   <Button style={{ fontSize: "16px" }}>
@@ -378,8 +389,8 @@ export default function MiniDrawer() {
 
               <List component="div" disablepadding="true">
                 <Link to="/rawdata" style={{ textDecoration: 'none' }}>
-                  <ListItem button className={classes.nested}>
-                    <ListItemIcon>
+                  <ListItem button className={classes.nested} >
+                    <ListItemIcon title="RAW DATA">
                       <TocSharpIcon style={{ color: "#001c3e" }} />
                     </ListItemIcon>
                     <ListItemText primary="RAW DATA" style={{ color: "#001c3e" }} />
@@ -388,9 +399,9 @@ export default function MiniDrawer() {
               </List>
             </Collapse>
 
-            <ListItem >
+            <ListItem button onClick={handleClickCorrelation} disablepadding="true" title="Correlation">
               <Link to="/corr" style={{ textDecoration: 'none' }}>
-                <ListItemIcon>
+                <ListItemIcon >
                   <AssessmentSharpIcon style={{ color: "#001c3e" }} />
                 </ListItemIcon>
                 <Button variant="contained">
@@ -399,13 +410,13 @@ export default function MiniDrawer() {
               </Link>
             </ListItem>
 
-            <ListItem >
+            <ListItem button onClick={handleClickMsgInput} disablepadding="true" title="Message Input">
               <Link to="/MessageInput" style={{ textDecoration: 'none' }}>
-                <ListItemIcon>
+                <ListItemIcon title="Message Input">
                   <AttachFileSharpIcon style={{ color: "#001c3e" }} />
                 </ListItemIcon>
                 <Button variant="contained">
-                  <Typography>MessageInput</Typography>
+                  <Typography>Message Input</Typography>
                 </Button>
               </Link>
             </ListItem>
