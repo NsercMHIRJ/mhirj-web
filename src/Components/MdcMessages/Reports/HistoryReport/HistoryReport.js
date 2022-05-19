@@ -45,10 +45,7 @@ const HistoryReport = (props) => {
   }
 
   useEffect(()=> {
-    let pageNumber = localStorage.getItem('historyReportPageNum');
-    if(pageNumber){
-      setPageNo(parseInt(pageNumber));
-    }
+
     if ( searchParameters.length ) {
       let isFound = false;
       setSearchError(false);
@@ -151,10 +148,10 @@ const HistoryReport = (props) => {
       return row.dataIndex;
     })
     localStorage.setItem('indexSelected' ,  JSON.stringify(arrayOfRows))
-    setRowsSelected(rowsSelected);
+    // setRowsSelected(rowsSelected);
     let FlagArray = [];
     let ACSNArray = [];
-    Object(rowsSelected).map((item => {
+    rowsSelected.map((item => {
       ACSNArray.push(data[item].ACSN);
       FlagArray.push("('"+ data[item].ACSN +"','"+ data[item].B1Equation +"')");
       return FlagArray;
@@ -162,7 +159,7 @@ const HistoryReport = (props) => {
     let flagList =  FlagArray.join(",");
     props.setJamACSNHistoryValue(ACSNArray[ACSNArray.length-1]);
     localStorage.setItem('jamACSNHistory', ACSNArray[ACSNArray.length-1])
-    setFlagList(flagList);
+
     props.HandleMultipleRowSelectReport(flagList);
   };
 
@@ -553,9 +550,16 @@ const HistoryReport = (props) => {
     setFirstData(dataCopy);
   }, [props.data])
 
+  useEffect(()=> {
+    let pageNumber = localStorage.getItem('historyReportPageNum');
+    if(pageNumber){
+      setPageNo(parseInt(pageNumber));
+    }
+  })
+
     const options = {
       selectableRows: 'multiple',
-      rowsSelected: rowsSelectedState,
+
       onRowSelectionChange: HandleMultipleRowSelect,
       selectableRowsOnClick: false,
       resizableColumns: false,

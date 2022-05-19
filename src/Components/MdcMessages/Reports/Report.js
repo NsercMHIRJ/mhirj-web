@@ -99,7 +99,8 @@ const Report = (props) => {
         else if (report.analysis === "daily") {
           let consecutiveDays = 0;
           path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
+          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate + '/' + '0' + '/' + 
+          '50';
 
           localStorage.setItem('report', JSON.stringify( report ) );
           setDailyValue(1);
