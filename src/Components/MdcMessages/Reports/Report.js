@@ -42,8 +42,9 @@ const Report = (props) => {
   const [jamHistTitle, setJamHistTitle] = useState('');
   const [jamConditions, setJamConditions] = useState({});
   const [reportType, setReportType] = useState('');
-  let db = new Localbase('reportDatas');
+  const db = new Localbase('reportDatas');
   const [isFetching, setIsFetching] = useState(false);
+
 
   const HandleMultipleRowSelectReport = (flagList) => {
     setFlagList(flagList);
@@ -97,8 +98,9 @@ const Report = (props) => {
         }
         else if (report.analysis === "daily") {
           let consecutiveDays = 0;
-          path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
+          path = Constants.LOCALURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
+          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate + '/' + '0' + '/' + 
+          '50';
 
           localStorage.setItem('report', JSON.stringify( report ) );
           setDailyValue(1);
@@ -137,6 +139,8 @@ const Report = (props) => {
         }
      }
   }, [report]);
+
+  
 
   useEffect( async()=> {
       setIsFetching(true);
@@ -190,7 +194,7 @@ const Report = (props) => {
       setLoadingHistoryJam(true);
       setJamHistValue(1);
 
-      if ( Object.entries( localStorage.getItem( 'history-report' ) ).length !== 0 ) {
+      if ( Object.entries( JSON.parse( localStorage.getItem( 'history-report' ) ) ).length !== 0 ) {
         jamParameters = JSON.parse( localStorage.getItem( 'history-report' ) );
         jamACSNValue = jamACSNHistoryValue;
         setJamHistTitle("Surrounding Messages Report for ACSN " + jamACSNValue);
@@ -207,6 +211,7 @@ const Report = (props) => {
         var data = JSON.parse(res.data);
         setJamHistoryData(data);
         setLoadingHistoryJam(false);
+        db.collection('reporstLocal').add({data: data},"surroundingData");
       }).catch(function (err){
         console.log(err);
         setLoadingHistoryJam(false);
@@ -218,8 +223,9 @@ const Report = (props) => {
 
   //Flag Report
   const handleGenerateFlagReport = (event) => {
+    const historyReport = JSON.parse(localStorage.getItem('history-report'));
     setFlagConditions({
-      ...props.reportConditions,
+      ...historyReport,
       flagList
     });
     setFlagData([]);
@@ -339,7 +345,7 @@ const Report = (props) => {
               <>
                 <Grid item md={12}>
                 <JamsReport data = {jamHistoryData} 
-                reportConditions = {JSON.parse(localStorage.getItem('report'))} 
+                reportConditions = {JSON.parse(localStorage.getItem('history-report'))} 
                 title = {jamHistTitle} 
                 loading = {loadingHistoryJam}/>
                 </Grid>

@@ -12,7 +12,6 @@ import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 const JamsReport = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [ isDefault, setIsDefault ] = useState(true);
-  const [data, setData] = useState([]);
   const [pageNo, setPageNo] = useState(0); 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -456,7 +455,8 @@ const JamsReport = (props) => {
         setPageNo(parseInt(pageNumber));
       }
     },[setPageNo])
-    useEffect(()=> {
+
+     let data = [];
       props.data?.map((item => {
         let input = item["MHIRJ_ISE_inputs"] === '0' ? '' : item["MHIRJ_ISE_inputs"];
         let recommendation = item["MHIRJ_ISE_Recommended_Action"] === '0' ? '' : item["MHIRJ_ISE_Recommended_Action"];
@@ -502,10 +502,6 @@ const JamsReport = (props) => {
         return data;
       }
       ));
-      setData(data);
-    }, [data, setData])
-  
-
   
     const options = {
       filter: true,
@@ -574,7 +570,7 @@ const JamsReport = (props) => {
       onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
-      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : `500px`
+      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : `650px`
     };
 
   return (
