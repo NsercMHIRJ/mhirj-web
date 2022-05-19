@@ -96,7 +96,7 @@ export default function Scatter1() {
   return (
 
     <div className={classes.root}>
-      <Grid container spacing={12}>
+      <Grid container spacing={10}>
         <Grid item xs={12}>
           <form className={classes.root1} noValidate autoComplete="off">
 

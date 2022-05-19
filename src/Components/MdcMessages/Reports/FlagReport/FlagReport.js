@@ -14,7 +14,7 @@ import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 
 const FlagReport = (props) => {
   const [ isDefault, setIsDefault ] = useState(true);
-  const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -450,7 +450,7 @@ const FlagReport = (props) => {
       onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
-      tableBodyHeight: props.loading === true || data.length === 0 ? '160px' : `300px`
+      tableBodyHeight: props.loading === true || data.length === 0 ? '160px' : `500px`
     };
 
   
@@ -470,4 +470,3 @@ const FlagReport = (props) => {
   );
 }
 export default FlagReport;
-

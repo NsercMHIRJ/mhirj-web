@@ -51,7 +51,7 @@ const PMTable = (props) => {
     },
   );
   const [ isDefault, setIsDefault ] = useState(true);
-  const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openCorrelationModal, setOpenCorrelationModal] = useState(false);
 
   const toggleKeyword = (event) => {
@@ -365,7 +365,8 @@ const options = {
   fixedSelectColumn: true,
   jumpToPage: true,
   resizableColumns: false,
-  selectableRowsHideCheckboxes: true,
+  selectableRows:'multiple',
+selectableRowsHideCheckboxes: true,
   selectableRowsOnClick: false,
   expandableRows: true,
   sortOrder: {

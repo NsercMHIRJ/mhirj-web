@@ -7,7 +7,7 @@ import $ from 'jquery';
 
 const RawDataTable = (props) => {
   const [ isDefault, setIsDefault ] = useState(true);
-  const [rowsPerPage, setRowsPerPage] = useState('10');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -341,6 +341,7 @@ const RawDataTable = (props) => {
       fixedSelectColumn: true,
       jumpToPage: true,
       resizableColumns: false,
+      selectableRows:'multiple',
       selectableRowsHideCheckboxes: true,
       selectableRowsOnClick: false,
       expandableRows: false,

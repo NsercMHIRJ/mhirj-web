@@ -23,6 +23,7 @@ const HistoryReport = (props) => {
   const [ firstData, setFirstData ] = useState([]);
   const [ data, setData ] = useState([]);
   const [pageNo, setPageNo] = useState(0) 
+  const [index, setindex] = useState([]) 
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -146,6 +147,10 @@ const HistoryReport = (props) => {
   }, [searchParameters, setPageNo])
 
   const HandleMultipleRowSelect = (rowsSelectedData, allRows, rowsSelected) => {
+    const arrayOfRows = allRows.map((row)=> {
+      return row.dataIndex;
+    })
+    localStorage.setItem('indexSelected' ,  JSON.stringify(arrayOfRows))
     setRowsSelected(rowsSelected);
     let FlagArray = [];
     let ACSNArray = [];
@@ -156,6 +161,7 @@ const HistoryReport = (props) => {
     }));
     let flagList =  FlagArray.join(",");
     props.setJamACSNHistoryValue(ACSNArray[ACSNArray.length-1]);
+    localStorage.setItem('jamACSNHistory', ACSNArray[ACSNArray.length-1])
     setFlagList(flagList);
     props.HandleMultipleRowSelectReport(flagList);
   };
@@ -574,6 +580,13 @@ const HistoryReport = (props) => {
         setIsDefault(!isDefault);
         AddCellClass(cellMeta.rowIndex);
       },
+      onRowExpansionChange: (currentRowsExpanded, allRowsExpanded, rowsExpanded) => {
+        let arrayOfRows = allRowsExpanded.map((row)=> {
+          return row.dataIndex;
+        })
+        localStorage.setItem('historyReportExpandedRows', JSON.stringify(arrayOfRows));
+      },
+      rowsExpanded: JSON.parse(localStorage.getItem('historyReportExpandedRows')),
       renderExpandableRow: (rowData, rowMeta) => {
         return (    
         <TableRow>
@@ -615,18 +628,19 @@ const HistoryReport = (props) => {
             columnHeaderTooltip: column => column.secondaryLabel ? `Sort for ${column.secondaryLabel}` : "Sort"
         },
     },
+
       elevation: 4,
       rowsPerPage:  rowsPerPage,
+      rowsSelected: JSON.parse(localStorage.getItem('indexSelected')),
       onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions: [10,20,50],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };
-  
 
   return (
     <>
-      <div class="reports-root history-report">
+      <div className="reports-root history-report">
         { openSearch &&
             <SearchTab 
               columns={columns}

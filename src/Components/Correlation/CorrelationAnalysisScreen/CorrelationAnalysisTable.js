@@ -293,6 +293,7 @@ const CorrelationAnalysisTable = (props) => {
 const options = {
   filter: true,
   filterType: 'multiselect',
+  selectableRows:'multiple',
   selectableRowsHideCheckboxes: true,
   selectableRowsOnClick: false,
   responsive: "standard",
@@ -358,7 +359,7 @@ const options = {
         openCorrelationModal={openCorrelationModal}
         correlationKeywords = { props.correlationKeywords ? props.correlationKeywords  : "No keywords available..." }
       />
-      <div class="reports-root analysis-correlation">
+      <div className="reports-root analysis-correlation">
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <MUIDataTable

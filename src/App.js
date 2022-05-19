@@ -146,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#001c3e",
 
   },
-  typography: {
+  Typography: {
     useNextVariants: true,
     color: "#272727",
   },
@@ -214,7 +214,7 @@ export default function MiniDrawer() {
               <MenuIcon />
             </IconButton>
             <img src={mhirjLogoColored} style={{ height: 78, width: 150 }} />
-            <typography style={{ color: "#001c3e", fontSize: "24px", fontFamily: "Times New Roman" }}>MDC Trend Analysis Tool</typography>
+            <Typography style={{ color: "#001c3e", fontSize: "24px", fontFamily: "Times New Roman" }}>MDC Trend Analysis Tool</Typography>
           </Toolbar>
         </AppBar>
 
@@ -245,20 +245,20 @@ export default function MiniDrawer() {
           
           <Divider />
           <List>
-            <ListItem button onClick={handleMainClick} disablePadding>
+            <ListItem button onClick={handleMainClick} disablepadding="true">
               <Link to="/" style={{ textDecoration: 'none' }}>
                 <ListItemIcon>
                   <InfoSharpIcon style={{ color: "#001c3e" }} />
                 </ListItemIcon>
-                <Button variant="contained" color="#92A0AD">
-                  <typography>Main</typography>
+                <Button variant="contained">
+                  <Typography>Main</Typography>
                   {openMAIN ? <ExpandLess /> : <ExpandMore />}
                 </Button>
               </Link>
             </ListItem>
             <Collapse in={openMAIN} timeout="auto" unmountOnExit>
 
-              <List component="div" disablePadding>
+              <List component="div" disablepadding="true">
                 <Link to="/Stacked" style={{ textDecoration: 'none' }}>
                   <ListItem button className={classes.nested}>
                     <ListItemIcon>
@@ -270,19 +270,19 @@ export default function MiniDrawer() {
               </List>
             </Collapse>
 
-            <ListItem button onClick={handleClick} disablePadding>
+            <ListItem button onClick={handleClick} disablepadding="true">
               <ListItemIcon>
                 <TableChartSharpIcon style={{ color: "#001c3e" }} />
               </ListItemIcon>
-              <Button variant="contained" color="#001c3e">
-                <typography>MDC</typography>
+              <Button variant="contained">
+                <Typography>MDC</Typography>
                 {openMDC ? <ExpandLess /> : <ExpandMore />}
               </Button>
             </ListItem>
 
             <Collapse in={openMDC} timeout="auto" unmountOnExit>
 
-              <List component="div" disablePadding>
+              <List component="div" disablepadding="true">
                 <Link to="/analysis" style={{ textDecoration: 'none' }}>
                   <ListItem button className={classes.nested}>
                     <ListItemIcon>
@@ -293,20 +293,20 @@ export default function MiniDrawer() {
                 </Link>
               </List>
 
-              <List component="div" disablePadding>
+              <List component="div" disablepadding="true">
 
                 <ListItem button className={classes.nested} button onClick={handleGraphsClick}>
                   <ListItemIcon>
                     <TimelineSharpIcon style={{ color: "#001c3e" }} />
                   </ListItemIcon>
-                  <Button color="#001c3e" style={{ fontSize: "16px" }}>
-                    <typography>Graphs </typography>
+                  <Button style={{ fontSize: "16px" }}>
+                    <Typography>Graphs </Typography>
                     {openGraphs ? <ExpandLess /> : <ExpandMore />}
                   </Button>
                 </ListItem>
 
                 <Collapse in={openGraphs} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
+                  <List component="div" disablepadding="true">
                     <Link to="/Chart1" style={{ textDecoration: 'none' }}>
                       <ListItem button className={classes.nested_1}>
                         <ListItemIcon>
@@ -317,7 +317,7 @@ export default function MiniDrawer() {
                     </Link>
                   </List>
 
-                  <List component="div" disablePadding>
+                  <List component="div" disablepadding="true">
                     <Link to="/Chart2" style={{ textDecoration: 'none' }}>
                       <ListItem button className={classes.nested_1}>
                         <ListItemIcon>
@@ -328,7 +328,7 @@ export default function MiniDrawer() {
                     </Link>
                   </List>
 
-                  <List component="div" disablePadding>
+                  <List component="div" disablepadding="true">
                     <Link to="/Chart3" style={{ textDecoration: 'none' }}>
                       <ListItem button className={classes.nested_1}>
                         <ListItemIcon>
@@ -339,7 +339,7 @@ export default function MiniDrawer() {
                     </Link>
                   </List>
 
-                  {<List component="div" disablePadding>
+                  {<List component="div" disablepadding="true">
                       <Link to="/Chart4" style={{ textDecoration: 'none' }}>
                         <ListItem button className={classes.nested_1}>
                           <ListItemIcon>
@@ -350,7 +350,7 @@ export default function MiniDrawer() {
                       </Link>
                     </List>}
 
-                  <List component="div" disablePadding>
+                  <List component="div" disablepadding="true">
                     <Link to="/Chart5" style={{ textDecoration: 'none' }}>
                       <ListItem button className={classes.nested_1}>
                         <ListItemIcon>
@@ -362,7 +362,7 @@ export default function MiniDrawer() {
                   </List>
 
                   
-                  <List component="div" disablePadding>
+                  <List component="div" disablepadding="true">
                     <Link to="/ChartB" style={{ textDecoration: 'none' }}>
                       <ListItem button className={classes.nested_1}>
                         <ListItemIcon>
@@ -376,7 +376,7 @@ export default function MiniDrawer() {
               </List>
 
 
-              <List component="div" disablePadding>
+              <List component="div" disablepadding="true">
                 <Link to="/rawdata" style={{ textDecoration: 'none' }}>
                   <ListItem button className={classes.nested}>
                     <ListItemIcon>
@@ -393,8 +393,8 @@ export default function MiniDrawer() {
                 <ListItemIcon>
                   <AssessmentSharpIcon style={{ color: "#001c3e" }} />
                 </ListItemIcon>
-                <Button variant="contained" color="#d8e4f0">
-                  <typography>Correlation</typography>
+                <Button variant="contained">
+                  <Typography>Correlation</Typography>
                 </Button>
               </Link>
             </ListItem>
@@ -404,8 +404,8 @@ export default function MiniDrawer() {
                 <ListItemIcon>
                   <AttachFileSharpIcon style={{ color: "#001c3e" }} />
                 </ListItemIcon>
-                <Button variant="contained" color="#d8e4f0">
-                  <typography>MessageInput</typography>
+                <Button variant="contained">
+                  <Typography>MessageInput</Typography>
                 </Button>
               </Link>
             </ListItem>

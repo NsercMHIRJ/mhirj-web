@@ -207,7 +207,7 @@ export const EqIDSelector = (props) => {
         value = {EqID}
         filterSelectedOptions
         onChange = {handleEqIDChange}
-        searchEnabled = {true}
+        searchenabled = "true"
         renderInput={(params) => (
           <TextField
             {...params}
@@ -274,7 +274,7 @@ export const EqIDSelectorInput = (props) => {
         value = {EqID}
         filterSelectedOptions
         onChange = {handleEqIDChangeInput}
-        searchEnabled = {true}
+        searchenabled = "true"
         renderInput={(params) => (
           <TextField
             {...params}
