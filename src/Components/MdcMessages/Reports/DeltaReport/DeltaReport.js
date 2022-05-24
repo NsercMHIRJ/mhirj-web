@@ -50,6 +50,9 @@ const DeltaReport = (props) => {
     if(pageNumber){
       setPageNo(parseInt(pageNumber));
     }
+  })
+
+  useEffect(()=> {
     if ( searchParameters.length ) {
       let isFound = false;
       setSearchError(false);

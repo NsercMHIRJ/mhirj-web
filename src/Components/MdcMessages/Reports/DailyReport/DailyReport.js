@@ -44,10 +44,13 @@ const DailyReport = (props) => {
   }
 
   useEffect(()=> {
-    const pageNumber = localStorage.getItem('dailyReportPageNum');
+    let pageNumber = localStorage.getItem('dailyReportPageNum');
     if(pageNumber){
       setPageNo(parseInt(pageNumber));
     }
+  })
+
+  useEffect(()=> {
     if ( searchParameters.length ) {
       let isFound = false;
       setSearchError(false);
@@ -565,6 +568,7 @@ const DailyReport = (props) => {
             return {style: {backgroundColor:'#F3FFD0'}}
           }
         }
+        
       },
       draggableColumns: {
         enabled: false,
@@ -601,7 +605,7 @@ const DailyReport = (props) => {
             handleSearchChange={handleSearchChange}
             searchLoading={searchLoading}
             searchError = {searchError}
-            style={{backgroundColor:'black'}}
+
           />  
           </div>
         }
