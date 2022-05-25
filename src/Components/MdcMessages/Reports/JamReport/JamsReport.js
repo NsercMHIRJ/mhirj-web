@@ -455,7 +455,7 @@ const JamsReport = (props) => {
       if(pageNumber){
         setPageNo(parseInt(pageNumber));
       }
-    },[setPageNo])
+    })
 
      let data = [];
       props.data?.map((item => {

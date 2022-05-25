@@ -202,6 +202,9 @@ export default function MiniDrawer() {
     setOpen(true)
   }
 
+
+ 
+
   return (
 
     <div className={classes.root}>
