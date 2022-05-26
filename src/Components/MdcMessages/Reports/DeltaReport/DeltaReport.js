@@ -638,8 +638,8 @@ const DeltaReport = (props) => {
         },
     },
       elevation: 4,
-      rowsPerPage: 10,
-      rowsPerPageOptions: [10,20,50],
+      rowsPerPage: 20,
+      rowsPerPageOptions: [20,50,100],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };

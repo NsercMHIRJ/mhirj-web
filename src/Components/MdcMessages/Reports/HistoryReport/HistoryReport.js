@@ -14,7 +14,7 @@ import SearchTab from '../../GenerateReport/Search';
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
   const [rowsSelectedState, setRowsSelected] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
   const [ isDefault, setIsDefault ] = useState(true);
   const [ searchParameters, setSearchParameters ] = useState([]);
   const [ openSearch, setOpenSearch ] = useState(false);
@@ -511,10 +511,6 @@ const HistoryReport = (props) => {
   useEffect(()=> {
     let dataCopy = [];
     props.data?.map((item => {
-      let input = item["MHIRJ Input"] === '0' ? '' : item["MHIRJ Input"];
-      let recommendation = item["MHIRJ Recommendation"] === '0' ? '' : item["MHIRJ Recommendation"];
-      let comments = item["Additional Comments"] === '0' ? '' : item["Additional Comments"];
-      let topMessage = item["Known Top Message - Recommended Documents"] === '0' ? '' : item["Known Top Message - Recommended Documents"];
 
       dataCopy.push(
         {
@@ -533,10 +529,10 @@ const HistoryReport = (props) => {
           intermittent: item["INTERMITNT"],  
           reasons: item["Reason(s) for flag"],   
           priority: item["Priority"],   
-          topMessage: topMessage,  
-          recommendation: recommendation, 
-          comments: comments, 
-          input: input,  
+          topMessage: item["Known Top Message - Recommended Documents"],  
+          recommendation: item["MHIRJ Recommendation"], 
+          comments: item["Additional Comments"], 
+          input: item["MHIRJ Input"],  
           isJam: item["is_jam"], 
           mel: item["MEL or No-Dispatch"], 
           dateFrom: DateConverter(item["Date from"]), 
@@ -644,7 +640,7 @@ const HistoryReport = (props) => {
       rowsPerPage:  rowsPerPage,
       rowsSelected: JSON.parse(localStorage.getItem('indexSelected')),
       onChangeRowsPerPage: onChangeRowsPerPage,
-      rowsPerPageOptions: [10,20,50],
+      rowsPerPageOptions: [20,50,100],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };

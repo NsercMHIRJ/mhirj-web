@@ -13,6 +13,10 @@
   }
 }
 
+@media screen and (min-width: 25em){
+  html { font-size: calc( 16px + (24 - 16) * (100vw - 400px) / (800 - 400) ); }
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

@@ -340,8 +340,14 @@ export const MessagesSelector = (props) => {
 export const HistorySupportingSelector = (props) => {
   const [supportingReport, setSupportingReport] = useState('');
 
+  useEffect(()=> {
+    if (localStorage.getItem('supportingReportDropDown'))
+    setSupportingReport(localStorage.getItem('supportingReportDropDown'))
+  })
+
   const handleReportChange = (event) => {
     setSupportingReport(event.target.value);
+    localStorage.setItem('supportingReportDropDown', event.target.value)
     props.handleReportChange(event.target.value);
   };
 

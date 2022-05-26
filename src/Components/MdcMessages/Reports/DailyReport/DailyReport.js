@@ -14,7 +14,7 @@ import { set } from 'date-fns';
 
 const DailyReport = (props) => {
   const [rowsSelectedState, setRowsSelected] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
   const [ isDefault, setIsDefault ] = useState(true);
   const [ searchParameters, setSearchParameters ] = useState([]);
   const [ openSearch, setOpenSearch ] = useState(false);
@@ -584,7 +584,7 @@ const DailyReport = (props) => {
       elevation: 4,
       rowsPerPage:  rowsPerPage,
       onChangeRowsPerPage: onChangeRowsPerPage,
-      rowsPerPageOptions: [10,20,50],
+      rowsPerPageOptions: [20,50,100],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };

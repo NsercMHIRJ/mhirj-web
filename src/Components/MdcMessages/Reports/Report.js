@@ -45,8 +45,16 @@ const Report = (props) => {
   const db = new Localbase('reportDatas');
   const [isFetching, setIsFetching] = useState(false);
 
+  
+  useEffect(()=> {
+    if (localStorage.getItem('flagList')) {
+      setFlagList(localStorage.getItem('flagList'))
+    }
+  })
+  
 
   const HandleMultipleRowSelectReport = (flagList) => {
+    localStorage.setItem('flagList', flagList)
     setFlagList(flagList);
   }
 
@@ -79,7 +87,6 @@ const Report = (props) => {
             report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + 1 + '/' + report.fromDate + '/' + report.toDate + 
             '/' + report.deltaFrom + '/' + report.deltaTo;
           }
-
           localStorage.setItem('report', JSON.stringify( report ) );
           localStorage.setItem('delta-report', JSON.stringify( report ) );
           setDeltaValue(1);
@@ -89,6 +96,7 @@ const Report = (props) => {
           axios.post(path).then(function (res){
             // var data = JSON.parse(res.data);
             setDeltaData(res.data);   
+            console.log(res.data)
             db.collection('reporstLocal').add({data: res.data},"deltaData")
             setLoadingDelta(false);
           }).catch(function (err){
@@ -110,6 +118,7 @@ const Report = (props) => {
 
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
+            console.log(data)
             setDailyReportData(data);    
             setLoadingDaily(false);
             db.collection('reporstLocal').add({data: data},"dailyData")
@@ -131,6 +140,7 @@ const Report = (props) => {
 
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
+            console.log(data)
             setHistoryReportData(data);  
             setLoadingHistory(false);  
             db.collection('reporstLocal').add({data: data},"historyData")
@@ -142,11 +152,15 @@ const Report = (props) => {
      }
   }, [report]);
 
-  
+  useEffect(()=> {
+    let jamACSNHistory = localStorage.getItem('jamACSNHistory');
+    setJamACSNHistoryValue(jamACSNHistory);
+    setJamHistTitle("Surrounding Messages Report for ACSN " + jamACSNHistory);
+  })
 
   useEffect( async()=> {
       setIsFetching(true);
-      let jamACSNHistory = localStorage.getItem('jamACSNHistory');
+      
       try {
         const daily = await (async function() {return db.collection('reporstLocal').doc("dailyData").get()})();
         const history = await (async function() {return db.collection('reporstLocal').doc("historyData").get()})();
@@ -172,8 +186,7 @@ const Report = (props) => {
         if(surrounding){
           setJamHistoryData(surrounding.data);
           setJamHistValue(1);
-          setJamACSNHistoryValue(jamACSNHistory);
-          setJamHistTitle("Surrounding Messages Report for ACSN " + jamACSNHistory);
+
         }
         setIsFetching(false);
       }

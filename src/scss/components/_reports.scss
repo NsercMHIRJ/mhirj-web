@@ -88,8 +88,15 @@
     border-collapse: unset;
   }
 
+  .MUIDataTableBodyCell {
+    
+      font-weight: bolder;
+    
+  }
+
   .MuiTableCell-root[class*="MUIDataTableSelectCell-"]{
     background-color: white;
+    font-weight: bolder;
   }
 
   .MuiTableBody-root {
@@ -212,10 +219,21 @@
     margin-left: 0;
   }
 }
+.MuiTableCell-root {
+  font-weight: 540 !important;
+}
+.MuiRadio-root{
+  span {
+    font-weight: bolder !important;
+  }
+}
 
+body{
+  font-weight: 700 !important;
+}
 .footer-label {
   font-family: "Roboto","Helvetica","Arial",sans-serif;
-  font-weight: 400;
+  font-weight: 700;
   font-size: 14px;
   line-height: 23px;
   letter-spacing: 0.01071em;
