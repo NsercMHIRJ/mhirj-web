@@ -12,9 +12,22 @@ import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisSc
 import $ from 'jquery';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 
+import { Button } from '@material-ui/core';
+import CloseIcon from '@mui/icons-material/Close';
+
+
+const useStyles = makeStyles(theme => ({
+  customHoverFocus: {
+    left: '89vw',
+    alignSelf: 'flex-end'
+  }
+}));
+
 const FlagReport = (props) => {
   const [ isDefault, setIsDefault ] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(20);
+  const classes = useStyles();
+  const [ display, setDisplay ] = useState('');
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -453,11 +466,22 @@ const FlagReport = (props) => {
       tableBodyHeight: props.loading === true || data.length === 0 ? '160px' : `500px`
     };
 
+    const closeFlagReport = () => {
+      setDisplay('none')
+      data = []
+      console.log(data)
+      localStorage.removeItem('flag-report')
+      props.db.collection('reporstLocal').doc('flagData').delete()
+    }
+
   
   return (
-    <div className="reports-root flag-report">
+    <div style={{display: `${display}`}} className="reports-root flag-report">
       <Grid container spacing={0}>
         <Grid item xs={12}>
+        <Button onClick={closeFlagReport} className={classes.customHoverFocus}>
+            <CloseIcon />
+            </Button>
           <MUIDataTable
             title={"Flag Report"} 
             data={data}

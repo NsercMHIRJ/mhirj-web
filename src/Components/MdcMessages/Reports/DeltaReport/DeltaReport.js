@@ -9,8 +9,19 @@ import $ from 'jquery';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 import AnalysisCustomToolbar from '../../GenerateReport/AnalysisCustomToolbar';
 import SearchTab from '../../GenerateReport/Search';
+import { makeStyles } from "@material-ui/core/styles";
+import { Button } from '@material-ui/core';
+import CloseIcon from '@mui/icons-material/Close';
+
+const useStyles = makeStyles(theme => ({
+  customHoverFocus: {
+    left: '89vw',
+    alignSelf: 'flex-end'
+  }
+}));
 
 const DeltaReport = (props) => {
+  const classes = useStyles();
   const [deltaParameters, setDeltaParameters] = useState({});
   const [ isDefault, setIsDefault ] = useState(true);
   const [ searchParameters, setSearchParameters ] = useState([]);
@@ -21,6 +32,7 @@ const DeltaReport = (props) => {
   const [ data, setData ] = useState([]);
   const [pageNo, setPageNo] = useState(0) 
   const [arrayOfRows, setArrayOfRows] = useState([]) 
+  const [ display, setDisplay ] = useState('');
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -650,10 +662,16 @@ const DeltaReport = (props) => {
       }
     },[setArrayOfRows])
   
+    const closeDeltaReport = () => {
+      setDisplay('none')
+      setData([])
+      localStorage.removeItem('delta-report')
+      props.db.collection('reporstLocal').doc('deltaData').delete()
+    }
 
   return (
     <>
-      <div className={"reports-root delta-report"}>
+      <div style={{display: `${display}`}} className={"reports-root delta-report"}>
         { openSearch &&
           <SearchTab 
             columns={columns}
@@ -664,6 +682,9 @@ const DeltaReport = (props) => {
         }
         <Grid container spacing={0}>
           <Grid item xs={12}>
+          <Button onClick={closeDeltaReport} className={classes.customHoverFocus}>
+            <CloseIcon />
+            </Button>
             <MUIDataTable
               title= {props.title}
               data={data}

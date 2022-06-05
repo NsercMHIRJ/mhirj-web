@@ -10,6 +10,16 @@ import $ from 'jquery';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 import AnalysisCustomToolbar from '../../GenerateReport/AnalysisCustomToolbar';
 import SearchTab from '../../GenerateReport/Search';
+import { Button } from '@material-ui/core';
+import CloseIcon from '@mui/icons-material/Close';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  customHoverFocus: {
+    left: '89vw',
+    alignSelf: 'flex-end'
+  }
+}));
 
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
@@ -24,6 +34,8 @@ const HistoryReport = (props) => {
   const [ data, setData ] = useState([]);
   const [pageNo, setPageNo] = useState(0) 
   const [arrayOfRows, setArrayOfRows] = useState([]) 
+  const classes = useStyles();
+  const [ display, setDisplay ] = useState('');
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -649,9 +661,17 @@ const HistoryReport = (props) => {
         setArrayOfRows(JSON.parse(localStorage.getItem('historyReportExpandedRows')))
       }
     },[setArrayOfRows])
+
+    const closeHistoryReport = () => {
+      setDisplay('none')
+      setData([])
+      localStorage.removeItem('history-report')
+      props.db.collection('reporstLocal').doc('historyData').delete()
+    }
+
   return (
     <>
-      <div className="reports-root history-report">
+      <div style={{display: `${display}`}} className="reports-root history-report">
         { openSearch &&
             <SearchTab 
               columns={columns}
@@ -662,6 +682,9 @@ const HistoryReport = (props) => {
           }
         <Grid container spacing={0}>
           <Grid item xs={12}>
+          <Button onClick={closeHistoryReport} className={classes.customHoverFocus}>
+            <CloseIcon />
+            </Button>
             <MUIDataTable
               title= {props.title}
               data={data}

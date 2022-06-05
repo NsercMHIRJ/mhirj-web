@@ -8,12 +8,25 @@ import TableRow from '@material-ui/core/TableRow';
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 import $ from 'jquery';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
+import { Button } from '@material-ui/core';
+import CloseIcon from '@mui/icons-material/Close';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  customHoverFocus: {
+    left: '89vw',
+    alignSelf: 'flex-end'
+  }
+}));
 
 const JamsReport = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const [ isDefault, setIsDefault ] = useState(true);
   const [pageNo, setPageNo] = useState(0); 
   const [arrayOfRows, setArrayOfRows] = useState([]) 
+  const classes = useStyles();
+  const [ display, setDisplay ] = useState('');
+
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root.jam-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
@@ -590,10 +603,20 @@ const JamsReport = (props) => {
       }
     },[setArrayOfRows])
 
+    const closeJamReport = () => {
+      setDisplay('none')
+      data = []
+      localStorage.removeItem('jamReportExpandedRows')
+      props.db.collection('reporstLocal').doc('surroundingData').delete()
+    }
+
   return (
-    <div className="reports-root jam-report">
+    <div  style={{display: `${display}`}} className="reports-root jam-report">
       <Grid container spacing={0}>
         <Grid item xs={12}>
+        <Button onClick={closeJamReport} className={classes.customHoverFocus}>
+            <CloseIcon />
+            </Button>
           <MUIDataTable
             title= {props.title}
             data={data}

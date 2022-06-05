@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import MUIDataTable from "mui-datatables";
+import MUIDataTable, { icons  } from "mui-datatables";
 import Grid from '@material-ui/core/Grid';
 import {DateConverter} from '../../../Helper/Helper';
 import "../../../../scss/_main.scss";
@@ -10,9 +10,20 @@ import $ from 'jquery';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
 import AnalysisCustomToolbar from '../../GenerateReport/AnalysisCustomToolbar';
 import SearchTab from '../../GenerateReport/Search';
-import { set } from 'date-fns';
+import CloseIcon from '@mui/icons-material/Close';
+import { makeStyles } from "@material-ui/core/styles";
+import { Button } from '@material-ui/core';
+
+
+const useStyles = makeStyles(theme => ({
+  customHoverFocus: {
+    left: '89vw',
+    alignSelf: 'flex-end'
+  }
+}));
 
 const DailyReport = (props) => {
+  const classes = useStyles();
   const [rowsSelectedState, setRowsSelected] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const [ isDefault, setIsDefault ] = useState(true);
@@ -20,10 +31,12 @@ const DailyReport = (props) => {
   const [ openSearch, setOpenSearch ] = useState(false);
   const [ searchLoading, setSearchLoading ] = useState(false);
   const [ searchError, setSearchError ] = useState(false);
+  const [ display, setDisplay ] = useState('');
   const [ firstData, setFirstData ] = useState([]);
   const [ data, setData ] = useState([]);
   const [pageNo, setPageNo] = useState(0) 
   const [arrayOfRows, setArrayOfRows] = useState([]) 
+
   const AddCellClass = (index) => {
     let row = index + 1;
     $('.reports-root.daily-report .MuiTableBody-root .MuiTableRow-root').not(':nth-child('+row+')').find('.isClicked').removeClass('isClicked');
@@ -157,6 +170,14 @@ const DailyReport = (props) => {
       setRowsSelected(rowsSelected);
     }
   };
+
+  
+
+
+
+const CustomCheckbox = () => {
+  return (<CloseIcon />);
+}
 
   const onChangeRowsPerPage = (rowsPerPage) => {
     setRowsPerPage(rowsPerPage);
@@ -501,6 +522,7 @@ const DailyReport = (props) => {
     setFirstData(dataCopy);
   }, [props.data])
   
+  
     const options = {
       filter: true,
       filterType: 'multiselect',
@@ -594,10 +616,17 @@ const DailyReport = (props) => {
         setArrayOfRows(JSON.parse(localStorage.getItem('dailyReportExpandedRows')))
       }
     },[setArrayOfRows])
+
+    const closeDailyReport = () => {
+      setDisplay('none')
+      setData([])
+      localStorage.removeItem('daily-report')
+      props.db.collection('reporstLocal').doc('dailyData').delete()
+    }
   
   return (
     <>
-      <div className="reports-root daily-report">
+      <div style={{display: `${display}`}} className="reports-root daily-report">
         { openSearch &&
         <div>
           <SearchTab 
@@ -611,12 +640,20 @@ const DailyReport = (props) => {
         }
         <Grid container spacing={0}>
           <Grid item xs={12}>
-            <MUIDataTable
+            <Button onClick={closeDailyReport} className={classes.customHoverFocus}>
+            <CloseIcon />
+
+            </Button>
+    
+        <MUIDataTable
               title={props.title}
               data={data}
               columns={columns}
               options={options}
+              components= {{  Checkbox: CustomCheckbox}}
             />
+   
+         
           </Grid> 
         </Grid> 
       </div>

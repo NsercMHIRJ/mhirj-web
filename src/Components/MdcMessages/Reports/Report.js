@@ -14,12 +14,14 @@ import {HistorySupportingSelector} from '../GenerateReport/Selectors';
 import Localbase from 'localbase'
 import Skeleton from '@mui/material/Skeleton';
 
+
 const Report = (props) => {
   const [report, setReport] = useState(props.reportConditions);
   
   const [dailyReportData, setDailyReportData] = useState([]);
   const [dailyValue,setDailyValue] = useState(0);
   const [loadingDaily, setLoadingDaily] = useState();
+  
 
   const [historyReportData, setHistoryReportData] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState();
@@ -58,22 +60,11 @@ const Report = (props) => {
     setFlagList(flagList);
   }
 
-  const handleReportChange = (reportType) => {
-    setReportType(reportType);
-  }
-
-  const handleGenerateHistorySupportingReport = (event) => {
-    if ( reportType === 'Flag Report') {
-      handleGenerateFlagReport(event);
-    }
-    else if ( reportType === 'Surrounding Messages Report') {
-      handleGenerateSurroundingReport(event);
-    }
-  }
 
   useEffect(() => {
     setReport(props.reportConditions);
   }, [props.reportConditions]);
+  
 
   useEffect(() => {
     let path = "";
@@ -149,6 +140,65 @@ const Report = (props) => {
             setLoadingHistory(false);
           });
         }
+        else if (report.analysis === "flag"){
+          const historyReport = JSON.parse(localStorage.getItem('history-report'));
+          setFlagConditions({
+            ...historyReport,
+            flagList
+          });
+          setFlagData([]);
+          setLoadingFlag(true);
+          setFlagValue(1);
+          const flagPath = Constants.APIURL + 'GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
+          flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
+          flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.ACSN + '/' + flagConditions.fromDate + '/' + 
+          flagConditions.toDate + '/1/' + flagConditions.flagList;
+    
+          axios.post(flagPath).then(function (res){
+            var data = JSON.parse(res.data);
+            setFlagData(data);
+            setLoadingFlag(false);
+            db.collection('reporstLocal').add({data: data},"flagData");
+          }).catch(function (err){
+            console.log(err);
+            setLoadingFlag(false);
+          });
+          
+        }else if (report.analysis === "surrounding"){
+          let jamParameters = [];
+          let jamACSNValue;
+          setJamConditions({
+            ...props.reportConditions,
+            jamACSNHistoryValue
+          });
+          setJamHistoryData([]);
+          setLoadingHistoryJam(true);
+          setJamHistValue(1);
+    
+          if ( Object.entries( JSON.parse( localStorage.getItem( 'history-report' ) ) ).length !== 0 ) {
+            jamParameters = JSON.parse( localStorage.getItem( 'history-report' ) );
+            jamACSNValue = jamACSNHistoryValue;
+            setJamHistTitle("Surrounding Messages Report for ACSN " + jamACSNValue);
+          }
+          if (jamParameters.lenght !== 0) {
+            const jamsPath = Constants.APIURL + 'GenerateReport/' + jamParameters.analysis + '/' + jamParameters.occurences + '/' + 
+            jamParameters.legs + '/' + jamParameters.intermittent + '/' + jamParameters.days + '/' + jamParameters.ata + '/' + 
+            jamParameters.eqID + '/'+ jamParameters.operator + '/' + jamParameters.messages + '/' + jamParameters.ACSN + '/' + jamParameters.fromDate + '/' + 
+            jamParameters.toDate + '/' + jamACSNValue;
+      
+            axios.post(jamsPath).then(function (res){
+              var data = JSON.parse(res.data);
+              setJamHistoryData(data);
+              setLoadingHistoryJam(false);
+              db.collection('reporstLocal').add({data: data},"surroundingData");
+            }).catch(function (err){
+              console.log(err);
+              setLoadingHistoryJam(false);
+            });
+          } else {
+              setLoadingHistoryJam(false);
+          }
+        }
      }
   }, [report]);
 
@@ -157,6 +207,14 @@ const Report = (props) => {
     setJamACSNHistoryValue(jamACSNHistory);
     setJamHistTitle("Surrounding Messages Report for ACSN " + jamACSNHistory);
   })
+
+  useEffect(()=> {
+    if (historyReportData.length !== 0){
+      props.setCheckHistory(false)
+    }else {
+      props.setCheckHistory(true)
+    }
+  }, [historyReportData])
 
   useEffect( async()=> {
       setIsFetching(true);
@@ -193,79 +251,8 @@ const Report = (props) => {
       catch(error) {
         console.log('error: ', error)
       }
-  },[setDailyValue, setDailyReportData, setHistValue, setHistoryReportData, setDeltaValue, setDeltaData])
+  },[setDailyValue, setDailyReportData, setHistValue, setHistoryReportData, setDeltaValue, setDeltaData, setFlagData, setJamHistoryData])
 
-  //Jam Report
-  const handleGenerateSurroundingReport = (event) => {
-    let jamParameters = [];
-    let jamACSNValue;
-
-    if ( event.currentTarget.id === 'history-supporting-button' ) {
-      setJamConditions({
-        ...props.reportConditions,
-        jamACSNHistoryValue
-      });
-      setJamHistoryData([]);
-      setLoadingHistoryJam(true);
-      setJamHistValue(1);
-
-      if ( Object.entries( JSON.parse( localStorage.getItem( 'history-report' ) ) ).length !== 0 ) {
-        jamParameters = JSON.parse( localStorage.getItem( 'history-report' ) );
-        jamACSNValue = jamACSNHistoryValue;
-        setJamHistTitle("Surrounding Messages Report for ACSN " + jamACSNValue);
-      }
-    }
-
-    if (jamParameters.lenght !== 0) {
-      const jamsPath = Constants.APIURL + 'GenerateReport/' + jamParameters.analysis + '/' + jamParameters.occurences + '/' + 
-      jamParameters.legs + '/' + jamParameters.intermittent + '/' + jamParameters.days + '/' + jamParameters.ata + '/' + 
-      jamParameters.eqID + '/'+ jamParameters.operator + '/' + jamParameters.messages + '/' + jamParameters.ACSN + '/' + jamParameters.fromDate + '/' + 
-      jamParameters.toDate + '/' + jamACSNValue;
-
-      axios.post(jamsPath).then(function (res){
-        var data = JSON.parse(res.data);
-        setJamHistoryData(data);
-        setLoadingHistoryJam(false);
-        db.collection('reporstLocal').add({data: data},"surroundingData");
-      }).catch(function (err){
-        console.log(err);
-        setLoadingHistoryJam(false);
-      });
-    } else {
-        setLoadingHistoryJam(false);
-    }
-  }
-
-  //Flag Report
-  const handleGenerateFlagReport = (event) => {
-    const historyReport = JSON.parse(localStorage.getItem('history-report'));
-    setFlagConditions({
-      ...historyReport,
-      flagList
-    });
-    setFlagData([]);
-    setLoadingFlag(true);
-    setFlagValue(1);
-  }
-
-  useEffect(() => {
-    if (!(Object.keys(flagConditions).length === 0 || Object.values(flagConditions).includes(""))){
-      const flagPath = Constants.APIURL + 'GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
-      flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
-      flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.ACSN + '/' + flagConditions.fromDate + '/' + 
-      flagConditions.toDate + '/1/' + flagConditions.flagList;
-
-      axios.post(flagPath).then(function (res){
-        var data = JSON.parse(res.data);
-        setFlagData(data);
-        setLoadingFlag(false);
-        db.collection('reporstLocal').add({data: data},"flagData");
-      }).catch(function (err){
-        console.log(err);
-        setLoadingFlag(false);
-      });
-    }
-  },[flagConditions]);
 
   return(
     <div className="reports-root">
@@ -276,15 +263,18 @@ const Report = (props) => {
           </Grid>
         </Grid>
       </Grid>
+     
       {dailyReportData !== "" && dailyReportData !== "undefined" && dailyValue === 1 &&
         <>
           <div className="daily-report">
             <Grid item lg={12}>
+        
               <DailyReport 
                 data = {dailyReportData} 
                 title = "Daily Report" 
                 reportConditions = {report} 
                 loading = {loadingDaily}
+                db = {db}
                 />
             </Grid>
           </div>
@@ -293,57 +283,6 @@ const Report = (props) => {
       {historyReportData !== "" && historyReportData !== "undefined" && histValue === 1 &&
         <>
           <div className="history-report">
-            <h2 className="report-parameters-h2">History Report Parameters</h2>
-            <form>
-              <Grid 
-                container
-                item={true}
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-                >
-                  <Grid item={true} xs={3} md={6} lg={2}>
-                    <div className="history-report-jam-parameters select">
-                      <HistorySupportingSelector 
-                        handleReportChange = {handleReportChange}
-                      />
-                    </div>              
-                  </Grid>
-                  <Grid item={true} xs={3} md={6} lg={3}>
-                    <div className="history-report-jam-parameters">
-                      <label className="parameter-label">Jam ACSN:</label>
-                      <TextField 
-                        required 
-                        id="outlined-name"
-                        variant = "outlined"   
-                        value = {jamACSNHistoryValue}
-                        InputProps={{ readOnly: true, }} />
-                    </div>
-                  </Grid>
-                  <Grid item={true} xs={3} md={6} lg={4}>
-                  <div className="history-report-jam-parameters flag">
-                    <label className="parameter-label">Flag ACSN:</label>
-                      <TextField 
-                        required 
-                        id="outlined-name"
-                        variant = "outlined"   
-                        value = {flagList}
-                        InputProps={{ readOnly: true, }}    
-                      />
-                  </div>
-                  </Grid>
-                  <Grid item={true} xs={3} md={6} lg={3}>
-                    <Button 
-                      variant = "contained" 
-                      className="reports-button MuiButtonBase-root MuiButton-root MuiButton-contained" 
-                      id = "history-supporting-button"
-                      onClick = {handleGenerateHistorySupportingReport} >
-                      Generate History Supporting Report
-                    </Button>
-                </Grid>      
-              </Grid>
-            </form>
-
             <Grid item={true} md={12}>
               <HistoryReport 
                 data = {historyReportData}  
@@ -352,6 +291,7 @@ const Report = (props) => {
                 HandleMultipleRowSelectReport = {HandleMultipleRowSelectReport} 
                 setJamACSNHistoryValue = {setJamACSNHistoryValue}
                 loading = {loadingHistory} 
+                db = {db}
               />
             </Grid>
 
@@ -362,7 +302,9 @@ const Report = (props) => {
                 <JamsReport data = {jamHistoryData} 
                 reportConditions = {JSON.parse(localStorage.getItem('history-report'))} 
                 title = {jamHistTitle} 
-                loading = {loadingHistoryJam}/>
+                loading = {loadingHistoryJam}
+                db = {db}/>
+                
                 </Grid>
                 </>
               }
@@ -372,7 +314,7 @@ const Report = (props) => {
             {flagData !== "" && flagData !== "undefined" && flagValue === 1 &&
               <>
                 <Grid item md={12}>
-                <FlagReport data = {flagData} reportConditions = {props.reportConditions} title = "History Flag Report" loading = {loadingFlag} flagReportConditions={flagConditions}/>
+                <FlagReport data = {flagData} reportConditions = {props.reportConditions} title = "History Flag Report" loading = {loadingFlag} flagReportConditions={flagConditions}  db = {db}/>
                 </Grid>
               </>
               }
@@ -392,6 +334,7 @@ const Report = (props) => {
                 title = "Delta Report" 
                 reportConditions = {report}  
                 loading = {loadingDelta} 
+                db = {db}
               />
             </Grid>
           </div>

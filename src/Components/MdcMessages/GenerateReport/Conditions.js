@@ -56,6 +56,7 @@ const Conditions = (props) => {
   const [ACSN, setACSN] = useState("");
   const [messagesChoice, setIncludeMessages] = useState("");
   const [importedData, setImportedData] = useState({});
+  const [checkHistory, setCheckHistory] = useState(true)
 
   let currentTimestamp = Date.now()
   let filter_date = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(currentTimestamp)
@@ -262,6 +263,20 @@ useEffect(()=>{
                   color = 'default'
                   onChange={()=>handleAnalysisChange("delta")} 
                   />} label="Delta" />
+                  <FormControlLabel value="flag" control={
+                  <Radio 
+                  size="medium"
+                  color = 'default'
+                  onChange={()=>handleAnalysisChange("flag")} 
+                  />} label="Flag"
+                  disabled = {checkHistory} />
+                  <FormControlLabel value="surrounding" control={
+                  <Radio 
+                  size="medium"
+                  color = 'default'
+                  onChange={()=>handleAnalysisChange("surrounding")} 
+                  />} label="Surrounding" 
+                  disabled = {checkHistory}/>
               </RadioGroup>
               </FormControl> 
             </div>           
@@ -383,7 +398,8 @@ useEffect(()=>{
       </div>
         </Paper>
       </form>
-        <Report reportConditions = {reportConditions}/>
+        <Report reportConditions = {reportConditions}
+         setCheckHistory = {setCheckHistory}/>
         
     </div>
   );
