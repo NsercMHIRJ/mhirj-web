@@ -71,11 +71,11 @@ const Report = (props) => {
 
     // Delta-Daily-History Report
     if (report.analysis !== "" && report.occurences !== "" && report.legs !== "" && report.eqID !== "" && report.intermittent !== "" && 
-      report.days !== "" && report.operator !== "" && report.ata !== "" && report.messages !== "" && report.fromDate !== undefined && report.toDate !== undefined ) {
+      report.days !== "" && report.operator !== "" && report.ata !== "" && report.fromDate !== undefined && report.toDate !== undefined ) {
         if (report.analysis === "delta") {
           if (report.deltaFrom !== undefined && report.deltaTo !== undefined ) {
             path = Constants.APIURL + 'GenerateReport/history/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-            report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + 1 + '/' + report.fromDate + '/' + report.toDate + 
+            report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + 1 + '/' + report.ACSN + '/' + 1 + '/' + report.fromDate + '/' + report.toDate + 
             '/' + report.deltaFrom + '/' + report.deltaTo;
           }
           localStorage.setItem('report', JSON.stringify( report ) );
@@ -99,7 +99,7 @@ const Report = (props) => {
         else if (report.analysis === "daily") {
           let consecutiveDays = 0;
           path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
+          consecutiveDays + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + 1 + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
 
           localStorage.setItem('report', JSON.stringify( report ) );
           localStorage.setItem('daily-report', JSON.stringify( report ) );
@@ -120,7 +120,7 @@ const Report = (props) => {
         }
         else if (report.analysis === "history") {
           path = Constants.APIURL + 'GenerateReport/' + report.analysis + '/' + report.occurences + '/' + report.legs + '/' + report.intermittent + '/' +
-          report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + report.messages + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
+          report.days + '/' + report.ata + '/' + report.eqID + '/'+ report.operator + '/' + 1 + '/' + report.ACSN + '/' + report.fromDate + '/' + report.toDate;
           
           localStorage.setItem('report', JSON.stringify( report ) );
           
@@ -151,7 +151,7 @@ const Report = (props) => {
           setFlagValue(1);
           const flagPath = Constants.APIURL + 'GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
           flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
-          flagConditions.eqID + '/'+ flagConditions.operator + '/' + flagConditions.messages + '/' + flagConditions.ACSN + '/' + flagConditions.fromDate + '/' + 
+          flagConditions.eqID + '/'+ flagConditions.operator + '/' + 1 + '/' + flagConditions.ACSN + '/' + flagConditions.fromDate + '/' + 
           flagConditions.toDate + '/1/' + flagConditions.flagList;
     
           axios.post(flagPath).then(function (res){
@@ -183,7 +183,7 @@ const Report = (props) => {
           if (jamParameters.lenght !== 0) {
             const jamsPath = Constants.APIURL + 'GenerateReport/' + jamParameters.analysis + '/' + jamParameters.occurences + '/' + 
             jamParameters.legs + '/' + jamParameters.intermittent + '/' + jamParameters.days + '/' + jamParameters.ata + '/' + 
-            jamParameters.eqID + '/'+ jamParameters.operator + '/' + jamParameters.messages + '/' + jamParameters.ACSN + '/' + jamParameters.fromDate + '/' + 
+            jamParameters.eqID + '/'+ jamParameters.operator + '/' + 1 + '/' + jamParameters.ACSN + '/' + jamParameters.fromDate + '/' + 
             jamParameters.toDate + '/' + jamACSNValue;
       
             axios.post(jamsPath).then(function (res){

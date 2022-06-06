@@ -650,8 +650,8 @@ const DeltaReport = (props) => {
         },
     },
       elevation: 4,
-      rowsPerPage: 20,
-      rowsPerPageOptions: [20,50,100],
+      rowsPerPage: 100,
+      rowsPerPageOptions: [50,100,150],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };

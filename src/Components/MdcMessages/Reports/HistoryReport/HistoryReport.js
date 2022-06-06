@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
   const [rowsSelectedState, setRowsSelected] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [rowsPerPage, setRowsPerPage] = useState(100);
   const [ isDefault, setIsDefault ] = useState(true);
   const [ searchParameters, setSearchParameters ] = useState([]);
   const [ openSearch, setOpenSearch ] = useState(false);
@@ -652,7 +652,7 @@ const HistoryReport = (props) => {
       rowsPerPage:  rowsPerPage,
       rowsSelected: JSON.parse(localStorage.getItem('indexSelected')),
       onChangeRowsPerPage: onChangeRowsPerPage,
-      rowsPerPageOptions: [20,50,100],
+      rowsPerPageOptions: [50,100,150],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };
@@ -666,6 +666,9 @@ const HistoryReport = (props) => {
       setDisplay('none')
       setData([])
       localStorage.removeItem('history-report')
+      localStorage.removeItem('flagList')
+      localStorage.removeItem('jamACSNHistory')
+      localStorage.removeItem('indexSelected')
       props.db.collection('reporstLocal').doc('historyData').delete()
     }
 

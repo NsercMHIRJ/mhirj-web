@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 const DailyReport = (props) => {
   const classes = useStyles();
   const [rowsSelectedState, setRowsSelected] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [rowsPerPage, setRowsPerPage] = useState(100);
   const [ isDefault, setIsDefault ] = useState(true);
   const [ searchParameters, setSearchParameters ] = useState([]);
   const [ openSearch, setOpenSearch ] = useState(false);
@@ -184,19 +184,19 @@ const CustomCheckbox = () => {
   };
 
   const headingStyle = {
-    maxWidth:'200px',
-    minWidth:'50px',
-    padding:'5px',
-    textAlign:"center",
-    margin: '0px',
-    whiteSpace: 'normal',
+    // maxWidth:'200px',
+    // minWidth:'50px',
+    // padding:'5px',
+    // textAlign:"center",
+    // margin: '0px',
+    // whiteSpace: 'normal',
   }
 
   const columnStyle = {
-    maxWidth:'150px',
-    padding:'13px',
-    textAlign:"left",
-    margin: '0px',
+    maxWidth:'100px',
+    // padding:'0',
+    // textAlign:"left",
+    // margin: '0px',
   }
 
   const columns = [
@@ -606,7 +606,7 @@ const CustomCheckbox = () => {
       elevation: 4,
       rowsPerPage:  rowsPerPage,
       onChangeRowsPerPage: onChangeRowsPerPage,
-      rowsPerPageOptions: [20,50,100],
+      rowsPerPageOptions: [50,100,150],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };

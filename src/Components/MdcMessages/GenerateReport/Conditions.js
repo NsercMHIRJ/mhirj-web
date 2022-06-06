@@ -315,11 +315,11 @@ useEffect(()=>{
                 handleAirlineChange = {handleAirlineChange}
                 operator = {importedData.operator}
               />         
-              <p className="validation-message">{validationResponse.currentMessage}</p>
-              <MessagesSelector 
+              {/* <p className="validation-message">{validationResponse.currentMessage}</p> */}
+              {/* <MessagesSelector 
                 handleMessagesChange = {handleMessagesChange}
                 messages = {importedData.messages}
-              />   
+              />    */}
               <p className="validation-message">{validationResponse.ataMessage}</p>
               <ATAMainSelector 
                 handleATAChange = {handleATAChange}

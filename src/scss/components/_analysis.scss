@@ -18,7 +18,7 @@
   .analysis-type-container {
     margin-top: 35px;
     .analysis-type-label {
-      font-size: 16px;
+      font-size: 1.5em;
       font-weight: bold;
       color: black;
       margin-bottom: 20px;
@@ -38,7 +38,7 @@
       text-align: center;
       margin-bottom: 20px;
       margin-top: 35px;
-      font-size: 16px;
+      font-size: 1.5em;
     }
     .makeStyles-analysisType-282 {
       margin: 0;
@@ -69,19 +69,19 @@
 
 .MuiAutocomplete-tag {
   span {
-    font-size: 12px;
+    font-size: 1.2em;
   }
 }
 
 .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
   input {
-    font-size: 15px;
+    font-size: 1.2em;
     font-weight: 500;
   }
 }
 
 .MuiSelect-outlined.MuiSelect-outlined {
-  font-size: 14px;
+  font-size: 1.2em;
 }
 .analysis-correlation {
   max-width: auto;
@@ -90,11 +90,15 @@
     padding-left: 16px;
   }
 }
-
+.MuiTableCell-root {
+  padding: 0px !important;
+}
 .reports-root .MuiTableBody-root tr.MuiTableRow-root.MuiTableRow-hover td.MuiTableCell-root {
+
   div {
-    font-size: 12px;
+    font-size: 1.3em;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 2px;
   }
 }
 

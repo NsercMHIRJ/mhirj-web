@@ -144,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
     width: "30px",
     height: "50px",
     color: "#001c3e",
-
+    
   },
   Typography: {
     useNextVariants: true,
@@ -299,7 +299,7 @@ export default function MiniDrawer() {
               <List component="div" disablepadding="true">
                 <Link to="/analysis" style={{ textDecoration: 'none' }}>
                   <ListItem button className={classes.nested}>
-                    <ListItemIcon title="ANALYSIS">
+                    <ListItemIcon title="ANALYSIS"  style={{ fontSize: "4.5vh" }}>
                       <TrendingUpSharpIcon style={{ color: "#001c3e" }} />
                     </ListItemIcon>
                     <ListItemText primary="ANALYSIS" style={{ color: "#001c3e" }} />
@@ -313,7 +313,7 @@ export default function MiniDrawer() {
                   <ListItemIcon title="Graphs">
                     <TimelineSharpIcon style={{ color: "#001c3e" }} />
                   </ListItemIcon>
-                  <Button style={{ fontSize: "16px" }}>
+                  <Button style={{ fontSize: "4.5vh" }}>
                     <Typography>Graphs </Typography>
                     {openGraphs ? <ExpandLess /> : <ExpandMore />}
                   </Button>
@@ -324,7 +324,7 @@ export default function MiniDrawer() {
                     <Link to="/Chart1" style={{ textDecoration: 'none' }}>
                       <ListItem button className={classes.nested_1}>
                         <ListItemIcon>
-                          <EqualizerSharpIcon style={{ color: "#001c3e" }} />
+                          <EqualizerSharpIcon style={{ color: "#001c3e", fontSize: "4.5vh" }} />
                         </ListItemIcon>
                         <ListItemText primary="Message Logged per Aircraft" style={{ color: "#001c3e" }} />
                       </ListItem>

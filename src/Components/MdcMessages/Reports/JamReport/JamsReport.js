@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const JamsReport = (props) => {
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [rowsPerPage, setRowsPerPage] = useState(100);
   const [ isDefault, setIsDefault ] = useState(true);
   const [pageNo, setPageNo] = useState(0); 
   const [arrayOfRows, setArrayOfRows] = useState([]) 
@@ -592,7 +592,7 @@ const JamsReport = (props) => {
       elevation: 4,
       rowsPerPage: rowsPerPage,
       onChangeRowsPerPage: onChangeRowsPerPage,
-      rowsPerPageOptions: [20,50,100],
+      rowsPerPageOptions: [50,100,150],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : `650px`
     };
