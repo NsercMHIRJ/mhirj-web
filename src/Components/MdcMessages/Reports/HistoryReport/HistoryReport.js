@@ -522,8 +522,9 @@ const HistoryReport = (props) => {
 
   useEffect(()=> {
     let dataCopy = [];
+    setDisplay('')
     props.data?.map((item => {
-      setDisplay('')
+    
       dataCopy.push(
         {
           ACSN: item["AC SN"],
