@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import MUIDataTable from "mui-datatables";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -11,7 +11,6 @@ import TableRow from '@material-ui/core/TableRow';
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 import $ from 'jquery';
 import ExpandIcon from '@mui/icons-material/SettingsOverscan';
-
 import { Button } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -372,6 +371,8 @@ const FlagReport = (props) => {
      },
     ];
 
+
+
     let data = [];
       props.data?.map((item => {
         let input = item["MHIRJ Input"] === '0' ? '' : item["MHIRJ Input"];
@@ -408,6 +409,12 @@ const FlagReport = (props) => {
         return data;
       }
       ));
+
+      useEffect(()=> {
+        if (data.length === 0) {
+          setDisplay('')
+        }
+      })
 
     const options = {
       filter: true,

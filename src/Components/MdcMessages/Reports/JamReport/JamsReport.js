@@ -470,6 +470,8 @@ const JamsReport = (props) => {
       }
     })
 
+    
+
      let data = [];
       props.data?.map((item => {
         let input = item["MHIRJ_ISE_inputs"] === '0' ? '' : item["MHIRJ_ISE_inputs"];
@@ -517,6 +519,11 @@ const JamsReport = (props) => {
       }
       ));
   
+      useEffect(()=> {
+        if (data.length === 0) {
+          setDisplay('')
+        }
+      })
     const options = {
       filter: true,
       filterType: 'multiselect',

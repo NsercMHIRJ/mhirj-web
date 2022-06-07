@@ -483,6 +483,7 @@ const CustomCheckbox = () => {
     ];
 
   useEffect(()=> {
+    setDisplay('')
     let dataCopy = [];
     props.data?.map((item => {
       let input = item["MHIRJ ISE Input"] === '0' ? '' : item["MHIRJ ISE Input"];
@@ -518,10 +519,12 @@ const CustomCheckbox = () => {
       //return data;
     }
     ));
+    
     setData(dataCopy);
     setFirstData(dataCopy);
   }, [props.data])
   
+
   
     const options = {
       filter: true,

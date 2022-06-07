@@ -524,6 +524,7 @@ const DeltaReport = (props) => {
     ];
 
     useEffect(()=> {
+      setDisplay('')
       let dataCopy = [];
       props.data?.map((item => {
         dataCopy.push(
