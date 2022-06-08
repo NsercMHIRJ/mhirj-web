@@ -234,7 +234,7 @@ const Report = (props) => {
         const surrounding = await (async function() {return db.collection('reporstLocal').doc("surroundingData").get()})();
         if(daily){
           setDailyValue(1);
-          setDailyReportData(JSON.parse(daily.data));
+          setDailyReportData(daily.data);
         }
         if(history){
           setHistValue(1);
