@@ -156,10 +156,10 @@ const Report = (props) => {
           setLoadingFlag(true);
           setFlagValue(1);
           setFlagDisplay('')
-          const flagPath = Constants.APIURL + 'GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
-          flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
-          flagConditions.eqID + '/'+ flagConditions.operator + '/' + 1 + '/' + flagConditions.ACSN + '/' + flagConditions.fromDate + '/' + 
-          flagConditions.toDate + '/1/' + flagConditions.flagList;
+          const flagPath = Constants.APIURL + 'GenerateReport/' + historyReport.analysis + '/' + historyReport.occurences + '/' + 
+          historyReport.legs + '/' + historyReport.intermittent + '/' + historyReport.days + '/' + historyReport.ata + '/' + 
+          historyReport.eqID + '/'+ historyReport.operator + '/' + 1 + '/' + historyReport.ACSN + '/' + historyReport.fromDate + '/' + 
+          historyReport.toDate + '/1/' + flagList;
     
           axios.post(flagPath).then(function (res){
             var data = JSON.parse(res.data);
@@ -267,6 +267,7 @@ const Report = (props) => {
     .then(response => {
       setDailyDisplay('none')
       setDailyReportData([])
+      setDailyValue(0)
       localStorage.removeItem('daily-report')
       console.log('Delete successful, now do something.')
     })
@@ -282,6 +283,7 @@ const Report = (props) => {
     .then(response => {
       setDeltaDisplay('none')
       setDeltaData([])
+      setDeltaValue(0)
       localStorage.removeItem('delta-report')
       console.log('Delete successful, now do something.')
     })
@@ -298,6 +300,7 @@ const Report = (props) => {
     .then(response => {
       setFlagDisplay('none')
       setFlagData([])
+      setFlagValue(0)
       localStorage.removeItem('flag-report')
       console.log('Delete successful, now do something.')
     })
@@ -313,6 +316,7 @@ const Report = (props) => {
     .then(response => {
       setHistDisplay('none')
       setHistoryReportData([])
+      setHistValue(0)
       localStorage.removeItem('history-report')
       localStorage.removeItem('flagList')
       localStorage.removeItem('jamACSNHistory')
@@ -333,6 +337,7 @@ const Report = (props) => {
     .then(response => {
       setJamDisplay('none')
       setJamHistoryData([])
+      setJamHistValue(0);
       localStorage.removeItem('jamReportExpandedRows')
       console.log('Delete successful, now do something.')
     })
