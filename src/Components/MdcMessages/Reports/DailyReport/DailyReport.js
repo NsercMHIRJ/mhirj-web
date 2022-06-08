@@ -620,16 +620,11 @@ const CustomCheckbox = () => {
       }
     },[setArrayOfRows])
 
-    const closeDailyReport = () => {
-      setDisplay('none')
-      setData([])
-      localStorage.removeItem('daily-report')
-      props.db.collection('reporstLocal').doc('dailyData').delete()
-    }
+   
   
   return (
     <>
-      <div style={{display: `${display}`}} className="reports-root daily-report">
+      <div style={{display: `${props.display}`}} className="reports-root daily-report">
         { openSearch &&
         <div>
           <SearchTab 
@@ -643,7 +638,7 @@ const CustomCheckbox = () => {
         }
         <Grid container spacing={0}>
           <Grid item xs={12}>
-            <Button onClick={closeDailyReport} className={classes.customHoverFocus}>
+            <Button onClick={props.closeReport} className={classes.customHoverFocus}>
             <CloseIcon />
 
             </Button>

@@ -21,28 +21,33 @@ const Report = (props) => {
   const [dailyReportData, setDailyReportData] = useState([]);
   const [dailyValue,setDailyValue] = useState(0);
   const [loadingDaily, setLoadingDaily] = useState();
-  
+  const [dailyDisplay, setDailyDisplay] = useState('')
 
   const [historyReportData, setHistoryReportData] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState();
   const [histValue,setHistValue] = useState(0);
+  const [histDisplay, setHistDisplay] = useState('')
 
   const [deltaData, setDeltaData] = useState([]);
   const [deltaValue, setDeltaValue] = useState(0);
   const [loadingDelta, setLoadingDelta] = useState();
+  const [deltaDisplay, setDeltaDisplay] = useState('')
 
   const [flagData, setFlagData] = useState([]);
   const [flagList,setFlagList] = useState('');
   const [flagConditions,setFlagConditions] = useState({});
   const [flagValue,setFlagValue] = useState(0);
   const [loadingFlag, setLoadingFlag] = useState();
-  
+  const [flagDisplay, setFlagDisplay] = useState('')
+
   const [jamACSNHistoryValue, setJamACSNHistoryValue] = useState('');
   const [jamHistoryData, setJamHistoryData] = useState([]);
   const [loadingHistoryJam, setLoadingHistoryJam] = useState();
   const [jamHistValue, setJamHistValue] = useState(0);
   const [jamHistTitle, setJamHistTitle] = useState('');
   const [jamConditions, setJamConditions] = useState({});
+  const [jamDisplay, setJamDisplay] = useState('');
+
   const [reportType, setReportType] = useState('');
   const db = new Localbase('reportDatas');
   const [isFetching, setIsFetching] = useState(false);
@@ -83,7 +88,7 @@ const Report = (props) => {
           setDeltaValue(1);
           setDeltaData([]);
           setLoadingDelta(true);
-          
+          setDeltaDisplay('')
           axios.post(path).then(function (res){
             // var data = JSON.parse(res.data);
             setDeltaData(res.data);   
@@ -106,6 +111,7 @@ const Report = (props) => {
           setDailyValue(1);
           setDailyReportData([]);
           setLoadingDaily(true);
+          setDailyDisplay('')
 
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
@@ -128,7 +134,7 @@ const Report = (props) => {
           setHistoryReportData([]);
           setLoadingHistory(true);
           localStorage.setItem( 'history-report', JSON.stringify( report ))
-
+          setHistDisplay('')
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
             console.log(data)
@@ -149,6 +155,7 @@ const Report = (props) => {
           setFlagData([]);
           setLoadingFlag(true);
           setFlagValue(1);
+          setFlagDisplay('')
           const flagPath = Constants.APIURL + 'GenerateReport/' + flagConditions.analysis + '/' + flagConditions.occurences + '/' + 
           flagConditions.legs + '/' + flagConditions.intermittent + '/' + flagConditions.days + '/' + flagConditions.ata + '/' + 
           flagConditions.eqID + '/'+ flagConditions.operator + '/' + 1 + '/' + flagConditions.ACSN + '/' + flagConditions.fromDate + '/' + 
@@ -174,7 +181,7 @@ const Report = (props) => {
           setJamHistoryData([]);
           setLoadingHistoryJam(true);
           setJamHistValue(1);
-    
+          setJamDisplay('')
           if ( Object.entries( JSON.parse( localStorage.getItem( 'history-report' ) ) ).length !== 0 ) {
             jamParameters = JSON.parse( localStorage.getItem( 'history-report' ) );
             jamACSNValue = jamACSNHistoryValue;
@@ -227,7 +234,7 @@ const Report = (props) => {
         const surrounding = await (async function() {return db.collection('reporstLocal').doc("surroundingData").get()})();
         if(daily){
           setDailyValue(1);
-          setDailyReportData(daily.data);
+          setDailyReportData(JSON.parse(daily.data));
         }
         if(history){
           setHistValue(1);
@@ -253,6 +260,87 @@ const Report = (props) => {
       }
   },[setDailyValue, setDailyReportData, setHistValue, setHistoryReportData, setDeltaValue, setDeltaData, setFlagData, setJamHistoryData])
 
+  const closeDailyReport = () => {
+    db.collection('reporstLocal')
+    .doc('dailyData')
+    .delete()
+    .then(response => {
+      setDailyDisplay('none')
+      setDailyReportData([])
+      localStorage.removeItem('daily-report')
+      console.log('Delete successful, now do something.')
+    })
+    .catch(error => {
+      console.log('There was an error, do something else.')
+    })
+  }
+
+  const closeDeltaReport = () => {
+    db.collection('reporstLocal')
+    .doc('deltaData')
+    .delete()
+    .then(response => {
+      setDeltaDisplay('none')
+      setDeltaData([])
+      localStorage.removeItem('delta-report')
+      console.log('Delete successful, now do something.')
+    })
+    .catch(error => {
+      console.log('There was an error, do something else.')
+    })
+
+  }
+
+  const closeFlagReport = () => {
+    db.collection('reporstLocal')
+    .doc('flagData')
+    .delete()
+    .then(response => {
+      setFlagDisplay('none')
+      setFlagData([])
+      localStorage.removeItem('flag-report')
+      console.log('Delete successful, now do something.')
+    })
+    .catch(error => {
+      console.log('There was an error, do something else.')
+    })
+  }
+
+  const closeHistReport = () => {
+    db.collection('reporstLocal')
+    .doc('historyData')
+    .delete()
+    .then(response => {
+      setHistDisplay('none')
+      setHistoryReportData([])
+      localStorage.removeItem('history-report')
+      localStorage.removeItem('flagList')
+      localStorage.removeItem('jamACSNHistory')
+      localStorage.removeItem('indexSelected')
+      console.log('Delete successful, now do something.')
+    })
+    .catch(error => {
+      console.log('There was an error, do something else.')
+    })
+
+  }
+
+  
+  const closeJamReport = () => {
+    db.collection('reporstLocal')
+    .doc('surroundingData')
+    .delete()
+    .then(response => {
+      setJamDisplay('none')
+      setJamHistoryData([])
+      localStorage.removeItem('jamReportExpandedRows')
+      console.log('Delete successful, now do something.')
+    })
+    .catch(error => {
+      console.log('There was an error, do something else.')
+    })
+
+  }
 
   return(
     <div className="reports-root">
@@ -275,6 +363,8 @@ const Report = (props) => {
                 reportConditions = {report} 
                 loading = {loadingDaily}
                 db = {db}
+                display = {dailyDisplay}
+                closeReport = {closeDailyReport}
                 />
             </Grid>
           </div>
@@ -292,6 +382,8 @@ const Report = (props) => {
                 setJamACSNHistoryValue = {setJamACSNHistoryValue}
                 loading = {loadingHistory} 
                 db = {db}
+                display = {histDisplay}
+                closeReport = {closeHistReport}
               />
             </Grid>
 
@@ -303,7 +395,10 @@ const Report = (props) => {
                 reportConditions = {JSON.parse(localStorage.getItem('history-report'))} 
                 title = {jamHistTitle} 
                 loading = {loadingHistoryJam}
-                db = {db}/>
+                db = {db}
+                display = {jamDisplay}
+                closeReport = {closeJamReport}
+                />
                 
                 </Grid>
                 </>
@@ -314,7 +409,15 @@ const Report = (props) => {
             {flagData !== "" && flagData !== "undefined" && flagValue === 1 &&
               <>
                 <Grid item md={12}>
-                <FlagReport data = {flagData} reportConditions = {props.reportConditions} title = "History Flag Report" loading = {loadingFlag} flagReportConditions={flagConditions}  db = {db}/>
+                <FlagReport data = {flagData}
+                reportConditions = {props.reportConditions}
+                title = "History Flag Report"
+                loading = {loadingFlag}
+                flagReportConditions={flagConditions}
+                db = {db}
+                display = {flagDisplay}
+                closeReport = {closeFlagReport}
+                />
                 </Grid>
               </>
               }
@@ -335,6 +438,8 @@ const Report = (props) => {
                 reportConditions = {report}  
                 loading = {loadingDelta} 
                 db = {db}
+                display = {deltaDisplay}
+                closeReport = {closeDeltaReport}
               />
             </Grid>
           </div>

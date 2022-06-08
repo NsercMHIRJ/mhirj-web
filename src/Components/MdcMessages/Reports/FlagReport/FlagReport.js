@@ -410,11 +410,7 @@ const FlagReport = (props) => {
       }
       ));
 
-      useEffect(()=> {
-        if (data.length === 0) {
-          setDisplay('')
-        }
-      })
+      
 
     const options = {
       filter: true,
@@ -473,20 +469,14 @@ const FlagReport = (props) => {
       tableBodyHeight: props.loading === true || data.length === 0 ? '160px' : `500px`
     };
 
-    const closeFlagReport = () => {
-      setDisplay('none')
-      data = []
-      console.log(data)
-      localStorage.removeItem('flag-report')
-      props.db.collection('reporstLocal').doc('flagData').delete()
-    }
+
 
   
   return (
-    <div style={{display: `${display}`}} className="reports-root flag-report">
+    <div style={{display: `${props.display}`}} className="reports-root flag-report">
       <Grid container spacing={0}>
         <Grid item xs={12}>
-        <Button onClick={closeFlagReport} className={classes.customHoverFocus}>
+        <Button onClick={props.closeReport} className={classes.customHoverFocus}>
             <CloseIcon />
             </Button>
           <MUIDataTable

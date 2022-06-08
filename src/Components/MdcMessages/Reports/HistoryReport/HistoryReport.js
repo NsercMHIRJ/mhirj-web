@@ -522,7 +522,7 @@ const HistoryReport = (props) => {
 
   useEffect(()=> {
     let dataCopy = [];
-    setDisplay('')
+   
     props.data?.map((item => {
     
       dataCopy.push(
@@ -663,19 +663,11 @@ const HistoryReport = (props) => {
       }
     },[setArrayOfRows])
 
-    const closeHistoryReport = () => {
-      setDisplay('none')
-      setData([])
-      localStorage.removeItem('history-report')
-      localStorage.removeItem('flagList')
-      localStorage.removeItem('jamACSNHistory')
-      localStorage.removeItem('indexSelected')
-      props.db.collection('reporstLocal').doc('historyData').delete()
-    }
+
 
   return (
     <>
-      <div style={{display: `${display}`}} className="reports-root history-report">
+      <div style={{display: `${props.display}`}} className="reports-root history-report">
         { openSearch &&
             <SearchTab 
               columns={columns}
@@ -686,7 +678,7 @@ const HistoryReport = (props) => {
           }
         <Grid container spacing={0}>
           <Grid item xs={12}>
-          <Button onClick={closeHistoryReport} className={classes.customHoverFocus}>
+          <Button onClick={props.closeReport} className={classes.customHoverFocus}>
             <CloseIcon />
             </Button>
             <MUIDataTable

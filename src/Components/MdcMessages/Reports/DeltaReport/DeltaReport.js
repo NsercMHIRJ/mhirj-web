@@ -524,7 +524,6 @@ const DeltaReport = (props) => {
     ];
 
     useEffect(()=> {
-      setDisplay('')
       let dataCopy = [];
       props.data?.map((item => {
         dataCopy.push(
@@ -663,16 +662,11 @@ const DeltaReport = (props) => {
       }
     },[setArrayOfRows])
   
-    const closeDeltaReport = () => {
-      setDisplay('none')
-      setData([])
-      localStorage.removeItem('delta-report')
-      props.db.collection('reporstLocal').doc('deltaData').delete()
-    }
+  
 
   return (
     <>
-      <div style={{display: `${display}`}} className={"reports-root delta-report"}>
+      <div style={{display: `${props.display}`}} className={"reports-root delta-report"}>
         { openSearch &&
           <SearchTab 
             columns={columns}
@@ -683,7 +677,7 @@ const DeltaReport = (props) => {
         }
         <Grid container spacing={0}>
           <Grid item xs={12}>
-          <Button onClick={closeDeltaReport} className={classes.customHoverFocus}>
+          <Button onClick={props.closeReport} className={classes.customHoverFocus}>
             <CloseIcon />
             </Button>
             <MUIDataTable

@@ -519,11 +519,7 @@ const JamsReport = (props) => {
       }
       ));
   
-      useEffect(()=> {
-        if (data.length === 0) {
-          setDisplay('')
-        }
-      })
+ 
     const options = {
       filter: true,
       filterType: 'multiselect',
@@ -610,18 +606,12 @@ const JamsReport = (props) => {
       }
     },[setArrayOfRows])
 
-    const closeJamReport = () => {
-      setDisplay('none')
-      data = []
-      localStorage.removeItem('jamReportExpandedRows')
-      props.db.collection('reporstLocal').doc('surroundingData').delete()
-    }
 
   return (
-    <div  style={{display: `${display}`}} className="reports-root jam-report">
+    <div  style={{display: `${data.length !== 0 ? '' : 'none'}`}} className="reports-root jam-report">
       <Grid container spacing={0}>
         <Grid item xs={12}>
-        <Button onClick={closeJamReport} className={classes.customHoverFocus}>
+        <Button onClick={props.closeReport} className={classes.customHoverFocus}>
             <CloseIcon />
             </Button>
           <MUIDataTable
