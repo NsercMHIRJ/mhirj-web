@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 const HistoryReport = (props) => {
   const [flagList, setFlagList] = useState();
   const [rowsSelectedState, setRowsSelected] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(100);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [ isDefault, setIsDefault ] = useState(true);
   const [ searchParameters, setSearchParameters ] = useState([]);
   const [ openSearch, setOpenSearch ] = useState(false);
@@ -653,7 +653,7 @@ const HistoryReport = (props) => {
       rowsPerPage:  rowsPerPage,
       rowsSelected: JSON.parse(localStorage.getItem('indexSelected')),
       onChangeRowsPerPage: onChangeRowsPerPage,
-      rowsPerPageOptions: [50,100,150],
+      rowsPerPageOptions:  [20 ,50,100],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };

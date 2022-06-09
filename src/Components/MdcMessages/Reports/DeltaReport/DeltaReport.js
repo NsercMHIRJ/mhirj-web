@@ -32,7 +32,6 @@ const DeltaReport = (props) => {
   const [ data, setData ] = useState([]);
   const [pageNo, setPageNo] = useState(0) 
   const [arrayOfRows, setArrayOfRows] = useState([]) 
-  const [ display, setDisplay ] = useState('');
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -650,8 +649,8 @@ const DeltaReport = (props) => {
         },
     },
       elevation: 4,
-      rowsPerPage: 100,
-      rowsPerPageOptions: [50,100,150],
+      rowsPerPage: 50,
+      rowsPerPageOptions:  [20 ,50,100],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };

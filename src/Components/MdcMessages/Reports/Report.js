@@ -91,10 +91,12 @@ const Report = (props) => {
           setDeltaDisplay('')
           axios.post(path).then(function (res){
             // var data = JSON.parse(res.data);
-            setDeltaData(res.data);   
-            console.log(res.data)
-            db.collection('reporstLocal').add({data: res.data},"deltaData")
-            setLoadingDelta(false);
+            
+            // console.log(res.data)
+            db.collection('reporstLocal').add({data: res.data},"deltaData").then(response => {
+              setDeltaData(response.data.data.data);   
+              setLoadingDelta(false)
+            })
           }).catch(function (err){
             console.log(err);
             setLoadingDelta(false);
@@ -115,10 +117,10 @@ const Report = (props) => {
 
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
-            console.log(data)
-            setDailyReportData(data);    
-            setLoadingDaily(false);
-            db.collection('reporstLocal').add({data: data},"dailyData")
+            db.collection('reporstLocal').add({data: data},"dailyData").then(response => {
+              setDailyReportData(response.data.data.data);    
+              setLoadingDaily(false);
+            })
           }).catch(function (err){
             console.log(err);
             setLoadingDaily(false);
@@ -138,9 +140,10 @@ const Report = (props) => {
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
             console.log(data)
-            setHistoryReportData(data);  
-            setLoadingHistory(false);  
-            db.collection('reporstLocal').add({data: data},"historyData")
+            db.collection('reporstLocal').add({data: data},"historyData").then(response => {
+              setHistoryReportData(response.data.data.data);  
+              setLoadingHistory(false);  
+            })
           }).catch(function (err){
             console.log(err);    
             setLoadingHistory(false);
@@ -163,9 +166,11 @@ const Report = (props) => {
     
           axios.post(flagPath).then(function (res){
             var data = JSON.parse(res.data);
-            setFlagData(data);
-            setLoadingFlag(false);
-            db.collection('reporstLocal').add({data: data},"flagData");
+ 
+            db.collection('reporstLocal').add({data: data},"flagData").then(response => {
+              setFlagData(response.data.data.data);
+              setLoadingFlag(false);
+            })
           }).catch(function (err){
             console.log(err);
             setLoadingFlag(false);
@@ -195,9 +200,11 @@ const Report = (props) => {
       
             axios.post(jamsPath).then(function (res){
               var data = JSON.parse(res.data);
-              setJamHistoryData(data);
-              setLoadingHistoryJam(false);
-              db.collection('reporstLocal').add({data: data},"surroundingData");
+            
+              db.collection('reporstLocal').add({data: data},"surroundingData").then(response => {
+                setJamHistoryData(response.data.data.data);
+                setLoadingHistoryJam(false);
+              });
             }).catch(function (err){
               console.log(err);
               setLoadingHistoryJam(false);
@@ -223,42 +230,47 @@ const Report = (props) => {
     }
   }, [historyReportData])
 
-  useEffect( async()=> {
-      setIsFetching(true);
-      
-      try {
-        const daily = await (async function() {return db.collection('reporstLocal').doc("dailyData").get()})();
-        const history = await (async function() {return db.collection('reporstLocal').doc("historyData").get()})();
-        const delta = await (async function() {return db.collection('reporstLocal').doc("deltaData").get()})();
-        const flag = await (async function() {return db.collection('reporstLocal').doc("flagData").get()})();
-        const surrounding = await (async function() {return db.collection('reporstLocal').doc("surroundingData").get()})();
-        if(daily){
-          setDailyValue(1);
-          setDailyReportData(daily.data);
-        }
-        if(history){
-          setHistValue(1);
-          setHistoryReportData(history.data);
-        }
-        if(delta){
-          setDeltaValue(1);
-          setDeltaData(delta.data);
-        }
-        if(flag){
-          setFlagValue(1);
-          setFlagData(flag.data);
-        }
-        if(surrounding){
-          setJamHistoryData(surrounding.data);
-          setJamHistValue(1);
-
-        }
-        setIsFetching(false);
-      }
-      catch(error) {
-        console.log('error: ', error)
-      }
-  },[setDailyValue, setDailyReportData, setHistValue, setHistoryReportData, setDeltaValue, setDeltaData, setFlagData, setJamHistoryData])
+  useEffect(()=> {
+    setIsFetching(true);
+        db.collection('reporstLocal').doc("dailyData").get().then(response => {
+          if (response) { 
+            setDailyValue(1);
+            setDailyReportData(response.data);
+          }
+          db.collection('reporstLocal').doc("historyData").get().then(response => {
+            if (response) {
+              setHistValue(1);
+              setHistoryReportData(response.data);
+            }
+            db.collection('reporstLocal').doc("deltaData").get().then(response => {
+              if (response) {
+                setDeltaValue(1);
+                setDeltaData(response.data);
+              }
+              db.collection('reporstLocal').doc("flagData").get().then(response => {
+                if (response) {
+                  setFlagValue(1);
+                  setFlagData(response.data);
+                }
+                db.collection('reporstLocal').doc("surroundingData").get().then(response => {
+                  if (response) {
+                    setJamHistoryData(response.data);
+                    setJamHistValue(1);
+                    setIsFetching(false);
+                  }else {
+                    setIsFetching(false);
+                  }
+                 
+                })
+         
+              })
+             
+            })
+     
+          })
+     
+        })
+  },[])
 
   const closeDailyReport = () => {
     db.collection('reporstLocal')

@@ -25,13 +25,12 @@ const useStyles = makeStyles(theme => ({
 const DailyReport = (props) => {
   const classes = useStyles();
   const [rowsSelectedState, setRowsSelected] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(100);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [ isDefault, setIsDefault ] = useState(true);
   const [ searchParameters, setSearchParameters ] = useState([]);
   const [ openSearch, setOpenSearch ] = useState(false);
   const [ searchLoading, setSearchLoading ] = useState(false);
   const [ searchError, setSearchError ] = useState(false);
-  const [ display, setDisplay ] = useState('');
   const [ firstData, setFirstData ] = useState([]);
   const [ data, setData ] = useState([]);
   const [pageNo, setPageNo] = useState(0) 
@@ -483,7 +482,7 @@ const CustomCheckbox = () => {
     ];
 
   useEffect(()=> {
-    setDisplay('')
+
     let dataCopy = [];
     props.data?.map((item => {
       let input = item["MHIRJ ISE Input"] === '0' ? '' : item["MHIRJ ISE Input"];
@@ -609,7 +608,7 @@ const CustomCheckbox = () => {
       elevation: 4,
       rowsPerPage:  rowsPerPage,
       onChangeRowsPerPage: onChangeRowsPerPage,
-      rowsPerPageOptions: [50,100,150],
+      rowsPerPageOptions: [20 ,50,100],
       selectToolbarPlacement:"none",
       tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
     };
