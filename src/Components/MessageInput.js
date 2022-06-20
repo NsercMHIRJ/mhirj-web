@@ -10,32 +10,24 @@ import ShowSaveEditData from './MessageInput/ShowSaveEditData'
 
 
 const useStyles = makeStyles((theme) => createStyles({
-  form: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-    },
-  },
   paper: {
-    margin: '20px auto 23px 20px',
-    width: '92vw',
-    color: "#001c3e"
+    width: '100vw',
+    color: "white"
   },
-
-  container: {
-    padding: '20px 40px',
-  },
-  Grid: {
-    width: '100%',
-    margin: '0 auto',
-    
-  },
+ 
   card: {
-    backgroundColor: "#C5D3E0",
+    backgroundColor: "#003F67",
     textAlign: 'center',
     justify: 'center',
     padding: '5px',
   },
-
+Grid : {
+  margin: '0 auto',
+  display: 'block !important' 
+},
+container: {
+  
+}
 
 
 }));
@@ -53,7 +45,7 @@ export default function FileUpload() {
           < UploadMessageInput />
 					<div className={classes.container}>
 						<Grid className={classes.Grid} container spacing={3}>
-            <div style={{height: '50px', width: '92vw', backgroundColor: "#C5D3E0", textAlign: 'center', justify: 'center' }}>
+            <div style={{ width: '100vw', backgroundColor: "#003F67", height: '35px', display: 'flex', justifyContent: 'space-around' }}>
 								<h3>UPDATE INPUT MESSAGE DATA</h3>
 							</div>
                 <ShowSaveEditData />

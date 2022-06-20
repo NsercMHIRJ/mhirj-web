@@ -11,11 +11,7 @@ import Stack from '@mui/material/Stack';
 
 const useStyles = makeStyles((theme) => createStyles({
     container: {
-      padding: '20px 40px',
-    },
-    Grid: {
-      paddingLeft: '200px',
-      margin: 'auto',
+      textAlign: 'center'
     },
 
       ProgressBar: {
@@ -28,14 +24,15 @@ const useStyles = makeStyles((theme) => createStyles({
       color:'white'
     },
     button: {
-        margin: '0 64%',
-        width: '60%',
         backgroundColor: "#001c3e",
         color: "White",
-      },
-      input: {
-
-      }
+    },
+    div: {
+        padding: '2%'
+    },
+    Grid: {
+        justifyContent: 'center'
+    }
 }));
 
 function UploadMessageInput(){
@@ -107,7 +104,7 @@ function UploadMessageInput(){
         <Validation />
         </div>
         <Grid className={classes.Grid} container spacing={3}>
-            <div>
+            <div className={classes.div}>
                 <input className={classes.input} id="contained-button-file" multiple type="file" onChange={(e) => handleInputFileChange(e)} />
                 <Button className={classes.button} onClick={(e) => upload_InputMessage_data(e)} id="show" variant="contained" component="span">Upload Input Message Data</Button>
             </div>

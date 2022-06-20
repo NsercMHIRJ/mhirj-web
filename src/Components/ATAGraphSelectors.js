@@ -27,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0),
     width:'15.5%',
     minWidth: 50,
+    display: 'inline-block',
+    padding: '17px'
   }
 }));
 
@@ -266,7 +268,7 @@ export const EqIDSelectorInput = (props) => {
   return(
 
     <Autocomplete
-        className={classes.autocomplete}
+    style={props.style}
         autoHighlight={true}
         multiple
         options={EqList}

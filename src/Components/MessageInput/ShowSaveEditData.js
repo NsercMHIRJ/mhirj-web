@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => createStyles({
     [theme.breakpoints.down("xs")]: {
       paddingTop: theme.spacing(2),
     },
-    fontSize: 'medium',
+  
     fontFamily: [
       '-apple-system',
       'BlinkMacSystemFont',
@@ -43,10 +43,10 @@ const useStyles = makeStyles((theme) => createStyles({
     WebkitFontSmoothing: 'auto',
   },
   button: {
-    margin: '30px auto',
-    width: '60%',
+  
     backgroundColor: "#001c3e",
     color: "White",
+    display: 'inline-block'
   },
   showButtonGrid: {
     margin: '0 auto'
@@ -58,7 +58,6 @@ const useStyles = makeStyles((theme) => createStyles({
     color:'white'
   },
   buttonSave: {
-    margin: '40px 0% 4% -90%',
     backgroundColor: "#001c3e",
     color: "White",
     width: '6vw',
@@ -82,7 +81,16 @@ function ShowSaveEditData() {
   const [isFaild, setIsFaild] = useState(false);
   const [isNoSavedData, setIsNoSavedData] = useState(false);
   const [tmpObjects, setTmpObjects] = useState({});
-  const [pageSize, setPageSize] = React.useState(8);
+  const [pageSize, setPageSize] = React.useState(20);
+  const [height, setHeight] = useState(650)
+
+  useEffect(()=> {
+    if(updateData.length === 0) {
+      setHeight(300)
+    }else {
+      setHeight(650)
+    }
+  })
 
   const handleEqIDChangeInput = (eqIDList) => {
     setEqID(eqIDList);
@@ -93,6 +101,8 @@ function ShowSaveEditData() {
     let value = cells.attr('data-field');
     console.log(cells, value)
   })
+
+
 
 
   const ExpandCell = (params) => {
@@ -137,7 +147,7 @@ function ShowSaveEditData() {
         <TextField
           value={value}
           multiline
-          inputProps={{style: {fontSize: 15}}}
+          inputProps={{style: {fontSize: 12}}}
           minRows={2}
           maxRows={25}
           onChange={handleChange}
@@ -519,12 +529,6 @@ function ShowSaveEditData() {
   ];
 
   const sxStyle = {
-    boxShadow: 2,
-    border: 2,
-    '& .MuiPaper-root':{
-      marginLeft: '-230px',
-      width: '123%'
-    },
     borderColor: 'primary.light',
     '& .MuiDataGrid-cell:hover': {
         color: 'primary.main',
@@ -536,31 +540,27 @@ function ShowSaveEditData() {
       background: '#fff',
       left: 0,
       zIndex: 1,
-    }
+    },
+
   }
 
   return(
     <div>
-    <Grid item xs={5} style={{ marginLeft: '10px' }}>
-      <div>
-        <div style={{ marginLeft: '50px', marginTop: '30px', width: '1450px' }}>
-          <EqIDSelectorInput handleEqIDChangeInput={handleEqIDChangeInput} />
+ 
+     
+        <div style={{ textAlign: 'center' ,padding: 20 }}>
+          <EqIDSelectorInput handleEqIDChangeInput={handleEqIDChangeInput} style={{ width: '20%', display: 'inline-flex', padding: 10}} />
+          <Button className={classes.button} onClick={(e) => Show_inputMessage_data(e)} id="show" variant="contained" component="span">Show Input Message Data </Button>
         </div>
-        <br></br>
-      </div>
-    </Grid>
-    <Grid item xs={5} className={classes.showButtonGrid}>
-      <div style={{ paddingLeft: '100px' }}>
-        <Button className={classes.button} onClick={(e) => Show_inputMessage_data(e)} id="show" variant="contained" component="span">Show Input Message Data </Button>
-      </div>
-    </Grid>
+    
+
     <Grid item xs={12}>
-      <Paper style={{ width: '88vw', textAlign: 'center', margin:'0 auto' }}>
+      <Paper style={{ width: '99%', textAlign: 'center', margin:'0 auto', boxShadow: 'none' }}>
         <div >
           <ValidationMessages />
         </div>
-        <div >
-          <div style={{ width: '100%' }}>
+        <div   >
+          <div style={{ width: '97%', height: height }}>
             <DataGrid disableVirtualization disableClickEventBubbling 
               getrowExpand={row => row.id}
               title={"INPUT MESSAGE DATA "}
@@ -569,15 +569,15 @@ function ShowSaveEditData() {
               columnBuffer={2}
               columnThreshold={2}
               editMode='row'
-              autoHeight={true}
               loading={loading}
+             
               getRowHeight={getRowHeights}
               onCellClick={onCellClicked}
               onCellDoubleClick={onCellDoubleClicked}
               sx={sxStyle}
               pageSize={pageSize}
               onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-              rowsPerPageOptions={[8, 15, 25]}
+              rowsPerPageOptions={[20, 50, 100]}
               pagination
             />
       
