@@ -1,9 +1,12 @@
 
 .analysis-root {
-  margin: 20px;
+  margin: 10px;
+  margin-bottom: 150px;
   flex-grow: 1;
-  max-width: 92vw;
+  max-width: 18vw;
+  padding-right: 11px;
   align-items: center;
+  float: left;
   .analysis-form {
     .MuiGrid-container {
       padding: 20px;
@@ -21,14 +24,24 @@
       font-size: 1.5em;
       font-weight: bold;
       color: black;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+      margin-right: 70px;
     }
+  }
+  .accordion-titles{
+    font-size: 15px;
+    font-weight: bold;
   }
   .analysis-form {
     .analysis-card {
       background-color: #C5D3E0;
       text-align: center;
       padding: 5px;
+    }
+    .raw-data-sections{
+      // padding-right: 90px;
+      width: 75%;
+      padding-bottom: 0.8px;
     }
     .MuiTextField-root {
       margin: 8px;
@@ -50,7 +63,7 @@
     }   
   }
   .buttons-container {
-    padding-top: 80px;
+    padding-top: 40px;
     button {
       width: 100%;
       max-width: 220px;
