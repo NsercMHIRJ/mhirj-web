@@ -13,7 +13,8 @@ import JamsReport from './JamReport/JamsReport';
 import {HistorySupportingSelector} from '../GenerateReport/Selectors';
 import Localbase from 'localbase'
 import Skeleton from '@mui/material/Skeleton';
-
+import "../../../../src/scss/components/_analysis.scss"
+import { Card } from '@material-ui/core';
 
 const Report = (props) => {
   const [report, setReport] = useState(props.reportConditions);
@@ -369,7 +370,7 @@ const Report = (props) => {
         </Grid>
       </Grid>
      
-      {dailyReportData !== "" && dailyReportData !== "undefined" && dailyValue === 1 &&
+      {/* {dailyReportData !== "" && dailyReportData !== "undefined" && dailyValue === 1 &&
         <>
           <div className="daily-report">
             <Grid item lg={12}>
@@ -386,12 +387,11 @@ const Report = (props) => {
             </Grid>
           </div>
         </>
-      }
+      } */}
+      <Card style={{width: '100%',  height: 700}}>
       {historyReportData !== "" && historyReportData !== "undefined" && histValue === 1 &&
         <>
-          <div className="history-report">
-            <Grid item={true} md={12}>
-              <HistoryReport 
+            <HistoryReport 
                 data = {historyReportData}  
                 title = "History Report" 
                 reportConditions = {report} 
@@ -402,9 +402,14 @@ const Report = (props) => {
                 display = {histDisplay}
                 closeReport = {closeHistReport}
               />
-            </Grid>
 
-            <Grid container item={true}>
+             
+          {/* <div className="history-report">
+            <Grid item={true} md={12}>
+          
+            </Grid> */}
+
+            {/* <Grid container item={true}>
               {jamACSNHistoryValue !== "" && jamHistoryData !== "" && jamHistoryData !== "undefined" && jamHistValue === 1 &&
               <>
                 <Grid item md={12}>
@@ -420,8 +425,8 @@ const Report = (props) => {
                 </Grid>
                 </>
               }
-          </Grid> 
-
+          </Grid>  */}
+{/* 
           <Grid container>
             {flagData !== "" && flagData !== "undefined" && flagValue === 1 &&
               <>
@@ -440,16 +445,15 @@ const Report = (props) => {
               }
           </Grid>    
         
-        </div>
+        </div> */}
         </>
       }
 
-      {deltaData !== "" && deltaData !== "undefined" && deltaValue === 1 &&
+      </Card>
+     <Card style={{width: '100%', height: 780}}>
+     {deltaData !== "" && deltaData !== "undefined" && deltaValue === 1 &&
         <>
-          <div className="delta-report">
-            {/* <h2 className="report-parameters-h2">Delta Report Parameters - To be Defined</h2> */}
-            <Grid item md={12}>
-              <DeltaReport 
+            <DeltaReport 
                 data = {deltaData}
                 title = "Delta Report" 
                 reportConditions = {report}  
@@ -458,10 +462,16 @@ const Report = (props) => {
                 display = {deltaDisplay}
                 closeReport = {closeDeltaReport}
               />
+          {/* <div className="delta-report">
+            {/* <h2 className="report-parameters-h2">Delta Report Parameters - To be Defined</h2> */}
+            <Grid item md={12}>
+          
             </Grid>
-          </div>
+          {/* </div> */} 
         </>
       }
+     </Card>
+
 
     </div>
   );    

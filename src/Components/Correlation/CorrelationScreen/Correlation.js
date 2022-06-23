@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin:'50px auto',
     width:'95vw',
   },
 }));

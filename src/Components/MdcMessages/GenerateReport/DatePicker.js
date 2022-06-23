@@ -1,13 +1,16 @@
 import React, {useState} from 'react';
 import moment from "moment";
-import TextField from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import MuiDatePicker from '@mui/lab/DatePicker';
-import Stack from '@mui/material/Stack';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+
 
 const DatePicker = (props) => {
   let todayDate = new Date();
+ 
   if (todayDate) {
     todayDate = moment(todayDate).format("MM/DD/YYYY")
   }
@@ -20,18 +23,35 @@ const DatePicker = (props) => {
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Stack spacing={3}>
-        <MuiDatePicker
-          views={["year", "month", "day"]}
-          label={props.label}
-          value={selectedDate}
-          onChange={ (date) => handleDateChange (date) }
-          disabled = { props.disabled ? true : false}
-          renderInput={(params) => <TextField {...params} helperText={null} />}
-        />
-      </Stack>
-    </LocalizationProvider>
+    // <LocalizationProvider dateAdapter={AdapterDateFns}>
+    //   <Stack spacing={3} >
+    //     <MuiDatePicker
+    //       views={["year", "month", "day"]}
+    //       label={props.label}
+    //       value={selectedDate}
+    //       // className={classes.textField}
+    //       onChange={ (date) => handleDateChange (date) }
+    //       disabled = { props.disabled ? true : false}
+    //       renderInput={(params) => <TextField  {...params} helperText={null} />}
+    //     />
+    //   </Stack>
+    // </LocalizationProvider>
+     <MuiPickersUtilsProvider utils={DateFnsUtils}>
+     <KeyboardDatePicker
+     style={{width: '50%'}}
+       disableToolbar
+       variant="inline"
+       format="MM/dd/yyyy"
+       margin="normal"
+       id="date-picker-inline"
+       label={props.label}
+       value={selectedDate}
+       onChange={handleDateChange}
+       KeyboardButtonProps={{
+         'aria-label': 'change date',
+       }}
+     />
+   </MuiPickersUtilsProvider>
   );
 };
 

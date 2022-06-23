@@ -15,16 +15,13 @@ import Home from './Components/Home';
 import { Button } from '@material-ui/core';
 import './App.css'
 import MessageInput from './Components/MessageInput';
-import Report from './Components/MdcMessages/Reports/Report';
 import Analysis from './Components/MdcMessages/GenerateReport/Analysis';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-
   },
   appBar: {
-
     backgroundColor: "#003F67",
   },
   toolbar: {
@@ -33,18 +30,17 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    height: "78px",
     backgroundColor: "#f3f2f1",
   },
   content: {
     flexGrow: -1,
-
-
   }
 }));
 
 export default function MiniDrawer() {
   const classes = useStyles();
+
+
 
   return (
 
@@ -56,7 +52,7 @@ export default function MiniDrawer() {
           position="fixed"
           className={classes.appBar}
           >
-          
+
           <Toolbar>
           <Link to="/" style={{ textDecoration: 'none' , display: 'flex' }}>
             <img src={mhirjLogoColored} style={{ height: 63, width: 100 }} />
@@ -79,6 +75,9 @@ export default function MiniDrawer() {
               <Home />
             </Route>
             <Route path="/analysis">
+              <Analysis />
+            </Route>
+            <Route path="/beta/analysis">
               <Analysis />
             </Route>
             <Route path="/MessageInput">

@@ -1,10 +1,7 @@
 
 .analysis-root {
-  margin: 10px;
-  margin-bottom: 150px;
   flex-grow: 1;
-  max-width: 18vw;
-  padding-right: 11px;
+  max-width: 25vw;
   align-items: center;
   float: left;
   .analysis-form {
@@ -13,7 +10,7 @@
     }
   }
   .MuiGrid-root {
-    width: 92vw;
+    width: 100vw;
     .analysis-type-container {
       text-align: center;
     }
@@ -151,4 +148,53 @@ line-height:1;
   -ms-transform: rotate(-180deg);
   transform: rotate(-180deg);
 color:red;
+}
+.selectorCard{
+  width: 22%;
+  position: fixed;
+  // top: 0;
+  left: 0;
+  max-height: calc(100% - 70px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; 
+}
+.selectorCard::-webkit-scrollbar { /* WebKit */
+  width: 0;
+  height: 0;
+}
+.reportCard {
+  width: 77%;
+
+  // width: calc(100vw - 200px);
+  left: 23%;
+  position: relative;
+}
+
+/* Remove extra left and right margins, due to padding */
+.row {margin: 0 -5px; width: 99vw;}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive columns */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
 }

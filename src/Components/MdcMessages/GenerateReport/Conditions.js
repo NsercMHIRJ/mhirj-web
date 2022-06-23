@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { OccurencesInput, LegsInput, IntermittentInput, DaysInput } from './AnalysisInput';
-import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
 import DatePicker from './DatePicker';
 import { AirlineOperatorSelector, ATAMainSelector, ACSNSelector, MessagesSelector, EqIDSelector } from './Selectors';
 import Report from '../Reports/Report';
@@ -14,6 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import "../../../scss/_main.scss";
+import "../../../../src/scss/components/_analysis.scss"
 import { GenerateReportValidation, NotFirstRender } from '../../Helper/Helper';
 import moment from "moment";
 // Accordion Imports
@@ -22,7 +23,15 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import StickyBox from "react-sticky-box";
+import { Paper } from '@material-ui/core';
+import ViewWeekIcon from '@mui/icons-material/ViewWeek';
+import VerticalAlignTopIcon from '@mui/icons-material/VerticalAlignTop';
+import SaveIcon from '@mui/icons-material/Save';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -234,75 +243,89 @@ const Conditions = (props) => {
   }, [])
 
   return (
-    <div className="analysis-root">
-
-      <form className="analysis-form">
-        <Paper className={classes.paper}>
+    <div className="row">
+      
+        <div class="column selectorCard">
+       
+        {/* <Button variant="contained">Contained</Button> */}
+        <Button variant="outlined" href="#contained-buttons" style={{width: '50%', height: '52px', borderRadius: '11px', padding: '25px 18px 10px 0px'}}>
+          
+          <ViewWeekIcon color="primary" style={{ fontSize: '25px'}}/>
+          <p style={{ fontSize: '15px'}}>Filters</p>
+          <VerticalAlignTopIcon color="primary" style={{fontSize: '25px'}}/>
+          <SaveIcon color="primary" style={{fontSize: '25px'}}/>
+          
+    
+        </Button>
+        <Button variant="outlined" href="#contained-buttons" style={{ width: '50%', height: '52px', borderRadius: '11px', padding: '25px 18px 10px 0px'}}>
+          <FavoriteIcon color="primary" style={{fontSize: '21px'}}/>
+          <h2  style={{fontSize: '16px'}}>/</h2>
+          <RemoveRedEyeIcon color="primary"  style={{fontSize: '21px'}}/>
+          <p style={{ fontSize: '11px'}}>Saved Filters</p>
+        </Button>
+          <Paper variant="outlined">
+          <div>
           {/* <div className="analysis-card">
             <h2>REPORT ANALYSIS</h2>
           </div> */}
 
           <div className='analysis-selectors'>
 
-            <Grid className={classes.Grid}>
+            {/* <Grid className={classes.Grid}> */}
 
-              <Grid item xs={2}>
-                <div className="analysis-type-container">
+              {/* <Grid item xs={12} style={{height: '36px'}}> */}
 
-                  <FormControl component="fieldset" className="form" >
-                    <FormLabel component="legend" className="analysis-type-label" focused={false}>Report Type</FormLabel>
-                    <p className="validation-message">{validationResponse.analysisMessage}</p>
-                    <RadioGroup aria-label="analysis" name="analysis" value={analysis} >
-                      {/* <FormControlLabel value="daily" className="RadioButton" control={
-                        <Radio
-                          size="medium"
-                          color='default'
-                          onChange={() => handleAnalysisChange("daily")}
-                        />} label="Daily" /> */}
-                      <FormControlLabel value="history" control={
-                        <Radio
-                          size="medium"
-                          color='default'
-                          onChange={() => handleAnalysisChange("history")}
-                        />} label="History" />
-                      <FormControlLabel value="delta" control={
-                        <Radio
-                          size="medium"
-                          color='default'
-                          onChange={() => handleAnalysisChange("delta")}
-                        />} label="Delta" />
-                      {/* <FormControlLabel value="flag" control={
-                        <Radio
-                          size="medium"
-                          color='default'
-                          onChange={() => handleAnalysisChange("flag")}
-                        />} label="Flag"
-                        disabled={checkHistory} /> */}
-                      {/* <FormControlLabel value="surrounding" control={
-                        <Radio
-                          size="medium"
-                          color='default'
-                          onChange={() => handleAnalysisChange("surrounding")}
-                        />} label="Surrounding"
-                        disabled={checkHistory} /> */}
-                    </RadioGroup>
-                  </FormControl>
-                </div>
-              </Grid>
-
-              <Grid item xs={3}>
-                <div className='raw-data-sections'>
-                  <Accordion>
+                <div >
+                <FormControl component="fieldset" className="form" >
+              
+              <Typography className='h3' style={{padding: '4px'}}>Report Type</Typography>
+              <p className="validation-message">{validationResponse.analysisMessage}</p>
+              <RadioGroup aria-label="analysis" name="analysis" value={analysis} style={{padding: '6px'}} >
+                {/* <FormControlLabel value="daily" className="RadioButton" control={
+                  <Radio
+                    size="medium"
+                    color='default'
+                    onChange={() => handleAnalysisChange("daily")}
+                  />} label="Daily" /> */}
+                <FormControlLabel value="history" control={
+                  <Radio
+                    size="medium"
+                    color='default'
+                    onChange={() => handleAnalysisChange("history")}
+                  />} label="History" />
+                <FormControlLabel value="delta" control={
+                  <Radio
+                    size="medium"
+                    color='default'
+                    onChange={() => handleAnalysisChange("delta")}
+                  />} label="Delta" />
+                {/* <FormControlLabel value="flag" control={
+                  <Radio
+                    size="medium"
+                    color='default'
+                    onChange={() => handleAnalysisChange("flag")}
+                  />} label="Flag"
+                  disabled={checkHistory} /> */}
+                {/* <FormControlLabel value="surrounding" control={
+                  <Radio
+                    size="medium"
+                    color='default'
+                    onChange={() => handleAnalysisChange("surrounding")}
+                  />} label="Surrounding"
+                  disabled={checkHistory} /> */}
+              </RadioGroup>
+            </FormControl>
+                <Accordion>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <Typography className='accordion-titles'>Report Date</Typography>
+                      <Typography className='accordion-titles'>Date/Time(UTC)</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>
-
+                        <div style={{display: 'inline-flex'}}>
                         <p className="validation-message">{validationResponse.fromDateMessage}</p>
                         <DatePicker
                           label="From"
@@ -314,8 +337,11 @@ const Conditions = (props) => {
                           label="To"
                           handleDateTo={handleDateTo}
                           dateTo={importedData.toDate}
+                          variant="inline"
                         />
-                        <p className="validation-message">{validationResponse.fromDeltaMessage}</p>
+                        </div>
+                      <div style={{display: 'inline-flex'}}>
+                      <p className="validation-message">{validationResponse.fromDeltaMessage}</p>
                         <DatePicker
                           label="Delta From"
                           handleDateFrom={handleDeltaFrom}
@@ -327,82 +353,54 @@ const Conditions = (props) => {
                           label="Delta To"
                           handleDateTo={handleDeltaTo}
                           disabled={deltaDisable}
+                          style={{width: '40%'}}
                         //dateTo = {importedData.toDate}
                         />
+                      </div>
+                    
 
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
-                </div>
-              </Grid>
-
-              <Grid item xs={3}>
-                <div className='raw-data-sections'>
-                  <Accordion>
+                <Accordion>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <Typography className='accordion-titles'>Minimum Occurences</Typography>
+                      <Typography className='accordion-titles'>Analysis Input</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <Typography>
+                    <div style={{display: 'inline-flex', padding: '6px'}}>
+                    <Typography>
                         <p className="validation-message">{validationResponse.occurencesMessage}</p>
+                        
                         <OccurencesInput
                           handleOccurencesChange={handleOccurencesChange}
                           occurrences={importedData.occurences}
                         />
                       </Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                  <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography className='accordion-titles'>Consecutive Legs</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
+
                       <Typography>
                         <p className="validation-message">{validationResponse.legsMessage}</p>
+                    
                         <LegsInput
                           handleLegsChange={handleLegsChange}
                           legs={importedData.legs}
                         />
                       </Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                  <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography className='accordion-titles'>Minimum Consecutive Days</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
+                      </div>
+                      <div style={{display: 'inline-flex', padding: '6px'}}>
                       <Typography>
                         <p className="validation-message">{validationResponse.daysMessage}</p>
+                      
                         <DaysInput
                           analysis={analysis}
                           handleDaysChange={handleDaysChange}
                           days={importedData.days}
                         />
                       </Typography>
-                    </AccordionDetails>
-                  </Accordion>
 
-                  <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography className='accordion-titles'>Minimum Intermittency</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
                       <Typography>
                         <p className="validation-message">{validationResponse.intermittentMessage}</p>
                         <IntermittentInput
@@ -410,14 +408,15 @@ const Conditions = (props) => {
                           intermittent={importedData.intermittent}
                         />
                       </Typography>
+                        </div>
+
+                
                     </AccordionDetails>
                   </Accordion>
 
-                </div>
-              </Grid>
-              <Grid item xs={3}>
+            
 
-                <div className='raw-data-sections'>
+
 
                   <Accordion>
                     <AccordionSummary
@@ -425,73 +424,41 @@ const Conditions = (props) => {
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <Typography className='accordion-titles'>Airline Operator</Typography>
+                      <Typography className='accordion-titles'>Raw Data Conditions</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <Typography>
+                      <Typography  style={{padding: '4px'}}>
                         <p className="validation-message">{validationResponse.operatorMessage}</p>
                         <AirlineOperatorSelector
                           handleAirlineChange={handleAirlineChange}
                           operator={importedData.operator}
                         />
                       </Typography>
-                    </AccordionDetails>
-                  </Accordion>
 
-                  <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography className='accordion-titles'>ATA</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>
+                      <Typography style={{padding: '4px'}}>
                         <p className="validation-message">{validationResponse.ataMessage}</p>
                         <ATAMainSelector
                           handleATAChange={handleATAChange}
                           ata={importedData.ata}
                         />
                       </Typography>
-                    </AccordionDetails>
-                  </Accordion>
 
-                  <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography className='accordion-titles'>Exclude Equation ID</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>
+                      <Typography  style={{padding: '4px'}}>
                         <p className="validation-message">{validationResponse.eqIDMessage}</p>
                         <EqIDSelector
                           handleEqIDChange={handleEqIDChange}
                           eqID={importedData.eqID}
                         />
                       </Typography>
-                    </AccordionDetails>
-                  </Accordion>
 
-                  <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography className='accordion-titles'>ACSN</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>
+                      <Typography  style={{padding: '4px'}}>
                         <p className="validation-message">{validationResponse.ACSNMessage}</p>
                         <ACSNSelector
                           handleACSNChange={handleACSNChange}
                           ACSN={importedData.ACSN}
                         />
                       </Typography>
+
                     </AccordionDetails>
                   </Accordion>
 
@@ -502,43 +469,52 @@ const Conditions = (props) => {
               />    */}
 
                 </div>
+                <div style={{height: '71px'}}>
+                <Button variant="text" style={{left: '1vw', top: '3vh' }}>Clear</Button>
+                  <Button variant="text"
+                  onClick={async () => handleGenerateReport()} style={{left: '9vw',  top: '3vh'}} >Apply</Button>
+                </div>
+              
+{/*                
+              </Grid> */}
 
-              </Grid>
-
-              <Grid item xs={2}>
-                <div className="buttons-container">
-                  <Button
-                    variant="contained"
-                    onClick={async () => handleGenerateReport()}>
-                    Generate Report
-                  </Button>
-                  <Button
+              {/* <Grid item xs={2} > */}
+             
+                  
+    
+                  {/* <Button
                     variant="contained"
                     onClick={() => SaveFilter("", "Filter_" + filter_date)}
                   >
                     Save Filter
-                  </Button>
+                  </Button> */}
                   {/* <br></br> */}
-                  <input
+                  {/* <input
                     className={classes.input}
                     id="contained-button-file"
                     multiple
                     type="file"
                     onChange={(e) => upload_filter(e)}
-                  />
-                  <label htmlFor="contained-button-file" style={{ margin: '40px auto', width: '70%', backgroundColor: "#C5D3E0", textAlign: "center" }}>
+                  /> */}
+                  {/* <label htmlFor="contained-button-file" style={{ margin: '40px auto', width: '70%', backgroundColor: "#C5D3E0", textAlign: "center" }}>
                     <Button id="upload" variant="contained" component="span" className={classes.button}>
                       Upload
                     </Button>
-                  </label>
-                </div>
-              </Grid>
-            </Grid>
+                  </label> */}
+               
+              {/* </Grid> */}
+            {/* </Grid> */}
           </div>
-        </Paper>
-      </form>
+        </div>
+          </Paper>
+      
+      </div>
+      <div className="column reportCard">
+    
       <Report reportConditions={reportConditions}
         setCheckHistory={setCheckHistory} />
+
+   </div>
 
     </div>
   );

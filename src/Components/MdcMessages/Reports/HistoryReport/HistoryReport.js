@@ -13,6 +13,10 @@ import SearchTab from '../../GenerateReport/Search';
 import { Button } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
 import { makeStyles } from '@material-ui/core/styles';
+import "../../../../../src/scss/components/_analysis.scss"
+import { DataGrid } from '@mui/x-data-grid';
+import {randomId} from '@mui/x-data-grid-generator';
+import { Theme, styled } from '@mui/material/styles';
 
 const useStyles = makeStyles(theme => ({
   customHoverFocus: {
@@ -21,7 +25,57 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  border: 1,
+  color:
+    theme.palette.mode === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,0.85)',
+  fontFamily: [
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(','),
+  WebkitFontSmoothing: 'auto',
+  letterSpacing: 'normal',
+  '& .MuiDataGrid-columnsContainer': {
+    backgroundColor: theme.palette.mode === 'light' ? '#fafafa' : '#1d1d1d',
+  },
+  '& .MuiDataGrid-iconSeparator': {
+    display: 'none',
+  },
+  '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
+    borderRight: `1px solid ${
+      theme.palette.mode === 'light' ? '#f0f0f0' : '#303030'
+    }`,
+  },
+ 
+  '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
+    borderBottom: `1px solid ${
+      theme.palette.mode === 'light' ? '#f0f0f0' : '#303030'
+    }`,
+    
+  },
+  '& .MuiDataGrid-cell': {
+    color:
+      theme.palette.mode === 'light' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,0.65)',
+      fontWeight: 'bold',
+      fontSize: '12px',
+
+  },
+  '& .MuiPaginationItem-root': {
+    borderRadius: 0,
+  },
+
+}));
+
 const HistoryReport = (props) => {
+  const [pageSize, setPageSize] = React.useState(20);
   const [flagList, setFlagList] = useState();
   const [rowsSelectedState, setRowsSelected] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -36,6 +90,8 @@ const HistoryReport = (props) => {
   const [arrayOfRows, setArrayOfRows] = useState([]) 
   const classes = useStyles();
   const [ display, setDisplay ] = useState('');
+  const [rowExpand, setRowExpand] = useState({});
+  const [expand, setExpand] = useState(true);
 
   const AddCellClass = (index) => {
     let row = index + 1;
@@ -196,332 +252,436 @@ const HistoryReport = (props) => {
   }
 
   const columns = [
+    // {
+    //   name: 'action', 
+    //   label: <ExpandIcon className="reports-expand-icon header"/>,
+    //   options: {
+    //    filter: false,
+    //    sort: false,
+    //    empty: true,
+    //   customBodyRenderLite: (dataIndex, rowIndex) => {
+    //     return (
+    //       <ExpandIcon 
+    //         className="reports-expand-icon"
+    //         label="Expand Row"
+    //       />
+    //     );
+    //   },
+    //   setCellProps: () => ({
+    //     style: {
+    //       maxWidth:'60px',
+    //       padding: '5px 13px 0 0',
+    //       textAlign:"left",
+    //       margin: '0px',
+    //       color: 'grey'
+    //     }}
+    //   ),
+    //   setCellHeaderProps: () => ({
+    //     style: {
+    //       maxWidth:'60px',
+    //       padding:'5px',
+    //       textAlign:"center",
+    //       margin: '0px',
+    //       whiteSpace: 'normal',
+    //     }}),
+    //   }
+    // },
     {
-      name: 'action', 
-      label: <ExpandIcon className="reports-expand-icon header"/>,
-      options: {
-       filter: false,
-       sort: false,
-       empty: true,
-      customBodyRenderLite: (dataIndex, rowIndex) => {
-        return (
-          <ExpandIcon 
-            className="reports-expand-icon"
-            label="Expand Row"
-          />
-        );
-      },
-      setCellProps: () => ({
-        style: {
-          maxWidth:'60px',
-          padding: '5px 13px 0 0',
-          textAlign:"left",
-          margin: '0px',
-          color: 'grey'
-        }}
-      ),
-      setCellHeaderProps: () => ({
-        style: {
-          maxWidth:'60px',
-          padding:'5px',
-          textAlign:"center",
-          margin: '0px',
-          whiteSpace: 'normal',
-        }}),
-      }
+      field: 'tail',
+      headerName: 'Tail#',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'tail', 
+      // label: 'Tail#',
+      // options: {
+      //  filter: true,
+      //  filterType: 'dropdown',
+      //  sort: true,
+      // }
     },
     {
-      name: 'tail', 
-      label: 'Tail#',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-      }
+      field: 'ACSN',
+      headerName: 'ACSN#',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'ACSN', 
+      // label: 'ACSN',
+      // options: {
+      //  filter: true,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
     },
     {
-      name: 'ACSN', 
-      label: 'ACSN',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'EICASMessages',
+      headerName: 'EICAS Message',
+      width:130,
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+
+      // name: 'EICASMessages', 
+      // label: 'EICAS Message',
+      // options: {
+      //  filter: true,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
     },
     {
-      name: 'EICASMessages', 
-      label: 'EICAS Message',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'mdcMessages',
+      headerName: 'MDC Message',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'mdcMessages', 
+      // label: 'MDC Message',
+      // options: {
+      //  filter: true,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
     },
     {
-      name: 'mdcMessages', 
-      label: 'MDC Message',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'LRU',
+      headerName: 'LRU',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'LRU', 
+      // label: 'LRU',
+      // options: {
+      //  filter: true,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
     },
     {
-      name: 'LRU', 
-      label: 'LRU',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'ATA',
+      headerName: 'ATA',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'ATA', 
+      // label: 'ATA',
+      // options: {
+      //  filter: true,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
     },
     {
-      name: 'ATA', 
-      label: 'ATA',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'B1Equation',
+      headerName: 'B1-Equation',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'B1Equation', 
+      // label: 'B1-Equation',
+      // options: {
+      //  filter: true,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
     },
     {
-      name: 'B1Equation', 
-      label: 'B1-Equation',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'type',
+      headerName: 'Type',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'type', 
+      // label: 'Type',
+      // options: {
+      //  filter: true,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
     },
     {
-      name: 'type', 
-      label: 'Type',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
-    },
-    {
-      name: 'equationDescription', 
-      label: 'Equation Description',
-      options: {
-       filter: false,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({
-          style: {
-            maxWidth:'400px',
-            padding:'13px',
-            textAlign:"left",
-            margin: '0px',
-          }}
-        ),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'equationDescription',
+      headerName: 'Equation Description',
+      width:130,
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'equationDescription', 
+      // label: 'Equation Description',
+      // options: {
+      //  filter: false,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   setCellProps: () => ({
+      //     style: {
+      //       maxWidth:'400px',
+      //       padding:'13px',
+      //       textAlign:"left",
+      //       margin: '0px',
+      //     }}
+      //   ),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'totalOccurences', 
-      label: 'Occ',
-      options: {
-        filter: false,
-        filterType: 'dropdown',
-        sort: true,
-        secondaryLabel: 'Total Occurrences',
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'totalOccurences',
+      headerName: 'Occ',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'totalOccurences', 
+      // label: 'Occ',
+      // options: {
+      //   filter: false,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   secondaryLabel: 'Total Occurrences',
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'consecutiveDays', 
-      label: 'Cons. Days',
-      options: {
-        filter: false,
-        filterType: 'dropdown',
-        sort: true,
-        secondaryLabel: 'Consecutive Days',
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'consecutiveDays',
+      headerName: 'Cons. Days',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'consecutiveDays', 
+      // label: 'Cons. Days',
+      // options: {
+      //   filter: false,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   secondaryLabel: 'Consecutive Days',
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'ConsecutiveFlights', 
-      label: 'Cons. Legs', 
-      options: {
-        filter: false,
-        filterType: 'dropdown',
-        sort: true,
-        secondaryLabel: 'Consecutive Flight Legs',
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'ConsecutiveFlights',
+      headerName: 'Cons. Legs',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'ConsecutiveFlights', 
+      // label: 'Cons. Legs', 
+      // options: {
+      //   filter: false,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   secondaryLabel: 'Consecutive Flight Legs',
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'intermittent', 
-      label: 'Int.', 
-      options: {
-        filter: false,
-        filterType: 'dropdown',
-        sort: true,
-        secondaryLabel: 'Intermittent',
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'intermittent',
+      headerName: 'Int.',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'intermittent', 
+      // label: 'Int.', 
+      // options: {
+      //   filter: false,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   secondaryLabel: 'Intermittent',
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'dateFrom', 
-      label: 'Date from',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'dateFrom',
+      headerName: 'Date from',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'dateFrom', 
+      // label: 'Date from',
+      // options: {
+      //  filter: true,
+      //  filterType: 'dropdown',
+      //  sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'dateTo', 
-      label: 'Date to',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'dateTo',
+      headerName: 'Date to',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'dateTo', 
+      // label: 'Date to',
+      // options: {
+      //  filter: true,
+      //  filterType: 'dropdown',
+      //  sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'reasons', 
-      label: 'Reason(s) for flag',
-      options: {
-       filter: false,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'reasons',
+      headerName: 'Reason(s) for flag',
+      width:150,
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'reasons', 
+      // label: 'Reason(s) for flag',
+      // options: {
+      //  filter: false,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'priority', 
-      label: 'Priority',
-      options: {
-       filter: true,
-        filterType: 'dropdown',
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'priority',
+      headerName: 'Priority',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'priority', 
+      // label: 'Priority',
+      // options: {
+      //  filter: true,
+      //   filterType: 'dropdown',
+      //   sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'topMessage', 
-      label: 'Known Top Message',
-      options: {
-        filter: false,
-        sort: true,
-        secondaryLabel: 'Known Top Message - Recommended Documents',
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'topMessage',
+      headerName: 'Known Top Message',
+      width:150,
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'topMessage', 
+      // label: 'Known Top Message',
+      // options: {
+      //   filter: false,
+      //   sort: true,
+      //   secondaryLabel: 'Known Top Message - Recommended Documents',
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'mel', 
-      label: 'MEL or No-Dispatch',
-      options: {
-        filter: false,
-        sort: true,
-        setCellProps: () => ({style: columnStyle}),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'mel',
+      headerName: 'MEL or No-Dispatch',
+      width:150,
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'mel', 
+      // label: 'MEL or No-Dispatch',
+      // options: {
+      //   filter: false,
+      //   sort: true,
+      //   setCellProps: () => ({style: columnStyle}),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'input', 
-      label: 'MHIRJ Input',
-      options: {
-        filter: false,
-        sort: true,
-        setCellProps: () => ({
-          style: {
-            maxWidth:'300px',
-            padding:'13px',
-            textAlign:"left",
-            margin: '0px',
-          }}
-        ),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'input',
+      headerName: 'MHIRJ Input',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'input', 
+      // label: 'MHIRJ Input',
+      // options: {
+      //   filter: false,
+      //   sort: true,
+      //   setCellProps: () => ({
+      //     style: {
+      //       maxWidth:'300px',
+      //       padding:'13px',
+      //       textAlign:"left",
+      //       margin: '0px',
+      //     }}
+      //   ),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'recommendation', 
-      label: 'MHIRJ Recommendation',
-      options: {
-        filter: false,
-        setCellProps: () => ({
-          style: {
-            maxWidth:'400px',
-            padding:'13px',
-            textAlign:"left",
-            margin: '0px',
-          }}
-        ),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'recommendation',
+      headerName: 'MHIRJ Recommendation',
+      width:150,
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'recommendation', 
+      // label: 'MHIRJ Recommendation',
+      // options: {
+      //   filter: false,
+      //   setCellProps: () => ({
+      //     style: {
+      //       maxWidth:'400px',
+      //       padding:'13px',
+      //       textAlign:"left",
+      //       margin: '0px',
+      //     }}
+      //   ),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'comments', 
-      label: 'Additional Comments',
-      options: {
-        filter: false,
-        sort: true,
-        setCellProps: () => ({
-          style: {
-            maxWidth:'300px',
-            padding:'13px',
-            textAlign:"left",
-            margin: '0px',
-          }}
-        ),
-        setCellHeaderProps: () => ({ style: headingStyle }),
-      }
+      field: 'comments',
+      headerName: 'Additional Comments',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'comments', 
+      // label: 'Additional Comments',
+      // options: {
+      //   filter: false,
+      //   sort: true,
+      //   setCellProps: () => ({
+      //     style: {
+      //       maxWidth:'300px',
+      //       padding:'13px',
+      //       textAlign:"left",
+      //       margin: '0px',
+      //     }}
+      //   ),
+      //   setCellHeaderProps: () => ({ style: headingStyle }),
+      // }
      },
      {
-      name: 'isJam', 
-      label: 'Jam',
-      options: {
-       filter: true,
-       filterType: 'dropdown',
-       customFilterListOptions: {
-        render: item => item == false ? "False Jams" : "True Jams"
-      },
-       sort: false,
-       display: false,
-      }
+      field: 'isJam',
+      headerName: 'Jam',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'isJam', 
+      // label: 'Jam',
+      // options: {
+      //  filter: true,
+      //  filterType: 'dropdown',
+      //  customFilterListOptions: {
+      //   render: item => item == false ? "False Jams" : "True Jams"
+      // },
+      //  sort: false,
+      //  display: false,
+      // }
      },
      {
-      name: 'keywords', 
-      label: 'Correlation Keywords',
-      options: {
-       filter: false,
-       sort: false
-      }
+      field: 'keywords',
+      headerName: 'Correlation Keywords',
+      renderCell: (params) => { return <ExpandCell {...params} /> },
+      // name: 'keywords', 
+      // label: 'Correlation Keywords',
+      // options: {
+      //  filter: false,
+      //  sort: false
+      // }
      },
     ];
 
+    const ExpandCell = (params) => {
+      if(rowExpand.hasOwnProperty(params.id)){
+        if(rowExpand[params.id]){
+          return(
+            <div className='cellIsExpand'>
+              {params.value}
+            </div>
+          )
+        }else{
+          return(
+            <div className='cellIsCollapse'>
+              {params.value}
+            </div>
+          )
+        }
+      }else{
+        return(
+          <div className='cellIsCollapse'>
+          {params.value}
+        </div>
+        )
+      }
+    }
+
   useEffect(()=> {
     let dataCopy = [];
+
    
     props.data?.map((item => {
     
@@ -550,7 +710,8 @@ const HistoryReport = (props) => {
           mel: item["MEL or No-Dispatch"], 
           dateFrom: DateConverter(item["Date from"]), 
           dateTo: DateConverter(item["Date to"]), 
-          keywords: item["Keywords"]
+          keywords: item["Keywords"],
+          id: randomId()
         }
       );
     }
@@ -655,7 +816,7 @@ const HistoryReport = (props) => {
       onChangeRowsPerPage: onChangeRowsPerPage,
       rowsPerPageOptions:  [20 ,50,100],
       selectToolbarPlacement:"none",
-      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '650px'
+      tableBodyHeight: props.loading === true || data.length === 0 ? '200px' : '550px'
     };
     useEffect(()=>{
       if(localStorage.getItem('historyReportExpandedRows')){
@@ -663,35 +824,118 @@ const HistoryReport = (props) => {
       }
     },[setArrayOfRows])
 
+    const getRowHeights = ({ id, densityFactor }) => {
+      if(rowExpand.hasOwnProperty(id)){
+        if(rowExpand[id] === true){
+          return 340 * densityFactor;
+        }else{
+          return 30 * densityFactor;
+        }
+      }      
+    }
+    const onCellClicked = (params) => {
+      if(params.field !== "actions"){
+        if(params.cellMode === "view"){
+          setExpand(!expand)
+          rowExpand[params.id] = expand 
+          setRowExpand(rowExpand) 
+        }
+      }
+    }
 
+    const onCellDoubleClicked = (params, event) => {
+      if (!event.ctrlKey) {
+        event.defaultMuiPrevented = true;
+      }
+    }
+
+    const sxStyle = {
+      borderColor: 'primary.light',
+      '& .MuiDataGrid-cell:hover': {
+          color: 'primary.main',
+      },
+      whiteSpace: 'normal',
+      '& .MuiDataGrid-cell[data-field*="actions"]': {
+        position: '-webkit-sticky',
+        position: 'sticky',
+        background: '#fff',
+        left: 0,
+        zIndex: 1,
+      },
+  
+    }
 
   return (
     <>
-      <div style={{display: `${props.display}`}} className="reports-root history-report">
-        { openSearch &&
+      {/* <div style={{display: `${props.display}`}} className="reports-root history-report"> */}
+        {/* { openSearch &&
             <SearchTab 
               columns={columns}
               handleSearchChange={handleSearchChange}
               searchLoading={searchLoading}
               searchError = {searchError}
             />  
-          }
-        <Grid container spacing={0}>
+          } */}
+        {/* <Grid container spacing={0}>
           <Grid item xs={12}>
           <Button onClick={props.closeReport} className={classes.customHoverFocus}>
             <CloseIcon />
             </Button>
-            <MUIDataTable
-              title= {props.title}
+      
+          </Grid> 
+        </Grid>  */}
+        {/* <MUIDataTable
+              title= {<h2 style={{padding: '3px'}}>{props.title}</h2>}
               data={data}
               columns={columns}
               options={options}
+              
+            /> */}
+             <div style={{ width: '97%', height: 650 }}>
+               <h2 style={{height: '20px', padding: '8px'}}>{props.title}</h2>
+            <StyledDataGrid  disableVirtualization
+              rows={data}
+              
+              columns={columns}
+              getrowExpand={row => row.id}
+              checkboxSelection
+              getRowHeight={getRowHeights}
+              onCellClick={onCellClicked}
+              onCellDoubleClick={onCellDoubleClicked}
+              columnBuffer={2}
+              columnThreshold={2}
+              pageSize={pageSize}
+              onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+              rowsPerPageOptions={[20, 50, 100]}
+              pagination
+              rowHeight={30}
             />
-          </Grid> 
-        </Grid> 
-      </div>
+            </div>
+      {/* </div> */}
     </>
   );
 }
 export default HistoryReport;
 
+{/* <div style={{ width: '97%', height: height }}>
+<DataGrid disableVirtualization disableClickEventBubbling 
+  getrowExpand={row => row.id}
+  title={"INPUT MESSAGE DATA "}
+  rows={updateData}
+  columns={columns}
+  columnBuffer={2}
+  columnThreshold={2}
+  editMode='row'
+  loading={loading}
+ 
+  getRowHeight={getRowHeights}
+  onCellClick={onCellClicked}
+  onCellDoubleClick={onCellDoubleClicked}
+  sx={sxStyle}
+  pageSize={pageSize}
+  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+  rowsPerPageOptions={[20, 50, 100]}
+  pagination
+/>
+
+</div> */}

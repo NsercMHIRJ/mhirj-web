@@ -17,5 +17,25 @@ code {
 }
 
 @media screen and (min-width: 50em){
-  html { font-size:  calc( 15px + (26 - 15) * (69vw - 80vw) / (800 - 400) ); }
+  html { font-size:  calc( 15px + (26 - 15) * (69vw - 80vw) / (800 - 350) ); }
   }
+  /* @media only screen and (min-width: 1024px) {
+    html {
+    font-size: 100%;
+    }
+  };
+  @media only screen and (min-width: 1280px) {
+    html {
+    font-size: 100%;
+    }
+  };
+  @media only screen and (min-width: 1536px) {
+    html {
+    font-size: 100%;
+    }
+  };
+  @media only screen and (min-width: 1920px) {
+    html {
+    font-size: 100%;
+    }
+  }; */
