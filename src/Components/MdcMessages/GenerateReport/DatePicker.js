@@ -47,6 +47,7 @@ const DatePicker = (props) => {
        label={props.label}
        value={selectedDate}
        onChange={handleDateChange}
+       disabled = { props.disabled ? true : false}
        KeyboardButtonProps={{
          'aria-label': 'change date',
        }}

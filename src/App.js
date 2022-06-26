@@ -16,6 +16,7 @@ import { Button } from '@material-ui/core';
 import './App.css'
 import MessageInput from './Components/MessageInput';
 import Analysis from './Components/MdcMessages/GenerateReport/Analysis';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {

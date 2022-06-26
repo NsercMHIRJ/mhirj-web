@@ -17,10 +17,22 @@ code {
 }
 
 @media screen and (min-width: 50em){
-  html { font-size:  calc( 15px + (26 - 15) * (69vw - 80vw) / (800 - 350) ); }
+  html { font-size:  calc( 15px + (26 - 15) * (69vw - 80vw) / (800 - 250) ); }
   }
-  /* @media only screen and (min-width: 1024px) {
-    html {
+  /* @media only screen and (min-width: 1024px) {body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
     font-size: 100%;
     }
   };

@@ -15,6 +15,7 @@ import Localbase from 'localbase'
 import Skeleton from '@mui/material/Skeleton';
 import "../../../../src/scss/components/_analysis.scss"
 import { Card } from '@material-ui/core';
+import { randomId } from '@mui/x-data-grid-generator';
 
 const Report = (props) => {
   const [report, setReport] = useState(props.reportConditions);
@@ -52,6 +53,8 @@ const Report = (props) => {
   const [reportType, setReportType] = useState('');
   const db = new Localbase('reportDatas');
   const [isFetching, setIsFetching] = useState(false);
+  const [histErrorMessage, setHistErrorMessage] = useState('')
+  const [deltaErrorMessage, setdeltaErrorMessage] = useState('')
 
   
   useEffect(()=> {
@@ -100,6 +103,7 @@ const Report = (props) => {
             })
           }).catch(function (err){
             console.log(err);
+            setdeltaErrorMessage(err.message)
             setLoadingDelta(false);
           });
 
@@ -141,12 +145,16 @@ const Report = (props) => {
           axios.post(path).then(function (res){
             var data = JSON.parse(res.data);
             console.log(data)
+            data.map((row)=> {
+              row['id'] = randomId();
+            })
             db.collection('reporstLocal').add({data: data},"historyData").then(response => {
               setHistoryReportData(response.data.data.data);  
               setLoadingHistory(false);  
             })
           }).catch(function (err){
             console.log(err);    
+            setHistErrorMessage(err.message)
             setLoadingHistory(false);
           });
         }
@@ -369,28 +377,10 @@ const Report = (props) => {
           </Grid>
         </Grid>
       </Grid>
-     
-      {/* {dailyReportData !== "" && dailyReportData !== "undefined" && dailyValue === 1 &&
-        <>
-          <div className="daily-report">
-            <Grid item lg={12}>
-        
-              <DailyReport 
-                data = {dailyReportData} 
-                title = "Daily Report" 
-                reportConditions = {report} 
-                loading = {loadingDaily}
-                db = {db}
-                display = {dailyDisplay}
-                closeReport = {closeDailyReport}
-                />
-            </Grid>
-          </div>
-        </>
-      } */}
-      <Card style={{width: '100%',  height: 700}}>
+    
       {historyReportData !== "" && historyReportData !== "undefined" && histValue === 1 &&
         <>
+    
             <HistoryReport 
                 data = {historyReportData}  
                 title = "History Report" 
@@ -401,58 +391,17 @@ const Report = (props) => {
                 db = {db}
                 display = {histDisplay}
                 closeReport = {closeHistReport}
+                errorMessage={histErrorMessage}
+                setErrorMessage={setHistErrorMessage}
               />
-
-             
-          {/* <div className="history-report">
-            <Grid item={true} md={12}>
-          
-            </Grid> */}
-
-            {/* <Grid container item={true}>
-              {jamACSNHistoryValue !== "" && jamHistoryData !== "" && jamHistoryData !== "undefined" && jamHistValue === 1 &&
-              <>
-                <Grid item md={12}>
-                <JamsReport data = {jamHistoryData} 
-                reportConditions = {JSON.parse(localStorage.getItem('history-report'))} 
-                title = {jamHistTitle} 
-                loading = {loadingHistoryJam}
-                db = {db}
-                display = {jamDisplay}
-                closeReport = {closeJamReport}
-                />
-                
-                </Grid>
-                </>
-              }
-          </Grid>  */}
-{/* 
-          <Grid container>
-            {flagData !== "" && flagData !== "undefined" && flagValue === 1 &&
-              <>
-                <Grid item md={12}>
-                <FlagReport data = {flagData}
-                reportConditions = {props.reportConditions}
-                title = "History Flag Report"
-                loading = {loadingFlag}
-                flagReportConditions={flagConditions}
-                db = {db}
-                display = {flagDisplay}
-                closeReport = {closeFlagReport}
-                />
-                </Grid>
-              </>
-              }
-          </Grid>    
-        
-        </div> */}
         </>
       }
 
-      </Card>
-     <Card style={{width: '100%', height: 780}}>
+
+     
      {deltaData !== "" && deltaData !== "undefined" && deltaValue === 1 &&
         <>
+       
             <DeltaReport 
                 data = {deltaData}
                 title = "Delta Report" 
@@ -461,16 +410,12 @@ const Report = (props) => {
                 db = {db}
                 display = {deltaDisplay}
                 closeReport = {closeDeltaReport}
+                setErrorMessage = {setdeltaErrorMessage}
+                errorMessage={deltaErrorMessage}
               />
-          {/* <div className="delta-report">
-            {/* <h2 className="report-parameters-h2">Delta Report Parameters - To be Defined</h2> */}
-            <Grid item md={12}>
-          
-            </Grid>
-          {/* </div> */} 
         </>
       }
-     </Card>
+     
 
 
     </div>

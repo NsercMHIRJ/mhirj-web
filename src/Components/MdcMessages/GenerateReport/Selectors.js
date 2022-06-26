@@ -37,7 +37,7 @@ export const AirlineOperatorSelector = (props) => {
   };
 
   return(
-    <FormControl variant="outlined" className="form-control">
+    <FormControl variant="outlined" className="form-control"   style={{padding: '9px'}}>
       <InputLabel id="demo-simple-select-outlined-label">Airline Operator</InputLabel>
       <Select
         labelId="demo-simple-select-outlined-label"
@@ -45,6 +45,7 @@ export const AirlineOperatorSelector = (props) => {
         value={airline}
         onChange={handleAirlineChange}
         label="Airline Operator"
+        
       >
       <MenuItem value="none"> </MenuItem>
       {AirlineList.map( item => 
@@ -115,6 +116,7 @@ export const ATAMainSelector = (props) => {
     options={ATAMainList}
     getOptionLabel={(item => item)}
     value = {ATAMain}
+    style={{padding: '9px'}}
     filterSelectedOptions
     onChange = {handleATAChange}
     renderInput={(params) => (
@@ -187,6 +189,7 @@ export const ACSNSelector = (props) => {
     multiple
     limitTags={2}
     options={ACSNList}
+    style={{padding: '9px'}}
     getOptionLabel={(item => item)}
     value = {ACSN}
     filterSelectedOptions
@@ -268,6 +271,7 @@ export const EqIDSelector = (props) => {
         options={EqList}
         getOptionLabel={(item => item)}
         value = {EqID}
+        style={{padding: '9px'}}
         filterSelectedOptions
         onChange = {handleEqIDChange}
         searchenabled = "true"

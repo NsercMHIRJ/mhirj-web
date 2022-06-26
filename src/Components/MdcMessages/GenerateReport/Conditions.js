@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { OccurencesInput, LegsInput, IntermittentInput, DaysInput } from './AnalysisInput';
-import Card from '@material-ui/core/Card';
 import DatePicker from './DatePicker';
 import { AirlineOperatorSelector, ATAMainSelector, ACSNSelector, MessagesSelector, EqIDSelector } from './Selectors';
 import Report from '../Reports/Report';
@@ -32,6 +31,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -77,7 +80,7 @@ const Conditions = (props) => {
   let currentTimestamp = Date.now()
   let filter_date = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(currentTimestamp)
 
-  const [validationResponse, setValidationResponse] = useState('');
+  const [validationResponse, setValidationResponse] = useState({});
 
   const [reportConditions, setReportConditions] = useState(
     {
@@ -243,280 +246,254 @@ const Conditions = (props) => {
   }, [])
 
   return (
-    <div className="row">
-      
-        <div class="column selectorCard">
-       
-        {/* <Button variant="contained">Contained</Button> */}
-        <Button variant="outlined" href="#contained-buttons" style={{width: '50%', height: '52px', borderRadius: '11px', padding: '25px 18px 10px 0px'}}>
-          
-          <ViewWeekIcon color="primary" style={{ fontSize: '25px'}}/>
-          <p style={{ fontSize: '15px'}}>Filters</p>
-          <VerticalAlignTopIcon color="primary" style={{fontSize: '25px'}}/>
-          <SaveIcon color="primary" style={{fontSize: '25px'}}/>
-          
+
     
+  <Container fluid>
+    <Row className='d-flex flex-row flex-nowrap overflow-auto"'>
+   
+      <Col xs={3} style={{position:'fixed' , float: 'left', overflowY: 'scroll', maxHeight: '90vh'}} className="keep-scrolling">
+    
+      <Button variant="outlined" href="#contained-buttons" style={{width: '50%', height: '52px', borderRadius: '11px'}}>
+          
+          <ViewWeekIcon color="primary" />
+          <h5>Filters</h5>
+          <VerticalAlignTopIcon color="primary" />
+          <SaveIcon color="primary" />
+        
         </Button>
-        <Button variant="outlined" href="#contained-buttons" style={{ width: '50%', height: '52px', borderRadius: '11px', padding: '25px 18px 10px 0px'}}>
-          <FavoriteIcon color="primary" style={{fontSize: '21px'}}/>
-          <h2  style={{fontSize: '16px'}}>/</h2>
-          <RemoveRedEyeIcon color="primary"  style={{fontSize: '21px'}}/>
-          <p style={{ fontSize: '11px'}}>Saved Filters</p>
+
+        <Button variant="outlined" href="#contained-buttons" style={{ width: '50%', height: '52px', borderRadius: '11px'}}>
+
+          <FavoriteIcon color="primary"/>
+          <h5>/</h5>
+          <RemoveRedEyeIcon color="primary"/>
+          <h6>Saved Filters</h6>
+
         </Button>
-          <Paper variant="outlined">
-          <div>
-          {/* <div className="analysis-card">
-            <h2>REPORT ANALYSIS</h2>
-          </div> */}
+      <Card className="card card-block mx-2">
+      <Card.Body>
+   
+            <div>
 
-          <div className='analysis-selectors'>
-
-            {/* <Grid className={classes.Grid}> */}
-
-              {/* <Grid item xs={12} style={{height: '36px'}}> */}
-
-                <div >
-                <FormControl component="fieldset" className="form" >
+              <FormControl component="fieldset" className="form" >
               
-              <Typography className='h3' style={{padding: '4px'}}>Report Type</Typography>
-              <p className="validation-message">{validationResponse.analysisMessage}</p>
-              <RadioGroup aria-label="analysis" name="analysis" value={analysis} style={{padding: '6px'}} >
-                {/* <FormControlLabel value="daily" className="RadioButton" control={
-                  <Radio
-                    size="medium"
-                    color='default'
-                    onChange={() => handleAnalysisChange("daily")}
-                  />} label="Daily" /> */}
-                <FormControlLabel value="history" control={
-                  <Radio
-                    size="medium"
-                    color='default'
-                    onChange={() => handleAnalysisChange("history")}
-                  />} label="History" />
-                <FormControlLabel value="delta" control={
-                  <Radio
-                    size="medium"
-                    color='default'
-                    onChange={() => handleAnalysisChange("delta")}
-                  />} label="Delta" />
-                {/* <FormControlLabel value="flag" control={
-                  <Radio
-                    size="medium"
-                    color='default'
-                    onChange={() => handleAnalysisChange("flag")}
-                  />} label="Flag"
-                  disabled={checkHistory} /> */}
-                {/* <FormControlLabel value="surrounding" control={
-                  <Radio
-                    size="medium"
-                    color='default'
-                    onChange={() => handleAnalysisChange("surrounding")}
-                  />} label="Surrounding"
-                  disabled={checkHistory} /> */}
-              </RadioGroup>
-            </FormControl>
-                <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography className='accordion-titles'>Date/Time(UTC)</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>
-                        <div style={{display: 'inline-flex'}}>
-                        <p className="validation-message">{validationResponse.fromDateMessage}</p>
-                        <DatePicker
-                          label="From"
-                          handleDateFrom={handleDateFrom}
-                          dateFrom={importedData.fromDate}
-                        />
-                        <p className="validation-message">{validationResponse.toDateMessage}</p>
-                        <DatePicker
-                          label="To"
-                          handleDateTo={handleDateTo}
-                          dateTo={importedData.toDate}
-                          variant="inline"
-                        />
-                        </div>
-                      <div style={{display: 'inline-flex'}}>
-                      <p className="validation-message">{validationResponse.fromDeltaMessage}</p>
-                        <DatePicker
-                          label="Delta From"
-                          handleDateFrom={handleDeltaFrom}
-                          disabled={deltaDisable}
-                        //dateFrom = {importedData.fromDate}
-                        />
-                        <p className="validation-message">{validationResponse.toDeltaMessage}</p>
-                        <DatePicker
-                          label="Delta To"
-                          handleDateTo={handleDeltaTo}
-                          disabled={deltaDisable}
-                          style={{width: '40%'}}
-                        //dateTo = {importedData.toDate}
-                        />
-                      </div>
-                    
+                <Typography className='h3' style={{padding: '4px'}}>Report Type</Typography>
 
-                      </Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography className='accordion-titles'>Analysis Input</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                    <div style={{display: 'inline-flex', padding: '6px'}}>
-                    <Typography>
-                        <p className="validation-message">{validationResponse.occurencesMessage}</p>
-                        
-                        <OccurencesInput
-                          handleOccurencesChange={handleOccurencesChange}
-                          occurrences={importedData.occurences}
-                        />
-                      </Typography>
-
-                      <Typography>
-                        <p className="validation-message">{validationResponse.legsMessage}</p>
-                    
-                        <LegsInput
-                          handleLegsChange={handleLegsChange}
-                          legs={importedData.legs}
-                        />
-                      </Typography>
-                      </div>
-                      <div style={{display: 'inline-flex', padding: '6px'}}>
-                      <Typography>
-                        <p className="validation-message">{validationResponse.daysMessage}</p>
-                      
-                        <DaysInput
-                          analysis={analysis}
-                          handleDaysChange={handleDaysChange}
-                          days={importedData.days}
-                        />
-                      </Typography>
-
-                      <Typography>
-                        <p className="validation-message">{validationResponse.intermittentMessage}</p>
-                        <IntermittentInput
-                          handleIntermittentChange={handleIntermittentChange}
-                          intermittent={importedData.intermittent}
-                        />
-                      </Typography>
-                        </div>
-
-                
-                    </AccordionDetails>
-                  </Accordion>
-
+                <p className="validation-message">{validationResponse.analysisMessage}</p>
             
-
-
-
-                  <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography className='accordion-titles'>Raw Data Conditions</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography  style={{padding: '4px'}}>
-                        <p className="validation-message">{validationResponse.operatorMessage}</p>
-                        <AirlineOperatorSelector
-                          handleAirlineChange={handleAirlineChange}
-                          operator={importedData.operator}
-                        />
-                      </Typography>
-
-                      <Typography style={{padding: '4px'}}>
-                        <p className="validation-message">{validationResponse.ataMessage}</p>
-                        <ATAMainSelector
-                          handleATAChange={handleATAChange}
-                          ata={importedData.ata}
-                        />
-                      </Typography>
-
-                      <Typography  style={{padding: '4px'}}>
-                        <p className="validation-message">{validationResponse.eqIDMessage}</p>
-                        <EqIDSelector
-                          handleEqIDChange={handleEqIDChange}
-                          eqID={importedData.eqID}
-                        />
-                      </Typography>
-
-                      <Typography  style={{padding: '4px'}}>
-                        <p className="validation-message">{validationResponse.ACSNMessage}</p>
-                        <ACSNSelector
-                          handleACSNChange={handleACSNChange}
-                          ACSN={importedData.ACSN}
-                        />
-                      </Typography>
-
-                    </AccordionDetails>
-                  </Accordion>
-
-                  {/* <p className="validation-message">{validationResponse.currentMessage}</p> */}
-                  {/* <MessagesSelector 
-                handleMessagesChange = {handleMessagesChange}
-                messages = {importedData.messages}
-              />    */}
-
-                </div>
-                <div style={{height: '71px'}}>
-                <Button variant="text" style={{left: '1vw', top: '3vh' }}>Clear</Button>
-                  <Button variant="text"
-                  onClick={async () => handleGenerateReport()} style={{left: '9vw',  top: '3vh'}} >Apply</Button>
-                </div>
-              
-{/*                
-              </Grid> */}
-
-              {/* <Grid item xs={2} > */}
+                <RadioGroup aria-label="analysis" name="analysis" value={analysis} style={{padding: '6px'}} >
              
+                  <FormControlLabel value="history" control={
+                    <Radio
+                      size="medium"
+                      color='default'
+                      onChange={() => handleAnalysisChange("history")}
+                    />} label="History" />
+                    
+                  <FormControlLabel value="delta" control={
+                    <Radio
+                      size="medium"
+                      color='default'
+                      onChange={() => handleAnalysisChange("delta")}
+                    />} label="Delta" />
+              
+                </RadioGroup>
+
+              </FormControl>
+
+              <Accordion>
+
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography className='accordion-titles'>Date/Time(UTC)</Typography>
+
+                </AccordionSummary>
+
+                <AccordionDetails>
+                     
+                  <div style={{display: 'inline-flex'}}>
+
+                    <p className="validation-message">{validationResponse.fromDateMessage}</p>
                   
-    
-                  {/* <Button
-                    variant="contained"
-                    onClick={() => SaveFilter("", "Filter_" + filter_date)}
-                  >
-                    Save Filter
-                  </Button> */}
-                  {/* <br></br> */}
-                  {/* <input
-                    className={classes.input}
-                    id="contained-button-file"
-                    multiple
-                    type="file"
-                    onChange={(e) => upload_filter(e)}
-                  /> */}
-                  {/* <label htmlFor="contained-button-file" style={{ margin: '40px auto', width: '70%', backgroundColor: "#C5D3E0", textAlign: "center" }}>
-                    <Button id="upload" variant="contained" component="span" className={classes.button}>
-                      Upload
-                    </Button>
-                  </label> */}
-               
-              {/* </Grid> */}
-            {/* </Grid> */}
-          </div>
-        </div>
-          </Paper>
+                    <DatePicker
+                      label="From"
+                      handleDateFrom={handleDateFrom}
+                      dateFrom={importedData.fromDate}
+                    />
+
+                    <p className="validation-message">{validationResponse.toDateMessage}</p>
+                
+                    <DatePicker
+                      label="To"
+                      handleDateTo={handleDateTo}
+                      dateTo={importedData.toDate}
+                      variant="inline"
+                    />
+
+                  </div>
+
+                  <div style={{display: 'inline-flex'}}>
+             
+                    <p className="validation-message">{validationResponse.fromDeltaMessage}</p>
+                    
+                    <DatePicker
+                      label="Delta From"
+                      handleDateFrom={handleDeltaFrom}
+                      disabled={deltaDisable}
+                    //dateFrom = {importedData.fromDate}
+                    />
+                  
+                    <p className="validation-message">{validationResponse.toDeltaMessage}</p>
+                    
+                    <DatePicker
+                      label="Delta To"
+                      handleDateTo={handleDeltaTo}
+                      disabled={deltaDisable}
+                      style={{width: '40%'}}
+                    //dateTo = {importedData.toDate}
+                    />
+
+                  </div>
+                    
+
+                </AccordionDetails>
+
+              </Accordion>
+
+              <Accordion>
+
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+
+                  <Typography className='accordion-titles'>Analysis Input</Typography>
+
+                </AccordionSummary>
+
+                <AccordionDetails>
+
+                  <div style={{display: 'inline-flex', padding: '6px'}}>
+                 
+                    <p className="validation-message">{validationResponse.occurencesMessage ? validationResponse.occurencesMessage : ''}</p> 
+                        
+                    <OccurencesInput
+                      handleOccurencesChange={handleOccurencesChange}
+                      occurrences={importedData.occurences}
+                    />
+                  
+                    <p className="validation-message">{validationResponse.legsMessage ? validationResponse.legsMessage : ''}</p>
+                    
+                    <LegsInput
+                      handleLegsChange={handleLegsChange}
+                      legs={importedData.legs}
+                    />
+                
+                  </div>
+
+                  <div style={{display: 'inline-flex', padding: '6px'}}>
+                   
+                    <p className="validation-message">{validationResponse.daysMessage ?  validationResponse.daysMessage : ''}</p> 
+                      
+                    <DaysInput
+                      analysis={analysis}
+                      handleDaysChange={handleDaysChange}
+                      days={importedData.days}
+                    />
+                      
+                    <p className="validation-message">{validationResponse.intermittentMessage ? validationResponse.intermittentMessage : ''}</p>
+
+                    <IntermittentInput
+                      handleIntermittentChange={handleIntermittentChange}
+                      intermittent={importedData.intermittent}
+                    />
+                    
+                  </div>
+
+                </AccordionDetails>
+
+              </Accordion>
+
+              <Accordion>
+                
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+
+                  <Typography className='accordion-titles'>Raw Data Conditions</Typography>
+
+                </AccordionSummary>
+
+                <AccordionDetails>
+
+                  <p className="validation-message">{validationResponse.operatorMessage ? validationResponse.operatorMessage : ''}</p>
+
+                  <AirlineOperatorSelector
+                    handleAirlineChange={handleAirlineChange}
+                    operator={importedData.operator}
+                  />
+            
+                  <p className="validation-message">{validationResponse.ataMessage ? validationResponse.ataMessage : ''}</p>
+
+                  <ATAMainSelector
+                    handleATAChange={handleATAChange}
+                    ata={importedData.ata}
+                  />
+            
+                  <p className="validation-message">{validationResponse.eqIDMessage ? validationResponse.eqIDMessage : ''}</p>
+
+                  <EqIDSelector
+                    handleEqIDChange={handleEqIDChange}
+                    eqID={importedData.eqID}
+                  />
+              
+                  <p className="validation-message">{validationResponse.ACSNMessage ? validationResponse.ACSNMessage : ''}</p>
+
+                  <ACSNSelector
+                    handleACSNChange={handleACSNChange}
+                    ACSN={importedData.ACSN}
+                  />
+                    
+                </AccordionDetails>
+
+              </Accordion>
+
+            </div>
+
       
+
+      </Card.Body>
+     <Card.Footer>
+     <div style={{height: '71px'}}>
+
+      <Button variant="text" >Clear</Button>
+
+      <Button variant="text" onClick={async () => handleGenerateReport()} >Apply</Button>
+
       </div>
-      <div className="column reportCard">
+     </Card.Footer>
+        </Card>
+     
     
+      </Col>
+      <Col xs={9} style={{ position: 'absolute' , left: '24vw'}} >
+
       <Report reportConditions={reportConditions}
-        setCheckHistory={setCheckHistory} />
+          setCheckHistory={setCheckHistory} />
+     
+      </Col>
+    </Row>
+  </Container>
+     
+    
+       
 
-   </div>
-
-    </div>
   );
 };
 
