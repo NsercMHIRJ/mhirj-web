@@ -35,6 +35,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup'
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -53,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Conditions = (props) => {
-  const classes = useStyles();
 
   const [analysis, setAnalysisType] = useState("daily");
   const [EqID, setEqID] = useState("");
@@ -76,7 +78,7 @@ const Conditions = (props) => {
   const [messagesChoice, setIncludeMessages] = useState("");
   const [importedData, setImportedData] = useState({});
   const [checkHistory, setCheckHistory] = useState(true)
-
+  const [isSavedFilter , setIsSavedFilter] = useState(false)
   let currentTimestamp = Date.now()
   let filter_date = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(currentTimestamp)
 
@@ -253,7 +255,8 @@ const Conditions = (props) => {
    
       <Col xs={3} style={{position:'fixed' , float: 'left', overflowY: 'scroll', maxHeight: '90vh'}} className="keep-scrolling">
     
-      <Button variant="outlined" href="#contained-buttons" style={{width: '50%', height: '52px', borderRadius: '11px'}}>
+      <Button variant="outlined" href="#contained-buttons" style={{width: '50%', height: '52px', borderRadius: '11px'}}
+      onClick={ () => setIsSavedFilter(false)}>
           
           <ViewWeekIcon color="primary" />
           <h5>Filters</h5>
@@ -262,213 +265,245 @@ const Conditions = (props) => {
         
         </Button>
 
-        <Button variant="outlined" href="#contained-buttons" style={{ width: '50%', height: '52px', borderRadius: '11px'}}>
+        <Button variant="outlined" href="#contained-buttons" style={{ width: '50%', height: '52px', borderRadius: '11px'}} 
+        onClick={() => setIsSavedFilter(true)}>
 
           <FavoriteIcon color="primary"/>
           <h5>/</h5>
           <RemoveRedEyeIcon color="primary"/>
-          <h6>Saved Filters</h6>
+          <h6 style={{whiteSpace: 'nowrap'}}>Saved Filters</h6>
 
         </Button>
+     
       <Card className="card card-block mx-2">
-      <Card.Body>
+
+      {isSavedFilter ?  
+        (
+          <Card.Body>
+            <p style={{fontSize: '16px'}}><strong>Watchlist:</strong></p>
+            <Card >
+              <p style={{padding: '4px'}}>Watchlist</p>
+            </Card>
+            <p style={{fontSize: '16px'}}><strong>Saved Filters:</strong></p>
+            <ListGroup as="ol" numbered>
+            <ListGroup.Item >
+              <p>Saved Filter 1</p>
+              <div style={{float: 'right'}}>
+                <EditIcon />
+                <DeleteIcon />
+              </div>
+              </ListGroup.Item>
+            <ListGroup.Item >
+              <p style={{float: 'left'}}>Spolier system </p>
+              <div style={{float: 'right'}}>
+                <EditIcon />
+                <DeleteIcon />
+              </div>
+              </ListGroup.Item>
+            </ListGroup>
+          </Card.Body>
+        )
+        : 
+        (<Card.Body>
    
-            <div>
+        <div>
 
-              <FormControl component="fieldset" className="form" >
-              
-                <Typography className='h3' style={{padding: '4px'}}>Report Type</Typography>
+          <FormControl component="fieldset" className="form" >
+          
+            <Typography className='h3' style={{padding: '4px'}}>Report Type</Typography>
 
-                <p className="validation-message">{validationResponse.analysisMessage}</p>
-            
-                <RadioGroup aria-label="analysis" name="analysis" value={analysis} style={{padding: '6px'}} >
-             
-                  <FormControlLabel value="history" control={
-                    <Radio
-                      size="medium"
-                      color='default'
-                      onChange={() => handleAnalysisChange("history")}
-                    />} label="History" />
-                    
-                  <FormControlLabel value="delta" control={
-                    <Radio
-                      size="medium"
-                      color='default'
-                      onChange={() => handleAnalysisChange("delta")}
-                    />} label="Delta" />
-              
-                </RadioGroup>
-
-              </FormControl>
-
-              <Accordion>
-
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography className='accordion-titles'>Date/Time(UTC)</Typography>
-
-                </AccordionSummary>
-
-                <AccordionDetails>
-                     
-                  <div style={{display: 'inline-flex'}}>
-
-                    <p className="validation-message">{validationResponse.fromDateMessage}</p>
-                  
-                    <DatePicker
-                      label="From"
-                      handleDateFrom={handleDateFrom}
-                      dateFrom={importedData.fromDate}
-                    />
-
-                    <p className="validation-message">{validationResponse.toDateMessage}</p>
+            <p className="validation-message">{validationResponse.analysisMessage}</p>
+        
+            <RadioGroup aria-label="analysis" name="analysis" value={analysis} style={{padding: '6px'}} >
+         
+              <FormControlLabel value="history" control={
+                <Radio
+                  size="medium"
+                  color='default'
+                  onChange={() => handleAnalysisChange("history")}
+                />} label="History" />
                 
-                    <DatePicker
-                      label="To"
-                      handleDateTo={handleDateTo}
-                      dateTo={importedData.toDate}
-                      variant="inline"
-                    />
+              <FormControlLabel value="delta" control={
+                <Radio
+                  size="medium"
+                  color='default'
+                  onChange={() => handleAnalysisChange("delta")}
+                />} label="Delta" />
+          
+            </RadioGroup>
 
-                  </div>
+          </FormControl>
 
-                  <div style={{display: 'inline-flex'}}>
-             
-                    <p className="validation-message">{validationResponse.fromDeltaMessage}</p>
-                    
-                    <DatePicker
-                      label="Delta From"
-                      handleDateFrom={handleDeltaFrom}
-                      disabled={deltaDisable}
-                    //dateFrom = {importedData.fromDate}
-                    />
-                  
-                    <p className="validation-message">{validationResponse.toDeltaMessage}</p>
-                    
-                    <DatePicker
-                      label="Delta To"
-                      handleDateTo={handleDeltaTo}
-                      disabled={deltaDisable}
-                      style={{width: '40%'}}
-                    //dateTo = {importedData.toDate}
-                    />
+          <Accordion>
 
-                  </div>
-                    
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography className='accordion-titles'>Date/Time(UTC)</Typography>
 
-                </AccordionDetails>
+            </AccordionSummary>
 
-              </Accordion>
-
-              <Accordion>
-
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-
-                  <Typography className='accordion-titles'>Analysis Input</Typography>
-
-                </AccordionSummary>
-
-                <AccordionDetails>
-
-                  <div style={{display: 'inline-flex', padding: '6px'}}>
+            <AccordionDetails>
                  
-                    <p className="validation-message">{validationResponse.occurencesMessage ? validationResponse.occurencesMessage : ''}</p> 
-                        
-                    <OccurencesInput
-                      handleOccurencesChange={handleOccurencesChange}
-                      occurrences={importedData.occurences}
-                    />
-                  
-                    <p className="validation-message">{validationResponse.legsMessage ? validationResponse.legsMessage : ''}</p>
-                    
-                    <LegsInput
-                      handleLegsChange={handleLegsChange}
-                      legs={importedData.legs}
-                    />
-                
-                  </div>
+              <div style={{display: 'inline-flex'}}>
 
-                  <div style={{display: 'inline-flex', padding: '6px'}}>
-                   
-                    <p className="validation-message">{validationResponse.daysMessage ?  validationResponse.daysMessage : ''}</p> 
-                      
-                    <DaysInput
-                      analysis={analysis}
-                      handleDaysChange={handleDaysChange}
-                      days={importedData.days}
-                    />
-                      
-                    <p className="validation-message">{validationResponse.intermittentMessage ? validationResponse.intermittentMessage : ''}</p>
-
-                    <IntermittentInput
-                      handleIntermittentChange={handleIntermittentChange}
-                      intermittent={importedData.intermittent}
-                    />
-                    
-                  </div>
-
-                </AccordionDetails>
-
-              </Accordion>
-
-              <Accordion>
-                
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-
-                  <Typography className='accordion-titles'>Raw Data Conditions</Typography>
-
-                </AccordionSummary>
-
-                <AccordionDetails>
-
-                  <p className="validation-message">{validationResponse.operatorMessage ? validationResponse.operatorMessage : ''}</p>
-
-                  <AirlineOperatorSelector
-                    handleAirlineChange={handleAirlineChange}
-                    operator={importedData.operator}
-                  />
-            
-                  <p className="validation-message">{validationResponse.ataMessage ? validationResponse.ataMessage : ''}</p>
-
-                  <ATAMainSelector
-                    handleATAChange={handleATAChange}
-                    ata={importedData.ata}
-                  />
-            
-                  <p className="validation-message">{validationResponse.eqIDMessage ? validationResponse.eqIDMessage : ''}</p>
-
-                  <EqIDSelector
-                    handleEqIDChange={handleEqIDChange}
-                    eqID={importedData.eqID}
-                  />
+                <p className="validation-message">{validationResponse.fromDateMessage}</p>
               
-                  <p className="validation-message">{validationResponse.ACSNMessage ? validationResponse.ACSNMessage : ''}</p>
+                <DatePicker
+                  label="From"
+                  handleDateFrom={handleDateFrom}
+                  dateFrom={importedData.fromDate}
+                />
 
-                  <ACSNSelector
-                    handleACSNChange={handleACSNChange}
-                    ACSN={importedData.ACSN}
-                  />
+                <p className="validation-message">{validationResponse.toDateMessage}</p>
+            
+                <DatePicker
+                  label="To"
+                  handleDateTo={handleDateTo}
+                  dateTo={importedData.toDate}
+                  variant="inline"
+                />
+
+              </div>
+
+              <div style={{display: 'inline-flex'}}>
+         
+                <p className="validation-message">{validationResponse.fromDeltaMessage}</p>
+                
+                <DatePicker
+                  label="Delta From"
+                  handleDateFrom={handleDeltaFrom}
+                  disabled={deltaDisable}
+                //dateFrom = {importedData.fromDate}
+                />
+              
+                <p className="validation-message">{validationResponse.toDeltaMessage}</p>
+                
+                <DatePicker
+                  label="Delta To"
+                  handleDateTo={handleDeltaTo}
+                  disabled={deltaDisable}
+                  style={{width: '40%'}}
+                //dateTo = {importedData.toDate}
+                />
+
+              </div>
+                
+
+            </AccordionDetails>
+
+          </Accordion>
+
+          <Accordion>
+
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+
+              <Typography className='accordion-titles'>Analysis Input</Typography>
+
+            </AccordionSummary>
+
+            <AccordionDetails>
+
+              <div style={{display: 'inline-flex', padding: '6px'}}>
+             
+                <p className="validation-message">{validationResponse.occurencesMessage ? validationResponse.occurencesMessage : ''}</p> 
                     
-                </AccordionDetails>
+                <OccurencesInput
+                  handleOccurencesChange={handleOccurencesChange}
+                  occurrences={importedData.occurences}
+                />
+              
+                <p className="validation-message">{validationResponse.legsMessage ? validationResponse.legsMessage : ''}</p>
+                
+                <LegsInput
+                  handleLegsChange={handleLegsChange}
+                  legs={importedData.legs}
+                />
+            
+              </div>
 
-              </Accordion>
+              <div style={{display: 'inline-flex', padding: '6px'}}>
+               
+                <p className="validation-message">{validationResponse.daysMessage ?  validationResponse.daysMessage : ''}</p> 
+                  
+                <DaysInput
+                  analysis={analysis}
+                  handleDaysChange={handleDaysChange}
+                  days={importedData.days}
+                />
+                  
+                <p className="validation-message">{validationResponse.intermittentMessage ? validationResponse.intermittentMessage : ''}</p>
 
-            </div>
+                <IntermittentInput
+                  handleIntermittentChange={handleIntermittentChange}
+                  intermittent={importedData.intermittent}
+                />
+                
+              </div>
 
-      
+            </AccordionDetails>
 
-      </Card.Body>
+          </Accordion>
+
+          <Accordion>
+            
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+
+              <Typography className='accordion-titles'>Raw Data Conditions</Typography>
+
+            </AccordionSummary>
+
+            <AccordionDetails>
+
+              <p className="validation-message">{validationResponse.operatorMessage ? validationResponse.operatorMessage : ''}</p>
+
+              <AirlineOperatorSelector
+                handleAirlineChange={handleAirlineChange}
+                operator={importedData.operator}
+              />
+        
+              <p className="validation-message">{validationResponse.ataMessage ? validationResponse.ataMessage : ''}</p>
+
+              <ATAMainSelector
+                handleATAChange={handleATAChange}
+                ata={importedData.ata}
+              />
+        
+              <p className="validation-message">{validationResponse.eqIDMessage ? validationResponse.eqIDMessage : ''}</p>
+
+              <EqIDSelector
+                handleEqIDChange={handleEqIDChange}
+                eqID={importedData.eqID}
+              />
+          
+              <p className="validation-message">{validationResponse.ACSNMessage ? validationResponse.ACSNMessage : ''}</p>
+
+              <ACSNSelector
+                handleACSNChange={handleACSNChange}
+                ACSN={importedData.ACSN}
+              />
+                
+            </AccordionDetails>
+
+          </Accordion>
+
+        </div>
+
+  
+
+  </Card.Body>)
+        }
+     
      <Card.Footer>
      <div style={{height: '71px'}}>
 
@@ -486,7 +521,8 @@ const Conditions = (props) => {
 
       <Report reportConditions={reportConditions}
           setCheckHistory={setCheckHistory} />
-     
+    
+          
       </Col>
     </Row>
   </Container>
@@ -498,20 +534,3 @@ const Conditions = (props) => {
 };
 
 export default Conditions;
-
-
-
-//  <Accordion>
-//                       <AccordionSummary
-//                         expandIcon={<ExpandMoreIcon />}
-//                         aria-controls="panel1a-content"
-//                         id="panel1a-header"
-//                       >
-//                         <Typography>Are you open on holidays?</Typography>
-//                       </AccordionSummary>
-//                       <AccordionDetails>
-//                         <Typography>
-//                           We are open for service during any holiday except New Years.
-//                         </Typography>
-//                       </AccordionDetails>
-//                     </Accordion> 

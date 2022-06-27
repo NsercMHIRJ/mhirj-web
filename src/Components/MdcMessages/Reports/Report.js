@@ -415,9 +415,7 @@ const Report = (props) => {
               />
         </>
       }
-     
-
-
+    
     </div>
   );    
 };

@@ -282,7 +282,7 @@ class HistoryReport extends Component {
       data={this.state.data}
       RenderRowSubComponent={RenderRowSubComponent}
       isLoading={this.props.loading}
-      tableHeight={this.props.loading ? '25vh' : '85vh'}
+      tableHeight={this.props.loading ? '35vh' : '85vh'}
       title={'History Table'}
       />
       </div>

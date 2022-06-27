@@ -35,13 +35,10 @@ const handleRowHeightExpand = (event, row, cell) => {
 
 export default function CustomTable({ columns, data , RenderRowSubComponent, tableHeight, isLoading, correlationRowColor, title }) {
 
-    const defaultColumn = React.useMemo(
-        () => ({
+    const defaultColumn = {
           // Let's set up our default Filter UI
           Filter: ""
-        }),
-        []
-      );
+        }
     const {
         getTableProps,
         getTableBodyProps,
@@ -131,7 +128,7 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
                 </tbody>
 
         }
-            {data.length <= 0 && 
+            {data.length <= 0 && !isLoading &&
             <tbody>
                 <tr >
                 <td style={{textAlign:'center', verticalAlign:'middle', width: '72vw' , display: 'block'}}>
@@ -147,9 +144,11 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
            prepareRow(row);
            return (
              <React.Fragment   key={index}>
+               
              <tr {...row.getRowProps()} data-id={row.original.id} style={{
                  height: 25,
-                backgroundColor: correlationRowColor ? '#E0CDFB' : '',
+                backgroundColor: correlationRowColor ? '#E0CDFB' : ( row.original.background ? row.original.background : ''),
+
              }} className={`${row.isExpanded ? "p-3 mb-2 bg-warning" : "" }`} >
          
                {row.cells.map((cell) => {
@@ -158,7 +157,10 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
                      overflow: 'hidden',
                      textOverflow: 'ellipsis',
                      whiteSpace: 'nowrap',
- 
+                     backgroundColor: cell.column.id === "totalOccurences" ? (row.original.Total_occurrences_color ? row.original.Total_occurrences_color : null ) : 
+                     cell.column.id === "consecutiveDays" ? (row.original.Consecutive_days_color  ? row.original.Consecutive_days_color  : '' ) : 
+                     cell.column.id === "ConsecutiveFlights" ? (row.original.Consecutive_FL_color  ? row.original.Consecutive_FL_color  : '' ) : 
+                     cell.column.id === "intermittent" ? (row.original.Intermittent_color  ? row.original.Intermittent_color  : '' ) : ''
                  }}  {...cell.getCellProps()} 
                      onClick={(e) => handleRowHeightExpand(e, row, cell)
                      }>{cell.render("Cell")}</td>  
