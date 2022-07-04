@@ -77,7 +77,10 @@ const Report = (props) => {
 
   useEffect(() => {
     let path = "";
-
+    setHistValue(0)
+    setHistoryReportData([])
+    setDeltaData([])
+    setDeltaValue(0)
     // Delta-Daily-History Report
     if (report.analysis !== "" && report.occurences !== "" && report.legs !== "" && report.eqID !== "" && report.intermittent !== "" && 
       report.days !== "" && report.operator !== "" && report.ata !== "" && report.fromDate !== undefined && report.toDate !== undefined ) {
@@ -377,8 +380,43 @@ const Report = (props) => {
           </Grid>
         </Grid>
       </Grid>
+
+      {histValue === 1 && historyReportData !== "" && historyReportData !== "undefined" ? 
+  
+          <>
+      
+              <HistoryReport 
+                  data = {historyReportData}  
+                  title = "History Report" 
+                  reportConditions = {report} 
+                  HandleMultipleRowSelectReport = {HandleMultipleRowSelectReport} 
+                  setJamACSNHistoryValue = {setJamACSNHistoryValue}
+                  loading = {loadingHistory} 
+                  db = {db}
+                  display = {histDisplay}
+                  closeReport = {closeHistReport}
+                  errorMessage={histErrorMessage}
+                  setErrorMessage={setHistErrorMessage}
+                />
+          </>
+         : deltaValue === 1 && deltaData !== "" && deltaData !== "undefined" ? 
+          
+              <DeltaReport 
+                  data = {deltaData}
+                  title = "Delta Report" 
+                  reportConditions = {report}  
+                  loading = {loadingDelta} 
+                  db = {db}
+                  display = {deltaDisplay}
+                  closeReport = {closeDeltaReport}
+                  setErrorMessage = {setdeltaErrorMessage}
+                  errorMessage={deltaErrorMessage}
+                />
+       
+         : <div></div>
+         }
     
-      {historyReportData !== "" && historyReportData !== "undefined" && histValue === 1 &&
+      {/* {historyReportData !== "" && historyReportData !== "undefined" && histValue === 1 &&
         <>
     
             <HistoryReport 
@@ -414,7 +452,7 @@ const Report = (props) => {
                 errorMessage={deltaErrorMessage}
               />
         </>
-      }
+      } */}
     
     </div>
   );    

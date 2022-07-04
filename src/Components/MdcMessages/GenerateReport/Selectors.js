@@ -76,6 +76,10 @@ export const ATAMainSelector = (props) => {
     } catch (err) {
       console.error(err);
     }
+
+    return () => {
+      setATAMain([])
+    }
 },[]);
 
  
@@ -150,6 +154,10 @@ export const ACSNSelector = (props) => {
       });
     } catch (err) {
       console.error(err);
+    }
+
+    return () => {
+      setACSN([])
     }
 },[]);
 

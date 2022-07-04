@@ -133,16 +133,16 @@
   overflow: auto !important;
 }
 
-.icon {
-  cursor: pointer;  
+// .icon {
+//   cursor: pointer;  
  
-  transition: transform 333ms ease-out, color 333ms;    
- color:green;
-margin-left:15px;
-border:1px solid #000;
-text-align:center;
-line-height:1;
-}
+//   transition: transform 333ms ease-out, color 333ms;    
+//  color:green;
+// margin-left:15px;
+// border:1px solid #000;
+// text-align:center;
+// line-height:1;
+// }
 .title.open .icon {
   fill: #3266D5;
   -ms-transform: rotate(-180deg);
@@ -209,3 +209,4 @@ color:red;
 -ms-overflow-style: none;  /* IE and Edge */
 scrollbar-width: none;  /* Firefox */
 }
+

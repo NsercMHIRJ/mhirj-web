@@ -11,7 +11,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import "../../../scss/_main.scss";
 import "../../../../src/scss/components/_analysis.scss"
 import { GenerateReportValidation, NotFirstRender } from '../../Helper/Helper';
@@ -38,6 +38,12 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup'
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
+import ToggleButton from 'react-bootstrap/ToggleButton'
+import Button from 'react-bootstrap/Button';
+import { Heart } from "react-bootstrap-icons";
+import { BsFillArchiveFill } from "react-icons/bs";
+import { FaSave } from 'react-icons/fa';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -246,34 +252,20 @@ const Conditions = (props) => {
       if (reportJson.analysis) setAnalysisType(reportJson.analysis);
     }
   }, [])
-
   return (
 
     
   <Container fluid>
-    <Row className='d-flex flex-row flex-nowrap overflow-auto"'>
+    <Row className='d-flex flex-row flex-nowrap overflow-auto'>
    
       <Col xs={3} style={{position:'fixed' , float: 'left', overflowY: 'scroll', maxHeight: '90vh'}} className="keep-scrolling">
-    
-      <Button variant="outlined" href="#contained-buttons" style={{width: '50%', height: '52px', borderRadius: '11px'}}
-      onClick={ () => setIsSavedFilter(false)}>
-          
-          <ViewWeekIcon color="primary" />
-          <h5>Filters</h5>
-          <VerticalAlignTopIcon color="primary" />
-          <SaveIcon color="primary" />
         
-        </Button>
-
-        <Button variant="outlined" href="#contained-buttons" style={{ width: '50%', height: '52px', borderRadius: '11px'}} 
-        onClick={() => setIsSavedFilter(true)}>
-
-          <FavoriteIcon color="primary"/>
-          <h5>/</h5>
-          <RemoveRedEyeIcon color="primary"/>
-          <h6 style={{whiteSpace: 'nowrap'}}>Saved Filters</h6>
-
-        </Button>
+        <Button size="lg" variant="outline-secondary" style={{width: '49%'}} onClick={ () => setIsSavedFilter(false)}>
+          <BsFillArchiveFill/> Filters 
+              </Button>{" "}
+        <Button size="lg" variant="outline-secondary" style={{width: '49%'}} onClick={ () => setIsSavedFilter(true)}>
+        Saved Filters <FaSave/> 
+              </Button>{" "}
      
       <Card className="card card-block mx-2">
 

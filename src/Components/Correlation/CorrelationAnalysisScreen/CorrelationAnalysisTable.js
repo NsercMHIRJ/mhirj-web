@@ -75,7 +75,7 @@ const columns =
   },
   ]
 
-  function manubilateData(data){
+  const manubilateData = (data) => {
     var responseData = []
     data.map((item => {
       responseData.push(
@@ -124,6 +124,7 @@ const CorrelationAnalysisTable = (props) => {
     
     if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined && PMConditions.EqID !== '' && PMConditions.tail !== '') {
       setLoading(true)
+      setData([])
       let status = correlationReportStatus ? 3 : 1;
 
       let path = Constants.APIURL + 'corelation_tail/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail + '/' + status;
@@ -143,6 +144,9 @@ const CorrelationAnalysisTable = (props) => {
     } else {
       setLoading(false);
     }
+    return () => {
+      setData([]); // This worked for me
+    };
   },[PMConditions, correlationReportStatus, backDate]);
 
 
@@ -222,7 +226,7 @@ const CorrelationAnalysisTable = (props) => {
       <CustomTable 
       data={data}
       columns={columns}
-      tableHeight={'30vh'}
+      tableHeight={'35vh'}
       isLoading={loading}
       correlationRowColor={true}
       title={'Correlation Table'}

@@ -1,4 +1,4 @@
-import  React, {useEffect, useState, useCallback } from "react";
+import  React, {useEffect, useState, useCallback, useRef } from "react";
 import { useTable, useFilters, useGlobalFilter , usePagination, useSortBy, useExpanded, useRowSelect } from "react-table";
 import { DefaultFilterForColumn } from "./Filter";
 import FormCheck from 'react-bootstrap/FormCheck'
@@ -8,10 +8,18 @@ import Pagination from 'react-bootstrap/Pagination'
 import Form from 'react-bootstrap/Form'
 import Stack from 'react-bootstrap/Stack'
 import '../../../scss/components/_reports.scss'
-
+import { FiMoreVertical } from "react-icons/fi";
+import { Button } from "reactstrap";
+import { width } from "@mui/material/node_modules/@mui/system";
+import { IconButton } from "@material-ui/core";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Popover from 'react-bootstrap/Popover'
+import Overlay from 'react-bootstrap/Overlay'
+import Collapse from 'react-bootstrap/Collapse'
+import { createState, StateFragment } from '@hookstate/core';
 
 const handleRowHeightExpand = (event, row, cell) => {
-    if (cell.column.id !== "expander"){
+    if (cell.column.id !== "expander" && cell.column.id !== "selection"){
     var rowState = document.querySelectorAll(`tr[data-id='${row.original.id}']`)
     var rowtag = rowState[0]
     if(rowtag.style.height === '25px'){
@@ -19,7 +27,7 @@ const handleRowHeightExpand = (event, row, cell) => {
         rowtag.classList.add("bg-info");
         for (let cell of rowtag.children) {
             cell.style.whiteSpace = ''
-            cell.style.color = 'white'
+            cell.style.color = 'black'
         }
     }else{
         rowtag.style.height = '25px' 
@@ -30,8 +38,11 @@ const handleRowHeightExpand = (event, row, cell) => {
         }
         }
     }
-}
+}   
 
+const handleMoreIconClick = (column) => {
+  column.isShow = !column.isShow
+}
 
 export default function CustomTable({ columns, data , RenderRowSubComponent, tableHeight, isLoading, correlationRowColor, title }) {
 
@@ -52,6 +63,7 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
         nextPage,
         previousPage,
         setPageSize,
+   
         state,
         prepareRow,
         visibleColumns,
@@ -73,8 +85,8 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
         setPageSize(50)
     },[])
 
-
-
+    const [show , setShow] = useState(false)
+    const [display , setDisplay] = useState({})
 
   return (
     <div>
@@ -83,36 +95,78 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
     <h2>
         {title}
     </h2>
-     <Table striped bordered hover  size="md" {...getTableProps()}>
+     <Table responsive="sm" hover bordered {...getTableProps()}>
+     {!isLoading && data.length > 0 &&
        <thead>
          {headerGroups.map((headerGroup) => (
+          
            <tr {...headerGroup.getHeaderGroupProps()} id={randomId()} style={{
              height: '25px',
    
          }}>
-             
-             {headerGroup.headers.map((column) => (
+       
+             {headerGroup.headers.map((column, i) =>  (
                  
-               <th key={randomId()} id={randomId()} style={{
-                 background: column.id !== "expander" ? 'white' : '',
-                 position: column.id !== "expander" ? 'sticky' : 'block',
+               <th  key={column.id} id={column.id} style={{
+                 background: column.id === "expander" || column.id === "selection"? '' : 'white',
+                 position: column.id === "expander" || column.id === "selection" ? 'block' : ' sticky',
                  top: 0, /* Don't forget this, required for the stickiness */
-                 boxShadow: '0 2px 2px -1px rgba(0, 0, 0, 0.4)'
-             }}>
-                <div {...column.getHeaderProps(column.getSortByToggleProps())} style={{textAlign:'center', verticalAlign:'middle'}} >
-                {column.render("Header")}
-                 {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
-                 </div> 
-                 {column.canFilter ? <DefaultFilterForColumn column={column}/> : null}
+                 boxShadow: '0 2px 2px -1px rgba(0, 0, 0, 0.4)',
+                 whiteSpace: "nowrap",
+                 minWidth: column.minWidth,
+                width: column.width
+             }} className="aligner">
+        
+        <Stack direction="horizontal" gap={3}>
+                    <div {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    <h5><strong>{column.render("Header")}</strong></h5>
+                     {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
+                    </div>  
+                {column.id === "expander" || column.id === "selection" ?
+                    <div></div>
+                    :
+                    <div>
+                    <IconButton 
+                        size= 'medium'
+                        id={`${column.id}`}
+                        style={{
+                          right: '0'
+                        }}
+                        onClick={()=> {
+                          setDisplay({
+                            id: column.id,
+                            show: !!!column.isShow
+                          })
+                        }}
+                       >
+                      <FiMoreVertical id={`${column.id}`}/> 
+                      </IconButton > 
+                      {/* <DefaultFilterForColumn column={column}/> */}
+                       <Collapse in={display[column.id]} >
+                         <div>
+                          
+                          </div>
+                     </Collapse>
+              
+                             
+                      
+              
+                      </div>
+                      
+                  }
+                  </Stack>
+                
                </th>
                
              ))}
-          
-        
+
+             
            </tr>
          ))}
+     
           
        </thead>
+}
         {isLoading && 
             <tbody>
                 <tr >

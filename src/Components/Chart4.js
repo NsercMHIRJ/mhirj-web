@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function Chart4() {
+export default function Chart4(props) {
   const classes = useStyles();
 
   const [chartData4, setChartData4] = useState({});
