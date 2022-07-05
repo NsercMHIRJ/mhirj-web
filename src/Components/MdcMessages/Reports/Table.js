@@ -1,30 +1,24 @@
 import  React, {useEffect, useState, useCallback, useRef } from "react";
 import { useTable, useFilters, useGlobalFilter , usePagination, useSortBy, useExpanded, useRowSelect } from "react-table";
-import { DefaultFilterForColumn } from "./Filter";
-import FormCheck from 'react-bootstrap/FormCheck'
 import { randomId } from "@mui/x-data-grid-generator";
 import Table from 'react-bootstrap/Table'
 import Pagination from 'react-bootstrap/Pagination'
 import Form from 'react-bootstrap/Form'
 import Stack from 'react-bootstrap/Stack'
 import '../../../scss/components/_reports.scss'
-import { FiMoreVertical } from "react-icons/fi";
-import { Button } from "reactstrap";
-import { width } from "@mui/material/node_modules/@mui/system";
+import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from "@material-ui/core";
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-import Popover from 'react-bootstrap/Popover'
-import Overlay from 'react-bootstrap/Overlay'
-import Collapse from 'react-bootstrap/Collapse'
-import { createState, StateFragment } from '@hookstate/core';
-
+import { DefaultFilterForColumn, FilterChipBar, GlobalFilter, SelectColumnFilter } from "./Filter";
+import { Input } from "reactstrap";
 const handleRowHeightExpand = (event, row, cell) => {
     if (cell.column.id !== "expander" && cell.column.id !== "selection"){
     var rowState = document.querySelectorAll(`tr[data-id='${row.original.id}']`)
     var rowtag = rowState[0]
     if(rowtag.style.height === '25px'){
         rowtag.style.height = '0px'
+        rowtag.classList.add("text-white")
         rowtag.classList.add("bg-info");
+    
         for (let cell of rowtag.children) {
             cell.style.whiteSpace = ''
             cell.style.color = 'black'
@@ -32,6 +26,7 @@ const handleRowHeightExpand = (event, row, cell) => {
     }else{
         rowtag.style.height = '25px' 
         rowtag.classList.remove("bg-info");
+        rowtag.classList.remove("text-white");
         for (let cell of rowtag.children) {
             cell.style.whiteSpace = 'nowrap'
             cell.style.color = 'black'
@@ -40,11 +35,7 @@ const handleRowHeightExpand = (event, row, cell) => {
     }
 }   
 
-const handleMoreIconClick = (column) => {
-  column.isShow = !column.isShow
-}
-
-export default function CustomTable({ columns, data , RenderRowSubComponent, tableHeight, isLoading, correlationRowColor, title }) {
+export default function CustomTable({ columns, data , RenderRowSubComponent, tableHeight, isLoading, correlationRowColor, title ,toggle }) {
 
     const defaultColumn = {
           // Let's set up our default Filter UI
@@ -84,20 +75,38 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
     useEffect(()=> {
         setPageSize(50)
     },[])
-
-    const [show , setShow] = useState(false)
-    const [display , setDisplay] = useState({})
+    const [showSearch , setShowSearch] = useState(false)
+    const handleSearchOnClick = () => {
+      if(showSearch){
+        setShowSearch(false)
+      }else {
+        setShowSearch(true)
+      }
+       
+    }
+    const [columnss ,setColumnss] = useState([])
 
   return (
     <div>
-
-     <div className="overflow-scroll" style={{height: tableHeight ? tableHeight : '85vh', width: '73vw'}}>
-    <h2>
+      
+     <div className="overflow-scroll" style={{height: tableHeight ? tableHeight : '85vh', width: '75vw'}}>
+       <div>
+      
+      <h2>
         {title}
-    </h2>
+        </h2>
+   
+    </div>
      <Table responsive="sm" hover bordered {...getTableProps()}>
      {!isLoading && data.length > 0 &&
        <thead>
+         <tr>
+           <th style={{position: 'relative', left: '71vw', display: 'block'}}>
+             <IconButton size= 'small' onClick={handleSearchOnClick}>
+               <SearchIcon />
+              </IconButton>
+            </th>
+          </tr>
          {headerGroups.map((headerGroup) => (
           
            <tr {...headerGroup.getHeaderGroupProps()} id={randomId()} style={{
@@ -119,41 +128,9 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
         
         <Stack direction="horizontal" gap={3}>
                     <div {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    <h5><strong>{column.render("Header")}</strong></h5>
+                    <h6><strong>{column.render("Header")}</strong></h6>
                      {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
                     </div>  
-                {column.id === "expander" || column.id === "selection" ?
-                    <div></div>
-                    :
-                    <div>
-                    <IconButton 
-                        size= 'medium'
-                        id={`${column.id}`}
-                        style={{
-                          right: '0'
-                        }}
-                        onClick={()=> {
-                          setDisplay({
-                            id: column.id,
-                            show: !!!column.isShow
-                          })
-                        }}
-                       >
-                      <FiMoreVertical id={`${column.id}`}/> 
-                      </IconButton > 
-                      {/* <DefaultFilterForColumn column={column}/> */}
-                       <Collapse in={display[column.id]} >
-                         <div>
-                          
-                          </div>
-                     </Collapse>
-              
-                             
-                      
-              
-                      </div>
-                      
-                  }
                   </Stack>
                 
                </th>
@@ -194,6 +171,46 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
         }
        {!isLoading && data &&
        <tbody {...getTableBodyProps()}>
+
+         {showSearch && 
+         
+       
+          <tr>
+           
+              <th>
+        
+              <Stack direction='horizontal' gap={3}>
+                <select>
+                {headerGroups.map((headerGroup) => (
+                  <>
+                {headerGroup.headers.map((column, i) => {
+               
+                return (
+                  
+                  <>
+                  {column.id === "expander" || column.id === "selection" ? 
+                    <option style={{display: 'none'}}  key={column.id}></option>
+                    :
+                  
+                    <option onClick={() => setColumnss([column])} key={column.id}> {column.Header} </option>
+                    
+                  }
+                  
+                  </>
+                  )})}
+                  </>
+                  ))}
+                </select>
+              
+                  
+                </Stack>
+              </th>
+          
+          
+            </tr>
+           
+          
+         }
          {page.map((row, index) => {
            prepareRow(row);
            return (
