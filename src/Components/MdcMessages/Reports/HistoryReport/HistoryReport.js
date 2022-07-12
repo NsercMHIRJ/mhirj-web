@@ -296,11 +296,11 @@ const columns =
       )
     }
   )
+  
 
   const RenderRowSubComponent = (row) => {
 
       return (
-      
         <CorrelationAnalysisTable
         dateFrom = {row.row.values.dataFrom}
         dateTo = {row.row.values.dateTo}

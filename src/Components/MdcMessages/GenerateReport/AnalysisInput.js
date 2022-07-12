@@ -22,7 +22,7 @@ export const OccurencesInput = (props) => {
       InputLabelProps={{
         shrink: true,
       }}
-      variant="outlined"
+      
     />
   );
 }
@@ -50,7 +50,7 @@ export const LegsInput = (props) => {
     InputLabelProps={{
       shrink: true,
     }}
-    variant="outlined"
+
   />
   );
 }

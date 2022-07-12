@@ -10,6 +10,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from "@material-ui/core";
 import { DefaultFilterForColumn, FilterChipBar, GlobalFilter, SelectColumnFilter } from "./Filter";
 import { Input } from "reactstrap";
+import { Button } from '@material-ui/core';
+import CorrelationAnalysisTable from "../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable";
+import axios from "axios";
 const handleRowHeightExpand = (event, row, cell) => {
     if (cell.column.id !== "expander" && cell.column.id !== "selection"){
     var rowState = document.querySelectorAll(`tr[data-id='${row.original.id}']`)
@@ -35,8 +38,15 @@ const handleRowHeightExpand = (event, row, cell) => {
     }
 }   
 
-export default function CustomTable({ columns, data , RenderRowSubComponent, tableHeight, isLoading, correlationRowColor, title ,toggle }) {
 
+
+
+
+
+
+export default function CustomTable({ columns, data , RenderRowSubComponent, tableHeight, isLoading, correlationRowColor, title ,toggle, fetchBadMatches }) {
+
+ 
     const defaultColumn = {
           // Let's set up our default Filter UI
           Filter: ""
@@ -54,7 +64,6 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
         nextPage,
         previousPage,
         setPageSize,
-   
         state,
         prepareRow,
         visibleColumns,
@@ -91,22 +100,19 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
       
      <div className="overflow-scroll" style={{height: tableHeight ? tableHeight : '85vh', width: '75vw'}}>
        <div>
-      
+      <Stack direction="horizontal">
       <h2>
         {title}
         </h2>
-   
+        <IconButton style={{position: 'relative', left: '61vw'}} size= 'small' onClick={handleSearchOnClick}>
+               <SearchIcon fontSize='large'/>
+              </IconButton>
+   </Stack>
     </div>
      <Table responsive="sm" hover bordered {...getTableProps()}>
      {!isLoading && data.length > 0 &&
        <thead>
-         <tr>
-           <th style={{position: 'relative', left: '71vw', display: 'block'}}>
-             <IconButton size= 'small' onClick={handleSearchOnClick}>
-               <SearchIcon />
-              </IconButton>
-            </th>
-          </tr>
+    
          {headerGroups.map((headerGroup) => (
           
            <tr {...headerGroup.getHeaderGroupProps()} id={randomId()} style={{
@@ -164,6 +170,11 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
                 <tr >
                 <td style={{textAlign:'center', verticalAlign:'middle', width: '72vw' , display: 'block'}}>
                 <strong>Sorry we can't find data.</strong>
+                <br/>
+                {correlationRowColor && 
+                    <Button size="lg" variant="outline-secondary" style={{width: '49%'}} onClick={fetchBadMatches}>
+                  See All PM</Button>
+                }
                 </td>
                 </tr>
                 </tbody>
@@ -171,12 +182,8 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
         }
        {!isLoading && data &&
        <tbody {...getTableBodyProps()}>
-
          {showSearch && 
-         
-       
           <tr>
-           
               <th>
         
               <Stack direction='horizontal' gap={3}>
@@ -191,7 +198,6 @@ export default function CustomTable({ columns, data , RenderRowSubComponent, tab
                   {column.id === "expander" || column.id === "selection" ? 
                     <option style={{display: 'none'}}  key={column.id}></option>
                     :
-                  
                     <option onClick={() => setColumnss([column])} key={column.id}> {column.Header} </option>
                     
                   }

@@ -29,6 +29,8 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 )
 
+
+
 const columns =  
 [
   {
@@ -118,8 +120,6 @@ const CorrelationAnalysisTable = (props) => {
     setOpenCorrelationModal(!openCorrelationModal);
   }
 
- 
-
   useEffect(() => {
     
     if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined && PMConditions.EqID !== '' && PMConditions.tail !== '') {
@@ -148,6 +148,32 @@ const CorrelationAnalysisTable = (props) => {
       setData([]); // This worked for me
     };
   },[PMConditions, correlationReportStatus, backDate]);
+
+ 
+  const fetchBadMatches = () => {
+
+    if ( PMConditions.dateFrom !== undefined  && PMConditions.dateTo !== undefined && PMConditions.EqID !== '' && PMConditions.tail !== '') {
+      setLoading(true)
+      let status =  1;
+  
+      let path = Constants.APIURL + 'corelation_tail/' + PMConditions.dateFrom + '/' + PMConditions.dateTo + '/' + PMConditions.EqID + '/' + PMConditions.tail + '/' + status;
+  
+      if ( backDate !== 7 && backDate !== "" ) {
+        path = path + '?days=' + backDate;
+      }
+  
+      axios.post(path).then(function (res) {
+        var data = JSON.parse(res.data);
+        setData(manubilateData(data));
+        setLoading(false);
+        console.log(data)
+      }).catch(function (err){
+        console.log(err);
+        setLoading(false);
+      })
+    } 
+  }
+
 
 
   
@@ -228,6 +254,7 @@ const CorrelationAnalysisTable = (props) => {
       columns={columns}
       tableHeight={'35vh'}
       isLoading={loading}
+      fetchBadMatches={fetchBadMatches}
       correlationRowColor={true}
       title={'Correlation Table'}
     />

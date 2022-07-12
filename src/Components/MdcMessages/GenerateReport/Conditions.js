@@ -171,6 +171,7 @@ const Conditions = (props) => {
   };
 
   const handleGenerateReport = (event) => {
+    
     setReportConditions(
       {
         analysis: analysis,
@@ -370,6 +371,7 @@ const Conditions = (props) => {
                   disabled={deltaDisable}
                 //dateFrom = {importedData.fromDate}
                 />
+            
               
                 <p className="validation-message">{validationResponse.toDeltaMessage}</p>
                 
@@ -420,7 +422,7 @@ const Conditions = (props) => {
             
               </div>
 
-              <div style={{display: 'inline-flex', padding: '6px'}}>
+              {/* <div style={{display: 'inline-flex', padding: '6px'}}>
                
                 <p className="validation-message">{validationResponse.daysMessage ?  validationResponse.daysMessage : ''}</p> 
                   
@@ -437,7 +439,7 @@ const Conditions = (props) => {
                   intermittent={importedData.intermittent}
                 />
                 
-              </div>
+              </div> */}
 
             </AccordionDetails>
 
