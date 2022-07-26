@@ -22,15 +22,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import StickyBox from "react-sticky-box";
-import { Paper } from '@material-ui/core';
-import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-import VerticalAlignTopIcon from '@mui/icons-material/VerticalAlignTop';
-import SaveIcon from '@mui/icons-material/Save';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import Localbase from 'localbase'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -44,6 +36,7 @@ import Button from 'react-bootstrap/Button';
 import { Heart } from "react-bootstrap-icons";
 import { BsFillArchiveFill } from "react-icons/bs";
 import { FaSave } from 'react-icons/fa';
+import CorrelationAnalysisTable from '../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -62,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Conditions = (props) => {
-
+  const db = new Localbase('reportDatas');
   const [analysis, setAnalysisType] = useState("daily");
   const [EqID, setEqID] = useState("");
   var todayDate = new Date();
@@ -81,7 +74,6 @@ const Conditions = (props) => {
   const [airline, setAilineType] = useState("");
   const [ATAMain, setATAMain] = useState("");
   const [ACSN, setACSN] = useState("");
-  const [messagesChoice, setIncludeMessages] = useState("");
   const [importedData, setImportedData] = useState({});
   const [checkHistory, setCheckHistory] = useState(true)
   const [isSavedFilter , setIsSavedFilter] = useState(false)
@@ -142,14 +134,6 @@ const Conditions = (props) => {
     setLegs(legs);
   };
 
-  const handleIntermittentChange = (intermittent) => {
-    setIntermittent(intermittent);
-  };
-
-  const handleDaysChange = (days) => {
-    setDays(days);
-  };
-
   const handleAirlineChange = (Airline) => {
     setAilineType(Airline);
   };
@@ -162,15 +146,41 @@ const Conditions = (props) => {
     setACSN(ACSN);
   };
 
-  const handleMessagesChange = (messages) => {
-    setIncludeMessages(messages);
-  };
-
   const handleEqIDChange = (eqIDList) => {
     setEqID(eqIDList);
   };
 
+  useEffect(() => {
+    const reportState = localStorage.getItem('report');
+    const reportJson = JSON.parse(reportState);
+    if (reportJson) {
+      setImportedData(reportJson);
+      if (reportJson.analysis) setAnalysisType(reportJson.analysis);
+    }
+  }, [])
+
   const handleGenerateReport = (event) => {
+    db.collection('reporstLocal')
+    .doc('historyData')
+    .delete()
+    .then(response => {
+      localStorage.removeItem('report')
+      console.log('Delete successful, now do something.')
+    })
+    .catch(error => {
+      console.log('There was an error, do something else.')
+    })
+
+    db.collection('reporstLocal')
+    .doc('deltaData')
+    .delete()
+    .then(response => {
+      localStorage.removeItem('report')
+      console.log('Delete successful, now do something.')
+    })
+    .catch(error => {
+      console.log('There was an error, do something else.')
+    })
     
     setReportConditions(
       {
@@ -183,7 +193,6 @@ const Conditions = (props) => {
         operator: airline,
         ata: ATAMain,
         ACSN: ACSN,
-        messages: messagesChoice,
         fromDate: dateFrom ? dateFrom : todayDate,
         toDate: dateTo ? dateTo : todayDate,
         deltaFrom: deltaFrom ? deltaFrom : todayDate,
@@ -191,68 +200,7 @@ const Conditions = (props) => {
       });
   }
 
-  const notFirstRender = NotFirstRender();
 
-  useEffect(() => {
-    if (notFirstRender) {
-      let validationResponse = GenerateReportValidation(reportConditions);
-      setValidationResponse(validationResponse);
-    }
-  }, [reportConditions]);
-
-  const SaveFilter = (jsonData, filename) => {
-    const filterObj = {
-      analysis,
-      occurences,
-      legs,
-      eqID: EqID,
-      intermittent,
-      days,
-      operator: airline,
-      ACSN: ACSN,
-      ata: ATAMain,
-      messages: messagesChoice,
-      fromDate: dateFrom,
-      toDate: dateTo,
-      deltaFrom,
-      deltaTo
-
-    }
-
-    const fileData = JSON.stringify(filterObj);
-    const blob = new Blob([fileData], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = `${filename}.json`;
-    link.href = url;
-    link.click();
-  }
-
-
-  function upload_filter(e) {
-
-    let files = e.target.files;
-    let reader = new FileReader();
-    reader.readAsText(files[0]);
-
-    reader.onload = (e) => {
-      const file_Content = e.target.result;
-      var data = JSON.parse(file_Content);
-      setImportedData(data);
-      if (data.analysis) setAnalysisType(data.analysis);
-
-      alert("File uploaded!")
-    }
-  }
-
-  useEffect(() => {
-    const reportState = localStorage.getItem('report');
-    const reportJson = JSON.parse(reportState);
-    if (reportJson) {
-      setImportedData(reportJson);
-      if (reportJson.analysis) setAnalysisType(reportJson.analysis);
-    }
-  }, [])
   return (
 
     
@@ -315,7 +263,7 @@ const Conditions = (props) => {
                   color='default'
                   onChange={() => handleAnalysisChange("history")}
                 />} label="History" />
-                
+                <br/>
               <FormControlLabel value="delta" control={
                 <Radio
                   size="medium"
@@ -422,25 +370,6 @@ const Conditions = (props) => {
             
               </div>
 
-              {/* <div style={{display: 'inline-flex', padding: '6px'}}>
-               
-                <p className="validation-message">{validationResponse.daysMessage ?  validationResponse.daysMessage : ''}</p> 
-                  
-                <DaysInput
-                  analysis={analysis}
-                  handleDaysChange={handleDaysChange}
-                  days={importedData.days}
-                />
-                  
-                <p className="validation-message">{validationResponse.intermittentMessage ? validationResponse.intermittentMessage : ''}</p>
-
-                <IntermittentInput
-                  handleIntermittentChange={handleIntermittentChange}
-                  intermittent={importedData.intermittent}
-                />
-                
-              </div> */}
-
             </AccordionDetails>
 
           </Accordion>
@@ -503,7 +432,7 @@ const Conditions = (props) => {
 
       <Button variant="text" >Clear</Button>
 
-      <Button variant="text" onClick={async () => handleGenerateReport()} >Apply</Button>
+      <Button variant="text" onClick={async () => handleGenerateReport()} >{isSavedFilter ? "Search" : "Apply"}</Button>
 
       </div>
      </Card.Footer>

@@ -131,20 +131,28 @@ export default function Chart1() {
       <Grid container spacing={10}>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <form className={classes.root1}>
-              <div><h2 style={{ color: "#001C3E", textAlign: "center" }}>MAGNITUDE OF MESSAGES IN DATA</h2></div>
+            <form >
+              <div><h2 style={{ color: "#001C3E", textAlign: "center" }}>Fleet Monitoring</h2></div>
             </form>
             <HorizontalBar
               data={chartData1}
+              
               options={{
-
+                responsive: true,
                 legend: {
                   display: true,
-                  position: 'right'
+                  position: 'right',
                 },
                 scales: {
                   xAxes: [{
-                    stacked: true
+                    stacked: true,
+                    scaleLabel: {
+                      display: true,
+                      labelString: "Number of messages",
+                      fontStyle: 'bold',
+                      fontColor: '#001C3E'
+                    },
+                  
                   }],
                   yAxes: [{
                     barPercentage: 0.5,

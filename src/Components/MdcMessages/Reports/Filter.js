@@ -8,34 +8,34 @@ import Stack from 'react-bootstrap/Stack'
 import { Chip, createStyles, makeStyles } from '@material-ui/core'
 
 // Component for Global Filter
-export function GlobalFilter({ globalFilter, setGlobalFilter }) {
-  const [value, setValue] = useState(globalFilter);
+// export function GlobalFilter({ globalFilter, setGlobalFilter }) {
+//   const [value, setValue] = useState(globalFilter);
 
-  const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
-  }, 200);
+//   const onChange = useAsyncDebounce((value) => {
+//     setGlobalFilter(value || undefined);
+//   }, 200);
 
-  return (
-    <div>
-      <Label>Search Table: </Label>
-      <Input
-        value={value || ""}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
+//   return (
+//     <div>
+//       <Label>Search Table: </Label>
+//       <Input
+//         value={value || ""}
+//         onChange={(e) => {
+//           setValue(e.target.value);
+//           onChange(e.target.value);
      
-        }}
-        placeholder=" Enter value "
-        className="w-25"
-        style={{
-          fontSize: "1.1rem",
-          margin: "15px",
-          display: "inline",
-        }}
-      />
-    </div>
-  );
-}
+//         }}
+//         placeholder=" Enter value "
+//         className="w-25"
+//         style={{
+//           fontSize: "1.1rem",
+//           margin: "15px",
+//           display: "inline",
+//         }}
+//       />
+//     </div>
+//   );
+// }
 
 export const DefaultFilterForColumn = ({
     column: { filterValue, preFilteredRows, setFilter }
@@ -98,9 +98,10 @@ const getFilterValue = (column, filterValue) => {
   return filterValue
 }
 
-export function FilterChipBar ({
-  instance,
-}) {
+
+
+
+export function FilterChipBar ({instance}) {
   const classes = useStyles({})
   const {
     allColumns,

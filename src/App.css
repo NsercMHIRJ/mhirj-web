@@ -7,3 +7,6 @@
 .MuiButton-root:hover {
   background-color: #00273F !important;
 }
+.MuiIconButton-root {
+  padding: 0 !important;
+}

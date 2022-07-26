@@ -5,289 +5,360 @@ import Table from 'react-bootstrap/Table'
 import Pagination from 'react-bootstrap/Pagination'
 import Form from 'react-bootstrap/Form'
 import Stack from 'react-bootstrap/Stack'
-import '../../../scss/components/_reports.scss'
+import '../../../scss/components/_reports.scss';
+import '../../../scss/components/_analysis.scss';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from "@material-ui/core";
-import { DefaultFilterForColumn, FilterChipBar, GlobalFilter, SelectColumnFilter } from "./Filter";
-import { Input } from "reactstrap";
+import Switch from "react-switch";
 import { Button } from '@material-ui/core';
 import CorrelationAnalysisTable from "../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable";
 import axios from "axios";
-const handleRowHeightExpand = (event, row, cell) => {
-    if (cell.column.id !== "expander" && cell.column.id !== "selection"){
-    var rowState = document.querySelectorAll(`tr[data-id='${row.original.id}']`)
-    var rowtag = rowState[0]
-    if(rowtag.style.height === '25px'){
-        rowtag.style.height = '0px'
-        rowtag.classList.add("text-white")
-        rowtag.classList.add("bg-info");
+import Card from 'react-bootstrap/Card'
+import generateExcel from "zipcelx";
+import * as XLSX from 'xlsx'
+import { BsCloudDownloadFill } from "react-icons/bs";
+
+const DefaultColumnFilter = ({
+  column: { filterValue, preFilteredRows, setFilter }
+}) => {
+  const count = preFilteredRows.length;
+
+  return (
+    <input
+      value={filterValue || ""}
+      onChange={e => {
+        setFilter(e.target.value || undefined);
+      }}
+      placeholder={`Search ${count} records...`}
+    />
+  );
+};
+
+const GlobalFilter = ({
+  preGlobalFilteredRows,
+  globalFilter,
+  setGlobalFilter
+}) => {
+  const count = preGlobalFilteredRows && preGlobalFilteredRows.length;
+
+  return (
+    <span>
+      Search:{" "}
+      <input
+        value={globalFilter || ""}
+        onChange={e => {
+          setGlobalFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
+        }}
+        placeholder={`${count} records...`}
+        style={{
+          border: "0"
+        }}
+      />
+    </span>
+  );
+};
+
+  
+const downloadExcel = (data) => {
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "DataSheet.xlsx");
+};
+
+export default function CustomTable({ columns, data, tableHeight, isLoading, correlationRowColor,
+   title, fetchBadMatches, tableWidth, tableRight , tableTop }) {
+    const [rowStatus, setRowStatus] = useState({})
+    const [isCorrelation, setIsCorrelation] = useState(false)
+    const [corrData, setCorrData] = useState({})
+    const [showSearch , setShowSearch] = useState(false)
     
-        for (let cell of rowtag.children) {
-            cell.style.whiteSpace = ''
-            cell.style.color = 'black'
+    const filterTypes = React.useMemo(
+      () => ({
+        text: (rows, id, filterValue) => {
+          return rows.filter(row => {
+            const rowValue = row.values[id];
+            return rowValue !== undefined
+              ? String(rowValue)
+                  .toLowerCase()
+                  .startsWith(String(filterValue).toLowerCase())
+              : true;
+          });
         }
-    }else{
-        rowtag.style.height = '25px' 
-        rowtag.classList.remove("bg-info");
-        rowtag.classList.remove("text-white");
-        for (let cell of rowtag.children) {
-            cell.style.whiteSpace = 'nowrap'
-            cell.style.color = 'black'
-        }
-        }
-    }
-}   
-
-
-
-
-
-
-
-export default function CustomTable({ columns, data , RenderRowSubComponent, tableHeight, isLoading, correlationRowColor, title ,toggle, fetchBadMatches }) {
-
- 
-    const defaultColumn = {
-          // Let's set up our default Filter UI
-          Filter: ""
-        }
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        page,
-        canPreviousPage,
-        canNextPage,
-        pageOptions,
-        pageCount,
-        gotoPage,
-        nextPage,
-        previousPage,
-        setPageSize,
-        state,
-        prepareRow,
-        visibleColumns,
-        // state: { expanded }
-    } = useTable(
-        {
-        columns,
-        data,
-        defaultColumn,
-        },
-        useFilters,
-        useGlobalFilter,
-        useSortBy,
-        useExpanded,
-        usePagination,
-        useRowSelect
+      }),
+      []
     );
+ 
+    const defaultColumn = React.useMemo(
+      () => ({
+        Filter: DefaultColumnFilter
+      }),
+      []
+    );
+
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      page,
+      canPreviousPage,
+      canNextPage,
+      pageOptions,
+      pageCount,
+      gotoPage,
+      nextPage,
+      previousPage,
+      setPageSize,
+      state,
+      prepareRow,
+      preGlobalFilteredRows,
+      visibleColumns,
+      setGlobalFilter
+    }=useTable(
+    {
+      columns,
+      data,
+      defaultColumn,
+      filterTypes
+    },
+    useFilters,
+    useGlobalFilter,
+    useSortBy,
+    useExpanded,
+    usePagination,
+    useRowSelect
+    );
+
     useEffect(()=> {
         setPageSize(50)
     },[])
-    const [showSearch , setShowSearch] = useState(false)
+
+    const generateCorr = (row, cell) => {
+      if (isCorrelation){
+        if (row.original.ACSN && row.original.mdcMessages){
+          setCorrData(row.values)
+        }
+      }
+    }
+
+    const handleSelectedRow = (row) => {
+      let rowId = row.id
+      var object = {}
+      if (rowStatus[rowId]){
+        let rowHeight = rowStatus[rowId]
+        if(rowHeight === ""){
+          object[rowId] = "p-3 mb-2 bg-info text-white"
+          setRowStatus(object)
+        }else {
+          object[rowId] = ""
+          setRowStatus(object)
+        }
+      }else{
+        object[rowId] = "p-3 mb-2 bg-info text-white"
+        setRowStatus(object)
+      }
+    } 
+   
     const handleSearchOnClick = () => {
       if(showSearch){
         setShowSearch(false)
       }else {
         setShowSearch(true)
       }
-       
     }
-    const [columnss ,setColumnss] = useState([])
+
+   const handleToggleChange = (checked) => {
+    setIsCorrelation(checked);
+  }
 
   return (
     <div>
-      
-     <div className="overflow-scroll" style={{height: tableHeight ? tableHeight : '85vh', width: '75vw'}}>
-       <div>
-      <Stack direction="horizontal">
-      <h2>
-        {title}
-        </h2>
-        <IconButton style={{position: 'relative', left: '61vw'}} size= 'small' onClick={handleSearchOnClick}>
-               <SearchIcon fontSize='large'/>
-              </IconButton>
-   </Stack>
-    </div>
-     <Table responsive="sm" hover bordered {...getTableProps()}>
-     {!isLoading && data.length > 0 &&
-       <thead>
-    
-         {headerGroups.map((headerGroup) => (
-          
-           <tr {...headerGroup.getHeaderGroupProps()} id={randomId()} style={{
-             height: '25px',
-   
-         }}>
-       
-             {headerGroup.headers.map((column, i) =>  (
-                 
-               <th  key={column.id} id={column.id} style={{
-                 background: column.id === "expander" || column.id === "selection"? '' : 'white',
-                 position: column.id === "expander" || column.id === "selection" ? 'block' : ' sticky',
-                 top: 0, /* Don't forget this, required for the stickiness */
-                 boxShadow: '0 2px 2px -1px rgba(0, 0, 0, 0.4)',
-                 whiteSpace: "nowrap",
-                 minWidth: column.minWidth,
-                width: column.width
-             }} className="aligner">
-        
-        <Stack direction="horizontal" gap={3}>
-                    <div {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    <h6><strong>{column.render("Header")}</strong></h6>
-                     {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
-                    </div>  
-                  </Stack>
-                
-               </th>
-               
-             ))}
-
-             
-           </tr>
-         ))}
-     
-          
-       </thead>
-}
-        {isLoading && 
-            <tbody>
-                <tr >
-                <td style={{textAlign:'center', verticalAlign:'middle', width: '72vw' , display: 'block'}}>
-                <div className="linear-activity" >
-            
-                <div className="indeterminate"></div>
-              
+      <div>
+        <Card style={{right : tableRight ? tableRight : '' , top: tableTop ? tableTop : '', width:'75vw'}}>
+          <Card.Header>
+            <div>
+              <Stack direction="horizontal" gap={3}>
+                <h5>
+                  {title}
+                </h5>
+                <div style={{position:'relative' , left: title !== "Correlation Table" ? '60vw' : '55vw'}}>
+                  <IconButton size={"large"} onClick={()=>downloadExcel(data)}>
+                    <BsCloudDownloadFill fontSize={"medium"} />
+                  </IconButton>
                 </div>
-                Please wait while retrive the data...
-                </td>
-                </tr>
-                </tbody>
-
-        }
-            {data.length <= 0 && !isLoading &&
-            <tbody>
-                <tr >
-                <td style={{textAlign:'center', verticalAlign:'middle', width: '72vw' , display: 'block'}}>
-                <strong>Sorry we can't find data.</strong>
-                <br/>
-                {correlationRowColor && 
-                    <Button size="lg" variant="outline-secondary" style={{width: '49%'}} onClick={fetchBadMatches}>
-                  See All PM</Button>
-                }
-                </td>
-                </tr>
-                </tbody>
-
-        }
-       {!isLoading && data &&
-       <tbody {...getTableBodyProps()}>
-         {showSearch && 
-          <tr>
-              <th>
-        
-              <Stack direction='horizontal' gap={3}>
-                <select>
-                {headerGroups.map((headerGroup) => (
-                  <>
-                {headerGroup.headers.map((column, i) => {
-               
-                return (
-                  
-                  <>
-                  {column.id === "expander" || column.id === "selection" ? 
-                    <option style={{display: 'none'}}  key={column.id}></option>
-                    :
-                    <option onClick={() => setColumnss([column])} key={column.id}> {column.Header} </option>
-                    
-                  }
-                  
-                  </>
-                  )})}
-                  </>
-                  ))}
-                </select>
-              
-                  
-                </Stack>
-              </th>
-          
-          
-            </tr>
-           
-          
-         }
-         {page.map((row, index) => {
-           prepareRow(row);
-           return (
-             <React.Fragment   key={index}>
-               
-             <tr {...row.getRowProps()} data-id={row.original.id} style={{
-                 height: 25,
-                backgroundColor: correlationRowColor ? '#E0CDFB' : ( row.original.background ? row.original.background : ''),
-
-             }} className={`${row.isExpanded ? "p-3 mb-2 bg-warning" : "" }`} >
-         
-               {row.cells.map((cell) => {
-                 return <td id={randomId()} style={{
-                     maxWidth: '100px',
-                     overflow: 'hidden',
-                     textOverflow: 'ellipsis',
-                     whiteSpace: 'nowrap',
-                     backgroundColor: cell.column.id === "totalOccurences" ? (row.original.Total_occurrences_color ? row.original.Total_occurrences_color : null ) : 
-                     cell.column.id === "consecutiveDays" ? (row.original.Consecutive_days_color  ? row.original.Consecutive_days_color  : '' ) : 
-                     cell.column.id === "ConsecutiveFlights" ? (row.original.Consecutive_FL_color  ? row.original.Consecutive_FL_color  : '' ) : 
-                     cell.column.id === "intermittent" ? (row.original.Intermittent_color  ? row.original.Intermittent_color  : '' ) : ''
-                 }}  {...cell.getCellProps()} 
-                     onClick={(e) => handleRowHeightExpand(e, row, cell)
-                     }>{cell.render("Cell")}</td>  
-               })}
-             </tr>
-             {row.isExpanded ? (
-                 <tr>
-                   <td colSpan={visibleColumns.length}>
-                   <RenderRowSubComponent row={row}/>
-                   </td>
-                 </tr>
-               ) : null}
-             </React.Fragment>
-           );
-         })}
-       </tbody>
-        }
-     </Table>
- 
-     </div>
-    
-
-    <Pagination>
-    <Pagination.First onClick={() => gotoPage(0)} disabled={!canPreviousPage} />
-        <Pagination.Prev onClick={() => previousPage()} disabled={!canPreviousPage}/>
-        <Pagination.Next  onClick={() => nextPage()} disabled={!canNextPage}/>
-        <Pagination.Last onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}/>
-        <Stack direction="horizontal" gap={3}>
-       {/* <div className="bg-light border">  */}
- 
-        {/* </div> */}
-       <div className="bg-light border ms-auto">Page{' '} {state.pageIndex + 1} of {pageOptions.length}</div>
-       <div className="bg-light border">
-           
-             <Form.Select
-             value={state.pageSize}
-             onChange={e => {
-                 setPageSize(Number(e.target.value))
-             }}
-             >
-             {[20, 50, 100].map(pageSize => (
-                 <option key={pageSize} value={pageSize}>
-                 Show {pageSize}
-                 </option>
-             ))}
-             </Form.Select>
+                <div style={{position:'relative' , left: title !== "Correlation Table" ? '60vw' : '55vw'}}>
+                  <IconButton size="large" onClick={()=>handleSearchOnClick()}>
+                    <SearchIcon fontSize={"medium"} />
+                  </IconButton>
+                </div>
+              </Stack>
             </div>
-     </Stack>
-    </Pagination>
-   </div>
-   
+          </Card.Header>
+          <Card.Body style={{padding: '0rem 0rem'}}>
+            <div className="keep-scrolling" style={{height: tableHeight ? tableHeight : '86vh', width: tableWidth ? tableWidth:'',
+              overflowY: 'scroll', overflowX: 'hidden'}}> 
+              <Table responsive="sm" hover bordered {...getTableProps()}>
+                {!isLoading && data.length > 0 &&
+                  <thead>
+                    {headerGroups.map((headerGroup) => (
+                      <tr {...headerGroup.getHeaderGroupProps()} id={randomId()} style={{
+                        height: '25px'
+                      }}>
+                      {headerGroup.headers.map((column, i) =>  (
+                        <th  key={column.id} id={column.id} style={{
+                          background: column.id === "expander" || column.id === "selection"? '' : 'white',
+                          position: column.id === "expander" || column.id === "selection" ? 'block' : ' sticky',
+                          top: 0,
+                          boxShadow: '0 2px 2px -1px rgba(0, 0, 0, 0.4)',
+                          whiteSpace: "nowrap",
+                          minWidth: column.minWidth,
+                          width: column.width
+                        }} className="aligner">
+                          <Stack direction="horizontal" gap={3}>
+                            <div {...column.getHeaderProps(column.getSortByToggleProps())}>
+                              <h6><strong>{column.render("Header")}</strong></h6>
+                              {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
+                            </div>  
+                          </Stack>
+                        </th>
+                        ))
+                      }
+                      </tr>
+                    ))}
+                    <tr>
+                      <th
+                        colSpan={visibleColumns.length}
+                        style={{
+                          textAlign: "left"
+                      }}>
+                        {showSearch &&
+                          <GlobalFilter
+                          preGlobalFilteredRows={preGlobalFilteredRows}
+                          globalFilter={state.globalFilter}
+                          setGlobalFilter={setGlobalFilter}
+                        />
+                        }
+                      </th>
+                    </tr>
+                  </thead>
+                }
+                {isLoading && 
+                  <tbody>
+                    <tr>
+                      <td style={{textAlign:'center', verticalAlign:'middle', width: '72vw' , display: 'block'}}>
+                        <div className="linear-activity" >
+                          <div className="indeterminate"></div>
+                        </div>
+                        Please wait while retrive the data...
+                      </td>
+                    </tr>
+                  </tbody>
+                }
+                {data.length <= 0 && !isLoading &&
+                  <tbody>
+                    <tr>
+                      <td style={{textAlign:'center', verticalAlign:'middle', width: '72vw' , display: 'block'}}>
+                        <strong>Sorry we can't find data.</strong>
+                        <br/>
+                        {correlationRowColor && 
+                          <Button  size={"small"} variant="contained" style={{width: '20%', color: 'white', backgroundColor: 'black'}} onClick={fetchBadMatches}>
+                           See All PM
+                          </Button>
+                        }
+                      </td>
+                    </tr>
+                  </tbody>
+                }
+                {!isLoading && data &&
+                  <tbody {...getTableBodyProps()}>
+                    {page.map((row, index) => {
+                      prepareRow(row);
+                      return (
+                        <React.Fragment   key={index}>
+                          <tr {...row.getRowProps()} data-id={row.original.id} style={{
+                              height: row.isExpanded ? '0' : '25px',
+                              backgroundColor: correlationRowColor ? '#E0CDFB' : ( row.original.background ? row.original.background : ''),
+                          }} className={rowStatus[row.id]}  onClick={() => generateCorr(row)}>      
+                            {row.cells.map((cell) => {
+                              return <td id={randomId()} style={{
+                                maxWidth: '100px',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: !row.isExpanded ? 'nowrap' : '',
+                                backgroundColor: cell.column.id === "totalOccurences" ? (row.original.Total_occurrences_color ? row.original.Total_occurrences_color : null ) : 
+                                cell.column.id === "consecutiveDays" ? (row.original.Consecutive_days_color  ? row.original.Consecutive_days_color  : '' ) : 
+                                cell.column.id === "ConsecutiveFlights" ? (row.original.Consecutive_FL_color  ? row.original.Consecutive_FL_color  : '' ) : 
+                                cell.column.id === "intermittent" ? (row.original.Intermittent_color  ? row.original.Intermittent_color  : '' ) : ''
+                              }}  
+                              {...cell.getCellProps()} 
+                              onClick={() => handleSelectedRow(row)
+                              }>
+                                {cell.render("Cell")}
+                              </td>  
+                              })
+                            }
+                          </tr>
+                        </React.Fragment>                  
+                      )})
+                    }
+                    <tr>
+                      <td colSpan={visibleColumns.length} style={{
+                            position: ' sticky',
+                            bottom: 0,
+                      }}>
+                        {isCorrelation && 
+                          <CorrelationAnalysisTable
+                            dateFrom = {corrData.dateFrom}
+                            dateTo = {corrData.dateTo}
+                            tail = {corrData.tail}
+                            EqID = {corrData.B1Equation}
+                            correlationKeywords = {corrData.keywords}
+                          />
+                        }
+                      </td>
+                    </tr>
+                  </tbody>
+                }
+              </Table>
+            </div>
+        
+            {title !== "Correlation Table" &&
+              <Stack direction="horizontal" gap={3}>
+                <div style={{position: 'relative',top: '9px'}}>
+                  <Pagination style={{height: '28px'}}>
+                    <Pagination.First onClick={() => gotoPage(0)} disabled={!canPreviousPage} />
+                    <Pagination.Prev onClick={() => previousPage()} disabled={!canPreviousPage}/>
+                    <Pagination.Next  onClick={() => nextPage()} disabled={!canNextPage}/>
+                    <Pagination.Last onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}/>
+                    <Stack direction="horizontal" gap={3}>
+                      <div className="bg-light border ms-auto">
+                        Page{' '} {state.pageIndex + 1} of {pageOptions.length}
+                      </div>
+                      <div className="bg-light border">
+                        <Form.Select
+                          value={state.pageSize}
+                          onChange={e => {
+                              setPageSize(Number(e.target.value))
+                          }}
+                          style={{height: '23.5px'}}>
+                          {[20, 50, 100].map(pageSize => (
+                              <option key={pageSize} value={pageSize}>
+                              Show {pageSize}
+                              </option>
+                          ))}
+                        </Form.Select>
+                      </div>
+                    </Stack>
+                  </Pagination>
+                </div>
+                <div style={{position: 'relative', left: '47vw'}}>
+                  <Switch height={20} onChange={handleToggleChange} checked={isCorrelation} />
+                </div>
+              </Stack>
+            }
+          </Card.Body>
+        </Card>
+      </div>
+    </div>
   );
 }

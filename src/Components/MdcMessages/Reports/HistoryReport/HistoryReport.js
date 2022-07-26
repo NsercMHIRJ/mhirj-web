@@ -9,6 +9,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { Button, IconButton } from "@material-ui/core";
 import CorrelationAnalysisTable from '../../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable';
 
+
 const columns =  
 [
   {
@@ -23,29 +24,48 @@ const columns =
         <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
       </div>
     ),
+    maxWidth: 30,
+    minWidth: 30,
+    width: 30, 
   },
   {
-    // Build our expander column
-    id: "expander", // Make sure it has an ID
-    Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }) => (
-      <span {...getToggleAllRowsExpandedProps()}>
-        {isAllRowsExpanded ? <IconButton  style={{height: '25px'}}>
-                        <ArrowDropDownIcon/>
-                    </IconButton>  : <IconButton  style={{height: '25px'}}>
-                        <ArrowRightIcon/>
-                    </IconButton>}
-      </span>
-    ),
-    Cell: ({ row }) => (
-    
-      <span {...row.getToggleRowExpandedProps()}>
-        {row.isExpanded ?    <IconButton  style={{height: '25px'}}>
-                        <ArrowDropDownIcon/>
-                    </IconButton> :   <IconButton  style={{height: '25px'}}>
-                        <ArrowRightIcon/>
-                    </IconButton>}
-      </span>
-    )
+    id: "expander",
+     Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }) => (
+       <span  id='arrow-icon' {...getToggleAllRowsExpandedProps()}>
+         {isAllRowsExpanded ? 
+           <IconButton size={'small'} >
+               <ArrowDropDownIcon fontSize={'small'}/>
+           </IconButton>  : <IconButton size={'small'}>
+               <ArrowRightIcon fontSize={'small'}/>
+           </IconButton>
+         }
+       </span>
+     ),
+     Cell: ({ row }) => (
+       <span id='arrow-icon' {...row.getToggleRowExpandedProps()}>
+         {row.isExpanded ?    
+           <IconButton size={'small'}>
+               <ArrowDropDownIcon fontSize={'small'}/>
+           </IconButton> :   
+           <IconButton size={'small'}>
+               <ArrowRightIcon fontSize={'small'}/>
+           </IconButton> 
+         }
+       </span>
+     ),
+     maxWidth: 30,
+     minWidth: 30,
+     width: 30,
+   },
+  {
+    accessor: 'ACSN', 
+    Header: 'ACSN',
+    Cell: ({ cell: { value } }) => value || "-",
+    canFilter: true,
+    maxWidth: 70,
+    isShow: false,
+    minWidth: 50,
+    width: 60, 
   },
   {
     accessor: 'tail', 
@@ -57,15 +77,24 @@ const columns =
     width: 60,
   },
   {
-    accessor: 'ACSN', 
-    Header: 'ACSN',
+    accessor: 'totalOccurences', 
+    Header: 'Occ',
     Cell: ({ cell: { value } }) => value || "-",
     canFilter: true,
     maxWidth: 70,
     isShow: false,
     minWidth: 50,
     width: 60,
-    
+  },
+  {
+    accessor: 'consecutiveDays', 
+    Header: 'Cons. Days',
+    Cell: ({ cell: { value } }) => value || "-",
+    canFilter: true,
+    maxWidth: 70,
+    isShow: false,
+    minWidth: 50,
+    width: 60,
   },
   {
     accessor: 'EICASMessages', 
@@ -88,8 +117,8 @@ const columns =
     width: 60,
   },
   {
-    accessor: 'LRU', 
-    Header: 'LRU',
+    accessor: 'B1Equation', 
+    Header: 'B1-Equation',
     Cell: ({ cell: { value } }) => value || "-",
     canFilter: true,
     maxWidth: 70,
@@ -108,12 +137,21 @@ const columns =
     width: 60,
   },
   {
-    accessor: 'B1Equation', 
-    Header: 'B1-Equation',
+    accessor: 'dateFrom', 
+    Header: 'Start Date',
     Cell: ({ cell: { value } }) => value || "-",
     canFilter: true,
     maxWidth: 70,
     isShow: false,
+    minWidth: 50,
+    width: 60,
+  },
+  {
+    accessor: 'dateTo', 
+    Header: 'End Date',
+    Cell: ({ cell: { value } }) => value || "-",
+    canFilter: true,
+    maxWidth: 70,
     minWidth: 50,
     width: 60,
   },
@@ -126,159 +164,7 @@ const columns =
     isShow: false,
     minWidth: 50,
     width: 60,
-  },
-  {
-    accessor: 'equationDescription', 
-    Header: 'Equation Description',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    isShow: false,
-    minWidth: 156,
-    width: 60,
-
-   },
-   {
-    accessor: 'totalOccurences', 
-    Header: 'Occ',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    isShow: false,
-    minWidth: 50,
-    width: 60,
-   },
-   {
-    accessor: 'consecutiveDays', 
-    Header: 'Cons. Days',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    isShow: false,
-    minWidth: 156,
-    width: 60,
-   },
-   {
-    accessor: 'ConsecutiveFlights', 
-    Header: 'Cons. Legs', 
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    isShow: false,
-    minWidth: 156,
-    width: 60,
-   },
-   {
-    accessor: 'intermittent', 
-    Header: 'Int.', 
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    isShow: false,
-    minWidth: 156,
-    width: 60,
-   },
-   {
-    accessor: 'dateFrom', 
-    Header: 'Date from',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    isShow: false,
-    minWidth: 50,
-    width: 60,
-   },
-   {
-    accessor: 'dateTo', 
-    Header: 'Date to',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    minWidth: 50,
-    width: 60,
-   },
-   {
-    accessor: 'reasons', 
-    Header: 'Reason(s) for flag',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    minWidth: 50,
-    width: 60,
-   },
-   {
-    accessor: 'priority', 
-    Header: 'Priority',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    minWidth: 50,
-    width: 60,
-   },
-   {
-    accessor: 'topMessage', 
-    Header: 'Known Top Message',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    minWidth: 156,
-    width: 60,
-   },
-   {
-    accessor: 'mel', 
-    Header: 'MEL or No-Dispatch',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    minWidth: 156,
-    width: 60,
-   },
-   {
-    accessor: 'input', 
-    Header: 'MHIRJ Input',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    minWidth: 50,
-    width: 60,
-   },
-   {
-    accessor: 'recommendation', 
-    Header: 'MHIRJ Recommendation',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    minWidth: 156,
-    width: 60,
-   },
-   {
-    accessor: 'comments', 
-    Header: 'Additional Comments',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    minWidth: 50,
-    width: 60,
-   },
-   {
-    accessor: 'isJam', 
-    Header: 'Jam',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    minWidth: 50,
-    width: 60,
-   },
-   {
-    accessor: 'keywords', 
-    Header: 'Correlation Keywords',
-    Cell: ({ cell: { value } }) => value || "-",
-    canFilter: true,
-    maxWidth: 70,
-    minWidth: 50,
-    width: 60,
-   },
-  ]
+  }]
 
   const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -298,26 +184,14 @@ const columns =
   )
   
 
-  const RenderRowSubComponent = (row) => {
-
-      return (
-        <CorrelationAnalysisTable
-        dateFrom = {row.row.values.dataFrom}
-        dateTo = {row.row.values.dateTo}
-        tail = {row.row.values.tail}
-        EqID = {row.row.values.B1Equation}
-        correlationKeywords = {row.row.values.keywords} 
-      />
-      )
-    }
-  
-
 class HistoryReport extends Component {
  
   constructor(props) {
     super(props)
     this.state = {
-      data: []
+      data: [],
+      corrData: {},
+      isCorrelation: false,
     }
   }
 
@@ -360,20 +234,23 @@ class HistoryReport extends Component {
     }
   }
 
+
+
+
   renderTable() {
       return (
       <div>
       <CustomTable
       columns={columns}
       data={this.state.data}
-      RenderRowSubComponent={RenderRowSubComponent}
       isLoading={this.props.loading}
-      tableHeight={this.props.loading ? '35vh' : '82vh'}
+      tableHeight={this.props.loading ? '35vh' : '77.5vh'}
       title={'History Table'}
       />
       </div>
       )
   }
+
 
   render() {
     return <>{this.renderTable()}</>;
