@@ -9,6 +9,51 @@ import { randomId } from '@mui/x-data-grid-generator';
 const columns =  
 [
   {
+    id: 'selection',
+    Header: ({ getToggleAllRowsSelectedProps }) => (
+      <div>
+        <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+      </div>
+    ),
+    Cell: ({ row }) => (
+      <div>
+        <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+      </div>
+    ),
+    maxWidth: 30,
+    minWidth: 30,
+    width: 30, 
+  },
+  {
+   id: "expander",
+    Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }) => (
+      <span  id='arrow-icon' {...getToggleAllRowsExpandedProps()}>
+        {isAllRowsExpanded ? 
+          <IconButton size={'small'} >
+              <ArrowDropDownIcon fontSize={'small'}/>
+          </IconButton>  : <IconButton size={'small'}>
+              <ArrowRightIcon fontSize={'small'}/>
+          </IconButton>
+        }
+      </span>
+    ),
+    Cell: ({ row }) => (
+      <span id='arrow-icon' {...row.getToggleRowExpandedProps()}>
+        {row.isExpanded ?    
+          <IconButton size={'small'}>
+              <ArrowDropDownIcon fontSize={'small'}/>
+          </IconButton> :   
+          <IconButton size={'small'}>
+              <ArrowRightIcon fontSize={'small'}/>
+          </IconButton> 
+        }
+      </span>
+    ),
+    maxWidth: 30,
+    minWidth: 30,
+    width: 30,
+  },
+  {
     accessor: 'ATA', 
     Header: 'ATA',
     Cell: ({ cell: { value } }) => value || "-",
