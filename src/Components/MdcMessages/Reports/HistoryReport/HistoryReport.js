@@ -244,7 +244,7 @@ class HistoryReport extends Component {
       columns={columns}
       data={this.state.data}
       isLoading={this.props.loading}
-      tableHeight={this.props.loading ? '35vh' : '77.5vh'}
+      tableHeight={this.props.loading ? '35vh' : '75.5vh'}
       title={'History'}
       />
       </div>

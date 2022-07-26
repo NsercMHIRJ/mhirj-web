@@ -56,6 +56,10 @@ const GlobalFilter = ({
   );
 };
 
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
   
 const downloadExcel = (data) => {
   const worksheet = XLSX.utils.json_to_sheet(data);
@@ -166,6 +170,7 @@ export default function CustomTable({ columns, data, tableHeight, isLoading, cor
     }
 
    const handleToggleChange = (checked) => {
+     setRowStatus({})
     setIsCorrelation(checked);
   }
 
@@ -247,7 +252,7 @@ export default function CustomTable({ columns, data, tableHeight, isLoading, cor
                         <div className="linear-activity" >
                           <div className="indeterminate"></div>
                         </div>
-                        Please wait while retrive the data...
+                        <h5><strong>Please wait while retrive the data...</strong></h5>
                       </td>
                     </tr>
                   </tbody>
@@ -256,17 +261,30 @@ export default function CustomTable({ columns, data, tableHeight, isLoading, cor
                   <tbody>
                     <tr>
                       <td style={{textAlign:'center', verticalAlign:'middle', width: '72vw' , display: 'block'}}>
-                        <strong>Sorry we can't find data.</strong>
-                        <br/>
-                        {correlationRowColor && 
-                          <Button  size={"small"} variant="contained" style={{width: '20%', color: 'white', backgroundColor: 'black'}} onClick={fetchBadMatches}>
-                           See All PM
-                          </Button>
-                        }
+                        <div>
+                            <h5>
+                              <strong>
+                                {!rowStatus  && title === "Correlation" ?
+                                  "Click On Your Desire Row."
+                                  :
+                                  "Sorry We Can't Find Data."
+                                }
+                              </strong>
+                            </h5>
+                            <br/>
+                            {correlationRowColor && 
+                              <Button  size={"small"} variant="contained" style={{width: '20%', color: 'white', backgroundColor: 'black'}} onClick={fetchBadMatches}>
+                              See All PM
+                              </Button>
+                            }
+                          </div>
                       </td>
                     </tr>
                   </tbody>
                 }
+                
+              
+                
                 {!isLoading && data &&
                   <tbody {...getTableBodyProps()}>
                     {page.map((row, index) => {

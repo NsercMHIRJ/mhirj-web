@@ -239,34 +239,6 @@ class DeltaReport extends Component {
       this.setState({data : dataCopy })
     }
   }
-  generateCorr = (e, row) =>{
-    if (!this.state.isCorrelation){
-      this.setState({
-        corrData: row.values,
-        isCorrelation: true,
-      })
-    }else {
-      this.setState({
-        corrData: {},
-      })
-    }
-   
-  }
-
-  CorrelationTable = () => {
- 
-      return (
-       
-        <CorrelationAnalysisTable
-        dateFrom = {this.state.corrData.dateFrom}
-        dateTo = {this.state.corrData.dateTo}
-        tail = {this.state.corrData.tail}
-        EqID = {this.state.corrData.B1Equation}
-        correlationKeywords = {this.state.corrData.keywords} 
-      />
- 
-      )
-    }
 
   renderTable() {
       return (
@@ -275,13 +247,8 @@ class DeltaReport extends Component {
       columns={columns}
       data={this.state.data}
       isLoading={this.props.loading}
-      tableHeight={this.props.loading ? '35vh' : '77.5vh'}
-      title={'Delta Table'}
-      generateCorr = {this.generateCorr}
-      downloadExcel={this.downloadExcel}
-      // RenderRowSubComponent={RenderRowSubComponent}
-      isCorrelation = {this.state.isCorrelation}
-      CorrelationTable = {this.CorrelationTable}
+      tableHeight={this.props.loading ? '35vh' : '75.5vh'}
+      title={'Delta'}
       />
       </div>
       )
