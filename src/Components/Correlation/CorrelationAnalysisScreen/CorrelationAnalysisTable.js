@@ -199,7 +199,7 @@ const CorrelationAnalysisTable = (props) => {
       isLoading={loading}
       fetchBadMatches={fetchBadMatches}
       correlationRowColor={true}
-      title={'Correlation Table'}
+      title={'Correlation'}
       tableRight={'7px'}
       tableTop={'7px'}
     />

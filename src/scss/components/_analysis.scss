@@ -210,3 +210,11 @@ color:red;
 scrollbar-width: none;  /* Firefox */
 }
 
+table thead tr th {
+  /* Important */
+  background-color: red;
+  position: sticky;
+  z-index: 100;
+  top: 0;
+}
+

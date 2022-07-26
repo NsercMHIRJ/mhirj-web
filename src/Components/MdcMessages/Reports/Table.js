@@ -12,9 +12,7 @@ import { IconButton } from "@material-ui/core";
 import Switch from "react-switch";
 import { Button } from '@material-ui/core';
 import CorrelationAnalysisTable from "../../Correlation/CorrelationAnalysisScreen/CorrelationAnalysisTable";
-import axios from "axios";
 import Card from 'react-bootstrap/Card'
-import generateExcel from "zipcelx";
 import * as XLSX from 'xlsx'
 import { BsCloudDownloadFill } from "react-icons/bs";
 
@@ -178,15 +176,15 @@ export default function CustomTable({ columns, data, tableHeight, isLoading, cor
           <Card.Header>
             <div>
               <Stack direction="horizontal" gap={3}>
-                <h5>
+                <h5 style={{position: 'relative', right: '8px'}}>
                   {title}
                 </h5>
-                <div style={{position:'relative' , left: title !== "Correlation Table" ? '60vw' : '55vw'}}>
+                <div style={{position:'relative' , left: title !== "Correlation" ? '65.5vw' : '64vw'}}>
                   <IconButton size={"large"} onClick={()=>downloadExcel(data)}>
                     <BsCloudDownloadFill fontSize={"medium"} />
                   </IconButton>
                 </div>
-                <div style={{position:'relative' , left: title !== "Correlation Table" ? '60vw' : '55vw'}}>
+                <div style={{position:'relative' , left: title !== "Correlation" ? '65.5vw' : '64vw'}}>
                   <IconButton size="large" onClick={()=>handleSearchOnClick()}>
                     <SearchIcon fontSize={"medium"} />
                   </IconButton>
@@ -207,7 +205,7 @@ export default function CustomTable({ columns, data, tableHeight, isLoading, cor
                       {headerGroup.headers.map((column, i) =>  (
                         <th  key={column.id} id={column.id} style={{
                           background: column.id === "expander" || column.id === "selection"? '' : 'white',
-                          position: column.id === "expander" || column.id === "selection" ? 'block' : ' sticky',
+                          position: column.id === "expander" || column.id === "selection" ? 'unset' : 'sticky',
                           top: 0,
                           boxShadow: '0 2px 2px -1px rgba(0, 0, 0, 0.4)',
                           whiteSpace: "nowrap",
@@ -322,7 +320,7 @@ export default function CustomTable({ columns, data, tableHeight, isLoading, cor
               </Table>
             </div>
         
-            {title !== "Correlation Table" &&
+            {title !== "Correlation" &&
               <Stack direction="horizontal" gap={3}>
                 <div style={{position: 'relative',top: '9px'}}>
                   <Pagination style={{height: '28px'}}>
@@ -351,7 +349,7 @@ export default function CustomTable({ columns, data, tableHeight, isLoading, cor
                     </Stack>
                   </Pagination>
                 </div>
-                <div style={{position: 'relative', left: '47vw'}}>
+                <div style={{position: 'relative', left: '50vw'}}>
                   <Switch height={20} onChange={handleToggleChange} checked={isCorrelation} />
                 </div>
               </Stack>
